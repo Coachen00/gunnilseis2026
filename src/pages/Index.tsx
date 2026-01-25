@@ -5,6 +5,8 @@ import TrainingDay from "@/components/TrainingDay";
 import RoleCard from "@/components/RoleCard";
 import SectionHeader from "@/components/SectionHeader";
 import SetPieceCard from "@/components/SetPieceCard";
+import SpelytorDiagram from "@/components/SpelytorDiagram";
+import KorridorerDiagram from "@/components/KorridorerDiagram";
 
 const defensePlayers = [
   { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
@@ -285,49 +287,18 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Corridors Reference */}
+        {/* Corridors Reference - SvFF Diagrams */}
         <section className="card-gradient rounded-2xl p-8 border border-border">
           <SectionHeader 
             badge="SvFF-språk"
             title="Spelytor & Korridorer"
-            className="mb-6"
+            subtitle="Visuella diagram baserade på SvFF-terminologi i våra brandfärger."
+            className="mb-8"
           />
           
-          <div className="grid sm:grid-cols-2 gap-8">
-            <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Spelytor (djup)</h4>
-              <ul className="space-y-2 text-sm text-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground" />
-                  Utgångsyta
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-zone-defense" />
-                  Spelyta 1
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-zone-midfield" />
-                  Spelyta 2
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-zone-attack" />
-                  Spelyta 3 (djup)
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Korridorer (bredd)</h4>
-              <ul className="space-y-2 text-sm text-foreground">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground" />
-                  5 korridorer totalt
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-primary" />
-                  Halv-ytor = de två inre korridorerna
-                </li>
-              </ul>
-            </div>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
+            <SpelytorDiagram />
+            <KorridorerDiagram />
           </div>
         </section>
       </main>
