@@ -1,4 +1,5 @@
 import FootballPitch from "@/components/FootballPitch";
+import InteractiveFootballPitch, { Formation } from "@/components/InteractiveFootballPitch";
 import TriggerCard from "@/components/TriggerCard";
 import CoachCue from "@/components/CoachCue";
 import TrainingDay from "@/components/TrainingDay";
@@ -33,6 +34,57 @@ const attackPlayers = [
   { id: "11", x: 12, y: 28, role: "VY", color: "primary" as const },
   { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
   { id: "7", x: 88, y: 28, role: "HY", color: "primary" as const },
+];
+
+// Formation presets for interactive pitch
+const formations: Formation[] = [
+  {
+    name: "4-3-3 Försvar",
+    players: [
+      { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
+      { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
+      { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
+      { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
+      { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
+      { id: "6", x: 30, y: 58, role: "VM", color: "primary" as const },
+      { id: "8", x: 50, y: 55, role: "6:a", color: "accent" as const },
+      { id: "7", x: 70, y: 58, role: "HM", color: "primary" as const },
+      { id: "11", x: 18, y: 35, role: "VY", color: "primary" as const },
+      { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
+      { id: "10", x: 82, y: 35, role: "HY", color: "primary" as const },
+    ]
+  },
+  {
+    name: "3-2-2-3 Anfall",
+    players: [
+      { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
+      { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
+      { id: "2", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
+      { id: "6", x: 38, y: 68, role: "6:a", color: "accent" as const },
+      { id: "5", x: 62, y: 68, role: "VYB (inv.)", color: "accent" as const },
+      { id: "8", x: 32, y: 48, role: "8:a", color: "primary" as const },
+      { id: "10", x: 68, y: 48, role: "10:a", color: "primary" as const },
+      { id: "11", x: 12, y: 28, role: "VY", color: "primary" as const },
+      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
+      { id: "7", x: 88, y: 28, role: "HY", color: "primary" as const },
+    ]
+  },
+  {
+    name: "4-4-2 Alt.",
+    players: [
+      { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
+      { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
+      { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
+      { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
+      { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
+      { id: "6", x: 15, y: 55, role: "VM", color: "primary" as const },
+      { id: "7", x: 38, y: 52, role: "CM", color: "accent" as const },
+      { id: "8", x: 62, y: 52, role: "CM", color: "accent" as const },
+      { id: "11", x: 85, y: 55, role: "HM", color: "primary" as const },
+      { id: "9", x: 35, y: 28, role: "ST", color: "primary" as const },
+      { id: "10", x: 65, y: 28, role: "ST", color: "primary" as const },
+    ]
+  }
 ];
 
 const Index = () => {
@@ -71,22 +123,47 @@ const Index = () => {
           <SectionHeader 
             badge="Formationer"
             title="Två ansikten – ett lag"
-            subtitle="4-3-3 i försvar för kompakthet. 3-2-2-3 i anfall med inverterad ytterback för kontroll."
+            subtitle="Dra spelarna för att justera positioner. Byt formation med knapparna."
           />
           
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            <FootballPitch 
-              players={defensePlayers}
-              title="4-3-3 Försvar"
-              subtitle="Stoppa framåt, styr ut, kompakt centralt"
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+            <InteractiveFootballPitch 
+              formations={formations}
+              title="Interaktiv Taktiktavla"
+              subtitle="Klicka och dra för att flytta spelare"
               showZones
             />
-            <FootballPitch 
-              players={attackPlayers}
-              title="3-2-2-3 Anfall"
-              subtitle="Inverterad ytterback + kontroll i halv-ytor"
-              showZones
-            />
+            <div className="space-y-6">
+              <div className="card-gradient rounded-xl p-5 border border-border">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">4-3-3 Försvar</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Stoppa framåt, styr ut mot yttre korridor, kompakt centralt. Front 3 pressar på trigger.
+                </p>
+              </div>
+              <div className="card-gradient rounded-xl p-5 border border-border">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-3">3-2-2-3 Anfall</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  VB inverterar tidigt. HB stannar i trean bak. 6:an är alltid "pilen nedåt" – ankare bakom 8/10.
+                </p>
+              </div>
+              <div className="card-gradient rounded-xl p-5 border border-border">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">Tips</h4>
+                <ul className="text-sm text-muted-foreground space-y-2">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                    Dra spelare till önskad position
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                    Klicka för att se spelarinfo
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
+                    "Reset" återställer formationen
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
