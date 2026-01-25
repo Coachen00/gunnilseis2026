@@ -270,18 +270,29 @@ const Index = () => {
               theme="Uppbyggnad"
               focus="3-2-bas med inverterad + hitta spelbarhet i inre korridor → kontroll i spelyta 2/3."
               cues={["Invertera tidigt", "Spelbar i inre", "Spelvänd snabbt"]}
+              videos={[
+                { title: "Invertering & 3-2-uppbyggnad", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "4:32" },
+                { title: "Spelbarhet i inre korridor", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "3:15" },
+              ]}
             />
             <TrainingDay 
               day="Onsdag"
               theme="Försvar 4-3-3"
               focus="Press-triggers + styra mot yttre korridor + kompakt centralt."
               cues={["Styr ut", "Stäng inåt", "Korta avstånd"]}
+              videos={[
+                { title: "Press-triggers i praktiken", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "5:10" },
+              ]}
             />
             <TrainingDay 
               day="Torsdag"
               theme="Matchrepetition"
               focus="Fasta (hybrid+2 man) + Grön/Gul/Röd + 11v11 med 6 match-cues."
               cues={["Vår zon först", "2 man låser", "Grön/Gul/Röd"]}
+              videos={[
+                { title: "Hybrid + 2 man på hörnor", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "6:45" },
+                { title: "Grön/Gul/Röd beslut", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "4:20" },
+              ]}
               isHighlighted
             />
           </div>
