@@ -350,6 +350,7 @@ const Index = () => {
               videos={[
                 { title: "Invertering & 3-2-uppbyggnad", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "4:32" },
                 { title: "Spelbarhet i inre korridor", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", duration: "3:15" },
+                { title: "Spelytor förklarat", url: "https://www.youtube.com/shorts/yGyPL4PZD_Q", duration: "0:59" },
               ]}
             />
             <TrainingDay 
