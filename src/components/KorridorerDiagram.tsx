@@ -13,30 +13,30 @@ const KorridorerDiagram = ({ className }: KorridorerDiagramProps) => {
       
       <div className="relative aspect-[3/4] w-full max-w-xs mx-auto">
         {/* Labels above pitch */}
-        <div className="absolute -top-8 left-0 right-0 flex justify-between px-[8.33%]">
+        <div className="absolute -top-8 left-0 right-0 flex justify-between px-[4%]">
           <div className="flex flex-col items-center">
-            <div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground text-[10px] font-bold">
-              1
+            <div className="px-1 py-0.5 rounded bg-muted text-muted-foreground text-[8px] font-bold whitespace-nowrap">
+              V. Yttre
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold">
-              2
+            <div className="px-1 py-0.5 rounded bg-primary/20 text-primary text-[8px] font-bold whitespace-nowrap">
+              V. Inre
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="px-1.5 py-0.5 rounded bg-accent/20 text-accent text-[10px] font-bold">
-              3
+            <div className="px-1 py-0.5 rounded bg-accent/20 text-accent text-[8px] font-bold whitespace-nowrap">
+              Central
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="px-1.5 py-0.5 rounded bg-primary/20 text-primary text-[10px] font-bold">
-              4
+            <div className="px-1 py-0.5 rounded bg-primary/20 text-primary text-[8px] font-bold whitespace-nowrap">
+              H. Inre
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <div className="px-1.5 py-0.5 rounded bg-muted text-muted-foreground text-[10px] font-bold">
-              5
+            <div className="px-1 py-0.5 rounded bg-muted text-muted-foreground text-[8px] font-bold whitespace-nowrap">
+              H. Yttre
             </div>
           </div>
         </div>
@@ -97,28 +97,28 @@ const KorridorerDiagram = ({ className }: KorridorerDiagramProps) => {
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded bg-muted border border-border" />
-              <span className="text-xs text-muted-foreground">Yttre korridorer (1, 5)</span>
+              <span className="text-xs text-muted-foreground">V. Yttre & H. Yttre korridor</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded bg-primary/30 border border-primary/50" />
-              <span className="text-xs text-primary font-medium">Inre korridorer (2, 4) = Halv-ytor</span>
+              <span className="text-xs text-primary font-medium">V. Inre & H. Inre korridor</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">
               <span className="w-3 h-3 rounded bg-accent/30 border border-accent/50" />
-              <span className="text-xs text-accent">Central korridor (3)</span>
+              <span className="text-xs text-accent">Central korridor</span>
             </div>
           </div>
         </div>
       </div>
       
-      {/* Note about halv-ytor */}
+      {/* Note */}
       <div className="mt-4 p-3 rounded-lg bg-primary/10 border border-primary/20">
         <p className="text-xs text-primary font-medium text-center">
-          <strong>OBS:</strong> Halv-ytor = alltid de två INRE korridorerna (2 och 4)
+          <strong>Mål:</strong> Sök spelbarhet i inre korridorer
         </p>
       </div>
     </div>
