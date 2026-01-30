@@ -51,25 +51,25 @@ import LogoutButton from "@/components/LogoutButton";
 
 const Index = () => {
   return (
-    <div className="min-h-screen hero-gradient">
-      {/* Hero Section */}
-      <header className="relative overflow-hidden">
+    <div className="min-h-screen bg-background">
+      {/* Hero Section - Navy background with Gold accents */}
+      <header className="relative overflow-hidden hero-gradient">
         {/* Logout button */}
         <div className="absolute top-4 right-4 z-10">
           <LogoutButton />
         </div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.15)_0%,_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--accent)/0.2)_0%,_transparent_60%)]" />
         <div className="container relative py-16 md:py-24">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
-              <span className="inline-block w-12 h-1 bg-primary rounded-full" />
-              <span className="text-sm font-bold uppercase tracking-widest text-primary">Lagets Spelidé</span>
+              <span className="inline-block w-12 h-1 bg-accent rounded-full" />
+              <span className="text-sm font-bold uppercase tracking-widest text-accent">Lagets Spelidé</span>
             </div>
-            <h1 className="text-4xl md:text-6xl font-black text-foreground mb-4 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight">
               Få saker.{" "}
-              <span className="text-gradient-primary">Max tydlighet.</span>
+              <span className="text-gradient-accent">Max tydlighet.</span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+            <p className="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
               Försvar: 4-3-3 — kompakt, styr ut. 
               <br />
               Anfall: 3-2-2-3 med inverterad ytterback.
@@ -85,84 +85,112 @@ const Index = () => {
 
       <main className="container pb-20 space-y-20">
         
+        {/* Färglogik i spelet (Röd/Gul/Grön) */}
+        <section>
+          <SectionHeader 
+            badge="Färglogik"
+            title="Röd → Gul → Grön"
+            subtitle="Tre faser som styr vårt anfallsspel – från kontroll till attack."
+          />
+          
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            <div className="rounded-xl p-5 border-2 border-zone-defense bg-zone-defense/10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-4 h-4 rounded-full bg-zone-defense" />
+                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-defense">RÖD</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Vi kan inte spelvända. Vi har inte kontroll.
+              </p>
+            </div>
+            <div className="rounded-xl p-5 border-2 border-zone-midfield bg-zone-midfield/10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-4 h-4 rounded-full bg-zone-midfield" />
+                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-midfield">GUL</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Vi börjar överbelasta (flyttar motståndare till vald kant).
+              </p>
+            </div>
+            <div className="rounded-xl p-5 border-2 border-zone-attack bg-zone-attack/10">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-4 h-4 rounded-full bg-zone-attack" />
+                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-attack">GRÖN</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Vi har skapat oordning och är i fas att spelvända för attack mot deras box.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* A) Pseudokontring */}
         <section>
           <SectionHeader 
             badge="A) Pseudokontring"
-            title="Flytta → 3:a → Spelvändning → Full fart"
-            subtitle="Rättvänd → spelvändning → full fart framåt. Inte rättvänd → hota framåt."
+            title="Gul → Grön → Full fart"
+            subtitle="Rättvänd → spelvändning → full fart framåt."
           />
           
           {/* Callout - binder ihop begreppen */}
-          <div className="mb-6 p-4 rounded-xl bg-accent/10 border border-accent/30">
-            <p className="text-sm text-center font-medium text-accent">
-              <strong>Koppling:</strong> Kontroll → 3 på spelare → (Grön spelare) → Spelvändning → startar Pseudokontring
+          <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/30">
+            <p className="text-sm text-center font-medium text-primary">
+              <strong>Koppling:</strong> Kontroll → 3:a centralt (Grön) → Spelvändning → startar Pseudokontring
             </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="card-gradient rounded-xl p-6 border border-border">
-              <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-4">Pseudokontrings-processen (6 steg)</h4>
+            <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
+              <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-4">Pseudokontrings-processen</h4>
               <ol className="space-y-3 text-sm text-muted-foreground list-none">
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
-                  <span><strong className="text-foreground">Flytta motståndare</strong> – Vi får dem att överbelasta en kant.</span>
+                  <span className="w-6 h-6 rounded-full bg-zone-midfield/20 text-zone-midfield text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                  <span><strong className="text-foreground">GUL: Flytta motståndare</strong> – Överbelasta en kant.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
-                  <span><strong className="text-foreground">Hitta 3:a centralt</strong> – Rättvänd spelare i Spelyta 1 = "grön spelare".</span>
+                  <span className="w-6 h-6 rounded-full bg-zone-attack/20 text-zone-attack text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                  <span><strong className="text-foreground">GRÖN: 3:a centralt rättvänd</strong> – Oordning skapad, redo att vända.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
-                  <span><strong className="text-foreground">Spelvändning</strong> – När 3:an är grön/rättvänd → spelvänd till motsatt kant.</span>
+                  <span><strong className="text-foreground">Spelvändning</strong> – Till motsatt kant → full fart.</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-6 h-6 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
-                  <span><strong className="text-foreground">Full fart</strong> – Direkt efter spelvändningen.</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
                   <span><strong className="text-foreground">Överlapp/underlapp</strong> – I den nya kanten.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-6 h-6 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">6</span>
-                  <span><strong className="text-foreground">Mål:</strong> Ner till kortsidan i assistytan → cutback → golden zone.</span>
+                  <span className="w-6 h-6 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+                  <span><strong className="text-foreground">Mål:</strong> Kortsidan i assistytan → cutback → golden zone.</span>
                 </li>
               </ol>
               {/* Minnesrad */}
-              <div className="mt-4 p-3 rounded-lg bg-muted/50 border border-border">
-                <p className="text-xs text-muted-foreground text-center font-medium">
-                  <strong>Minnesrad:</strong> "Flytta → hitta 3 centralt (grön) → spelvänd → full fart → kortsida → cutback → golden zone."
+              <div className="mt-4 p-3 rounded-lg bg-accent/10 border border-accent/30">
+                <p className="text-xs text-foreground text-center font-medium">
+                  <strong>Minnesrad:</strong> "Gul: överbelasta → Grön: spelvänd → full fart → kortsida → cutback → golden zone."
                 </p>
               </div>
             </div>
             <div className="space-y-4">
-              <div className="card-gradient rounded-xl p-5 border border-accent/30 bg-accent/5">
-                <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-3">Rättvänd-standard</h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-accent mt-1.5 flex-shrink-0" />
-                    <span><strong className="text-foreground">Rättvänd →</strong> spelvändning → full fart framåt</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-2 h-2 rounded-full bg-muted-foreground mt-1.5 flex-shrink-0" />
-                    <span><strong className="text-foreground">Inte rättvänd →</strong> hota framåt (attackera utan spelvändning)</span>
-                  </li>
-                </ul>
+              <div className="bg-card rounded-xl p-5 border border-primary/30">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Rättvänd = Spelvändning + Fart</h4>
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Rättvänd →</strong> spelvändning → full fart framåt
+                </p>
               </div>
-              <div className="card-gradient rounded-xl p-5 border border-border">
+              <div className="bg-card rounded-xl p-5 border border-border">
                 <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-3">Cue "1–2–3"</h4>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-defense/20 text-zone-defense text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
                     <span><strong className="text-foreground">SÄKRA</strong> – Spela enkelt/säkert. Ingen vändning. Behåll kontroll.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-midfield/20 text-zone-midfield text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
                     <span><strong className="text-foreground">FÖRBÄTTRA</strong> – Skapa bättre vinkel/läge inom spelytan.</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-attack/20 text-zone-attack text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                     <span><strong className="text-foreground">VÄXLA / VÄNDLÄGE</strong> – Vänd/accelerera: framåt, sök assistytan.</span>
                   </li>
                 </ul>
@@ -271,7 +299,7 @@ const Index = () => {
         </section>
 
         {/* D) Korridorer – visualisering */}
-        <section className="card-gradient rounded-2xl p-8 border border-border">
+        <section className="bg-card rounded-2xl p-8 border border-border shadow-sm">
           {/* Bild ovanför rubriken */}
           <div className="mb-8">
             <KorridorerDiagram />
@@ -315,19 +343,19 @@ const Index = () => {
               showZones
             />
             <div className="space-y-4">
-              <div className="card-gradient rounded-xl p-5 border border-accent/30">
+              <div className="bg-card rounded-xl p-5 border border-accent/30 shadow-sm">
                 <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-3">Anfallssekvens</h4>
                 <ol className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-midfield/20 text-zone-midfield text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
                     <span>Grön spelare centralt slår spelvändning</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-attack/20 text-zone-attack text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
                     <span>Full fart i inre/yttre korridor</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+                    <span className="w-5 h-5 rounded-full bg-zone-attack/20 text-zone-attack text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
                     <span>Överlapp/underlapp mot kortsidan</span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -367,7 +395,7 @@ const Index = () => {
           />
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="card-gradient rounded-xl p-6 border border-zone-defense/30">
+            <div className="bg-card rounded-xl p-6 border border-zone-defense/30 shadow-sm">
               <h4 className="text-sm font-bold uppercase tracking-wider text-zone-defense mb-4">Standard</h4>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-xl bg-zone-defense/20 flex items-center justify-center">
@@ -378,7 +406,7 @@ const Index = () => {
                 </p>
               </div>
             </div>
-            <div className="card-gradient rounded-xl p-6 border border-primary/30">
+            <div className="bg-card rounded-xl p-6 border border-primary/30 shadow-sm">
               <h4 className="text-sm font-bold uppercase tracking-wider text-primary mb-4">Vid ledning</h4>
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-xl bg-primary/20 flex items-center justify-center">
@@ -481,7 +509,7 @@ const Index = () => {
         </section>
 
         {/* H) Media + Navigation note */}
-        <section className="card-gradient rounded-2xl p-8 border border-border">
+        <section className="bg-card rounded-2xl p-8 border border-border shadow-sm">
           <SectionHeader 
             badge="H) Media & Navigation"
             title="Filmer & Veckoschema"
@@ -514,7 +542,7 @@ const Index = () => {
         </section>
 
         {/* I) Bilder/Spelytor note */}
-        <section className="card-gradient rounded-2xl p-8 border border-border">
+        <section className="bg-card rounded-2xl p-8 border border-border shadow-sm">
           <SectionHeader 
             badge="I) Grafik TODO"
             title="Bilder & Spelytor"
