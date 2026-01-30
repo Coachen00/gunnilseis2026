@@ -46,11 +46,17 @@ const formations: Formation[] = [
   },
 ];
 
+import LogoutButton from "@/components/LogoutButton";
+
 const Index = () => {
   return (
     <div className="min-h-screen hero-gradient">
       {/* Hero Section */}
       <header className="relative overflow-hidden">
+        {/* Logout button */}
+        <div className="absolute top-4 right-4 z-10">
+          <LogoutButton />
+        </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--primary)/0.15)_0%,_transparent_60%)]" />
         <div className="container relative py-16 md:py-24">
           <div className="max-w-3xl">
