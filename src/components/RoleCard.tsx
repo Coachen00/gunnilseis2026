@@ -10,7 +10,7 @@ interface RoleCardProps {
 const RoleCard = ({ line, players, description, variant = "midfield" }: RoleCardProps) => {
   return (
     <div className={cn(
-      "card-gradient rounded-xl p-5 border transition-all duration-300 hover:scale-[1.02]",
+      "bg-card rounded-xl p-5 border shadow-sm transition-all duration-300 hover:scale-[1.02]",
       variant === "attack" 
         ? "border-zone-attack/30 hover:border-zone-attack/50" 
         : variant === "defense"

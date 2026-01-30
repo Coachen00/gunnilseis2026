@@ -74,6 +74,13 @@ export default {
           midfield: "hsl(var(--zone-midfield))",
           defense: "hsl(var(--zone-defense))",
         },
+        gunnilse: {
+          navy: "hsl(212 85% 24%)",
+          shield: "hsl(231 45% 35%)",
+          gold: "hsl(47 84% 57%)",
+          red: "hsl(356 75% 49%)",
+          warm: "hsl(47 60% 92%)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

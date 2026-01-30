@@ -6,37 +6,38 @@
 
 @layer base {
   :root {
-    --background: 220 20% 8%;
-    --foreground: 60 10% 95%;
+    /* Gunnilse IS Brand Colors - Light Mode */
+    --background: 47 60% 92%; /* Warm White #FAF3DD */
+    --foreground: 230 60% 9%; /* Charcoal #0B1020 */
 
-    --card: 220 18% 12%;
-    --card-foreground: 60 10% 95%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 230 60% 9%;
 
-    --popover: 220 18% 12%;
-    --popover-foreground: 60 10% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 60% 9%;
 
-    --primary: 142 60% 45%;
-    --primary-foreground: 220 20% 8%;
+    --primary: 212 85% 24%; /* Gunnilse Navy #09376F */
+    --primary-foreground: 47 60% 92%;
 
-    --secondary: 220 15% 18%;
-    --secondary-foreground: 60 10% 90%;
+    --secondary: 231 45% 35%; /* Shield Blue #313D83 */
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 15% 16%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 47 40% 88%;
+    --muted-foreground: 230 30% 35%;
 
-    --accent: 48 95% 55%;
-    --accent-foreground: 220 20% 8%;
+    --accent: 47 84% 57%; /* Gunnilse Gold #EFC632 */
+    --accent-foreground: 212 85% 24%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 60 10% 95%;
+    --destructive: 356 75% 49%; /* Gunnilse Red #D3282F */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 142 60% 45%;
+    --border: 212 30% 80%;
+    --input: 212 30% 80%;
+    --ring: 212 85% 24%;
 
     --radius: 0.75rem;
 
-    /* Custom tokens */
+    /* Custom tokens - Football specific */
     --pitch: 142 55% 35%;
     --pitch-lines: 142 40% 55%;
     --pitch-dark: 142 50% 20%;
@@ -44,22 +45,23 @@
     --swedish-blue: 210 80% 45%;
     --swedish-yellow: 48 95% 55%;
     
-    --zone-attack: 142 60% 45%;
-    --zone-midfield: 48 70% 50%;
-    --zone-defense: 0 60% 50%;
+    /* Tactical color phases */
+    --zone-attack: 142 55% 40%; /* Grön - kan spelvända */
+    --zone-midfield: 47 84% 57%; /* Gul - överbelasta */
+    --zone-defense: 356 75% 49%; /* Röd - ingen kontroll */
     
     --gradient-pitch: linear-gradient(180deg, hsl(142 55% 30%) 0%, hsl(142 55% 25%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(220 18% 14%) 0%, hsl(220 18% 10%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220 20% 6%) 0%, hsl(220 25% 12%) 50%, hsl(142 40% 10%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(47 40% 96%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(212 85% 24%) 0%, hsl(231 45% 35%) 50%, hsl(212 85% 20%) 100%);
 
-    --sidebar-background: 220 18% 10%;
-    --sidebar-foreground: 60 10% 90%;
-    --sidebar-primary: 142 60% 45%;
-    --sidebar-primary-foreground: 220 20% 8%;
-    --sidebar-accent: 220 15% 18%;
-    --sidebar-accent-foreground: 60 10% 90%;
-    --sidebar-border: 220 15% 20%;
-    --sidebar-ring: 142 60% 45%;
+    --sidebar-background: 212 85% 24%;
+    --sidebar-foreground: 47 60% 92%;
+    --sidebar-primary: 47 84% 57%;
+    --sidebar-primary-foreground: 212 85% 24%;
+    --sidebar-accent: 231 45% 35%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 212 50% 40%;
+    --sidebar-ring: 47 84% 57%;
   }
 }
 

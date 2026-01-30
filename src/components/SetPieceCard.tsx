@@ -9,11 +9,11 @@ interface SetPieceCardProps {
 const SetPieceCard = ({ title, roles, variant = "hybrid" }: SetPieceCardProps) => {
   return (
     <div className={cn(
-      "card-gradient rounded-2xl p-6 border",
+      "bg-card rounded-2xl p-6 border shadow-sm",
       variant === "man" 
         ? "border-zone-defense/30" 
         : variant === "zone"
-        ? "border-swedish-blue/30"
+        ? "border-secondary/30"
         : "border-accent/30"
     )}>
       <div className="flex items-center gap-3 mb-5">
@@ -22,8 +22,8 @@ const SetPieceCard = ({ title, roles, variant = "hybrid" }: SetPieceCardProps) =
           variant === "man" 
             ? "bg-zone-defense/20 text-zone-defense" 
             : variant === "zone"
-            ? "bg-swedish-blue/20 text-swedish-blue"
-            : "bg-accent/20 text-accent"
+            ? "bg-secondary/20 text-secondary"
+            : "bg-accent/20 text-accent-foreground"
         )}>
           {variant === "man" ? "Man" : variant === "zone" ? "Zon" : "Hybrid"}
         </div>

@@ -10,10 +10,10 @@ const CoachCue = ({ cue, variant = "primary" }: CoachCueProps) => {
     <div className={cn(
       "inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 hover:scale-105",
       variant === "accent" 
-        ? "bg-accent/15 text-accent border border-accent/30" 
+        ? "bg-accent text-accent-foreground border border-accent" 
         : variant === "muted"
-        ? "bg-muted text-muted-foreground border border-border"
-        : "bg-primary/15 text-primary border border-primary/30"
+        ? "bg-white text-muted-foreground border border-border"
+        : "bg-primary text-primary-foreground border border-primary"
     )}>
       "{cue}"
     </div>

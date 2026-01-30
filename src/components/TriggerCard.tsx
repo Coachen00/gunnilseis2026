@@ -10,7 +10,7 @@ interface TriggerCardProps {
 const TriggerCard = ({ number, condition, action, variant = "default" }: TriggerCardProps) => {
   return (
     <div className={cn(
-      "card-gradient rounded-xl p-4 border transition-all duration-300 hover:scale-[1.02]",
+      "bg-card rounded-xl p-4 border shadow-sm transition-all duration-300 hover:scale-[1.02]",
       variant === "defense" 
         ? "border-zone-defense/30 hover:border-zone-defense/50" 
         : variant === "attack"
