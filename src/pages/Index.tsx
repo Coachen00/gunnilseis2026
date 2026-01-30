@@ -63,11 +63,11 @@ const Index = () => {
           <div className="max-w-3xl">
             <div className="flex items-center gap-3 mb-6">
               <span className="inline-block w-12 h-1 bg-accent rounded-full" />
-              <span className="text-sm font-bold uppercase tracking-widest text-accent">Lagets Spelidé</span>
+              <span className="text-sm font-bold uppercase tracking-widest text-accent">Gunnilse IS 2026</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight">
-              Få saker.{" "}
-              <span className="text-gradient-accent">Max tydlighet.</span>
+              Träningsmatcher{" "}
+              <span className="text-gradient-accent">Vinter/vår 2026</span>
             </h1>
             <p className="text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
               Försvar: 4-3-3 — kompakt, styr ut. 
@@ -574,7 +574,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border py-8">
         <div className="container text-center text-sm text-muted-foreground">
-          <p>Lagets Spelidé • Version "Få saker / Max tydlighet"</p>
+          <p>Gunnilse IS 2026 • Träningsmatcher Vinter/vår</p>
         </div>
       </footer>
     </div>
