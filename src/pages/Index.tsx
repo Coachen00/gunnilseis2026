@@ -21,27 +21,27 @@ const formations: Formation[] = [
       { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
       { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
       { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
-      { id: "6", x: 30, y: 58, role: "8:a", color: "primary" as const },
-      { id: "8", x: 50, y: 55, role: "6:a", color: "accent" as const },
+      { id: "6", x: 50, y: 55, role: "6:a", color: "accent" as const },
       { id: "7", x: 70, y: 58, role: "7:a", color: "primary" as const },
-      { id: "11", x: 18, y: 35, role: "VY", color: "primary" as const },
+      { id: "8", x: 30, y: 58, role: "8:a", color: "primary" as const },
       { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
       { id: "10", x: 82, y: 35, role: "HY", color: "primary" as const },
+      { id: "11", x: 18, y: 35, role: "VY", color: "primary" as const },
     ]
   },
   {
     name: "3-2-2-3 Anfall",
     players: [
+      { id: "2", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
       { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
       { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
-      { id: "2", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
-      { id: "6", x: 38, y: 68, role: "6:a", color: "accent" as const },
       { id: "5", x: 62, y: 68, role: "VYB (inv.)", color: "accent" as const },
+      { id: "6", x: 38, y: 68, role: "6:a", color: "accent" as const },
+      { id: "7", x: 88, y: 28, role: "HY", color: "primary" as const },
       { id: "8", x: 32, y: 48, role: "8:a", color: "primary" as const },
+      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
       { id: "10", x: 68, y: 48, role: "7:a", color: "primary" as const },
       { id: "11", x: 12, y: 28, role: "VY", color: "primary" as const },
-      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
-      { id: "7", x: 88, y: 28, role: "HY", color: "primary" as const },
     ]
   },
 ];
@@ -86,11 +86,11 @@ const Index = () => {
         
         {/* A) Pseudokontring */}
         <section>
-          <SectionHeader 
-            badge="A) Pseudokontring"
-            title="Kontroll → Trigger → Acceleration"
-            subtitle="När vi får rättvänd spelbarhet, hota framåt direkt."
-          />
+        <SectionHeader 
+          badge="A) Pseudokontring"
+          title="Kontroll → Grön → Acceleration"
+          subtitle="När vi får rättvänd spelbarhet, hota framåt direkt."
+        />
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="card-gradient rounded-xl p-6 border border-border">
@@ -102,7 +102,19 @@ const Index = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="w-2 h-2 rounded-full bg-accent mt-1.5 flex-shrink-0" />
-                  <span><strong className="text-foreground">Cue "1–2–3":</strong> När vi får en 3:e spelare fri ("grön") och kan spelvända → ta många meter, sök löpning till assistytan för cutbacks.</span>
+                  <span><strong className="text-foreground">Cue "1–2–3":</strong></span>
+                </li>
+                <li className="flex items-start gap-2 ml-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0" />
+                  <span><strong className="text-foreground">1 = SÄKRA</strong> (spelare i ryggen) – Spela enkelt/säkert. Ingen vändning. Behåll kontroll.</span>
+                </li>
+                <li className="flex items-start gap-2 ml-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0" />
+                  <span><strong className="text-foreground">2 = FÖRBÄTTRA</strong> (inom spelytan) – Spela kvar för att skapa bättre vinkel/läge (flytta, locka, förbered).</span>
+                </li>
+                <li className="flex items-start gap-2 ml-4">
+                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0" />
+                  <span><strong className="text-foreground">3 = VÄXLA / VÄNDLÄGE</strong> (rättvänd) – Vänd/accelerera: framåt, många meter, sök assistytan → cutback (pseudokontring).</span>
                 </li>
               </ul>
             </div>
@@ -164,8 +176,8 @@ const Index = () => {
             />
             <PrincipleCard 
               number={5}
-              title="Styr ut – duellera inte i centrum"
-              description="Om du inte ska duellera fysiskt, styr alltid mot yttre korridor."
+              title="Om bollen är 'I' oss = maximal ansträngning"
+              description="Se till att vinna 1, få den till bättre yta 2. Styr alltid mot yttre korridor."
               variant="defense"
             />
           </div>
