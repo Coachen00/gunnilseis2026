@@ -85,6 +85,83 @@ const Index = () => {
 
       <main className="container pb-20 space-y-20">
         
+        {/* Identitet - Vilka vill vi vara */}
+        <section>
+          <SectionHeader 
+            badge="Identitet"
+            title="Vilka vill vi vara?"
+            subtitle="Beteenden på planen som bygger vår identitet."
+          />
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary font-black text-sm">⚔️</span>
+                </div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Duellspel</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Du ska <strong className="text-foreground">aldrig förlora en duell</strong> – i sämsta fall oavgjort.
+              </p>
+            </div>
+            
+            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary font-black text-sm">🎯</span>
+                </div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Andrabollsspel</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Om bollen saknar ägare – <strong className="text-foreground">TA DEN!</strong>
+              </p>
+            </div>
+            
+            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary font-black text-sm">⚡</span>
+                </div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Felvända löpningar</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Vid bollförlust – <strong className="text-foreground">direkt omställning!</strong>
+              </p>
+            </div>
+            
+            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                  <span className="text-primary font-black text-sm">👁️</span>
+                </div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Spelbarhet</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Rörelse utan boll</strong> och position i farligaste ytan.
+              </p>
+            </div>
+            
+            <div className="bg-card rounded-xl p-5 border-2 border-accent/30 shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                  <span className="text-accent font-black text-sm">🏃</span>
+                </div>
+                <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Spring alltid i djupled!</h4>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                <strong className="text-foreground">Alltid</strong> – oavsett läge.
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap gap-3 mt-6">
+            <CoachCue cue="Vinn duellen" variant="primary" />
+            <CoachCue cue="Ta andrabollen" variant="primary" />
+            <CoachCue cue="Omställning direkt" variant="accent" />
+          </div>
+        </section>
+
         {/* Färglogik i spelet (Röd/Gul/Grön) */}
         <section>
           <SectionHeader 
