@@ -8,6 +8,7 @@ const categories = [
   { id: "anfallsspel", label: "Anfallsspel" },
   { id: "omstallning-till-forsvar", label: "Omställning till försvar" },
   { id: "fasta-situationer", label: "Fasta situationer" },
+  { id: "matchtrupp", label: "Matchtrupp" },
 ];
 
 const CategoryNav = () => {
