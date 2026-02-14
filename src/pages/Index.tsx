@@ -14,6 +14,8 @@ import CategoryNav from "@/components/CategoryNav";
 import GIGTemplate from "@/components/GIGTemplate";
 import KPIBox from "@/components/KPIBox";
 import MissingInputPlaceholder from "@/components/MissingInputPlaceholder";
+import ImagePlaceholder from "@/components/ImagePlaceholder";
+import MatchSquad from "@/components/MatchSquad";
 
 // Formation presets for interactive pitch
 // VYB = id 2, HYB = id 5 - samma nummer i båda formationer
@@ -99,40 +101,47 @@ const Index = () => {
           <SectionHeader 
             badge="Generellt"
             title="Vår spelkarta"
-            subtitle="This is our map. Like traffic lights and gears: it tells us when to slow down, build, or go full speed."
+            subtitle="Det här är vår karta. Som trafikljus och växellådor: den visar oss när vi ska sakta ner, bygga eller köra full fart."
           />
 
-          {/* A) Existing material: Färglogik (Röd/Gul/Grön) — verbatim */}
-          <h3 className="text-lg font-bold text-foreground mb-4">Röd → Gul → Grön</h3>
-          <p className="text-sm text-muted-foreground mb-6">Tre faser som styr vårt anfallsspel – från kontroll till attack.</p>
-          
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
-            <div className="rounded-xl p-5 border-2 border-zone-defense bg-zone-defense/10">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-4 h-4 rounded-full bg-zone-defense" />
-                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-defense">RÖD</h4>
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8">
+            <div>
+              {/* A) Existing material: Färglogik (Röd/Gul/Grön) — verbatim */}
+              <h3 className="text-lg font-bold text-foreground mb-4">Röd → Gul → Grön</h3>
+              <p className="text-sm text-muted-foreground mb-6">Tre faser som styr vårt anfallsspel – från kontroll till attack.</p>
+              
+              <div className="grid md:grid-cols-3 gap-4 mb-8">
+                <div className="rounded-xl p-5 border-2 border-zone-defense bg-zone-defense/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-4 h-4 rounded-full bg-zone-defense" />
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-zone-defense">RÖD</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Vi kan inte spelvända. Vi har inte kontroll.
+                  </p>
+                </div>
+                <div className="rounded-xl p-5 border-2 border-zone-midfield bg-zone-midfield/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-4 h-4 rounded-full bg-zone-midfield" />
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-zone-midfield">GUL</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Vi börjar överbelasta (flyttar motståndare till vald kant).
+                  </p>
+                </div>
+                <div className="rounded-xl p-5 border-2 border-zone-attack bg-zone-attack/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-4 h-4 rounded-full bg-zone-attack" />
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-zone-attack">GRÖN</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Vi har skapat oordning och är i fas att spelvända för attack mot deras box.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Vi kan inte spelvända. Vi har inte kontroll.
-              </p>
             </div>
-            <div className="rounded-xl p-5 border-2 border-zone-midfield bg-zone-midfield/10">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-4 h-4 rounded-full bg-zone-midfield" />
-                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-midfield">GUL</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Vi börjar överbelasta (flyttar motståndare till vald kant).
-              </p>
-            </div>
-            <div className="rounded-xl p-5 border-2 border-zone-attack bg-zone-attack/10">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-4 h-4 rounded-full bg-zone-attack" />
-                <h4 className="text-sm font-bold uppercase tracking-wider text-zone-attack">GRÖN</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Vi har skapat oordning och är i fas att spelvända för attack mot deras box.
-              </p>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="Röd/Gul/Grön översikt" description="Bild som visar färgfaserna" />
             </div>
           </div>
 
@@ -219,7 +228,7 @@ const Index = () => {
               beslutstrigger="Cue 1 (SÄKRA)"
               handling="Spela enkelt/säkert. Ingen vändning. Behåll kontroll."
               roller="Alla — särskilt mittfältare och backlinje [INFERRED]"
-              kpi="Turnovers i uppspel (lägre = bättre) [INFERRED KPI OPTION]"
+              kpi="Bollförluster i uppspel (lägre = bättre) [INFERRED KPI OPTION]"
               gVillkor="Inga bollförluster i egen spelyta under RÖD fas [INFERRED]"
               igVillkor="Bollförlust i egen spelyta som leder till skottchans [INFERRED]"
             />
@@ -293,12 +302,12 @@ const Index = () => {
 
           {/* C) KPIs — Generellt */}
           <KPIBox
-            title="KPIs — Generellt"
+            title="KPI:er — Generellt"
             kpis={[
-              { name: "PPDA", definition: "Press intensity proxy (lägre = mer intensivt)", target: "[MISSING INPUT — target PPDA for your level]", measurement: "Video-kodning / statistikverktyg [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Höga bollvinster", definition: "High turnovers created (antal)", target: "[MISSING INPUT — high turnover target]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Höga bollvinster → skott", definition: "High turnovers som leder till skott", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "xG per match", definition: "Expected goals skapat av laget", target: "[MISSING INPUT — xG target]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[MISSING INPUT]" },
+              { name: "PPDA", definition: "Pressintensitet (lägre = mer intensivt)", target: "[SAKNAS — fyll i mål-PPDA]", measurement: "Videokodning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Höga bollvinster", definition: "Antal höga bollvinster", target: "[SAKNAS — mål för höga bollvinster]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Höga bollvinster → skott", definition: "Höga bollvinster som leder till skott", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "xG per match", definition: "Förväntade mål skapat av laget", target: "[SAKNAS — xG-mål]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[SAKNAS]" },
             ]}
           />
         </section>
@@ -310,71 +319,76 @@ const Index = () => {
           <SectionHeader 
             badge="Identitet"
             title="Vilka vill vi vara?"
-            subtitle="This is who we are every day—like our team's manners on the pitch."
+            subtitle="Det här är vilka vi är varje dag — lagets uppförande på planen."
           />
 
           {/* A) Existing material — verbatim identity cards */}
           <p className="text-sm text-muted-foreground mb-6">Beteenden på planen som bygger vår identitet.</p>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-black text-sm">⚔️</span>
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-black text-sm">⚔️</span>
+                  </div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Duellspel</h4>
                 </div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Duellspel</h4>
+                <p className="text-sm text-muted-foreground">
+                  Du ska <strong className="text-foreground">aldrig förlora en duell</strong> – i sämsta fall oavgjort.
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Du ska <strong className="text-foreground">aldrig förlora en duell</strong> – i sämsta fall oavgjort.
-              </p>
+              
+              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-black text-sm">🎯</span>
+                  </div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Andrabollsspel</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Om bollen saknar ägare – <strong className="text-foreground">TA DEN!</strong>
+                </p>
+              </div>
+              
+              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-black text-sm">⚡</span>
+                  </div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Felvända löpningar</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Vid bollförlust – <strong className="text-foreground">direkt omställning!</strong>
+                </p>
+              </div>
+              
+              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <span className="text-primary font-black text-sm">👁️</span>
+                  </div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Spelbarhet</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Rörelse utan boll</strong> och position i farligaste ytan.
+                </p>
+              </div>
+              
+              <div className="bg-card rounded-xl p-5 border-2 border-accent/30 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                    <span className="text-accent font-black text-sm">🏃</span>
+                  </div>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Spring alltid i djupled!</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Alltid</strong> – oavsett läge.
+                </p>
+              </div>
             </div>
-            
-            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-black text-sm">🎯</span>
-                </div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Andrabollsspel</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Om bollen saknar ägare – <strong className="text-foreground">TA DEN!</strong>
-              </p>
-            </div>
-            
-            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-black text-sm">⚡</span>
-                </div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Felvända löpningar</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Vid bollförlust – <strong className="text-foreground">direkt omställning!</strong>
-              </p>
-            </div>
-            
-            <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <span className="text-primary font-black text-sm">👁️</span>
-                </div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Spelbarhet</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Rörelse utan boll</strong> och position i farligaste ytan.
-              </p>
-            </div>
-            
-            <div className="bg-card rounded-xl p-5 border-2 border-accent/30 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                  <span className="text-accent font-black text-sm">🏃</span>
-                </div>
-                <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Spring alltid i djupled!</h4>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                <strong className="text-foreground">Alltid</strong> – oavsett läge.
-              </p>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="Identitet" description="Bild som representerar lagets identitet" />
             </div>
           </div>
           
@@ -441,11 +455,11 @@ const Index = () => {
 
           {/* C) KPIs — Identitet */}
           <KPIBox
-            title="KPIs — Identitet"
+            title="KPI:er — Identitet"
             kpis={[
-              { name: "Andrabolls-vinst %", definition: "Vunna andrabollar / totalt antal andrabollar", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Djupledslöpningar / 10 min", definition: "Antal löpningar i djupled per 10 minuter", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Satsningsgrad (dueller)", definition: "Dueller engagerade / möjliga dueller", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
+              { name: "Andrabolls-vinst %", definition: "Vunna andrabollar / totalt antal andrabollar", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Djupledslöpningar / 10 min", definition: "Antal löpningar i djupled per 10 minuter", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Satsningsgrad (dueller)", definition: "Dueller engagerade / möjliga dueller", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
             ]}
           />
         </section>
@@ -457,7 +471,7 @@ const Index = () => {
           <SectionHeader 
             badge="Försvarsspel"
             title="5 Försvarsprinciper"
-            subtitle="We protect our goal like a castle: close the door in the middle, guide them outside."
+            subtitle="Vi skyddar vårt mål som en fästning: stäng dörren centralt, styr dem utåt."
           />
 
           {/* A) Existing material — verbatim */}
@@ -472,37 +486,42 @@ const Index = () => {
             />
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <PrincipleCard 
-              number={1}
-              title="Aldrig mellan, aldrig i oss"
-              description="Ingen passning mellan våra linjer. Om de spelar i oss = 100% satsning."
-              variant="defense"
-            />
-            <PrincipleCard 
-              number={2}
-              title="Trigger: deras vänsterback"
-              description="Press startar när de spelar till sin VB. Kollektiv insats för att vinna bollen."
-              variant="defense"
-            />
-            <PrincipleCard 
-              number={3}
-              title="Splitta planen vid sidval"
-              description="När de valt sida, splitta planen. Bortre spelare säkrar central korridor."
-              variant="defense"
-            />
-            <PrincipleCard 
-              number={4}
-              title="Försvara i tre korridorer"
-              description="Stäng inre korridorer, tryck motståndet mot yttre. Central korridor = prio."
-              variant="defense"
-            />
-            <PrincipleCard 
-              number={5}
-              title="Om bollen är 'I' oss = maximal ansträngning"
-              description="Se till att vinna 1, få den till bättre yta 2. Styr alltid mot yttre korridor."
-              variant="defense"
-            />
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <PrincipleCard 
+                number={1}
+                title="Aldrig mellan, aldrig i oss"
+                description="Ingen passning mellan våra linjer. Om de spelar i oss = 100% satsning."
+                variant="defense"
+              />
+              <PrincipleCard 
+                number={2}
+                title="Trigger: deras vänsterback"
+                description="Press startar när de spelar till sin VB. Kollektiv insats för att vinna bollen."
+                variant="defense"
+              />
+              <PrincipleCard 
+                number={3}
+                title="Splitta planen vid sidval"
+                description="När de valt sida, splitta planen. Bortre spelare säkrar central korridor."
+                variant="defense"
+              />
+              <PrincipleCard 
+                number={4}
+                title="Försvara i tre korridorer"
+                description="Stäng inre korridorer, tryck motståndet mot yttre. Central korridor = prio."
+                variant="defense"
+              />
+              <PrincipleCard 
+                number={5}
+                title="Om bollen är 'I' oss = maximal ansträngning"
+                description="Se till att vinna 1, få den till bättre yta 2. Styr alltid mot yttre korridor."
+                variant="defense"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="Försvarsspel" description="Bild på kompakt försvar" />
+            </div>
           </div>
           
           <div className="flex flex-wrap gap-3 mb-8">
@@ -672,11 +691,11 @@ const Index = () => {
 
           {/* C) KPIs — Försvarsspel */}
           <KPIBox
-            title="KPIs — Försvarsspel"
+            title="KPI:er — Försvarsspel"
             kpis={[
-              { name: "PPDA", definition: "Press intensity (lägre = mer intensivt)", target: "[MISSING INPUT]", measurement: "Video-kodning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Tvingade turnovers", definition: "Bollvinster via press (antal)", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Skott insläppta efter förlorad restförsvarsform", definition: "Antal skott efter kontringssituation", target: "0 [INFERRED]", measurement: "Video-kodning [INFERRED]", failThreshold: "> 2 per match [INFERRED]" },
+              { name: "PPDA", definition: "Pressintensitet (lägre = mer intensivt)", target: "[SAKNAS]", measurement: "Videokodning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Tvingade turnovers", definition: "Bollvinster via press (antal)", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Skott insläppta efter förlorad restförsvarsform", definition: "Antal skott efter kontringssituation", target: "0 [INFERRED]", measurement: "Videokodning [INFERRED]", failThreshold: "> 2 per match [INFERRED]" },
             ]}
           />
         </section>
@@ -688,23 +707,30 @@ const Index = () => {
           <SectionHeader 
             badge="Omställning till anfall"
             title="Bollvinst → Framåt"
-            subtitle="When we win the ball, we don't sleep—we look forward fast."
+            subtitle="När vi vinner bollen sover vi inte — vi tittar framåt direkt."
           />
 
-          {/* A) Existing material — cross-link to Pseudokontring in Generellt */}
-          <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/30">
-            <p className="text-sm text-center font-medium text-primary">
-              <strong>Se även:</strong> <a href="#generellt" className="underline hover:no-underline">Pseudokontring-processen (Generellt)</a> — beskriver hela sekvensen från bollvinst till golden zone.
-            </p>
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
+            <div>
+              {/* A) Existing material — cross-link to Pseudokontring in Generellt */}
+              <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/30">
+                <p className="text-sm text-center font-medium text-primary">
+                  <strong>Se även:</strong> <a href="#generellt" className="underline hover:no-underline">Pseudokontring-processen (Generellt)</a> — beskriver hela sekvensen från bollvinst till golden zone.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="Omställning till anfall" description="Bild på snabb omställning" />
+            </div>
           </div>
 
           {/* B) G/IG — mostly missing, placeholder */}
           <h3 className="text-lg font-bold text-foreground mb-4">G/IG‑mallar — Omställning till anfall</h3>
           <MissingInputPlaceholder
-            needed="Omställning till anfall principles (ball win triggers, first 3 seconds rules, first pass priorities, run priorities)"
-            formatNeeded="3–7 bullets + 1 diagram link (if any)"
-            source="match model"
-            owner="coach"
+            needed="Omställning till anfall-principer (bollvinst-triggers, första 3 sekundernas regler, första passens prioriteringar, löpprioriteringar)"
+            formatNeeded="3–7 punkter + 1 diagramlänk (om det finns)"
+            source="matchmodell"
+            owner="tränare"
           />
 
           <div className="mt-6">
@@ -724,10 +750,10 @@ const Index = () => {
           {/* C) KPIs */}
           <div className="mt-8">
             <KPIBox
-              title="KPIs — Omställning till anfall"
+              title="KPI:er — Omställning till anfall"
               kpis={[
-                { name: "Tid till framåtaktion efter bollvinst", definition: "Sekunder till första framåtpass/-löpning", target: "< 3s [INFERRED]", measurement: "Video-kodning [INFERRED]", failThreshold: "> 5s [INFERRED]" },
-                { name: "Höga bollvinster → skott inom 10s", definition: "Antal höga bollvinster som leder till skott inom 10s", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
+                { name: "Tid till framåtaktion efter bollvinst", definition: "Sekunder till första framåtpass/-löpning", target: "< 3s [INFERRED]", measurement: "Videokodning [INFERRED]", failThreshold: "> 5s [INFERRED]" },
+                { name: "Höga bollvinster → skott inom 10s", definition: "Antal höga bollvinster som leder till skott inom 10s", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
               ]}
             />
           </div>
@@ -740,37 +766,42 @@ const Index = () => {
           <SectionHeader 
             badge="Anfallsspel"
             title="3-2-2-3 Struktur"
-            subtitle="We build, then we speed up—like shifting gears from slow to fast."
+            subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear."
           />
 
           {/* A) Existing material — 3-2-2-3 Struktur — verbatim */}
           <p className="text-sm text-muted-foreground mb-6">Varje linje har tydliga uppgifter. VM = 8:a, HM = 7:a.</p>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-            <RoleCard 
-              line="3"
-              players="2 MB + 1 YB"
-              description="Första linjen i uppbyggnad. Den ytterback som inte inverterar stannar som tredje spelare bak."
-              variant="defense"
-            />
-            <RoleCard 
-              line="2"
-              players="6:a + Inv. YB"
-              description="Basen. Säkrar spelvändning och kontringsskydd centralt. 6:an alltid 'pilen nedåt'."
-              variant="midfield"
-            />
-            <RoleCard 
-              line="2"
-              players="8:a + 7:a"
-              description="Offensiva mittfältare som söker spelbarhet i inre korridorer. VM = 8:a, HM = 7:a."
-              variant="midfield"
-            />
-            <RoleCard 
-              line="3"
-              players="2 Yttrar + 9:a"
-              description="Högsta linjen. Yttrar håller bredd, 9:an hotar spelyta 3 och gyllene zonen."
-              variant="attack"
-            />
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <RoleCard 
+                line="3"
+                players="2 MB + 1 YB"
+                description="Första linjen i uppbyggnad. Den ytterback som inte inverterar stannar som tredje spelare bak."
+                variant="defense"
+              />
+              <RoleCard 
+                line="2"
+                players="6:a + Inv. YB"
+                description="Basen. Säkrar spelvändning och kontringsskydd centralt. 6:an alltid 'pilen nedåt'."
+                variant="midfield"
+              />
+              <RoleCard 
+                line="2"
+                players="8:a + 7:a"
+                description="Offensiva mittfältare som söker spelbarhet i inre korridorer. VM = 8:a, HM = 7:a."
+                variant="midfield"
+              />
+              <RoleCard 
+                line="3"
+                players="2 Yttrar + 9:a"
+                description="Högsta linjen. Yttrar håller bredd, 9:an hotar spelyta 3 och gyllene zonen."
+                variant="attack"
+              />
+            </div>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="3-2-2-3 Struktur" description="Bild på anfallsuppställning" />
+            </div>
           </div>
 
           {/* Korridorer — verbatim */}
@@ -809,7 +840,7 @@ const Index = () => {
             <InteractiveFootballPitch 
               formations={formations}
               title="Interaktiv Taktiktavla"
-              subtitle="Klicka och dra för att flytta spelare"
+              subtitle="Tryck och dra för att flytta spelare"
               showZones
             />
             <div className="space-y-4">
@@ -874,7 +905,7 @@ const Index = () => {
               narAnvands="Alltid i anfallsspelet."
               handling="Prioritera passningar via inre korridor. Yttre korridor = sista utväg."
               roller="Mittfältare, yttrar [INFERRED]"
-              kpi="Progressioner via inre korridor vs yttre (ratio) [INFERRED KPI OPTION]"
+              kpi="Progressioner via inre korridor vs yttre (kvot) [INFERRED KPI OPTION]"
               gVillkor="≥ 60% progressioner via inre korridor [INFERRED]"
               igVillkor="Majoriteten av progressioner via yttre [INFERRED]"
             />
@@ -893,11 +924,11 @@ const Index = () => {
 
           {/* C) KPIs — Anfallsspel */}
           <KPIBox
-            title="KPIs — Anfallsspel"
+            title="KPI:er — Anfallsspel"
             kpis={[
-              { name: "xG per match", definition: "Expected goals skapat av laget", target: "[MISSING INPUT]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Inträden i gyllene zonen", definition: "Antal gånger boll spelas in i zone 14 / golden zone", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "Skott inom 10s efter GRÖN", definition: "Antal skott inom 10 sekunder efter grön cue-aktivering", target: "[MISSING INPUT]", measurement: "Video-kodning [INFERRED]", failThreshold: "[MISSING INPUT]" },
+              { name: "xG per match", definition: "Förväntade mål skapat av laget", target: "[SAKNAS]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Inträden i gyllene zonen", definition: "Antal gånger boll spelas in i zon 14 / golden zone", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "Skott inom 10s efter GRÖN", definition: "Antal skott inom 10 sekunder efter grön cue-aktivering", target: "[SAKNAS]", measurement: "Videokodning [INFERRED]", failThreshold: "[SAKNAS]" },
             ]}
           />
         </section>
@@ -909,23 +940,30 @@ const Index = () => {
           <SectionHeader 
             badge="Omställning till försvar"
             title="Bollförlust → Jaga eller falla"
-            subtitle="When we lose the ball, we hunt together immediately—or we fall back together. No chaos."
+            subtitle="När vi tappar bollen jagar vi tillsammans direkt — eller faller tillbaka tillsammans. Inget kaos."
           />
 
-          {/* A) Cross-link to Restförsvar in Försvarsspel */}
-          <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/30">
-            <p className="text-sm text-center font-medium text-primary">
-              <strong>Se även:</strong> <a href="#forsvarsspel" className="underline hover:no-underline">Restförsvar +1 / +2 (Försvarsspel)</a> — principen för numerärt överläge bak.
-            </p>
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
+            <div>
+              {/* A) Cross-link to Restförsvar in Försvarsspel */}
+              <div className="mb-6 p-4 rounded-xl bg-primary/10 border border-primary/30">
+                <p className="text-sm text-center font-medium text-primary">
+                  <strong>Se även:</strong> <a href="#forsvarsspel" className="underline hover:no-underline">Restförsvar +1 / +2 (Försvarsspel)</a> — principen för numerärt överläge bak.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3">
+              <ImagePlaceholder title="Omställning till försvar" description="Bild på counterpress" />
+            </div>
           </div>
 
           {/* B) G/IG — missing, placeholder */}
           <h3 className="text-lg font-bold text-foreground mb-4">G/IG‑mallar — Omställning till försvar</h3>
           <MissingInputPlaceholder
-            needed="Omställning till försvar rules (first 5 seconds, who presses, who covers, when to stop pressing and drop)"
-            formatNeeded="5–9 bullets + 2 examples (match clips or written)"
-            source="match model + training model"
-            owner="coach/analyst"
+            needed="Omställning till försvar-regler (första 5 sekunderna, vem pressar, vem täcker, när man slutar pressa och faller tillbaka)"
+            formatNeeded="5–9 punkter + 2 exempel (matchklipp eller skriftliga)"
+            source="matchmodell + träningsmodell"
+            owner="tränare/analytiker"
           />
 
           <div className="mt-6">
@@ -936,7 +974,7 @@ const Index = () => {
               beslutstrigger="Bollförlust → närmaste 2-3 spelare pressar [INFERRED]"
               handling="1. Närmaste spelare pressar boll. 2. Omgivande spelare stänger passningsvägar. 3. Om ej återvunnen inom 5s: falla tillbaka kompakt. [INFERRED]"
               roller="Alla i närheten av bollförlust [INFERRED]"
-              kpi="Regain inom 5s efter förlust (%) [INFERRED KPI OPTION]"
+              kpi="Återerövring inom 5s efter förlust (%) [INFERRED KPI OPTION]"
               gVillkor="≥ 40% bollåtererövring inom 5s [INFERRED]"
               igVillkor="Spelare reagerar inte / laget splittrat [INFERRED]"
             />
@@ -945,10 +983,10 @@ const Index = () => {
           {/* C) KPIs */}
           <div className="mt-8">
             <KPIBox
-              title="KPIs — Omställning till försvar"
+              title="KPI:er — Omställning till försvar"
               kpis={[
-                { name: "Bollåtererövring ≤ 5s", definition: "Andel bollvinster inom 5s efter förlust", target: "≥ 40% [INFERRED]", measurement: "Video-kodning [INFERRED]", failThreshold: "< 20% [INFERRED]" },
-                { name: "Tvingade turnovers i anfallshalva", definition: "Antal tvingade bollförluster i motståndarens halva", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
+                { name: "Bollåtererövring ≤ 5s", definition: "Andel bollvinster inom 5s efter förlust", target: "≥ 40% [INFERRED]", measurement: "Videokodning [INFERRED]", failThreshold: "< 20% [INFERRED]" },
+                { name: "Tvingade turnovers i anfallshalva", definition: "Antal tvingade bollförluster i motståndarens halva", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
               ]}
             />
           </div>
@@ -961,7 +999,7 @@ const Index = () => {
           <SectionHeader 
             badge="Fasta situationer"
             title="Defensivt: Hybrid + 2 Man"
-            subtitle="When the game stops (corner/free kick), we still have rules. We don't guess."
+            subtitle="När spelet stannar (hörna/frispark) har vi fortfarande regler. Vi gissar inte."
           />
 
           {/* A) Existing material — verbatim */}
@@ -989,6 +1027,18 @@ const Index = () => {
                 action="zon attackerar boll, man-markörer låser hot"
               />
             </div>
+          </div>
+
+          {/* Set piece image placeholders */}
+          <h3 className="text-lg font-bold text-foreground mb-4">Bildunderlag — Fasta situationer</h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+            <ImagePlaceholder title="Offensiv hörna 1" description="Uppställning variant 1" />
+            <ImagePlaceholder title="Offensiv hörna 2" description="Uppställning variant 2" />
+            <ImagePlaceholder title="Defensiv hörna" description="Hybridförsvar vid hörna" />
+            <ImagePlaceholder title="Inläggsfrispark — offensiv" description="Uppställning vid inlägg" />
+            <ImagePlaceholder title="Inläggsfrispark — defensiv" description="Försvar vid inlägg" />
+            <ImagePlaceholder title="Direkt frispark — offensiv" description="Mur och löpningar" />
+            <ImagePlaceholder title="Direkt frispark — defensiv" description="Mur och täckning" />
           </div>
 
           {/* Existing: Media & Navigation — verbatim */}
@@ -1029,7 +1079,7 @@ const Index = () => {
             <SectionHeader 
               badge="Grafik TODO"
               title="Bilder & Spelytor"
-              subtitle="Placeholders för grafik som ska läggas till."
+              subtitle="Platshållare för grafik som ska läggas till."
             />
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -1055,10 +1105,10 @@ const Index = () => {
           {/* Placeholders for offensive set pieces */}
           <h3 className="text-lg font-bold text-foreground mb-4">Offensiva fasta situationer</h3>
           <div className="space-y-4 mb-10">
-            <MissingInputPlaceholder needed="Hörnor för / mot" formatNeeded="bullets + diagram" source="set piece script" owner="coach" />
-            <MissingInputPlaceholder needed="Frisparkar för / mot" formatNeeded="bullets + diagram" source="set piece script" owner="coach" />
-            <MissingInputPlaceholder needed="Inkast (långa/korta) för / mot" formatNeeded="bullets + diagram" source="set piece script" owner="coach" />
-            <MissingInputPlaceholder needed="Straffar" formatNeeded="bullets" source="set piece script" owner="coach" />
+            <MissingInputPlaceholder needed="Hörnor för / mot" formatNeeded="punkter + diagram" source="fasta situationer-manus" owner="tränare" />
+            <MissingInputPlaceholder needed="Frisparkar för / mot" formatNeeded="punkter + diagram" source="fasta situationer-manus" owner="tränare" />
+            <MissingInputPlaceholder needed="Inkast (långa/korta) för / mot" formatNeeded="punkter + diagram" source="fasta situationer-manus" owner="tränare" />
+            <MissingInputPlaceholder needed="Straffar" formatNeeded="punkter" source="fasta situationer-manus" owner="tränare" />
           </div>
 
           {/* B) G/IG Templates — Fasta situationer */}
@@ -1098,13 +1148,25 @@ const Index = () => {
 
           {/* C) KPIs — Fasta situationer */}
           <KPIBox
-            title="KPIs — Fasta situationer"
+            title="KPI:er — Fasta situationer"
             kpis={[
-              { name: "Skott för/mot vid fasta", definition: "Antal skott för och mot vid fasta situationer", target: "[MISSING INPUT]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[MISSING INPUT]" },
-              { name: "xG för/mot vid fasta", definition: "Expected goals vid fasta situationer", target: "[MISSING INPUT]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[MISSING INPUT]" },
+              { name: "Skott för/mot vid fasta", definition: "Antal skott för och mot vid fasta situationer", target: "[SAKNAS]", measurement: "Manuell taggning [INFERRED]", failThreshold: "[SAKNAS]" },
+              { name: "xG för/mot vid fasta", definition: "Förväntade mål vid fasta situationer", target: "[SAKNAS]", measurement: "Statistikverktyg [INFERRED]", failThreshold: "[SAKNAS]" },
               { name: "Mål insläppta från hörnor", definition: "Antal mål insläppta från hörnor", target: "0 [INFERRED]", measurement: "Manuell räkning", failThreshold: "≥ 2 per match [INFERRED]" },
             ]}
           />
+        </section>
+
+        {/* ============================================================ */}
+        {/* SECTION: MATCHTRUPP */}
+        {/* ============================================================ */}
+        <section id="matchtrupp">
+          <SectionHeader 
+            badge="Matchdag"
+            title="Matchtrupp & Ansvarsområden"
+            subtitle="Fyll i dagens matchtrupp och tilldela specialroller inför varje match."
+          />
+          <MatchSquad />
         </section>
 
         {/* ============================================================ */}
@@ -1112,7 +1174,7 @@ const Index = () => {
         {/* ============================================================ */}
         <section id="quality-control" className="space-y-10">
           <SectionHeader 
-            badge="Quality Control"
+            badge="Kvalitetskontroll"
             title="Kvalitetskontroll"
             subtitle="Checklista och KPI-sammanfattning för att säkerställa att inget saknas."
           />
@@ -1133,29 +1195,29 @@ const Index = () => {
                     <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">Bilder/diagram?</th>
                     <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">Video?</th>
                     <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">G/IG mallar?</th>
-                    <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">KPIs?</th>
-                    <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">Missing #</th>
+                    <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">KPI:er?</th>
+                    <th className="px-3 py-2 text-center font-bold uppercase tracking-wider text-muted-foreground">Saknas #</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {[
-                    { section: "Generellt", content: "Yes", rgg: "Yes", cue: "Yes", visuals: "No", video: "No", gig: "Yes", kpi: "Partial", missing: 4 },
-                    { section: "Identitet", content: "Yes", rgg: "No", cue: "No", visuals: "No", video: "No", gig: "Yes", kpi: "Partial", missing: 3 },
-                    { section: "Försvarsspel", content: "Yes", rgg: "No", cue: "No", visuals: "Partial", video: "Yes", gig: "Yes", kpi: "Partial", missing: 2 },
-                    { section: "Omställning till anfall", content: "Partial", rgg: "No", cue: "Partial", visuals: "No", video: "No", gig: "Partial", kpi: "Partial", missing: 3 },
-                    { section: "Anfallsspel", content: "Yes", rgg: "Partial", cue: "Partial", visuals: "Yes", video: "Yes", gig: "Yes", kpi: "Partial", missing: 3 },
-                    { section: "Omställning till försvar", content: "No", rgg: "No", cue: "No", visuals: "No", video: "No", gig: "Partial", kpi: "Partial", missing: 4 },
-                    { section: "Fasta situationer", content: "Yes", rgg: "No", cue: "No", visuals: "No", video: "No", gig: "Yes", kpi: "Partial", missing: 5 },
+                    { section: "Generellt", content: "Ja", rgg: "Ja", cue: "Ja", visuals: "Nej", video: "Nej", gig: "Ja", kpi: "Delvis", missing: 4 },
+                    { section: "Identitet", content: "Ja", rgg: "Nej", cue: "Nej", visuals: "Nej", video: "Nej", gig: "Ja", kpi: "Delvis", missing: 3 },
+                    { section: "Försvarsspel", content: "Ja", rgg: "Nej", cue: "Nej", visuals: "Delvis", video: "Ja", gig: "Ja", kpi: "Delvis", missing: 2 },
+                    { section: "Omställning till anfall", content: "Delvis", rgg: "Nej", cue: "Delvis", visuals: "Nej", video: "Nej", gig: "Delvis", kpi: "Delvis", missing: 3 },
+                    { section: "Anfallsspel", content: "Ja", rgg: "Delvis", cue: "Delvis", visuals: "Ja", video: "Ja", gig: "Ja", kpi: "Delvis", missing: 3 },
+                    { section: "Omställning till försvar", content: "Nej", rgg: "Nej", cue: "Nej", visuals: "Nej", video: "Nej", gig: "Delvis", kpi: "Delvis", missing: 4 },
+                    { section: "Fasta situationer", content: "Ja", rgg: "Nej", cue: "Nej", visuals: "Nej", video: "Nej", gig: "Ja", kpi: "Delvis", missing: 5 },
                   ].map((row, i) => (
                     <tr key={i}>
                       <td className="px-3 py-2 font-medium text-foreground">{row.section}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.content === "Yes" ? "text-zone-attack" : row.content === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.content}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.rgg === "Yes" ? "text-zone-attack" : row.rgg === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.rgg}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.cue === "Yes" ? "text-zone-attack" : row.cue === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.cue}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.visuals === "Yes" ? "text-zone-attack" : row.visuals === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.visuals}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.video === "Yes" ? "text-zone-attack" : row.video === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.video}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.gig === "Yes" ? "text-zone-attack" : row.gig === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.gig}</td>
-                      <td className={`px-3 py-2 text-center font-bold ${row.kpi === "Yes" ? "text-zone-attack" : row.kpi === "Partial" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.kpi}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.content === "Ja" ? "text-zone-attack" : row.content === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.content}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.rgg === "Ja" ? "text-zone-attack" : row.rgg === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.rgg}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.cue === "Ja" ? "text-zone-attack" : row.cue === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.cue}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.visuals === "Ja" ? "text-zone-attack" : row.visuals === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.visuals}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.video === "Ja" ? "text-zone-attack" : row.video === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.video}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.gig === "Ja" ? "text-zone-attack" : row.gig === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.gig}</td>
+                      <td className={`px-3 py-2 text-center font-bold ${row.kpi === "Ja" ? "text-zone-attack" : row.kpi === "Delvis" ? "text-zone-midfield" : "text-zone-defense"}`}>{row.kpi}</td>
                       <td className="px-3 py-2 text-center font-bold text-foreground">{row.missing}</td>
                     </tr>
                   ))}
@@ -1183,18 +1245,18 @@ const Index = () => {
                 </thead>
                 <tbody className="divide-y divide-border">
                   {[
-                    { name: "PPDA", def: "Press intensity proxy", sections: "Generellt, Försvar", method: "Video-kodning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "Höga bollvinster", def: "High turnovers (antal)", sections: "Generellt", method: "Manuell taggning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "xG per match", def: "Expected goals", sections: "Generellt, Anfall", method: "Statistikverktyg", target: "[MISSING]", fail: "[MISSING]" },
+                    { name: "PPDA", def: "Pressintensitet", sections: "Generellt, Försvar", method: "Videokodning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "Höga bollvinster", def: "Antal höga bollvinster", sections: "Generellt", method: "Manuell taggning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "xG per match", def: "Förväntade mål", sections: "Generellt, Anfall", method: "Statistikverktyg", target: "[SAKNAS]", fail: "[SAKNAS]" },
                     { name: "Duellvinst %", def: "Vunna / engagerade dueller", sections: "Identitet", method: "Manuell taggning", target: "≥ 50% [INF]", fail: "< 40% [INF]" },
-                    { name: "Andrabolls-vinst %", def: "Vunna andrabollar / totalt", sections: "Identitet", method: "Manuell taggning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "Djupledslöpn. / 10 min", def: "Löpningar i djupled per 10 min", sections: "Identitet", method: "Manuell taggning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "Passn. genom linjer", def: "Tillåtna centrala passn.", sections: "Försvar", method: "Video-kodning", target: "0 / halvlek [INF]", fail: "> 3 [INF]" },
+                    { name: "Andrabolls-vinst %", def: "Vunna andrabollar / totalt", sections: "Identitet", method: "Manuell taggning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "Djupledslöpn. / 10 min", def: "Löpningar i djupled per 10 min", sections: "Identitet", method: "Manuell taggning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "Passn. genom linjer", def: "Tillåtna centrala passningar", sections: "Försvar", method: "Videokodning", target: "0 / halvlek [INF]", fail: "> 3 [INF]" },
                     { name: "Bollvinster pressfälla", def: "Vinster vid VB-trigger", sections: "Försvar", method: "Manuell taggning", target: "≥ 50% [INF]", fail: "< 30% [INF]" },
-                    { name: "Tid till framåtaktion", def: "Sekunder efter bollvinst", sections: "Omst. anfall", method: "Video-kodning", target: "< 3s [INF]", fail: "> 5s [INF]" },
-                    { name: "Skott inom 10s GRÖN", def: "Skott efter grön aktivering", sections: "Anfall", method: "Video-kodning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "Inträden golden zone", def: "Boll i zone 14", sections: "Anfall", method: "Manuell taggning", target: "[MISSING]", fail: "[MISSING]" },
-                    { name: "Regain ≤ 5s", def: "Bollvinst inom 5s", sections: "Omst. försvar", method: "Video-kodning", target: "≥ 40% [INF]", fail: "< 20% [INF]" },
+                    { name: "Tid till framåtaktion", def: "Sekunder efter bollvinst", sections: "Omst. anfall", method: "Videokodning", target: "< 3s [INF]", fail: "> 5s [INF]" },
+                    { name: "Skott inom 10s GRÖN", def: "Skott efter grön aktivering", sections: "Anfall", method: "Videokodning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "Inträden golden zone", def: "Boll i zon 14", sections: "Anfall", method: "Manuell taggning", target: "[SAKNAS]", fail: "[SAKNAS]" },
+                    { name: "Återerövring ≤ 5s", def: "Bollvinst inom 5s", sections: "Omst. försvar", method: "Videokodning", target: "≥ 40% [INF]", fail: "< 20% [INF]" },
                     { name: "Mål från hörnor mot", def: "Insläppta från hörnor", sections: "Fasta sit.", method: "Manuell räkning", target: "0 [INF]", fail: "≥ 2 [INF]" },
                   ].map((row, i) => (
                     <tr key={i}>
@@ -1202,8 +1264,8 @@ const Index = () => {
                       <td className="px-3 py-2 text-muted-foreground">{row.def}</td>
                       <td className="px-3 py-2 text-muted-foreground">{row.sections}</td>
                       <td className="px-3 py-2 text-muted-foreground">{row.method}</td>
-                      <td className={`px-3 py-2 ${row.target.includes("[MISSING") ? "text-accent italic" : "text-foreground font-medium"}`}>{row.target}</td>
-                      <td className={`px-3 py-2 ${row.fail.includes("[MISSING") ? "text-accent italic" : "text-muted-foreground"}`}>{row.fail}</td>
+                      <td className={`px-3 py-2 ${row.target.includes("[SAKNAS") ? "text-accent italic" : "text-foreground font-medium"}`}>{row.target}</td>
+                      <td className={`px-3 py-2 ${row.fail.includes("[SAKNAS") ? "text-accent italic" : "text-muted-foreground"}`}>{row.fail}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1225,13 +1287,13 @@ const Index = () => {
   B -->|Cue 1| E[Handling: SÄKRA - behåll kontroll]
   B -->|Cue 2| F[Handling: FÖRBÄTTRA - bättre vinkel/läge]
   B -->|Cue 3| G[Handling: VÄXLA/VÄNDLÄGE - accelerera framåt]
-  E --> H[KPI: Turnovers i uppspel]
+  E --> H[KPI: Bollförluster i uppspel]
   F --> I[KPI: Progressioner / korridoranvändning]
   G --> J[KPI: Skott eller xG inom 10s]
   K[Bollförlust] --> L{Counterpress?}
   L -->|Ja| M[Handling: Återvinn inom 5s]
   L -->|Nej| N[Handling: Falla tillbaka + skydda centralt]
-  M --> O[KPI: Regain ≤ 5s %]
+  M --> O[KPI: Återerövring ≤ 5s %]
   N --> P[KPI: Skott insläppta efter förlust]`}
               </pre>
               <p className="text-xs text-muted-foreground mt-3 italic">

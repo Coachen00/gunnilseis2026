@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { RotateCcw, Save } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { Button } from "./ui/button";
 
 export interface Player {
@@ -38,6 +38,7 @@ const InteractiveFootballPitch = ({
   const [players, setPlayers] = useState<Player[]>(formations[0]?.players || []);
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleFormationChange = useCallback((index: number) => {
     setActiveFormationIndex(index);
@@ -56,7 +57,6 @@ const InteractiveFootballPitch = ({
     const relativeX = ((info.point.x - containerRect.left) / containerRect.width) * 100;
     const relativeY = ((info.point.y - containerRect.top) / containerRect.height) * 100;
     
-    // Clamp values to pitch bounds
     const clampedX = Math.max(5, Math.min(95, relativeX));
     const clampedY = Math.max(5, Math.min(95, relativeY));
 
@@ -78,7 +78,6 @@ const InteractiveFootballPitch = ({
           {subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
         </div>
         
-        {/* Formation selector */}
         <div className="flex items-center gap-2">
           {formations.map((formation, index) => (
             <button
@@ -101,44 +100,33 @@ const InteractiveFootballPitch = ({
             className="ml-2"
           >
             <RotateCcw className="w-3 h-3 mr-1" />
-            Reset
+            Återställ
           </Button>
         </div>
       </div>
 
-      {/* Interactive instruction */}
       <p className="text-xs text-muted-foreground mb-3 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-        Dra spelarna för att justera positioner
+        Tryck och dra spelarna för att justera positioner
       </p>
       
       <div 
-        className="relative aspect-[3/4] w-full max-w-md mx-auto pitch-gradient rounded-xl overflow-hidden border border-pitch-lines/30 cursor-crosshair"
-        id="pitch-container"
+        ref={containerRef}
+        className="relative aspect-[3/4] w-full max-w-md mx-auto pitch-gradient rounded-xl overflow-hidden border border-pitch-lines/30 touch-none"
       >
         {/* Pitch markings */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 133" preserveAspectRatio="xMidYMid meet">
-          {/* Outer lines */}
           <rect x="2" y="2" width="96" height="129" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
-          
-          {/* Center line */}
           <line x1="2" y1="66.5" x2="98" y2="66.5" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
-          
-          {/* Center circle */}
           <circle cx="50" cy="66.5" r="12" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
           <circle cx="50" cy="66.5" r="1" fill="hsl(var(--pitch-lines))" opacity="0.6" />
-          
-          {/* Top penalty area */}
           <rect x="20" y="2" width="60" height="22" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
           <rect x="32" y="2" width="36" height="8" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
           <circle cx="50" cy="16" r="1" fill="hsl(var(--pitch-lines))" opacity="0.6" />
-          
-          {/* Bottom penalty area */}
           <rect x="20" y="109" width="60" height="22" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
           <rect x="32" y="123" width="36" height="8" fill="none" stroke="hsl(var(--pitch-lines))" strokeWidth="0.5" opacity="0.6" />
           <circle cx="50" cy="117" r="1" fill="hsl(var(--pitch-lines))" opacity="0.6" />
           
-          {/* Zone indicators */}
           {showZones && (
             <>
               <text x="50" y="10" textAnchor="middle" fontSize="4" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 3</text>
@@ -149,12 +137,12 @@ const InteractiveFootballPitch = ({
           )}
         </svg>
         
-        {/* Players */}
+        {/* Players - larger touch targets */}
         {players.map((player) => (
           <motion.div
             key={player.id}
             className={cn(
-              "absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1 cursor-grab active:cursor-grabbing z-10",
+              "absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5 cursor-grab active:cursor-grabbing z-10",
               selectedPlayer === player.id && "z-20"
             )}
             style={{ left: `${player.x}%`, top: `${player.y}%` }}
@@ -166,23 +154,25 @@ const InteractiveFootballPitch = ({
               setSelectedPlayer(player.id);
             }}
             onDrag={(_, info) => {
-              const container = document.getElementById('pitch-container');
+              const container = containerRef.current;
               if (container) {
                 handlePlayerDrag(player.id, info, container.getBoundingClientRect());
               }
             }}
             onDragEnd={handleDragEnd}
-            whileDrag={{ scale: 1.2, zIndex: 50 }}
-            whileHover={{ scale: 1.1 }}
+            whileDrag={{ scale: 1.3, zIndex: 50 }}
+            whileHover={{ scale: 1.15 }}
             onClick={() => setSelectedPlayer(player.id === selectedPlayer ? null : player.id)}
           >
+            {/* Invisible larger touch area */}
+            <div className="absolute -inset-3 rounded-full" />
             <motion.div
               className={cn(
-                "w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold shadow-lg transition-all",
+                "w-12 h-12 rounded-full flex items-center justify-center text-sm font-black shadow-lg transition-all border-2 border-white/40",
                 player.color === "accent" 
                   ? "bg-accent text-accent-foreground" 
                   : player.color === "secondary"
-                  ? "bg-secondary text-secondary-foreground border border-muted-foreground/30"
+                  ? "bg-secondary text-secondary-foreground border-muted-foreground/30"
                   : "bg-primary text-primary-foreground",
                 selectedPlayer === player.id && "ring-2 ring-white ring-offset-2 ring-offset-transparent"
               )}
@@ -195,9 +185,9 @@ const InteractiveFootballPitch = ({
               {player.id}
             </motion.div>
             <span className={cn(
-              "text-[10px] font-medium bg-background/80 px-1.5 py-0.5 rounded whitespace-nowrap transition-all",
+              "text-[9px] font-bold bg-background/90 px-1.5 py-0.5 rounded whitespace-nowrap transition-all shadow-sm",
               selectedPlayer === player.id 
-                ? "text-primary font-bold" 
+                ? "text-primary font-black" 
                 : "text-foreground/80"
             )}>
               {player.role}
