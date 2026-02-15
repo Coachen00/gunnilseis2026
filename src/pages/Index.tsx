@@ -104,13 +104,13 @@ const Index = () => {
             subtitle="Det här är vår karta. Som trafikljus och växellådor: den visar oss när vi ska sakta ner, bygga eller köra full fart."
           />
 
-          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8">
-            <div>
-              {/* A) Existing material: Färglogik (Röd/Gul/Grön) — verbatim */}
-              <h3 className="text-lg font-bold text-foreground mb-4">Röd → Gul → Grön</h3>
-              <p className="text-sm text-muted-foreground mb-6">Tre faser som styr vårt anfallsspel – från kontroll till attack.</p>
-              
-              <div className="grid md:grid-cols-3 gap-4 mb-8">
+          <div className="mb-8">
+            {/* A) Existing material: Färglogik (Röd/Gul/Grön) — verbatim */}
+            <h3 className="text-lg font-bold text-foreground mb-4">Röd → Gul → Grön</h3>
+            <p className="text-sm text-muted-foreground mb-6">Tre faser som styr vårt anfallsspel – från kontroll till attack.</p>
+            
+            <div className="grid md:grid-cols-3 gap-4 mb-8">
+              <div className="space-y-3">
                 <div className="rounded-xl p-5 border-2 border-zone-defense bg-zone-defense/10">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-4 h-4 rounded-full bg-zone-defense" />
@@ -120,6 +120,9 @@ const Index = () => {
                     Vi kan inte spelvända. Vi har inte kontroll.
                   </p>
                 </div>
+                <ImagePlaceholder title="RÖD fas" description="Bild/film: Röd situation" compact />
+              </div>
+              <div className="space-y-3">
                 <div className="rounded-xl p-5 border-2 border-zone-midfield bg-zone-midfield/10">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-4 h-4 rounded-full bg-zone-midfield" />
@@ -129,6 +132,9 @@ const Index = () => {
                     Vi börjar överbelasta (flyttar motståndare till vald kant).
                   </p>
                 </div>
+                <ImagePlaceholder title="GUL fas" description="Bild/film: Gul överbelastning" compact />
+              </div>
+              <div className="space-y-3">
                 <div className="rounded-xl p-5 border-2 border-zone-attack bg-zone-attack/10">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-4 h-4 rounded-full bg-zone-attack" />
@@ -138,10 +144,8 @@ const Index = () => {
                     Vi har skapat oordning och är i fas att spelvända för attack mot deras box.
                   </p>
                 </div>
+                <ImagePlaceholder title="GRÖN fas" description="Bild/film: Grön attack" compact />
               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <ImagePlaceholder title="Röd/Gul/Grön översikt" description="Bild som visar färgfaserna" />
             </div>
           </div>
 
@@ -185,6 +189,9 @@ const Index = () => {
                   <strong>Minnesrad:</strong> "Gul: överbelasta → Grön: spelvänd → full fart → kortsida → cutback → golden zone."
                 </p>
               </div>
+              <div className="mt-4">
+                <ImagePlaceholder title="Pseudokontring" description="Bild/film: Hela pseudokontringssekvensen" compact />
+              </div>
             </div>
             <div className="space-y-4">
               <div className="bg-card rounded-xl p-5 border border-primary/30">
@@ -210,6 +217,7 @@ const Index = () => {
                   </li>
                 </ul>
               </div>
+              <ImagePlaceholder title="Växla / Vändläge" description="Bild/film: Cue 3 — acceleration i praktiken" compact />
             </div>
           </div>
           
@@ -325,71 +333,81 @@ const Index = () => {
           {/* A) Existing material — verbatim identity cards */}
           <p className="text-sm text-muted-foreground mb-6">Beteenden på planen som bygger vår identitet.</p>
           
-          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <span className="text-primary font-black text-sm">⚔️</span>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              <div className="space-y-3">
+                <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                      <span className="text-primary font-black text-sm">⚔️</span>
+                    </div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Duellspel</h4>
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Duellspel</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Du ska <strong className="text-foreground">aldrig förlora en duell</strong> – i sämsta fall oavgjort.
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Du ska <strong className="text-foreground">aldrig förlora en duell</strong> – i sämsta fall oavgjort.
-                </p>
+                <ImagePlaceholder title="Duellspel" description="Bild/film: Duellexempel" compact />
               </div>
               
-              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <span className="text-primary font-black text-sm">🎯</span>
+              <div className="space-y-3">
+                <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                      <span className="text-primary font-black text-sm">🎯</span>
+                    </div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Andrabollsspel</h4>
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Andrabollsspel</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Om bollen saknar ägare – <strong className="text-foreground">TA DEN!</strong>
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Om bollen saknar ägare – <strong className="text-foreground">TA DEN!</strong>
-                </p>
+                <ImagePlaceholder title="Andrabollsspel" description="Bild/film: Andrabollssituation" compact />
               </div>
               
-              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <span className="text-primary font-black text-sm">⚡</span>
+              <div className="space-y-3">
+                <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                      <span className="text-primary font-black text-sm">⚡</span>
+                    </div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Felvända löpningar</h4>
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Felvända löpningar</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Vid bollförlust – <strong className="text-foreground">direkt omställning!</strong>
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Vid bollförlust – <strong className="text-foreground">direkt omställning!</strong>
-                </p>
+                <ImagePlaceholder title="Felvända löpningar" description="Bild/film: Omställningsexempel" compact />
               </div>
               
-              <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
-                    <span className="text-primary font-black text-sm">👁️</span>
+              <div className="space-y-3">
+                <div className="bg-card rounded-xl p-5 border-2 border-primary/30 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                      <span className="text-primary font-black text-sm">👁️</span>
+                    </div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Spelbarhet</h4>
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-primary">Spelbarhet</h4>
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Rörelse utan boll</strong> och position i farligaste ytan.
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Rörelse utan boll</strong> och position i farligaste ytan.
-                </p>
+                <ImagePlaceholder title="Spelbarhet" description="Bild/film: Rörelse utan boll" compact />
               </div>
               
-              <div className="bg-card rounded-xl p-5 border-2 border-accent/30 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
-                    <span className="text-accent font-black text-sm">🏃</span>
+              <div className="space-y-3">
+                <div className="bg-card rounded-xl p-5 border-2 border-accent/30 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center">
+                      <span className="text-accent font-black text-sm">🏃</span>
+                    </div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Spring alltid i djupled!</h4>
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Spring alltid i djupled!</h4>
+                  <p className="text-sm text-muted-foreground">
+                    <strong className="text-foreground">Alltid</strong> – oavsett läge.
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Alltid</strong> – oavsett läge.
-                </p>
+                <ImagePlaceholder title="Djupled" description="Bild/film: Djupledslöpning" compact />
               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <ImagePlaceholder title="Identitet" description="Bild som representerar lagets identitet" />
-            </div>
           </div>
           
           <div className="flex flex-wrap gap-3 mb-10">
