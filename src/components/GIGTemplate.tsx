@@ -1,4 +1,7 @@
 import { cn } from "@/lib/utils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
 interface GIGTemplateProps {
   cueTitel: string;
@@ -8,7 +11,6 @@ interface GIGTemplateProps {
   handling: string;
   roller?: string;
   exempel?: string;
-  kpi: string;
   gVillkor: string;
   igVillkor: string;
   className?: string;
@@ -22,42 +24,61 @@ const GIGTemplate = ({
   handling,
   roller,
   exempel,
-  kpi,
   gVillkor,
   igVillkor,
   className,
 }: GIGTemplateProps) => {
-  const rows = [
-    { label: "1) Cue‑titel", value: cueTitel },
-    { label: "2) Definition", value: definition },
-    { label: "3) När används den?", value: narAnvands },
-    { label: "4) Beslutstrigger (1/2/3)", value: beslutstrigger || "[INFERRED]" },
-    { label: "5) Handling (exakt steg)", value: handling },
-    { label: "6) Roller/Positioner", value: roller || "[INFERRED]" },
-    { label: "7) Exempel (matchtid, beslut, resultat)", value: exempel || "[MISSING INPUT — paste example here]" },
-    { label: "8) KPI", value: kpi },
-    { label: "9) G‑villkor", value: gVillkor },
-    { label: "10) IG‑villkor", value: igVillkor },
-  ];
+  const [open, setOpen] = useState(false);
 
   return (
     <div className={cn("bg-card rounded-xl border border-border shadow-sm overflow-hidden", className)}>
-      <div className="px-5 py-3 bg-primary/10 border-b border-border">
-        <h4 className="text-sm font-bold uppercase tracking-wider text-primary">G/IG‑MALL: {cueTitel}</h4>
+      {/* Summary box */}
+      <div className="px-5 py-4">
+        <h4 className="text-sm font-bold text-primary mb-1">{cueTitel}</h4>
+        <p className="text-sm text-muted-foreground">{definition}</p>
+        <div className="flex gap-4 mt-2 text-xs">
+          <span className="text-zone-attack font-medium">G: {gVillkor}</span>
+          <span className="text-zone-defense font-medium">IG: {igVillkor}</span>
+        </div>
       </div>
-      <div className="divide-y divide-border">
-        {rows.map((row) => (
-          <div key={row.label} className="flex gap-3 px-5 py-2.5">
-            <span className="text-xs font-bold text-muted-foreground min-w-[200px] flex-shrink-0">{row.label}</span>
-            <span className={cn(
-              "text-sm",
-              row.value.includes("[INFERRED]") || row.value.includes("[MISSING")
-                ? "text-accent italic"
-                : "text-foreground"
-            )}>{row.value}</span>
+
+      {/* Accordion for details */}
+      <Collapsible open={open} onOpenChange={setOpen}>
+        <CollapsibleTrigger className="w-full px-5 py-2 border-t border-border bg-muted/20 flex items-center justify-between hover:bg-muted/40 transition-colors">
+          <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Visa detaljer</span>
+          <ChevronDown className={cn("w-4 h-4 text-muted-foreground transition-transform", open && "rotate-180")} />
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <div className="divide-y divide-border text-sm">
+            <div className="flex gap-3 px-5 py-2">
+              <span className="text-xs font-bold text-muted-foreground min-w-[160px] flex-shrink-0">När används den?</span>
+              <span className="text-foreground">{narAnvands}</span>
+            </div>
+            {beslutstrigger && (
+              <div className="flex gap-3 px-5 py-2">
+                <span className="text-xs font-bold text-muted-foreground min-w-[160px] flex-shrink-0">Beslutstrigger</span>
+                <span className="text-foreground">{beslutstrigger}</span>
+              </div>
+            )}
+            <div className="flex gap-3 px-5 py-2">
+              <span className="text-xs font-bold text-muted-foreground min-w-[160px] flex-shrink-0">Handling</span>
+              <span className="text-foreground">{handling}</span>
+            </div>
+            {roller && (
+              <div className="flex gap-3 px-5 py-2">
+                <span className="text-xs font-bold text-muted-foreground min-w-[160px] flex-shrink-0">Roller</span>
+                <span className={cn("text-foreground", roller.includes("[") && "text-accent italic")}>{roller}</span>
+              </div>
+            )}
+            {exempel && (
+              <div className="flex gap-3 px-5 py-2">
+                <span className="text-xs font-bold text-muted-foreground min-w-[160px] flex-shrink-0">Exempel</span>
+                <span className={cn("text-foreground", exempel.includes("[") && "text-accent italic")}>{exempel}</span>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 };
