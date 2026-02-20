@@ -20,8 +20,40 @@ import ImageLinkCard from "@/components/ImageLinkCard";
 import MatchExampleTimeline from "@/components/MatchExampleTimeline";
 import LogoutButton from "@/components/LogoutButton";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { useState } from "react";
+
+// Image imports
+import gulOverbelastning from "@/assets/gul-overbelastning.png";
+import gronSpelvandning from "@/assets/gron-spelvandning.png";
+import offensivHorna from "@/assets/offensiv-horna.png";
+import defensivHorna from "@/assets/defensiv-horna.png";
+import formation433 from "@/assets/formation-433.png";
+import spelytorPlanbild from "@/assets/spelytor-planbild.png";
+import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
+import hornaTyper from "@/assets/horna-typer.png";
+import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
+
+const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: string; className?: string }) => {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <>
+      <button onClick={() => setExpanded(true)} className={`cursor-pointer w-full ${className}`}>
+        <img src={src} alt={alt} className="w-full h-auto rounded-xl border border-border hover:opacity-90 transition-opacity" />
+      </button>
+      {expanded && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6" onClick={() => setExpanded(false)}>
+          <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => setExpanded(false)} className="absolute -top-10 right-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
+              <X className="w-4 h-4" />
+            </button>
+            <img src={src} alt={alt} className="w-full rounded-xl border border-border" />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 // Formation presets for interactive pitch
 const formations: Formation[] = [
@@ -161,7 +193,7 @@ const Index = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">Vi börjar överbelasta (flyttar motståndare till vald kant).</p>
               </div>
-              <ImagePlaceholder title="GUL fas" description="Bild/film: Gul överbelastning" compact />
+              <ExpandableImage src={gulOverbelastning} alt="GUL fas — överbelastning" />
             </div>
             <div className="space-y-3">
               <div className="rounded-xl p-5 border-2 border-zone-attack bg-zone-attack/10">
@@ -171,7 +203,7 @@ const Index = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">Vi har skapat oordning och är i fas att spelvända för attack mot deras box.</p>
               </div>
-              <ImagePlaceholder title="GRÖN fas" description="Bild/film: Grön attack" compact />
+              <ExpandableImage src={gronSpelvandning} alt="GRÖN fas — spelvändning och attack" />
             </div>
           </div>
 
@@ -248,7 +280,11 @@ const Index = () => {
                   </div>
                   <p className="text-sm text-muted-foreground"><strong className="text-foreground">{item.text.split("–")[0]}</strong>{item.text.includes("–") ? `–${item.text.split("–").slice(1).join("–")}` : ""}</p>
                 </div>
-                <ImagePlaceholder title={item.title} description={`Bild/film: ${item.title}`} compact />
+                {item.title === "Spelbarhet" ? (
+                  <ExpandableImage src={spelbarhetInfografik} alt="Spelbarhet infografik" />
+                ) : (
+                  <ImagePlaceholder title={item.title} description={`Bild/film: ${item.title}`} compact />
+                )}
               </div>
             ))}
           </div>
@@ -381,11 +417,16 @@ const Index = () => {
             subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear."
           />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <RoleCard line="3" players="2 MB + 1 YB" description="Första linjen i uppbyggnad. Den ytterback som inte inverterar stannar som tredje spelare bak." variant="defense" />
-            <RoleCard line="2" players="6:a + Inv. YB" description="Basen. Säkrar spelvändning och kontringsskydd centralt. 6:an alltid 'pilen nedåt'." variant="midfield" />
-            <RoleCard line="2" players="8:a + 7:a" description="Offensiva mittfältare som söker spelbarhet i inre korridorer. VM = 8:a, HM = 7:a." variant="midfield" />
-            <RoleCard line="3" players="2 Yttrar + 9:a" description="Högsta linjen. Yttrar håller bredd, 9:an hotar spelyta 3 och gyllene zonen." variant="attack" />
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <RoleCard line="3" players="2 MB + 1 YB" description="Första linjen i uppbyggnad. Den ytterback som inte inverterar stannar som tredje spelare bak." variant="defense" />
+              <RoleCard line="2" players="6:a + Inv. YB" description="Basen. Säkrar spelvändning och kontringsskydd centralt. 6:an alltid 'pilen nedåt'." variant="midfield" />
+              <RoleCard line="2" players="8:a + 7:a" description="Offensiva mittfältare som söker spelbarhet i inre korridorer. VM = 8:a, HM = 7:a." variant="midfield" />
+              <RoleCard line="3" players="2 Yttrar + 9:a" description="Högsta linjen. Yttrar håller bredd, 9:an hotar spelyta 3 och gyllene zonen." variant="attack" />
+            </div>
+            <div className="w-full md:w-64 flex-shrink-0">
+              <ExpandableImage src={formation433} alt="4-3-3 / 3-2-2-3 grunduppställning" />
+            </div>
           </div>
 
           {/* Spelytor */}
@@ -414,7 +455,7 @@ const Index = () => {
                 <p className="text-xs text-muted-foreground">Nära deras mål – här vill vi skapa chans och avslut.</p>
               </div>
             </div>
-            <ImagePlaceholder title="Spelytor — planbild" description="Diagram: Utgångsyta, Spelyta 1–3" />
+            <ExpandableImage src={spelytorPlanbild} alt="Spelytor — planbild med zoner" />
             
             <div className="mt-8 mb-8">
               <KorridorerDiagram />
@@ -537,9 +578,10 @@ const Index = () => {
           {/* Bildplatshållare för fasta situationer */}
           <h3 className="text-lg font-bold text-foreground mb-4">Bilder & diagram</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            <ImagePlaceholder title="Offensiv hörna — variant 1" description="Bild/film" compact />
-            <ImagePlaceholder title="Offensiv hörna — variant 2" description="Bild/film" compact />
-            <ImagePlaceholder title="Defensiv hörna" description="Bild/film" compact />
+            <ExpandableImage src={offensivHorna} alt="Offensiv hörna — spelarpositioner" />
+            <ExpandableImage src={hornaTyper} alt="Olika sätt att slå hörnor" />
+            <ExpandableImage src={defensivHorna} alt="Defensiv hörna — zonförsvar" />
+            <ExpandableImage src={forsvarMotHorna} alt="Analys av hörnsekvenser" />
             <ImagePlaceholder title="Inläggsfrispark — offensiv" description="Bild/film" compact />
             <ImagePlaceholder title="Inläggsfrispark — defensiv" description="Bild/film" compact />
             <ImagePlaceholder title="Direkt frispark — offensiv" description="Bild/film" compact />
