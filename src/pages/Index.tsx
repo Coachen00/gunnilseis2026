@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import InteractiveFootballPitch, { Formation } from "@/components/InteractiveFootballPitch";
 import TriggerCard from "@/components/TriggerCard";
 import CoachCue from "@/components/CoachCue";
+import { supabase } from "@/integrations/supabase/client";
 import RoleCard from "@/components/RoleCard";
 import SectionHeader from "@/components/SectionHeader";
 import SetPieceCard from "@/components/SetPieceCard";
@@ -22,7 +24,7 @@ import MatchExampleTimeline from "@/components/MatchExampleTimeline";
 import LogoutButton from "@/components/LogoutButton";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, X } from "lucide-react";
-import { useState } from "react";
+
 
 // Image imports
 import gulOverbelastning from "@/assets/gul-overbelastning.png";
@@ -107,11 +109,29 @@ const AccordionSection = ({ title, children }: { title: string; children: React.
 };
 
 const Index = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user?.email === "leojsjoqvist@gmail.com") {
+        setIsAdmin(true);
+      }
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hjälte */}
       <header className="relative overflow-hidden hero-gradient">
         <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors flex items-center gap-2"
+            >
+              🔒 Admin
+            </Link>
+          )}
           <Link
             to="/traningsplan"
             className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"

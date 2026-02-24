@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [signUpDone, setSignUpDone] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -48,9 +49,19 @@ const Login = () => {
 
         if (error) throw error;
 
+        // Notify admin via edge function
+        try {
+          await supabase.functions.invoke("notify-new-signup", {
+            body: { email },
+          });
+        } catch {
+          // Non-critical - don't block signup
+        }
+
+        setSignUpDone(true);
         toast({
-          title: "Konto skapat!",
-          description: "Kolla din e-post för att verifiera kontot.",
+          title: "Förfrågan skickad!",
+          description: "Kolla din e-post för verifiering. Du får tillgång efter godkännande.",
         });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -77,16 +88,40 @@ const Login = () => {
     }
   };
 
+  if (signUpDone) {
+    return (
+      <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
+        <Card className="w-full max-w-md card-gradient border-border">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-black text-foreground">📩 Förfrågan skickad</CardTitle>
+            <CardDescription className="text-muted-foreground">
+              Vi har skickat en verifieringslänk till <strong>{email}</strong>. 
+              Efter att du verifierat din e-post behöver en administratör godkänna ditt konto.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <button
+              onClick={() => { setSignUpDone(false); setIsSignUp(false); }}
+              className="text-sm text-primary hover:underline"
+            >
+              Tillbaka till inloggning
+            </button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
       <Card className="w-full max-w-md card-gradient border-border">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-black text-foreground">
-            {isSignUp ? "Skapa konto" : "Logga in"}
+            {isSignUp ? "Begär tillgång" : "Logga in"}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
             {isSignUp 
-              ? "Ange e-post och lösenord för att skapa ett konto" 
+              ? "Ange e-post och lösenord. En admin godkänner din förfrågan." 
               : "Logga in för att komma åt spelidén"}
           </CardDescription>
         </CardHeader>
@@ -124,7 +159,7 @@ const Login = () => {
                   Vänta...
                 </>
               ) : isSignUp ? (
-                "Skapa konto"
+                "Skicka förfrågan"
               ) : (
                 "Logga in"
               )}
@@ -138,7 +173,7 @@ const Login = () => {
             >
               {isSignUp 
                 ? "Har du redan ett konto? Logga in" 
-                : "Inget konto? Skapa ett"}
+                : "Ingen tillgång? Begär åtkomst"}
             </button>
           </div>
         </CardContent>
