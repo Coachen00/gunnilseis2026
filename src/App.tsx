@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import TrainingPlan from "./pages/TrainingPlan";
+import Matchblad from "./pages/Matchblad";
+import Motstandaranalys from "./pages/Motstandaranalys";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import AuthGuard from "./components/AuthGuard";
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<AuthGuard><Index /></AuthGuard>} />
           <Route path="/traningsplan" element={<AuthGuard><TrainingPlan /></AuthGuard>} />
+          <Route path="/matchblad" element={<AuthGuard><Matchblad /></AuthGuard>} />
+          <Route path="/motstandaranalys" element={<AuthGuard><Motstandaranalys /></AuthGuard>} />
           <Route path="/admin" element={<AuthGuard requireApproval={false}><Admin /></AuthGuard>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
