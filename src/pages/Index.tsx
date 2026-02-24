@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import InteractiveFootballPitch, { Formation } from "@/components/InteractiveFootballPitch";
 import TriggerCard from "@/components/TriggerCard";
 import CoachCue from "@/components/CoachCue";
@@ -110,7 +111,13 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       {/* Hjälte */}
       <header className="relative overflow-hidden hero-gradient">
-        <div className="absolute top-4 right-4 z-10">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
+          <Link
+            to="/traningsplan"
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
+          >
+            📋 Träningsplan
+          </Link>
           <LogoutButton />
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--accent)/0.2)_0%,_transparent_60%)]" />
@@ -216,7 +223,7 @@ const Index = () => {
                 <li>• <strong className="text-foreground">GRÖN:</strong> 3:a centralt rättvänd → spelvändning</li>
                 <li>• <strong className="text-foreground">Full fart</strong> → överlapp/underlapp → kortsida → cutback → gyllene zonen</li>
               </ul>
-              <ImagePlaceholder title="Pseudokontring" description="Bild/film: Hela sekvensen" compact className="mt-4" />
+              <TrainingVideo title="Pseudokontring — hela sekvensen" url="https://www.youtube.com/shorts/-hVrA26JJw0" className="mt-4" />
             </div>
             <div className="space-y-4">
               <div className="bg-card rounded-xl p-5 border border-border">
