@@ -150,6 +150,12 @@ const Index = () => {
           >
             🔍 Motståndaranalys
           </Link>
+          <Link
+            to="/taktiktavla"
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
+          >
+            🎯 Taktiktavla
+          </Link>
           <LogoutButton />
         </div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(var(--accent)/0.2)_0%,_transparent_60%)]" />
