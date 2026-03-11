@@ -37,15 +37,15 @@ import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
 import hornaTyper from "@/assets/horna-typer.png";
 import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
 
-const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: string; className?: string }) => {
+const ExpandableImage = ({ src, alt, className = "" }: {src: string;alt: string;className?: string;}) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <>
       <button onClick={() => setExpanded(true)} className={`cursor-pointer w-full ${className}`}>
-        <img src={src} alt={alt} className="w-full h-auto rounded-xl border border-border hover:opacity-90 transition-opacity" />
+        
       </button>
-      {expanded && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6" onClick={() => setExpanded(false)}>
+      {expanded &&
+      <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6" onClick={() => setExpanded(false)}>
           <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => setExpanded(false)} className="absolute -top-10 right-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80">
               <X className="w-4 h-4" />
@@ -53,47 +53,47 @@ const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: strin
             <img src={src} alt={alt} className="w-full rounded-xl border border-border" />
           </div>
         </div>
-      )}
-    </>
-  );
+      }
+    </>);
+
 };
 
 // Formation presets for interactive pitch
 const formations: Formation[] = [
-  {
-    name: "4-3-3 Försvar",
-    players: [
-      { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
-      { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
-      { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
-      { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
-      { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
-      { id: "6", x: 50, y: 55, role: "6:a", color: "accent" as const },
-      { id: "7", x: 30, y: 58, role: "8:a", color: "primary" as const },
-      { id: "8", x: 70, y: 58, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
-      { id: "10", x: 18, y: 35, role: "VY", color: "primary" as const },
-      { id: "11", x: 82, y: 35, role: "HY", color: "primary" as const },
-    ]
-  },
-  {
-    name: "3-2-2-3 Anfall",
-    players: [
-      { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
-      { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
-      { id: "5", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
-      { id: "2", x: 45, y: 68, role: "VYB (inv.)", color: "accent" as const },
-      { id: "6", x: 55, y: 68, role: "6:a", color: "accent" as const },
-      { id: "7", x: 32, y: 48, role: "8:a", color: "primary" as const },
-      { id: "8", x: 68, y: 48, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
-      { id: "10", x: 12, y: 28, role: "VY", color: "primary" as const },
-      { id: "11", x: 88, y: 28, role: "HY", color: "primary" as const },
-    ]
-  },
-];
+{
+  name: "4-3-3 Försvar",
+  players: [
+  { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
+  { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
+  { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
+  { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
+  { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
+  { id: "6", x: 50, y: 55, role: "6:a", color: "accent" as const },
+  { id: "7", x: 30, y: 58, role: "8:a", color: "primary" as const },
+  { id: "8", x: 70, y: 58, role: "7:a", color: "primary" as const },
+  { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
+  { id: "10", x: 18, y: 35, role: "VY", color: "primary" as const },
+  { id: "11", x: 82, y: 35, role: "HY", color: "primary" as const }]
 
-const AccordionSection = ({ title, children }: { title: string; children: React.ReactNode }) => {
+},
+{
+  name: "3-2-2-3 Anfall",
+  players: [
+  { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
+  { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
+  { id: "5", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
+  { id: "2", x: 45, y: 68, role: "VYB (inv.)", color: "accent" as const },
+  { id: "6", x: 55, y: 68, role: "6:a", color: "accent" as const },
+  { id: "7", x: 32, y: 48, role: "8:a", color: "primary" as const },
+  { id: "8", x: 68, y: 48, role: "7:a", color: "primary" as const },
+  { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
+  { id: "10", x: 12, y: 28, role: "VY", color: "primary" as const },
+  { id: "11", x: 88, y: 28, role: "HY", color: "primary" as const }]
+
+}];
+
+
+const AccordionSection = ({ title, children }: {title: string;children: React.ReactNode;}) => {
   const [open, setOpen] = useState(false);
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
@@ -104,8 +104,8 @@ const AccordionSection = ({ title, children }: { title: string; children: React.
       <CollapsibleContent>
         <div className="pl-2 pb-4">{children}</div>
       </CollapsibleContent>
-    </Collapsible>
-  );
+    </Collapsible>);
+
 };
 
 const Index = () => {
@@ -124,36 +124,36 @@ const Index = () => {
       {/* Hjälte */}
       <header className="relative overflow-hidden hero-gradient">
         <div className="absolute top-4 right-4 z-10 flex items-center gap-3">
-          {isAdmin && (
-            <Link
-              to="/admin"
-              className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors flex items-center gap-2"
-            >
+          {isAdmin &&
+          <Link
+            to="/admin"
+            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors flex items-center gap-2">
+            
               🔒 Admin
             </Link>
-          )}
+          }
           <Link
             to="/traningsplan"
-            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
-          >
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2">
+            
             📋 Träningsplan
           </Link>
           <Link
             to="/matchblad"
-            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
-          >
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2">
+            
             ⚽ Matchblad
           </Link>
           <Link
             to="/motstandaranalys"
-            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
-          >
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2">
+            
             🔍 Motståndaranalys
           </Link>
           <Link
             to="/taktiktavla"
-            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2"
-          >
+            className="px-4 py-2 rounded-lg bg-accent text-accent-foreground text-sm font-bold hover:bg-accent/90 transition-colors flex items-center gap-2">
+            
             🎯 Taktiktavla
           </Link>
           <LogoutButton />
@@ -212,11 +212,11 @@ const Index = () => {
         {/* GENERELLT */}
         {/* ============================================================ */}
         <section id="generellt">
-          <SectionHeader 
+          <SectionHeader
             badge="Generellt"
             title="Vår spelkarta"
-            subtitle="Som trafikljus och växellådor: den visar oss när vi ska sakta ner, bygga eller köra full fart."
-          />
+            subtitle="Som trafikljus och växellådor: den visar oss när vi ska sakta ner, bygga eller köra full fart." />
+          
 
           {/* Röd/Gul/Grön */}
           <div className="grid md:grid-cols-3 gap-4 mb-8">
@@ -301,21 +301,21 @@ const Index = () => {
         {/* IDENTITET */}
         {/* ============================================================ */}
         <section id="identitet">
-          <SectionHeader 
+          <SectionHeader
             badge="Identitet"
             title="Vilka vill vi vara?"
-            subtitle="Det här är vilka vi är varje dag — lagets uppförande på planen."
-          />
+            subtitle="Det här är vilka vi är varje dag — lagets uppförande på planen." />
+          
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
             {[
-              { emoji: "⚔️", title: "Duellspel", text: "Du ska aldrig förlora en duell – i sämsta fall oavgjort." },
-              { emoji: "🎯", title: "Andrabollsspel", text: "Om bollen saknar ägare – TA DEN!" },
-              { emoji: "⚡", title: "Felvända löpningar", text: "Vid bollförlust – direkt omställning!" },
-              { emoji: "👁️", title: "Spelbarhet", text: "Rörelse utan boll och position i farligaste ytan." },
-              { emoji: "🏃", title: "Spring alltid i djupled!", text: "Alltid – oavsett läge.", accent: true },
-            ].map((item) => (
-              <div key={item.title} className="space-y-3">
+            { emoji: "⚔️", title: "Duellspel", text: "Du ska aldrig förlora en duell – i sämsta fall oavgjort." },
+            { emoji: "🎯", title: "Andrabollsspel", text: "Om bollen saknar ägare – TA DEN!" },
+            { emoji: "⚡", title: "Felvända löpningar", text: "Vid bollförlust – direkt omställning!" },
+            { emoji: "👁️", title: "Spelbarhet", text: "Rörelse utan boll och position i farligaste ytan." },
+            { emoji: "🏃", title: "Spring alltid i djupled!", text: "Alltid – oavsett läge.", accent: true }].
+            map((item) =>
+            <div key={item.title} className="space-y-3">
                 <div className={`bg-card rounded-xl p-5 border-2 ${item.accent ? "border-accent/30" : "border-primary/30"} shadow-sm`}>
                   <div className="flex items-center gap-3 mb-3">
                     <div className={`w-8 h-8 rounded-lg ${item.accent ? "bg-accent/20" : "bg-primary/20"} flex items-center justify-center`}>
@@ -325,13 +325,13 @@ const Index = () => {
                   </div>
                   <p className="text-sm text-muted-foreground"><strong className="text-foreground">{item.text.split("–")[0]}</strong>{item.text.includes("–") ? `–${item.text.split("–").slice(1).join("–")}` : ""}</p>
                 </div>
-                {item.title === "Spelbarhet" ? (
-                  <ExpandableImage src={spelbarhetInfografik} alt="Spelbarhet infografik" />
-                ) : (
-                  <ImagePlaceholder title={item.title} description={`Bild/film: ${item.title}`} compact />
-                )}
+                {item.title === "Spelbarhet" ?
+              <ExpandableImage src={spelbarhetInfografik} alt="Spelbarhet infografik" /> :
+
+              <ImagePlaceholder title={item.title} description={`Bild/film: ${item.title}`} compact />
+              }
               </div>
-            ))}
+            )}
           </div>
 
           <Matetal className="mb-6" />
@@ -351,11 +351,11 @@ const Index = () => {
         {/* FÖRSVARSSPEL */}
         {/* ============================================================ */}
         <section id="forsvarsspel">
-          <SectionHeader 
+          <SectionHeader
             badge="Försvarsspel"
             title="5 Försvarsprinciper"
-            subtitle="Vi skyddar vårt mål som en fästning: stäng dörren centralt, styr dem utåt."
-          />
+            subtitle="Vi skyddar vårt mål som en fästning: stäng dörren centralt, styr dem utåt." />
+          
 
           <div className="mb-6">
             <TrainingVideo title="4-3-3 Försvarsspel förklarat" url="https://www.youtube.com/watch?v=jJGwvHb8fWs" duration="6:45" />
@@ -418,11 +418,11 @@ const Index = () => {
         {/* OMSTÄLLNING TILL ANFALL */}
         {/* ============================================================ */}
         <section id="omstallning-till-anfall">
-          <SectionHeader 
+          <SectionHeader
             badge="Omställning till anfall"
             title="Bollvinst → Framåt"
-            subtitle="När vi vinner bollen sover vi inte — vi tittar framåt direkt."
-          />
+            subtitle="När vi vinner bollen sover vi inte — vi tittar framåt direkt." />
+          
 
           <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
             <div>
@@ -456,11 +456,11 @@ const Index = () => {
         {/* ANFALLSSPEL */}
         {/* ============================================================ */}
         <section id="anfallsspel">
-          <SectionHeader 
+          <SectionHeader
             badge="Anfallsspel"
             title="3-2-2-3 Struktur"
-            subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear."
-          />
+            subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear." />
+          
 
           <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-8">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -476,12 +476,12 @@ const Index = () => {
 
           {/* Spelytor */}
           <div className="bg-card rounded-2xl p-8 border border-border shadow-sm mb-10">
-            <SectionHeader 
+            <SectionHeader
               badge="Spelytor"
               title="Spelytor"
               subtitle="Planen är som fyra rum. Vi vill veta var bollen är, och vad vi ska göra i just det rummet."
-              className="mb-6"
-            />
+              className="mb-6" />
+            
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-muted/30 rounded-xl p-4 border border-border">
                 <h5 className="text-sm font-bold text-foreground mb-1">Utgångsyta</h5>
@@ -506,12 +506,12 @@ const Index = () => {
               <KorridorerDiagram />
             </div>
             
-            <SectionHeader 
+            <SectionHeader
               badge="Korridorer"
               title="Inre & Yttre Korridorer"
               subtitle="Vi spelar alltid via inre korridor när möjligt. Yttre = sista utväg."
-              className="mb-8"
-            />
+              className="mb-8" />
+            
             
             <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
               <SpelytorDiagram />
@@ -559,11 +559,11 @@ const Index = () => {
         {/* OMSTÄLLNING TILL FÖRSVAR */}
         {/* ============================================================ */}
         <section id="omstallning-till-forsvar">
-          <SectionHeader 
+          <SectionHeader
             badge="Omställning till försvar"
             title="Bollförlust → Jaga eller falla"
-            subtitle="När vi tappar bollen jagar vi tillsammans direkt — eller faller tillbaka tillsammans. Inget kaos."
-          />
+            subtitle="När vi tappar bollen jagar vi tillsammans direkt — eller faller tillbaka tillsammans. Inget kaos." />
+          
 
           <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-6">
             <div>
@@ -597,22 +597,22 @@ const Index = () => {
         {/* FASTA SITUATIONER */}
         {/* ============================================================ */}
         <section id="fasta-situationer">
-          <SectionHeader 
+          <SectionHeader
             badge="Fasta situationer"
             title="Defensivt: Hybrid + 2 Man"
-            subtitle="När spelet stannar (hörna/frispark) har vi fortfarande regler. Vi gissar inte."
-          />
+            subtitle="När spelet stannar (hörna/frispark) har vi fortfarande regler. Vi gissar inte." />
+          
 
           <div className="grid md:grid-cols-2 gap-6 mb-8">
-            <SetPieceCard 
+            <SetPieceCard
               title="Grundstruktur"
               variant="hybrid"
               roles={[
-                { name: "2 MAN", instruction: "Följ hotet – först boll, sen kropp" },
-                { name: "ZON", instruction: "Ta första boll i zon – rensa framåt" },
-                { name: "REST", instruction: "2 spelare högre – andraboll + kontringsskydd" },
-              ]}
-            />
+              { name: "2 MAN", instruction: "Följ hotet – först boll, sen kropp" },
+              { name: "ZON", instruction: "Ta första boll i zon – rensa framåt" },
+              { name: "REST", instruction: "2 spelare högre – andraboll + kontringsskydd" }]
+              } />
+            
             <div className="space-y-4">
               <SetPieceCard title="Trigger: Kort variant" variant="man" roles={[{ name: "Kort", instruction: "1 spelare kliver ut, resten håller zon" }]} />
               <SetPieceCard title="Trigger: Lång/inswing" variant="zone" roles={[{ name: "Lång", instruction: "Zon attackerar boll, man-markörer låser hot" }]} />
@@ -649,10 +649,10 @@ const Index = () => {
         {/* ROLLER & POSITIONER (NY SEK 6) */}
         {/* ============================================================ */}
         <section id="roller-positioner">
-          <SectionHeader 
+          <SectionHeader
             badge="Roller"
-            title="Roller & positioner"
-          />
+            title="Roller & positioner" />
+          
           <div className="grid md:grid-cols-2 gap-6 mb-8">
             <ImageLinkCard title="Mittfält – beslutsnav" bullet="Mittfältarna styr tempot och beslutar om spelvändning." />
             <ImageLinkCard title="Inverterad ytterback – numerärt övertag centralt" bullet="Vänsterbacken inverterar för att skapa bas med 6:an." />
@@ -663,11 +663,11 @@ const Index = () => {
         {/* EXEMPEL FRÅN MATCH (NY SEK 7) */}
         {/* ============================================================ */}
         <section id="exempel-match">
-          <SectionHeader 
+          <SectionHeader
             badge="Exempel"
             title="Exempel från match"
-            subtitle="En situation, ett beslut, ett resultat."
-          />
+            subtitle="En situation, ett beslut, ett resultat." />
+          
           <MatchExampleTimeline />
         </section>
 
@@ -675,11 +675,11 @@ const Index = () => {
         {/* MATCHTRUPP */}
         {/* ============================================================ */}
         <section id="matchtrupp">
-          <SectionHeader 
+          <SectionHeader
             badge="Matchdag"
             title="Matchtrupp & Ansvarsområden"
-            subtitle="Fyll i dagens matchtrupp och tilldela specialroller inför varje match."
-          />
+            subtitle="Fyll i dagens matchtrupp och tilldela specialroller inför varje match." />
+          
           <MatchSquad />
         </section>
 
@@ -687,11 +687,11 @@ const Index = () => {
         {/* KVALITETSKONTROLL — FÖRENKLAD */}
         {/* ============================================================ */}
         <section id="quality-control">
-          <SectionHeader 
+          <SectionHeader
             badge="Kvalitetskontroll"
             title="Mätetal & Lärdom"
-            subtitle="Enkel uppföljning efter match."
-          />
+            subtitle="Enkel uppföljning efter match." />
+          
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
@@ -725,8 +725,8 @@ const Index = () => {
           <a href="#generellt" className="text-primary text-xs hover:underline mt-2 inline-block">↑ Tillbaka upp</a>
         </div>
       </footer>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
