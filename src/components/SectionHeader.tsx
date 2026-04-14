@@ -9,15 +9,15 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, subtitle, badge, className }: SectionHeaderProps) => {
   return (
-    <div className={cn("mb-8", className)}>
+    <div className={cn("mb-10", className)}>
       {badge && (
-        <span className="inline-block px-3 py-1 text-xs font-bold uppercase tracking-widest text-primary bg-primary/10 rounded-full mb-3">
+        <span className="inline-block px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-primary bg-primary/8 rounded-full mb-3 border border-primary/10">
           {badge}
         </span>
       )}
-      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{title}</h2>
+      <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-2 leading-tight">{title}</h2>
       {subtitle && (
-        <p className="text-muted-foreground max-w-2xl">{subtitle}</p>
+        <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">{subtitle}</p>
       )}
     </div>
   );
