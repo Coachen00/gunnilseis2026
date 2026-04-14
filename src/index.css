@@ -7,37 +7,37 @@
 @layer base {
   :root {
     /* Gunnilse IS Brand Colors - Light Mode */
-    --background: 47 60% 92%; /* Warm White #FAF3DD */
-    --foreground: 230 60% 9%; /* Charcoal #0B1020 */
+    --background: 40 30% 97%; /* Softer warm white */
+    --foreground: 220 25% 18%; /* Softer charcoal, not pure black */
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 230 60% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 60% 9%;
+    --popover-foreground: 220 25% 18%;
 
     --primary: 212 85% 24%; /* Gunnilse Navy #09376F */
-    --primary-foreground: 47 60% 92%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 231 45% 35%; /* Shield Blue #313D83 */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 47 40% 88%;
-    --muted-foreground: 230 30% 35%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 46%;
 
     --accent: 47 84% 57%; /* Gunnilse Gold #EFC632 */
-    --accent-foreground: 212 85% 24%;
+    --accent-foreground: 212 85% 18%;
 
-    --destructive: 356 75% 49%; /* Gunnilse Red #D3282F */
+    --destructive: 356 75% 49%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 212 30% 80%;
-    --input: 212 30% 80%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
     --ring: 212 85% 24%;
 
     --radius: 0.75rem;
 
-    /* Custom tokens - Football specific */
+    /* Custom tokens */
     --pitch: 142 55% 35%;
     --pitch-lines: 142 40% 55%;
     --pitch-dark: 142 50% 20%;
@@ -46,16 +46,16 @@
     --swedish-yellow: 48 95% 55%;
     
     /* Tactical color phases */
-    --zone-attack: 142 55% 40%; /* Grön - kan spelvända */
-    --zone-midfield: 47 84% 57%; /* Gul - överbelasta */
-    --zone-defense: 356 75% 49%; /* Röd - ingen kontroll */
+    --zone-attack: 142 55% 40%;
+    --zone-midfield: 47 84% 57%;
+    --zone-defense: 356 75% 49%;
     
     --gradient-pitch: linear-gradient(180deg, hsl(142 55% 30%) 0%, hsl(142 55% 25%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(47 40% 96%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(212 85% 24%) 0%, hsl(231 45% 35%) 50%, hsl(212 85% 20%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 14% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(212 85% 20%) 0%, hsl(231 45% 30%) 50%, hsl(212 85% 16%) 100%);
 
     --sidebar-background: 212 85% 24%;
-    --sidebar-foreground: 47 60% 92%;
+    --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 47 84% 57%;
     --sidebar-primary-foreground: 212 85% 24%;
     --sidebar-accent: 231 45% 35%;
@@ -71,8 +71,23 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Typography hierarchy */
+  h1 {
+    @apply tracking-tight;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    @apply tracking-tight;
+    letter-spacing: -0.015em;
+  }
+  h3 {
+    @apply tracking-tight;
   }
 }
 
@@ -109,6 +124,15 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Premium card hover effect */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    @apply shadow-md -translate-y-0.5;
+    border-color: hsl(var(--primary) / 0.2);
   }
 }
 
