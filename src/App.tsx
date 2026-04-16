@@ -3,8 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
 import Login from "./pages/Login";
+import Hem from "./pages/Hem";
+import Spelide from "./pages/Spelide";
+import Forsvar from "./pages/Forsvar";
+import Anfall from "./pages/Anfall";
+import Fasta from "./pages/Fasta";
+import Roller from "./pages/Roller";
+import Verktyg from "./pages/Verktyg";
 import TrainingPlan from "./pages/TrainingPlan";
 import Matchblad from "./pages/Matchblad";
 import Motstandaranalys from "./pages/Motstandaranalys";
@@ -12,8 +18,16 @@ import Taktiktavla from "./pages/Taktiktavla";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import AuthGuard from "./components/AuthGuard";
+import Layout from "./components/Layout";
 
 const queryClient = new QueryClient();
+
+// Wrap a protected page with AuthGuard + shared Layout (nav + animated background + footer).
+const Protected = ({ children, requireApproval = true }: { children: React.ReactNode; requireApproval?: boolean }) => (
+  <AuthGuard requireApproval={requireApproval}>
+    <Layout>{children}</Layout>
+  </AuthGuard>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -23,12 +37,24 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<AuthGuard><Index /></AuthGuard>} />
+
+          {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
+          <Route path="/" element={<Protected><Hem /></Protected>} />
+          <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
+          <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
+          <Route path="/anfall" element={<Protected><Anfall /></Protected>} />
+          <Route path="/fasta" element={<Protected><Fasta /></Protected>} />
+          <Route path="/roller" element={<Protected><Roller /></Protected>} />
+          <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
+
+          {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
           <Route path="/traningsplan" element={<AuthGuard><TrainingPlan /></AuthGuard>} />
           <Route path="/matchblad" element={<AuthGuard><Matchblad /></AuthGuard>} />
           <Route path="/motstandaranalys" element={<AuthGuard><Motstandaranalys /></AuthGuard>} />
           <Route path="/taktiktavla" element={<AuthGuard><Taktiktavla /></AuthGuard>} />
+
           <Route path="/admin" element={<AuthGuard requireApproval={false}><Admin /></AuthGuard>} />
+
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
