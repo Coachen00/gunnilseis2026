@@ -7,11 +7,11 @@ import ScrollCue from "@/components/ScrollCue";
 import PhaseFlow from "@/components/PhaseFlow";
 
 const identityWords = [
-  { word: "Duell", meaning: "Du ska aldrig förlora en duell — i sämsta fall oavgjort." },
-  { word: "Spelbarhet", meaning: "Rörelse utan boll och position i farligaste ytan." },
-  { word: "Rättvänd", meaning: "Sök rättvänd mottagning — det utlöser progression och spelvändning." },
-  { word: "Djup", meaning: "Höghastighetslöpning i djupled när vi är rättvända i spelyta 2–3." },
-  { word: "Tillsammans", meaning: "Vi pressar och faller som ett lag — första försvarare först." },
+  { word: "Dueller", meaning: "Vi förlorar aldrig en kamp om bollen. I värsta fall blir det oavgjort — men vi backar inte." },
+  { word: "Andrabollsspel", meaning: "När bollen studsar fritt och ingen äger den — då tar vi den. Alltid." },
+  { word: "Springa i djupled", meaning: "Vi springer mot motståndarens mål så fort vi kan, så ofta vi kan. Det skapar utrymme för alla." },
+  { word: "Springa felvänt", meaning: "När vi tappar bollen vänder vi direkt och jagar tillbaka — alla samtidigt." },
+  { word: "Kommunicera förstärkande", meaning: "Vi peppar varandra. Korta, tydliga rop som hjälper laget — aldrig kritik." },
 ];
 
 const Hem = () => {
@@ -37,7 +37,7 @@ const Hem = () => {
           style={{ animationDelay: "260ms" }}
         >
           Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
-          <span className="text-foreground/80 font-semibold">En princip per skede</span> — samma vokabulär från målvakt till anfallare.
+          <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
         </p>
         <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
           <ScrollCue />
@@ -50,7 +50,7 @@ const Hem = () => {
           <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 01</div>
           <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Vår identitet</h2>
           <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-14">
-            Fem ord. Fem beteenden. Det här ser du i varje match — oavsett motstånd.
+            Fem saker vi gör i varje match — oavsett vem vi möter.
           </p>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {identityWords.map((w, i) => (
@@ -74,7 +74,7 @@ const Hem = () => {
             <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 02</div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">De fyra skedena</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Fotboll är inte ett spel — det är fyra. Vi vet exakt vad vi gör i varje skede och vad som triggar nästa.
+              En match består av fyra olika lägen. Vi vet vad vi ska göra i varje läge — och vad som gör att vi byter läge.
             </p>
           </div>
           <PhaseFlow />
@@ -93,14 +93,13 @@ const Hem = () => {
                 <span className="text-muted-foreground">I gyllene zonen.</span>
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                Positionering, press och markering — vi blockerar avslutsytor och styr pressen åt en sida. Andrabollar vinner vi som ett lag.
+                Vi står på rätt plats, jagar bollen åt samma håll och täcker farliga ytor. Inget skott från mitten — vi tvingar dem ut till kanten.
               </p>
             </div>
           </div>
           <PrincipleTeaser
             index="1"
             quote="Förhindra avslut i gyllene zonen — positionering, press, markering."
-            detail="Vi styr pressen åt en sida och håller kompakt form genom överflyttning, centrering, upp- och nedflyttning. Bollen ska aldrig gå genom mitten."
             to="/forsvar"
           />
         </div>
@@ -112,7 +111,6 @@ const Hem = () => {
           <PrincipleTeaser
             index="1"
             quote="Avslut i gyllene zonen — alltid med övertal."
-            detail="Rättvänd spelare i spelyta 2–3 löper i djupled, hittar assistytan och passar in i gyllene zonen. Övertalighet i gyllene zonen och assistytan är målet."
             to="/anfall"
           />
           <div className="relative order-first lg:order-last">
@@ -124,7 +122,7 @@ const Hem = () => {
                 <span className="text-muted-foreground">bredd och djup.</span>
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                De fyra grundförutsättningarna är vårt ramverk. Vi söker rättvänd spelare, vänder spelet och accelererar mot gyllene zonen.
+                Fyra enkla saker styr vårt anfall: erbjud passning (spelbarhet), stå rätt avstånd från varandra, använd hela planens bredd och hota bakom backlinjen (djup).
               </p>
             </div>
           </div>
@@ -138,13 +136,12 @@ const Hem = () => {
             <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 05</div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">När spelet stannar</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hörnor och frisparkar avgör matcher. Vi gissar inte — vi har regler.
+              Hörnor och frisparkar avgör matcher. Vi chansar inte — alla vet sin uppgift.
             </p>
           </div>
           <PrincipleTeaser
             index="1"
             quote="Hybridförsvar: zon i boxen + två strikta man-markeringar."
-            detail="Vi täcker farliga ytor med zon — och låser de två största lufthoten man-mot-man. Offensivt: leverera till gyllene zonen via assistytan."
             to="/fasta"
             ctaLabel="Se alla fasta situationer"
           />
@@ -158,7 +155,7 @@ const Hem = () => {
             <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 06</div>
             <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Roller & verktyg</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Spelmodellen lever genom spelarna och tränarteamets verktyg.
+              Det här är spelarnas uppgifter på planen och tränarnas verktyg vid sidan om.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
