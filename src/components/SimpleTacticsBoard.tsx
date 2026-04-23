@@ -51,9 +51,10 @@ const buildPieces = (formation: FormationKey, withAway: boolean): Piece[] => {
   const home: Piece[] = FORMATIONS[formation].map((p, i) => ({
     id: `h-${i}`,
     team: "home",
-    label: p.label,
+    label: String(i + 1),
     x: p.x,
     y: p.y,
+    name: p.label,
   }));
   // Mirror formation for opponents (4-3-3 default)
   const away: Piece[] = withAway

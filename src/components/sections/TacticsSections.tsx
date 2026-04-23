@@ -4,7 +4,6 @@
  * Behavior, copy, and visual structure are preserved exactly.
  */
 import { useState } from "react";
-import InteractiveFootballPitch, { Formation } from "@/components/InteractiveFootballPitch";
 import TriggerCard from "@/components/TriggerCard";
 import CoachCue from "@/components/CoachCue";
 import RoleCard from "@/components/RoleCard";
@@ -22,10 +21,9 @@ import ImageLinkCard from "@/components/ImageLinkCard";
 import MatchExampleTimeline from "@/components/MatchExampleTimeline";
 import TrainingVideo from "@/components/TrainingVideo";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
-import gulOverbelastning from "@/assets/gul-overbelastning.png";
-import gronSpelvandning from "@/assets/gron-spelvandning.png";
 import offensivHorna from "@/assets/offensiv-horna.png";
 import defensivHorna from "@/assets/defensiv-horna.png";
 import formation433 from "@/assets/formation-433.png";
@@ -57,39 +55,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
 };
 
 /* ── Formation presets ── */
-const formations: Formation[] = [
-  {
-    name: "4-3-3 Försvar",
-    players: [
-      { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
-      { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
-      { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
-      { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
-      { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
-      { id: "6", x: 50, y: 55, role: "6:a", color: "accent" as const },
-      { id: "7", x: 30, y: 58, role: "8:a", color: "primary" as const },
-      { id: "8", x: 70, y: 58, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
-      { id: "10", x: 18, y: 35, role: "VY", color: "primary" as const },
-      { id: "11", x: 82, y: 35, role: "HY", color: "primary" as const },
-    ],
-  },
-  {
-    name: "3-2-2-3 Anfall",
-    players: [
-      { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
-      { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
-      { id: "5", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
-      { id: "2", x: 45, y: 68, role: "VYB (inv.)", color: "accent" as const },
-      { id: "6", x: 55, y: 68, role: "6:a", color: "accent" as const },
-      { id: "7", x: 32, y: 48, role: "8:a", color: "primary" as const },
-      { id: "8", x: 68, y: 48, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
-      { id: "10", x: 12, y: 28, role: "VY", color: "primary" as const },
-      { id: "11", x: 88, y: 28, role: "HY", color: "primary" as const },
-    ],
-  },
-];
+/* Formation-presets borttagna — taktiktavlan ligger nu på /taktiktavla */
 
 /* ── Accordion section ── */
 export const AccordionSection = ({ title, children }: { title: string; children: React.ReactNode }) => {
@@ -112,68 +78,41 @@ export const AccordionSection = ({ title, children }: { title: string; children:
 /* ══════════════════════════════════════════════════════════════ */
 export const GenerelltSection = () => (
   <section id="generellt">
-    <SectionHeader badge="Generellt" title="Vår spelkarta" subtitle="Som trafikljus och växellådor: den visar oss när vi ska sakta ner, bygga eller köra full fart." />
-    <div className="grid md:grid-cols-3 gap-5 mb-10">
+    <SectionHeader badge="Generellt" title="Vår spelkarta" subtitle="Fyra grundförutsättningar styr varje beslut: spelbarhet, spelavstånd, spelbredd, speldjup." />
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
       {[
-        { color: "zone-defense", label: "RÖD", text: "Vi kan inte spelvända. Vi har inte kontroll.", image: null as string | null, placeholder: true },
-        { color: "zone-midfield", label: "GUL", text: "Vi börjar överbelasta (flyttar motståndare till vald kant).", image: gulOverbelastning, placeholder: false },
-        { color: "zone-attack", label: "GRÖN", text: "Vi har skapat oordning och är i fas att spelvända för attack mot deras box.", image: gronSpelvandning, placeholder: false },
-      ].map((zone) => (
-        <div key={zone.label} className="space-y-3">
-          <div className={`rounded-xl p-5 border border-${zone.color}/25 bg-${zone.color}/5 card-hover bg-card/80 backdrop-blur-sm`}>
-            <div className="flex items-center gap-3 mb-3">
-              <div className={`w-3.5 h-3.5 rounded-full bg-${zone.color}`} />
-              <h4 className={`text-xs font-bold uppercase tracking-[0.15em] text-${zone.color}`}>{zone.label}</h4>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{zone.text}</p>
-          </div>
-          {zone.placeholder ? (
-            <ImagePlaceholder title={`${zone.label} fas`} description={`Bild/film: ${zone.label} situation`} compact />
-          ) : (
-            <ExpandableImage src={zone.image!} alt={`${zone.label} fas`} />
-          )}
+        { title: "Spelbarhet", text: "Erbjud passningsalternativ — alltid minst två linjer framåt och en bakåt." },
+        { title: "Spelavstånd", text: "Rätt avstånd mellan spelare: nära nog för stöd, långt nog för att inte täcka samma yta." },
+        { title: "Spelbredd", text: "Använd hela planens bredd så motståndaren tvingas sträcka ut sin form." },
+        { title: "Speldjup", text: "Hota bakom backlinjen och erbjud djupledspassningar — det öppnar ytor framför." },
+      ].map((g) => (
+        <div key={g.title} className="bg-card/85 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm card-hover">
+          <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">{g.title}</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed">{g.text}</p>
         </div>
       ))}
     </div>
 
-    <div className="grid md:grid-cols-2 gap-6 mb-10">
-      <div className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover">
-        <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4">Pseudokontrings-processen</h4>
-        <ul className="space-y-2.5 text-sm text-muted-foreground">
-          <li>• <strong className="text-foreground font-medium">GUL:</strong> Överbelasta en kant</li>
-          <li>• <strong className="text-foreground font-medium">GRÖN:</strong> 3:a centralt rättvänd → spelvändning</li>
-          <li>• <strong className="text-foreground font-medium">Full fart</strong> → överlapp/underlapp → kortsida → cutback → gyllene zonen</li>
-        </ul>
-        <TrainingVideo title="Pseudokontring — hela sekvensen" url="https://www.youtube.com/shorts/-hVrA26JJw0" className="mt-5" />
-      </div>
-      <div className="space-y-4">
-        <div className="bg-card/85 backdrop-blur-sm rounded-xl p-5 border border-border shadow-sm card-hover">
-          <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4">Cue "1–2–3"</h4>
-          <ul className="space-y-3 text-sm text-muted-foreground">
-            {[
-              { n: "1", color: "zone-defense", label: "SÄKRA", text: "Spela enkelt/säkert. Behåll kontroll." },
-              { n: "2", color: "zone-midfield", label: "FÖRBÄTTRA", text: "Skapa bättre vinkel/läge inom spelytan." },
-              { n: "3", color: "zone-attack", label: "VÄXLA / VÄNDLÄGE", text: "Vänd/accelerera: framåt, sök assistytan." },
-            ].map((cue) => (
-              <li key={cue.n} className="flex items-start gap-3">
-                <span className={`w-6 h-6 rounded-full bg-${cue.color}/15 text-${cue.color} text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5`}>{cue.n}</span>
-                <span><strong className="text-foreground font-medium">{cue.label}</strong> – {cue.text}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <ImagePlaceholder title="Växla / Vändläge" description="Bild/film: Cue 3 i praktiken" compact />
-      </div>
+    <div className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm mb-10">
+      <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4">Beslutslogik — så agerar vi när vi har bollen</h4>
+      <ol className="space-y-3 text-sm text-muted-foreground list-decimal list-inside">
+        <li><strong className="text-foreground font-medium">Sök rättvänd spelare</strong> — den som ser planen är vår nästa station.</li>
+        <li><strong className="text-foreground font-medium">Spelvändning när vinkeln finns</strong> — flytta bollen till motsatt sida för att skapa fri yta.</li>
+        <li><strong className="text-foreground font-medium">Full fart framåt</strong> — när vi är rättvända i progression: hota djupet och assistytan.</li>
+        <li><strong className="text-foreground font-medium">Avslut i gyllene zonen</strong> — alltid via assistytan, helst med övertal.</li>
+      </ol>
+      <TrainingVideo title="Spelvändning → acceleration" url="https://www.youtube.com/shorts/-hVrA26JJw0" className="mt-5" />
     </div>
 
     <Matetal className="mb-8" />
 
     <AccordionSection title="Visa G/IG-mallar — Generellt">
       <div className="space-y-3">
-        <GIGTemplate cueTitel="RÖD" definition="Vi kan inte spelvända. Vi har inte kontroll." narAnvands="När motståndaren pressar högt och vi saknar passningsvägar framåt." beslutstrigger="Cue 1 (SÄKRA)" handling="Spela enkelt/säkert. Ingen vändning. Behåll kontroll." gVillkor="Inga bollförluster i egen spelyta" igVillkor="Bollförlust som leder till skottchans" />
-        <GIGTemplate cueTitel="GUL" definition="Vi börjar överbelasta (flyttar motståndare till vald kant)." narAnvands="När vi har kontroll men inte kan spelvända ännu." beslutstrigger="Cue 2 (FÖRBÄTTRA)" handling="Överbelasta en kant. Flytta motståndare." gVillkor="Överbelastning skapar GRÖN situation" igVillkor="Motståndare återtar position" />
-        <GIGTemplate cueTitel="GRÖN" definition="Vi har skapat oordning och är i fas att spelvända." narAnvands="När motståndaren är oorganiserad och vi har rättvänd spelare centralt." beslutstrigger="Cue 3 (VÄXLA / VÄNDLÄGE)" handling="Vänd/accelerera framåt, sök assistytan. Spelvändning → full fart." gVillkor="Spelvändning genomförd → skottchans inom 10s" igVillkor="GRÖN identifierad men ingen spelvändning" />
-        <GIGTemplate cueTitel="Pseudokontring (process)" definition="Gul: överbelasta → Grön: spelvänd → full fart → kortsida → cutback → gyllene zonen." narAnvands="När GUL övergår till GRÖN." beslutstrigger="Sekventiellt: GUL → GRÖN → Cue 3" handling="1. Överbelasta kant. 2. 3:a centralt rättvänd. 3. Spelvändning. 4. Överlapp/underlapp. 5. Cutback." gVillkor="Hela sekvensen genomförd → cutback" igVillkor="Sekvens avbruten före spelvändning" />
+        <GIGTemplate cueTitel="Spelbarhet" definition="Erbjud passningsalternativ i flera riktningar." narAnvands="Hela bollinnehavsfasen." handling="Minst två spelbara linjer framåt och en bakåt. Rörelse utan boll." gVillkor="Bollförare har ≥ 2 framåtalternativ" igVillkor="Bollförare isolerad utan spelbara linjer" />
+        <GIGTemplate cueTitel="Rättvänd mottagning" definition="Vi söker spelare som kan vända upp och se planen framåt." narAnvands="Progression och uppbyggnad." handling="Spelaren öppnar kroppen vid mottagning. Stödspelare erbjuder vinkel." gVillkor="Rättvänd spelare hittar djupledspassning" igVillkor="Mottagning med rygg mot mål utan stöd" />
+        <GIGTemplate cueTitel="Spelvändning" definition="Flytta bollen till motsatt sida för att skapa övertal/fri yta." narAnvands="När vi har kontroll men en sida är låst." handling="Bas (6:a + inverterad YB) hittar fri sida via 1–2 passningar." gVillkor="Spelvändning genomförd → progression i ny korridor" igVillkor="Tappad boll i vändningen" />
+        <GIGTemplate cueTitel="Avslut i gyllene zonen" definition="Avslut centralt framför mål med övertal, oftast via assistytan." narAnvands="Sista tredjedelen." handling="Cutback från kortlinjen eller löp i djupled från inre korridor." gVillkor="Avslut från gyllene zonen med övertal" igVillkor="Avslut långt utifrån utan kvalitet" />
       </div>
     </AccordionSection>
   </section>
@@ -346,13 +285,13 @@ export const AnfallsspelSection = () => (
     </div>
 
     <div className="bg-card/85 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-sm mb-12">
-      <SectionHeader badge="Spelytor" title="Spelytor" subtitle="Planen är fyra korridorer. Vi vill veta var bollen är, och vad vi ska göra i just den korridoren." className="mb-8" />
+      <SectionHeader badge="Spelytor" title="Spelytor (dynamiska)" subtitle="Spelytorna är ytorna mellan motståndarens lagdelar — de flyttar sig när motståndaren flyttar sig. Vi söker rättvänd mottagning i ytan mellan deras led." className="mb-8" />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { name: "Utgångsyta", desc: "Här startar vi – nära vår målvakt och våra första passningar.", bg: "bg-muted/40", border: "border-border" },
-          { name: "Spelyta 1", desc: "Här bygger vi upp och letar nästa passning framåt.", bg: "bg-primary/3", border: "border-primary/15" },
-          { name: "Spelyta 2", desc: "Här i mitten vill vi spela oss förbi och komma loss.", bg: "bg-primary/6", border: "border-primary/20" },
-          { name: "Spelyta 3", desc: "Nära deras mål – här vill vi skapa chans och avslut.", bg: "bg-accent/8", border: "border-accent/20" },
+          { name: "Utgångsyta", desc: "Bakom motståndarens första press — här startar uppbyggnaden hos MV/backar.", bg: "bg-muted/40", border: "border-border" },
+          { name: "Spelyta 1", desc: "Mellan deras anfallare och mittfält — vi spelar oss förbi första presslinjen.", bg: "bg-primary/3", border: "border-primary/15" },
+          { name: "Spelyta 2", desc: "Mellan deras mittfält och backlinje — här söker vi rättvänd mottagning för spelvändning.", bg: "bg-primary/6", border: "border-primary/20" },
+          { name: "Spelyta 3", desc: "Bakom deras backlinje — här hotar vi djupet och söker gyllene zonen.", bg: "bg-accent/8", border: "border-accent/20" },
         ].map((zone) => (
           <div key={zone.name} className={`${zone.bg} rounded-xl p-4 border ${zone.border} card-hover`}>
             <h5 className="text-sm font-semibold text-foreground mb-1">{zone.name}</h5>
@@ -374,24 +313,36 @@ export const AnfallsspelSection = () => (
     </div>
 
     <div className="mb-10">
-      <h3 className="text-lg font-bold text-foreground mb-1.5">Grön spelare → Acceleration</h3>
-      <p className="text-sm text-muted-foreground mb-5">Spelvändning centralt utlöser full fart mot gyllene zonen.</p>
+      <h3 className="text-lg font-bold text-foreground mb-1.5">Spelvändning → acceleration</h3>
+      <p className="text-sm text-muted-foreground mb-5">När en rättvänd spelare i progression vänder spelet utlöser det full fart mot gyllene zonen.</p>
       <div className="mb-6">
         <TrainingVideo title="3-2-2-3 Anfallsspel förklarat" url="https://www.youtube.com/shorts/yGyPL4PZD_Q" duration="0:59" />
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        <InteractiveFootballPitch formations={formations} title="Interaktiv Taktiktavla" subtitle="Tryck och dra för att flytta spelare" showZones />
+        <Link
+          to="/taktiktavla"
+          className="group relative bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover flex flex-col justify-center min-h-[280px]"
+        >
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">Verktyg</div>
+          <h4 className="text-xl font-black text-foreground mb-2 tracking-tight">Öppna taktiktavlan</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+            Dra spelare med siffror 1–11, byt formation, visa korridorer och resonera kring sekvensen i en enkel pluppmatta.
+          </p>
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all">
+            Öppna taktiktavla <ArrowRight className="w-4 h-4" />
+          </span>
+        </Link>
         <div className="space-y-4">
           <div className="bg-card/85 backdrop-blur-sm rounded-xl p-5 border border-accent/20 shadow-sm card-hover">
             <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-accent-foreground mb-3">Anfallssekvens</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li>1. Grön spelare centralt slår spelvändning</li>
+              <li>1. Rättvänd spelare centralt slår spelvändning</li>
               <li>2. Full fart i inre/yttre korridor</li>
               <li>3. Överlapp/underlapp mot kortsidan</li>
               <li>4. Cutback till gyllene zonen</li>
             </ul>
           </div>
-          <TriggerCard number={1} condition="rättvänd i spelyta 2" action="spelvändning → full fart via inre korridor" variant="attack" />
+          <TriggerCard number={1} condition="rättvänd mellan motståndarens lagdelar" action="spelvändning → full fart via inre korridor" variant="attack" />
           <TriggerCard number={2} condition="inre korridor låst" action="spelvänd via 6:a + inverterad → full fart" variant="attack" />
         </div>
       </div>
@@ -403,7 +354,7 @@ export const AnfallsspelSection = () => (
       <div className="space-y-3">
         <GIGTemplate cueTitel="3-2-2-3 Struktur" definition="Varje linje har tydliga uppgifter. VM = 8:a, HM = 7:a." narAnvands="Alltid i anfallsspelet." handling="Backlinje (3): uppbyggnad. Bas (2): 6:a + inv. YB. Offensiva MF (2): 8:a + 7:a. Högsta (3): Yttrar + 9:a." gVillkor="Samtliga linjer besatta vid uppspel" igVillkor="Linjer saknar spelare → för stor distans" />
         <GIGTemplate cueTitel="Inre & Yttre Korridorer" definition="Vi spelar alltid via inre korridor när möjligt." narAnvands="Alltid i anfallsspelet." handling="Prioritera passningar via inre korridor. Yttre = sista utväg." gVillkor="≥ 60% progressioner via inre korridor" igVillkor="Majoriteten av progressioner via yttre" />
-        <GIGTemplate cueTitel="Grön spelare → Acceleration" definition="Spelvändning centralt utlöser full fart mot gyllene zonen." narAnvands="När GRÖN identifieras." beslutstrigger="Cue 3 (VÄXLA / VÄNDLÄGE)" handling="1. Spelvändning. 2. Full fart. 3. Överlapp/underlapp. 4. Cutback till gyllene zonen." gVillkor="Cutback till gyllene zonen genomförd" igVillkor="GRÖN identifierad men ingen acceleration" />
+        <GIGTemplate cueTitel="Spelvändning → acceleration" definition="Rättvänd spelare centralt vänder spelet och utlöser full fart mot gyllene zonen." narAnvands="När rättvänd mottagning skapats i progression." handling="1. Spelvändning. 2. Full fart. 3. Överlapp/underlapp. 4. Cutback till gyllene zonen." gVillkor="Cutback till gyllene zonen genomförd" igVillkor="Rättvänd spelare hittad men ingen acceleration" />
       </div>
     </AccordionSection>
   </section>
