@@ -1,24 +1,28 @@
 import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import { OmstallningAnfallSection } from "@/components/sections/TacticsSections";
+import PrincipleBlock from "@/components/PrincipleBlock";
 
 const OmstallningAnfall = () => (
   <>
     <PageHero
       eyebrow="Omställning till anfall"
-      title="Bollvinst → Framåt"
-      description="När vi vinner bollen sover vi inte — vi tittar framåt direkt."
+      title="Bollvinst → utnyttja obalansen"
+      description="Snabba omställningspass eller spelvändningar — utnyttja motståndarens obalans. Press- och brytteknik skapar offensiva omställningar."
     />
+    <div className="container mb-16">
+      <PrincipleBlock phase="omstallning-anfall" showSource />
+    </div>
     <div className="container pb-24 space-y-24">
       <section id="kontring" className="scroll-mt-24">
-        <SectionHeader badge="01 · Kontring" title="Direkt kontring" subtitle="Rättvänd → spelvändning → full fart framåt inom 3 sekunder." />
+        <SectionHeader badge="01 · Kontring" title="Direkt kontring" subtitle="Rättvänd spelare → spelvändning eller djupledspass → full fart mot gyllene zonen." />
         <OmstallningAnfallSection />
       </section>
       <section id="uppbyggnad" className="scroll-mt-24">
-        <SectionHeader badge="02 · Uppbyggnad" title="Starta speluppbyggnad" subtitle="Om kontring inte är möjlig — säkra bollen och bygg lugnt från botten." />
+        <SectionHeader badge="02 · Uppbyggnad" title="Starta speluppbyggnad" subtitle="Om kontring inte är möjlig — säkra bollen, etablera de fyra grundförutsättningarna och bygg lugnt." />
         <div className="bg-card/85 backdrop-blur-sm rounded-lg p-6 border border-border">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            När bollvinst sker djupt i egen halva eller mot organiserat motstånd: säkra första passningen, etablera 3-2-2-3-strukturen och påbörja uppbyggnad.
+          <p className="text-sm text-foreground/85 leading-relaxed">
+            När bollvinst sker djupt i egen halva eller mot organiserat motstånd: säkra första passningen, etablera <em>spelbarhet, spelavstånd, spelbredd och speldjup</em> — och påbörja uppbyggnad enligt principerna i <strong>Uppbyggnadsspel</strong>.
           </p>
         </div>
       </section>
