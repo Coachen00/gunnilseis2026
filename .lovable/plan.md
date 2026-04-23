@@ -1,71 +1,82 @@
 
 
-# Mörkt premium-tema + språkstädning ("rum" → "korridor")
+# Ny navigation: "Skeden" + "Match" med undermenyer
 
-Två förändringar i ett svep: byt hela visuella temat till en mörk, minimalistisk och vassare design, och rensa bort ordet "rum" till förmån för "korridor" överallt.
+## Mål
+Strukturera om toppmenyn så att alla taktiska sidor samlas under **Skeden** (med faser och underfaser), och lägg till en ny sektion **Match** för matchnära innehåll.
 
-## 1. Språk: bort med "rum"
+## 1. Ny menystruktur
 
-Endast två ställen använder "rum" idag:
+Toppnav blir (ersätter dagens platta lista):
 
-- **`src/pages/Hem.tsx`** (rad 103) — "Vi delar planen i inre och yttre rum…" → **"Vi delar planen i inre och yttre korridorer…"**
-- **`src/components/sections/TacticsSections.tsx`** (rad 349) — Spelytor-subtitle: "Planen är som fyra rum… i just det rummet." → **"Planen är fyra korridorer. Vi vill veta var bollen är, och vad vi ska göra i just den korridoren."**
-
-(Övriga 71 träffar på "rum" är false positives — `crumb`, `serum`, etc.)
-
-## 2. Nytt visuellt tema — "Midnight Pitch"
-
-Riktning: **mörkt, minimalistiskt, högt kontrast, lugnt**. Mindre färg, mer typografi, vassare kanter.
-
-### Färgpalett (ersätter nuvarande ljust beige tema)
 ```text
-Bakgrund         #0A0E14   nästan svart, en aning blå
-Yta (kort)       #11161E   subtilt upphöjd
-Yta hover        #161C26
-Border           #1F2630   hårfin, knappt synlig
-Text primär      #F4F5F7   varm vit, ej ren #fff
-Text sekundär    #8A93A2   sval grå
-Text muted       #5A6373
-Accent (Gold)    #E8C547   bibehålls — men används mycket sparsamt
-Primary (Navy)   #3B6FB8   ljusare för kontrast mot mörk bg
-Destructive      #E5484D
+Hem · Spelidé · Skeden ▾ · Match ▾ · Roller & Trupp · Verktyg
 ```
 
-Borttaget: gradient-mesh i flera färger, varma toner, glow-effekter. Behålls: Gunnilse Gold som **enda** accentfärg (siffror, scroll-cue, nyckelord, hover-underlines).
+### Skeden ▾ (dropdown med 4 fasgrupper + fasta)
+```text
+ANFALL                          → /anfall
+  ├ Speluppbyggnad              → /anfall#speluppbyggnad
+  ├ Skapa                       → /anfall#skapa
+  └ Avsluta                     → /anfall#avsluta
 
-### Designprinciper
-- **Hairline borders** (`1px solid #1F2630`) istället för shadows
-- **Inga gradient-fyllda kort** — flata mörka ytor
-- **Typografi som hjälte**: större kontrast mellan rubrik (vit) och brödtext (grå). Tightare letter-spacing på rubriker (`-0.04em`).
-- **Mono-accent**: använd `font-mono` på siffror ("01", "02", KPI-värden) för en teknisk/redaktionell känsla.
-- **Hover = underline-svep i Gold**, inte färgskift på hela knappen.
-- **Borttagna mjuka rundningar**: `rounded-2xl` → `rounded-lg` (8px) eller `rounded-none` på vissa element för vassare uttryck.
+OMSTÄLLNING TILL FÖRSVAR        → /omstallning-forsvar
+  ├ Direkt (motpress)           → /omstallning-forsvar#direkt
+  └ Tillbaka till kontroll      → /omstallning-forsvar#kontroll
 
-### Bakgrund (AnimatedBackground)
-- Gradient-mesh tonas ner från opacity `0.18` → `0.06`
-- Partiklar: från 24 → 12, mindre och bara i Gold (knappt synliga)
-- Blobbar: behåll men byt till djup-blå/svart i stället för Navy/Gold/Secondary
-- Lägg till en subtil **noise/grain-overlay** (SVG turbulence, opacity 0.03) — ger filmisk premium-känsla
+FÖRSVAR                         → /forsvar
+  ├ Högt försvar                → /forsvar#hogt
+  ├ Medelhögt försvar           → /forsvar#medel
+  └ Lågt försvar                → /forsvar#lagt
 
-### Komponenter som justeras
-- `src/index.css` — alla CSS-variabler för dark mode som default (ingen `dark:`-prefix behövs, hela appen blir mörk)
-- `tailwind.config.ts` — uppdatera `gunnilse`-tokens, lägg till `surface`/`surface-hover` semantiska färger
-- `src/components/AnimatedBackground.tsx` — ny dämpad version
-- `src/components/TopNav.tsx` — mörkare bg, tunnare border, Gold underline-indikator i stället för fylld pill
-- `src/components/ChapterNumber.tsx` — outline-tal blir Gold med 15% opacity, font-mono
-- `src/components/PrincipleTeaser.tsx` — flat mörk yta, hairline border, Gold accent endast på "Se alla 5 →"-länken
-- `src/components/PageHero.tsx` — större typografi, mer luft, ingen gradient
-- `src/components/Footer.tsx` — tonas ner till nästan-svart
-- `src/components/SectionHeader.tsx` — eyebrow blir uppercase mono i Gold
+OMSTÄLLNING TILL ANFALL         → /omstallning-anfall
+  ├ Kontring                    → /omstallning-anfall#kontring
+  └ Starta speluppbyggnad       → /omstallning-anfall#uppbyggnad
 
-## Tekniska detaljer
-- **Filer redigerade:** `src/index.css`, `tailwind.config.ts`, `src/components/AnimatedBackground.tsx`, `src/components/TopNav.tsx`, `src/components/ChapterNumber.tsx`, `src/components/PrincipleTeaser.tsx`, `src/components/PageHero.tsx`, `src/components/Footer.tsx`, `src/components/SectionHeader.tsx`, `src/pages/Hem.tsx`, `src/components/sections/TacticsSections.tsx`.
-- **Inga nya dependencies.** SVG-grain läggs inline i `AnimatedBackground`.
-- **Behålls oförändrat:** routing, alla sidors innehåll/struktur, taktiska komponenter (FootballPitch, GIGTemplate etc. — de ärver färger via CSS-variabler), auth, alla verktygssidor.
-- **Memory-uppdatering:** Core-regeln "Theme: Gunnilse IS brand (Navy, Gold, White)" uppdateras till "Theme: Midnight Pitch — mörk minimalistisk, Gold som enda accent".
+FASTA — FÖRSVAR                 → /fasta/forsvar
+  ├ Hörnor · Inläggsfrisparkar · Inkast · Avspark
 
-## Vad du får
-- En mycket mörkare, lugnare och vassare sida — premium-känsla i stil med moderna sport- och designportföljer.
-- Konsekvent språk: "korridor" överallt, aldrig "rum".
-- Samma struktur, samma innehåll, samma funktionalitet — bara ett dramatiskt nytt uttryck.
+FASTA — ANFALL                  → /fasta/anfall
+  ├ Hörnor · Inläggsfrisparkar · Inkast · Avspark
+```
+
+### Match ▾ (ny sektion)
+```text
+Förra matchen                   → /match/forra
+Veckans match                   → /match/kommande
+Samlade tankar (sista perioden) → /match/reflektioner
+```
+
+## 2. Sid- & route-förändringar
+
+**Nya routes:**
+- `/omstallning-forsvar` — egen sida (idag en sektion på `/forsvar`)
+- `/omstallning-anfall` — egen sida (idag en sektion på `/anfall`)
+- `/fasta/forsvar` och `/fasta/anfall` — splittar `/fasta` i defensivt/offensivt
+- `/match/forra`, `/match/kommande`, `/match/reflektioner` — tre nya matchsidor (placeholder-innehåll med tydlig struktur, redo att fyllas)
+
+**Anchors på befintliga sidor:**
+- `/anfall` får `id="speluppbyggnad"`, `id="skapa"`, `id="avsluta"` på respektive sektion
+- `/forsvar` får `id="hogt"`, `id="medel"`, `id="lagt"` på respektive höjd-sektion
+
+**Behålls oförändrat:** Hem, Spelidé, Roller & Trupp, Verktyg, alla print-sidor, auth.
+
+## 3. Komponenter
+
+**Ny:** `NavDropdown.tsx` — desktop hover-/klick-dropdown med kolumner (Skeden = 5 kolumner, Match = 1 kolumn). Mörkt tema, hairline border, Gold underline på aktiv grupp.
+
+**Uppdateras:**
+- `TopNav.tsx` — ersätt platt navItems-array med strukturerad `navTree` (top-items + barn). Desktop = `NavDropdown`, mobil = expanderbar accordion-lista.
+- `App.tsx` — registrera 7 nya routes.
+
+**Nya sidor (skelett, klara att fyllas):**
+- `src/pages/OmstallningForsvar.tsx`, `OmstallningAnfall.tsx` — flyttar/återanvänder befintliga sektioner från `TacticsSections.tsx`.
+- `src/pages/FastaForsvar.tsx`, `FastaAnfall.tsx` — splittar nuvarande `Fasta.tsx`.
+- `src/pages/MatchForra.tsx`, `MatchKommande.tsx`, `MatchReflektioner.tsx` — nya sidor med `PageHero` + tomma sektioner per underrubrik.
+
+## 4. Vad du får
+- En tydlig hierarki: **Skeden** samlar all spel-taktik, **Match** samlar matchnära reflektion.
+- Dropdown-meny med faser + underfaser direkt synliga — snabb navigation utan att klicka in på sidor först.
+- Befintligt innehåll behålls och länkas in på rätt plats; nya match-sidor är skelett du kan fylla.
+- Konsekvent mörk minimalistisk design — dropdowns följer Midnight Pitch-temat.
 
