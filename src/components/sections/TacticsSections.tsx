@@ -313,24 +313,36 @@ export const AnfallsspelSection = () => (
     </div>
 
     <div className="mb-10">
-      <h3 className="text-lg font-bold text-foreground mb-1.5">Grön spelare → Acceleration</h3>
-      <p className="text-sm text-muted-foreground mb-5">Spelvändning centralt utlöser full fart mot gyllene zonen.</p>
+      <h3 className="text-lg font-bold text-foreground mb-1.5">Spelvändning → acceleration</h3>
+      <p className="text-sm text-muted-foreground mb-5">När en rättvänd spelare i progression vänder spelet utlöser det full fart mot gyllene zonen.</p>
       <div className="mb-6">
         <TrainingVideo title="3-2-2-3 Anfallsspel förklarat" url="https://www.youtube.com/shorts/yGyPL4PZD_Q" duration="0:59" />
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        <InteractiveFootballPitch formations={formations} title="Interaktiv Taktiktavla" subtitle="Tryck och dra för att flytta spelare" showZones />
+        <Link
+          to="/taktiktavla"
+          className="group relative bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover flex flex-col justify-center min-h-[280px]"
+        >
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">Verktyg</div>
+          <h4 className="text-xl font-black text-foreground mb-2 tracking-tight">Öppna taktiktavlan</h4>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+            Dra spelare med siffror 1–11, byt formation, visa korridorer och resonera kring sekvensen i en enkel pluppmatta.
+          </p>
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-primary group-hover:gap-3 transition-all">
+            Öppna taktiktavla <ArrowRight className="w-4 h-4" />
+          </span>
+        </Link>
         <div className="space-y-4">
           <div className="bg-card/85 backdrop-blur-sm rounded-xl p-5 border border-accent/20 shadow-sm card-hover">
             <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-accent-foreground mb-3">Anfallssekvens</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
-              <li>1. Grön spelare centralt slår spelvändning</li>
+              <li>1. Rättvänd spelare centralt slår spelvändning</li>
               <li>2. Full fart i inre/yttre korridor</li>
               <li>3. Överlapp/underlapp mot kortsidan</li>
               <li>4. Cutback till gyllene zonen</li>
             </ul>
           </div>
-          <TriggerCard number={1} condition="rättvänd i spelyta 2" action="spelvändning → full fart via inre korridor" variant="attack" />
+          <TriggerCard number={1} condition="rättvänd mellan motståndarens lagdelar" action="spelvändning → full fart via inre korridor" variant="attack" />
           <TriggerCard number={2} condition="inre korridor låst" action="spelvänd via 6:a + inverterad → full fart" variant="attack" />
         </div>
       </div>
@@ -342,7 +354,7 @@ export const AnfallsspelSection = () => (
       <div className="space-y-3">
         <GIGTemplate cueTitel="3-2-2-3 Struktur" definition="Varje linje har tydliga uppgifter. VM = 8:a, HM = 7:a." narAnvands="Alltid i anfallsspelet." handling="Backlinje (3): uppbyggnad. Bas (2): 6:a + inv. YB. Offensiva MF (2): 8:a + 7:a. Högsta (3): Yttrar + 9:a." gVillkor="Samtliga linjer besatta vid uppspel" igVillkor="Linjer saknar spelare → för stor distans" />
         <GIGTemplate cueTitel="Inre & Yttre Korridorer" definition="Vi spelar alltid via inre korridor när möjligt." narAnvands="Alltid i anfallsspelet." handling="Prioritera passningar via inre korridor. Yttre = sista utväg." gVillkor="≥ 60% progressioner via inre korridor" igVillkor="Majoriteten av progressioner via yttre" />
-        <GIGTemplate cueTitel="Grön spelare → Acceleration" definition="Spelvändning centralt utlöser full fart mot gyllene zonen." narAnvands="När GRÖN identifieras." beslutstrigger="Cue 3 (VÄXLA / VÄNDLÄGE)" handling="1. Spelvändning. 2. Full fart. 3. Överlapp/underlapp. 4. Cutback till gyllene zonen." gVillkor="Cutback till gyllene zonen genomförd" igVillkor="GRÖN identifierad men ingen acceleration" />
+        <GIGTemplate cueTitel="Spelvändning → acceleration" definition="Rättvänd spelare centralt vänder spelet och utlöser full fart mot gyllene zonen." narAnvands="När rättvänd mottagning skapats i progression." handling="1. Spelvändning. 2. Full fart. 3. Överlapp/underlapp. 4. Cutback till gyllene zonen." gVillkor="Cutback till gyllene zonen genomförd" igVillkor="Rättvänd spelare hittad men ingen acceleration" />
       </div>
     </AccordionSection>
   </section>
