@@ -1,82 +1,74 @@
 
 
-# Ny navigation: "Skeden" + "Match" med undermenyer
+# Förtydligande + ny enkel taktiktavla
 
-## Mål
-Strukturera om toppmenyn så att alla taktiska sidor samlas under **Skeden** (med faser och underfaser), och lägg till en ny sektion **Match** för matchnära innehåll.
+## Vad jag gör med bilderna (förtydligat)
 
-## 1. Ny menystruktur
+**Helt nya bilder** — inte bara ramar/färger runtomkring. Varje av de 12 PNG-filerna ritas om från grunden i Midnight Pitch-stil:
 
-Toppnav blir (ersätter dagens platta lista):
+- **Bevaras (informationen):** formationen, spelarpositioner, pilar (passning/löpning/press), zoner, korridorer, principen som visas.
+- **Bevaras (spelarbrickor):** cirklar med nummer/positionsbokstav (VM, MV, IB osv) där det förekommer.
+- **Tas bort:** spelarnamn, gamla färger, gamla bakgrunder, gamla typsnitt, gammal stil.
+- **Ny visuell stil:** mörk plan (#0F1419), hairline-linjer, Gold-spelare hemma, Navy-spelare borta, mono uppercase-etiketter.
 
+Resultat: samma taktiska information, helt nytt utseende, ingen kvar av den gamla bildstilen.
+
+## Ny enklare taktiktavla med flyttbara pluppar
+
+Utöver bildregenereringen bygger jag en **ny, enkel taktiktavla** som ersätter dagens komplexa `Taktiktavla.tsx` (som har ritverktyg, lager, timeline, animationer m.m. — för mycket).
+
+### Den nya tavlan
 ```text
-Hem · Spelidé · Skeden ▾ · Match ▾ · Roller & Trupp · Verktyg
+┌─────────────────────────────────────┐
+│  Formation: [4-3-3] [4-4-2] [3-5-2] │  ← byt formation
+│  [Återställ]  [Rensa namn]          │
+├─────────────────────────────────────┤
+│                                     │
+│         ⬤ Mörk fotbollsplan         │
+│         (Midnight Pitch-stil)       │
+│                                     │
+│         11 Gold-pluppar (hemma)     │
+│         11 Navy-pluppar (motst.)    │
+│         1 vit boll                  │
+│                                     │
+│   → dra med fingret/musen           │
+│   → dubbelklick = döp om            │
+│                                     │
+└─────────────────────────────────────┘
 ```
 
-### Skeden ▾ (dropdown med 4 fasgrupper + fasta)
-```text
-ANFALL                          → /anfall
-  ├ Speluppbyggnad              → /anfall#speluppbyggnad
-  ├ Skapa                       → /anfall#skapa
-  └ Avsluta                     → /anfall#avsluta
+### Funktioner (medvetet få)
+- **Dra spelare** med mus/touch — flyter mjukt, snäpper inte.
+- **Välj formation** för hemmalaget (4-3-3, 4-4-2, 3-5-2, 4-2-3-1).
+- **Visa/dölj motståndare** (toggle).
+- **Visa/dölj korridorer** (toggle, samma 5 korridorer som i resten av sidan).
+- **Dubbelklicka en plupp** → liten input för att döpa (annars bara nummer).
+- **Återställ** → tillbaka till vald formations grundpositioner.
 
-OMSTÄLLNING TILL FÖRSVAR        → /omstallning-forsvar
-  ├ Direkt (motpress)           → /omstallning-forsvar#direkt
-  └ Tillbaka till kontroll      → /omstallning-forsvar#kontroll
+### Vad den INTE har (avsiktligt borttaget)
+- Inga ritverktyg (linjer, vågor, rektanglar)
+- Ingen timeline / animationer / play-knapp
+- Inga lager-toggles utöver korridorer + motståndare
+- Ingen koner-meny
+- Ingen zoom-läge
 
-FÖRSVAR                         → /forsvar
-  ├ Högt försvar                → /forsvar#hogt
-  ├ Medelhögt försvar           → /forsvar#medel
-  └ Lågt försvar                → /forsvar#lagt
+Det är en **renodlad pluppmatta** för snabb taktiksnack — inte en komplett illustrator.
 
-OMSTÄLLNING TILL ANFALL         → /omstallning-anfall
-  ├ Kontring                    → /omstallning-anfall#kontring
-  └ Starta speluppbyggnad       → /omstallning-anfall#uppbyggnad
+## Genomförande
 
-FASTA — FÖRSVAR                 → /fasta/forsvar
-  ├ Hörnor · Inläggsfrisparkar · Inkast · Avspark
+1. **Generera 12 nya bilder** (Gemini 3 Pro Image) → ersätter filerna i `src/assets/` enligt stilguiden i förra planen. Visuell QA per bild.
+2. **Skapa `src/components/SimpleTacticsBoard.tsx`** — ny komponent med flyttbara pluppar (Framer Motion `drag`, samma teknik som `InteractiveFootballPitch.tsx` men förenklad och med båda lagen + ball).
+3. **Skriv om `src/pages/Taktiktavla.tsx`** — ersätt nuvarande tunga implementation med `<SimpleTacticsBoard />` + en kort instruktionsruta.
+4. **Behåll oförändrat:** routing, alla andra sidor, navigation, auth.
 
-FASTA — ANFALL                  → /fasta/anfall
-  ├ Hörnor · Inläggsfrisparkar · Inkast · Avspark
-```
+## Tekniska detaljer
+- Bilder: använder `lovable_ai.py` med `--image --model google/gemini-3-pro-image-preview`, 1024×1280 px, sparar över befintliga filer i `src/assets/`.
+- Tavlan: bygger på Framer Motion (redan installerad), inga nya beroenden.
+- Pluppar: 32×32 px, hairline border, Gold/Navy fyllning, mono-siffror — matchar Midnight Pitch.
+- Touch-stöd: `dragMomentum={false}`, `touch-none` på containern.
 
-### Match ▾ (ny sektion)
-```text
-Förra matchen                   → /match/forra
-Veckans match                   → /match/kommande
-Samlade tankar (sista perioden) → /match/reflektioner
-```
-
-## 2. Sid- & route-förändringar
-
-**Nya routes:**
-- `/omstallning-forsvar` — egen sida (idag en sektion på `/forsvar`)
-- `/omstallning-anfall` — egen sida (idag en sektion på `/anfall`)
-- `/fasta/forsvar` och `/fasta/anfall` — splittar `/fasta` i defensivt/offensivt
-- `/match/forra`, `/match/kommande`, `/match/reflektioner` — tre nya matchsidor (placeholder-innehåll med tydlig struktur, redo att fyllas)
-
-**Anchors på befintliga sidor:**
-- `/anfall` får `id="speluppbyggnad"`, `id="skapa"`, `id="avsluta"` på respektive sektion
-- `/forsvar` får `id="hogt"`, `id="medel"`, `id="lagt"` på respektive höjd-sektion
-
-**Behålls oförändrat:** Hem, Spelidé, Roller & Trupp, Verktyg, alla print-sidor, auth.
-
-## 3. Komponenter
-
-**Ny:** `NavDropdown.tsx` — desktop hover-/klick-dropdown med kolumner (Skeden = 5 kolumner, Match = 1 kolumn). Mörkt tema, hairline border, Gold underline på aktiv grupp.
-
-**Uppdateras:**
-- `TopNav.tsx` — ersätt platt navItems-array med strukturerad `navTree` (top-items + barn). Desktop = `NavDropdown`, mobil = expanderbar accordion-lista.
-- `App.tsx` — registrera 7 nya routes.
-
-**Nya sidor (skelett, klara att fyllas):**
-- `src/pages/OmstallningForsvar.tsx`, `OmstallningAnfall.tsx` — flyttar/återanvänder befintliga sektioner från `TacticsSections.tsx`.
-- `src/pages/FastaForsvar.tsx`, `FastaAnfall.tsx` — splittar nuvarande `Fasta.tsx`.
-- `src/pages/MatchForra.tsx`, `MatchKommande.tsx`, `MatchReflektioner.tsx` — nya sidor med `PageHero` + tomma sektioner per underrubrik.
-
-## 4. Vad du får
-- En tydlig hierarki: **Skeden** samlar all spel-taktik, **Match** samlar matchnära reflektion.
-- Dropdown-meny med faser + underfaser direkt synliga — snabb navigation utan att klicka in på sidor först.
-- Befintligt innehåll behålls och länkas in på rätt plats; nya match-sidor är skelett du kan fylla.
-- Konsekvent mörk minimalistisk design — dropdowns följer Midnight Pitch-temat.
+## Vad du får
+- 12 helt omgjorda taktiska bilder i enhetlig mörk stil — gammal stil försvinner helt.
+- En ny, mycket enklare taktiktavla med flyttbara pluppar — fokus på snabb användning, inte avancerade verktyg.
+- Den gamla komplexa tavlan ersätts (innehållet i den var aldrig avsett att sparas).
 
