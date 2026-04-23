@@ -117,9 +117,17 @@ const TopNav = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user?.email === "leojsjoqvist@gmail.com") setIsAdmin(true);
-    });
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (data) setIsAdmin(true);
+    })();
   }, []);
 
   const [mobileOpenGroup, setMobileOpenGroup] = useState<string | null>(null);

@@ -20,12 +20,18 @@ const Admin = () => {
 
   useEffect(() => {
     const check = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
         navigate("/login");
         return;
       }
-      if (session.user.email !== "leojsjoqvist@gmail.com") {
+      const { data: roleRow } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (!roleRow) {
         navigate("/");
         return;
       }
