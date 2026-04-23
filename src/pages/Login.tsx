@@ -100,8 +100,8 @@ const Login = () => {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-black text-foreground">📩 Förfrågan skickad</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Vi har skickat en verifieringslänk till <strong>{email}</strong>. 
-              Efter att du verifierat din e-post behöver en administratör godkänna ditt konto.
+              Din förfrågan för <strong>{username}</strong> är registrerad.
+              En administratör behöver godkänna kontot innan du kan logga in.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
