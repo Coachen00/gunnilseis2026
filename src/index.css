@@ -6,62 +6,62 @@
 
 @layer base {
   :root {
-    /* Gunnilse IS Brand Colors - Light Mode */
-    --background: 40 30% 97%; /* Softer warm white */
-    --foreground: 220 25% 18%; /* Softer charcoal, not pure black */
+    /* Midnight Pitch — dark, minimal, sharp */
+    --background: 215 30% 6%;
+    --foreground: 220 20% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 25% 18%;
+    --card: 217 28% 9%;
+    --card-foreground: 220 20% 96%;
+    --surface-hover: 217 25% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 25% 18%;
+    --popover: 217 28% 9%;
+    --popover-foreground: 220 20% 96%;
 
-    --primary: 212 85% 24%; /* Gunnilse Navy #09376F */
-    --primary-foreground: 0 0% 100%;
+    --primary: 212 50% 48%;
+    --primary-foreground: 220 20% 98%;
 
-    --secondary: 231 45% 35%; /* Shield Blue #313D83 */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 217 25% 16%;
+    --secondary-foreground: 220 20% 96%;
 
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 217 25% 14%;
+    --muted-foreground: 217 12% 60%;
 
-    --accent: 47 84% 57%; /* Gunnilse Gold #EFC632 */
-    --accent-foreground: 212 85% 18%;
+    --accent: 47 78% 56%;
+    --accent-foreground: 215 30% 6%;
 
-    --destructive: 356 75% 49%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 358 75% 59%;
+    --destructive-foreground: 220 20% 98%;
 
-    --border: 220 14% 90%;
-    --input: 220 14% 90%;
-    --ring: 212 85% 24%;
+    --border: 217 22% 15%;
+    --input: 217 22% 15%;
+    --ring: 47 78% 56%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
     /* Custom tokens */
-    --pitch: 142 55% 35%;
-    --pitch-lines: 142 40% 55%;
-    --pitch-dark: 142 50% 20%;
-    
-    --swedish-blue: 210 80% 45%;
-    --swedish-yellow: 48 95% 55%;
-    
-    /* Tactical color phases */
-    --zone-attack: 142 55% 40%;
-    --zone-midfield: 47 84% 57%;
-    --zone-defense: 356 75% 49%;
-    
-    --gradient-pitch: linear-gradient(180deg, hsl(142 55% 30%) 0%, hsl(142 55% 25%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(220 14% 98%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(212 85% 20%) 0%, hsl(231 45% 30%) 50%, hsl(212 85% 16%) 100%);
+    --pitch: 142 35% 22%;
+    --pitch-lines: 142 25% 45%;
+    --pitch-dark: 142 40% 12%;
 
-    --sidebar-background: 212 85% 24%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 47 84% 57%;
-    --sidebar-primary-foreground: 212 85% 24%;
-    --sidebar-accent: 231 45% 35%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 212 50% 40%;
-    --sidebar-ring: 47 84% 57%;
+    --swedish-blue: 210 70% 55%;
+    --swedish-yellow: 47 78% 56%;
+
+    --zone-attack: 142 45% 38%;
+    --zone-midfield: 47 78% 56%;
+    --zone-defense: 358 65% 52%;
+
+    --gradient-pitch: linear-gradient(180deg, hsl(142 40% 18%) 0%, hsl(142 45% 12%) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(217 28% 10%) 0%, hsl(217 28% 8%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(215 30% 6%) 0%, hsl(217 28% 10%) 100%);
+
+    --sidebar-background: 217 28% 8%;
+    --sidebar-foreground: 220 20% 96%;
+    --sidebar-primary: 47 78% 56%;
+    --sidebar-primary-foreground: 215 30% 6%;
+    --sidebar-accent: 217 25% 14%;
+    --sidebar-accent-foreground: 220 20% 96%;
+    --sidebar-border: 217 22% 15%;
+    --sidebar-ring: 47 78% 56%;
   }
 }
 
