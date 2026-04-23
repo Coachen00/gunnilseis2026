@@ -346,7 +346,7 @@ export const AnfallsspelSection = () => (
     </div>
 
     <div className="bg-card/85 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-sm mb-12">
-      <SectionHeader badge="Spelytor" title="Spelytor" subtitle="Planen är som fyra rum. Vi vill veta var bollen är, och vad vi ska göra i just det rummet." className="mb-8" />
+      <SectionHeader badge="Spelytor" title="Spelytor" subtitle="Planen är fyra korridorer. Vi vill veta var bollen är, och vad vi ska göra i just den korridoren." className="mb-8" />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
           { name: "Utgångsyta", desc: "Här startar vi – nära vår målvakt och våra första passningar.", bg: "bg-muted/40", border: "border-border" },
