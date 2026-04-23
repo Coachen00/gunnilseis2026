@@ -94,10 +94,25 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
     await persist({ url: null, storage_path: null });
   }
 
-  const publicUrl = storagePath
-    ? supabase.storage.from("match-media").getPublicUrl(storagePath).data.publicUrl
-    : null;
-  const finalSrc = source === "upload" ? publicUrl : url;
+  // Bucket is private — generate a short-lived signed URL for uploaded media
+  const [signedUrl, setSignedUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    if (source !== "upload" || !storagePath) {
+      setSignedUrl(null);
+      return;
+    }
+    (async () => {
+      const { data } = await supabase.storage
+        .from("match-media")
+        .createSignedUrl(storagePath, 60 * 60); // 1 hour
+      if (!cancelled) setSignedUrl(data?.signedUrl ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [source, storagePath]);
+  const finalSrc = source === "upload" ? signedUrl : url;
   const hasMedia = !!finalSrc;
 
   return (
