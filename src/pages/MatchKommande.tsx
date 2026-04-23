@@ -1,6 +1,10 @@
 import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
 import PhaseBlock from "@/components/match/PhaseBlock";
+import { ExternalLink } from "lucide-react";
+
+const MATCHPLAN_URL =
+  "https://fojviymdmhjlpyrpjexp.supabase.co/storage/v1/object/public/match-media/match-plans/lerum-matchplan.html";
 
 const MatchKommande = () => (
   <>
@@ -11,6 +15,29 @@ const MatchKommande = () => (
     />
     <div className="container pb-24 space-y-12">
       <MatchHeader status="upcoming" />
+
+      <a
+        href={MATCHPLAN_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group flex items-center justify-between gap-4 rounded-xl border-2 border-primary/40 bg-gradient-to-r from-primary/10 to-accent/10 p-5 hover:border-primary hover:shadow-lg transition-all"
+      >
+        <div className="min-w-0">
+          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
+            Interaktiv matchplan
+          </p>
+          <h3 className="text-lg md:text-xl font-black text-foreground truncate">
+            Matchplan — Gunnilse IS vs Lerum IS
+          </h3>
+          <p className="text-xs text-muted-foreground mt-1">
+            Öppnas i ny flik. Innehåller hela uppställningen, faser och fokuspunkter.
+          </p>
+        </div>
+        <span className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm group-hover:gap-3 transition-all">
+          Öppna matchplan
+          <ExternalLink className="w-4 h-4" />
+        </span>
+      </a>
 
       <PhaseBlock
         status="upcoming"
