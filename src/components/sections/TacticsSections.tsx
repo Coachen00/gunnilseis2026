@@ -4,7 +4,6 @@
  * Behavior, copy, and visual structure are preserved exactly.
  */
 import { useState } from "react";
-import InteractiveFootballPitch, { Formation } from "@/components/InteractiveFootballPitch";
 import TriggerCard from "@/components/TriggerCard";
 import CoachCue from "@/components/CoachCue";
 import RoleCard from "@/components/RoleCard";
@@ -22,10 +21,9 @@ import ImageLinkCard from "@/components/ImageLinkCard";
 import MatchExampleTimeline from "@/components/MatchExampleTimeline";
 import TrainingVideo from "@/components/TrainingVideo";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown, X, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
-import gulOverbelastning from "@/assets/gul-overbelastning.png";
-import gronSpelvandning from "@/assets/gron-spelvandning.png";
 import offensivHorna from "@/assets/offensiv-horna.png";
 import defensivHorna from "@/assets/defensiv-horna.png";
 import formation433 from "@/assets/formation-433.png";
