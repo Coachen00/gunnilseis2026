@@ -2,6 +2,8 @@ import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import { AnfallsspelSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
+import CuesBlock from "@/components/CuesBlock";
+import { PHASE_CUES } from "@/data/phaseCues";
 
 const Anfall = () => (
   <>
@@ -11,6 +13,7 @@ const Anfall = () => (
       description="Tre skeden — uppbyggnad, progression, avslut. Vi söker rättvänd spelare, vänder spelet och avslutar i gyllene zonen."
     />
     <div className="container">
+      <CuesBlock set={PHASE_CUES.anfall} />
       <div className="max-w-3xl mb-16 border-l-2 border-accent/60 pl-6">
         <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
           <span className="font-bold">Tre skeden, samma logik.</span> Vi maximerar de fyra grundförutsättningarna — <em>spelbarhet, spelavstånd, spelbredd, speldjup</em> — i uppbyggnaden, söker rättvänd spelare i progressionen, och avslutar med övertal i gyllene zonen via assistytan.

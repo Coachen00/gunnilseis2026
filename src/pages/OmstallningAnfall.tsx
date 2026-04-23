@@ -2,6 +2,8 @@ import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import { OmstallningAnfallSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
+import CuesBlock from "@/components/CuesBlock";
+import { PHASE_CUES } from "@/data/phaseCues";
 
 const OmstallningAnfall = () => (
   <>
@@ -11,6 +13,7 @@ const OmstallningAnfall = () => (
       description="Snabba omställningspass eller spelvändningar — utnyttja motståndarens obalans. Press- och brytteknik skapar offensiva omställningar."
     />
     <div className="container mb-16">
+      <CuesBlock set={PHASE_CUES["omstallning-anfall"]} />
       <PrincipleBlock phase="omstallning-anfall" showSource />
     </div>
     <div className="container pb-24 space-y-24">
