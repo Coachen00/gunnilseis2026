@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -37,6 +37,11 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Map username -> email behind the scenes (Supabase requires email).
+    const email = username.includes("@")
+      ? username.trim()
+      : `${username.trim().toLowerCase()}@gunnilse.local`;
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
@@ -61,7 +66,7 @@ const Login = () => {
         setSignUpDone(true);
         toast({
           title: "Förfrågan skickad!",
-          description: "Kolla din e-post för verifiering. Du får tillgång efter godkännande.",
+          description: "En administratör behöver godkänna ditt konto innan du får tillgång.",
         });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
