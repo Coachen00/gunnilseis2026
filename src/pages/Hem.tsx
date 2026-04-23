@@ -7,11 +7,11 @@ import ScrollCue from "@/components/ScrollCue";
 import PhaseFlow from "@/components/PhaseFlow";
 
 const identityWords = [
-  { word: "Duell", meaning: "Du ska aldrig förlora en duell — i sämsta fall oavgjort." },
-  { word: "Spelbarhet", meaning: "Rörelse utan boll och position i farligaste ytan." },
-  { word: "Rättvänd", meaning: "Sök rättvänd mottagning — det utlöser progression och spelvändning." },
-  { word: "Djup", meaning: "Höghastighetslöpning i djupled när vi är rättvända i spelyta 2–3." },
-  { word: "Tillsammans", meaning: "Vi pressar och faller som ett lag — första försvarare först." },
+  { word: "Dueller", meaning: "Vi förlorar aldrig en kamp om bollen. I värsta fall blir det oavgjort — men vi backar inte." },
+  { word: "Andrabollsspel", meaning: "När bollen studsar fritt och ingen äger den — då tar vi den. Alltid." },
+  { word: "Springa i djupled", meaning: "Vi springer mot motståndarens mål så fort vi kan, så ofta vi kan. Det skapar utrymme för alla." },
+  { word: "Springa felvänt", meaning: "När vi tappar bollen vänder vi direkt och jagar tillbaka — alla samtidigt." },
+  { word: "Kommunicera förstärkande", meaning: "Vi peppar varandra. Korta, tydliga rop som hjälper laget — aldrig kritik." },
 ];
 
 const Hem = () => {
