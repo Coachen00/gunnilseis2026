@@ -2,6 +2,8 @@ import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import { ForsvarsspelSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
+import CuesBlock from "@/components/CuesBlock";
+import { PHASE_CUES } from "@/data/phaseCues";
 
 const Forsvar = () => (
   <>
@@ -11,6 +13,7 @@ const Forsvar = () => (
       description="Vi förhindrar avslut i gyllene zonen genom positionering, press och markering — tre höjder, samma logik."
     />
     <div className="container">
+      <CuesBlock set={PHASE_CUES.forsvar} />
       <div className="max-w-3xl mb-16 border-l-2 border-accent/60 pl-6">
         <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
           <span className="font-bold">En princip — tre höjder.</span> Oavsett om vi pressar högt, står medelhögt eller faller lågt så är målet detsamma: förhindra avslut i gyllene zonen. Vi styr pressen åt en sida, håller kompakt form och vinner andrabollar tillsammans.
