@@ -133,13 +133,14 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">E-post</Label>
+              <Label htmlFor="username" className="text-foreground">Användarnamn</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="din@email.se"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                autoComplete="username"
+                placeholder="t.ex. Lerum20260424"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="bg-background border-border"
               />
