@@ -100,7 +100,7 @@ const Hem = () => {
           <PrincipleTeaser
             index="1"
             quote="Splitta planen. Försvara i tre korridorer. Styr ut."
-            detail="Vi delar planen i inre och yttre rum. Mittfältet täcker centralt — backarna stänger djupet. Bollen ska aldrig gå genom mitten."
+            detail="Vi delar planen i inre och yttre korridorer. Mittfältet täcker centralt — backarna stänger djupet. Bollen ska aldrig gå genom mitten."
             to="/forsvar"
           />
         </div>

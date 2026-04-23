@@ -43,8 +43,8 @@ const TopNav = () => {
       className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300",
         scrolled
-          ? "bg-background/75 backdrop-blur-xl border-b border-border/60 shadow-sm"
-          : "bg-background/40 backdrop-blur-md border-b border-transparent"
+          ? "bg-background/85 backdrop-blur-xl border-b border-border"
+          : "bg-background/50 backdrop-blur-md border-b border-transparent"
       )}
     >
       <div className="container flex items-center justify-between gap-4 h-16">
@@ -54,7 +54,7 @@ const TopNav = () => {
           className="flex items-center gap-2.5 group flex-shrink-0"
           aria-label="Gunnilse IS — Hem"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-accent font-black text-sm shadow-md group-hover:shadow-lg transition-shadow">
+          <div className="w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm">
             G
           </div>
           <span className="font-extrabold tracking-tight text-foreground hidden sm:inline">
@@ -135,8 +135,8 @@ const TopNav = () => {
                 cn(
                   "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
                   isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-card text-accent border-l-2 border-accent"
+                    : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
                 )
               }
             >
