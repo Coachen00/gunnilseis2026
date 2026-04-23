@@ -3,8 +3,7 @@ import MatchHeader from "@/components/match/MatchHeader";
 import PhaseBlock from "@/components/match/PhaseBlock";
 import { ExternalLink } from "lucide-react";
 
-const MATCHPLAN_URL =
-  "https://fojviymdmhjlpyrpjexp.supabase.co/storage/v1/object/public/match-media/match-plans/lerum-matchplan.html";
+const MATCHPLAN_URL = "/matchplan-lerum.html";
 
 const MatchKommande = () => (
   <>
