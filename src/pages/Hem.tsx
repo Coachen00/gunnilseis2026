@@ -112,7 +112,7 @@ const Hem = () => {
           <PrincipleTeaser
             index="1"
             quote="Avslut i gyllene zonen — alltid med övertal."
-            detail="Rättvänd spelare i spelyta 2–3 löper i djupled, hittar assistytan och passar in i gyllene zonen. Övertalighet i gyllene zonen och assistzon är målet."
+            detail="Rättvänd spelare i spelyta 2–3 löper i djupled, hittar assistytan och passar in i gyllene zonen. Övertalighet i gyllene zonen och assistytan är målet."
             to="/anfall"
           />
           <div className="relative order-first lg:order-last">

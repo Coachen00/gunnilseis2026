@@ -153,7 +153,7 @@ const TrainingPlan = () => {
         {/* Bottom panel - yellow */}
         <div className="flex flex-col md:flex-row gap-3 bg-[#FFD700] p-3">
           {[
-            { title: "Kunskap om Ytor", items: ["• Kunskap om korridorer", "• Spelytor", "• Assistytan och golden zone"] },
+            { title: "Kunskap om Ytor", items: ["• Kunskap om korridorer", "• Spelytor", "• Assistytan och gyllene zonen"] },
             { title: "Essensen", items: ["• Tid", "• Yta", "• Individuell skicklighet"] },
             { title: "Vad hindrar framgång", items: ["• Kunskap", "• Fatigue"] },
           ].map((box) => (
