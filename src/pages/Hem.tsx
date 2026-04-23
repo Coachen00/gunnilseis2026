@@ -5,14 +5,7 @@ import ChapterNumber from "@/components/ChapterNumber";
 import PrincipleTeaser from "@/components/PrincipleTeaser";
 import ScrollCue from "@/components/ScrollCue";
 import PhaseFlow from "@/components/PhaseFlow";
-
-const identityWords = [
-  { word: "Dueller", meaning: "Vi förlorar aldrig en kamp om bollen. I värsta fall blir det oavgjort — men vi backar inte." },
-  { word: "Andrabollsspel", meaning: "När bollen studsar fritt och ingen äger den — då tar vi den. Alltid." },
-  { word: "Springa i djupled", meaning: "Vi springer mot motståndarens mål så fort vi kan, så ofta vi kan. Det skapar utrymme för alla." },
-  { word: "Springa felvänt", meaning: "När vi tappar bollen vänder vi direkt och jagar tillbaka — alla samtidigt." },
-  { word: "Kommunicera förstärkande", meaning: "Vi peppar varandra. Korta, tydliga rop som hjälper laget — aldrig kritik." },
-];
+import { IDENTITY } from "@/data/identity";
 
 const Hem = () => {
   return (
@@ -53,14 +46,19 @@ const Hem = () => {
             Fem saker vi gör i varje match — oavsett vem vi möter.
           </p>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {identityWords.map((w, i) => (
-              <li
-                key={w.word}
-                className="group bg-card/70 backdrop-blur-sm border border-border rounded-2xl p-5 text-left transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"
-              >
-                <div className="text-[10px] font-bold text-muted-foreground mb-2">0{i + 1}</div>
-                <div className="text-xl font-black tracking-tight text-foreground mb-2">{w.word}</div>
-                <div className="text-xs text-muted-foreground leading-relaxed">{w.meaning}</div>
+            {IDENTITY.map((w, i) => (
+              <li key={w.slug}>
+                <Link
+                  to={`/identitet/${w.slug}`}
+                  className="group block h-full bg-card/70 backdrop-blur-sm border border-border rounded-2xl p-5 text-left transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"
+                >
+                  <div className="text-[10px] font-bold text-muted-foreground mb-2">0{i + 1}</div>
+                  <div className="text-xl font-black tracking-tight text-foreground mb-2">{w.title}</div>
+                  <div className="text-xs text-muted-foreground leading-relaxed mb-4">{w.short}</div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-accent group-hover:gap-2.5 transition-all">
+                    Läs mer här <ArrowRight className="w-3 h-3" />
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>

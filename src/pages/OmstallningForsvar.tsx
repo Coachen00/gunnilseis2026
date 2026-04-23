@@ -2,6 +2,8 @@ import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import { OmstallningForsvarSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
+import CuesBlock from "@/components/CuesBlock";
+import { PHASE_CUES } from "@/data/phaseCues";
 
 const OmstallningForsvar = () => (
   <>
@@ -11,6 +13,7 @@ const OmstallningForsvar = () => (
       description="Vinn tillbaka bollen, hindra spel framåt, förhindra kontring. Forwarden är vår första försvarare."
     />
     <div className="container mb-16">
+      <CuesBlock set={PHASE_CUES["omstallning-forsvar"]} />
       <PrincipleBlock phase="omstallning-forsvar" showSource />
     </div>
     <div className="container pb-24 space-y-24">

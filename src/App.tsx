@@ -10,6 +10,7 @@ import Forsvar from "./pages/Forsvar";
 import Anfall from "./pages/Anfall";
 import Fasta from "./pages/Fasta";
 import Roller from "./pages/Roller";
+import Identitet from "./pages/Identitet";
 import Verktyg from "./pages/Verktyg";
 import OmstallningForsvar from "./pages/OmstallningForsvar";
 import OmstallningAnfall from "./pages/OmstallningAnfall";
@@ -59,6 +60,7 @@ const App = () => (
           <Route path="/match/kommande" element={<Protected><MatchKommande /></Protected>} />
           <Route path="/match/reflektioner" element={<Protected><MatchReflektioner /></Protected>} />
           <Route path="/roller" element={<Protected><Roller /></Protected>} />
+          <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
           <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
 
           {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
