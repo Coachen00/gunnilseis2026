@@ -55,39 +55,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
 };
 
 /* ── Formation presets ── */
-const formations: Formation[] = [
-  {
-    name: "4-3-3 Försvar",
-    players: [
-      { id: "1", x: 50, y: 92, role: "MV", color: "secondary" as const },
-      { id: "2", x: 15, y: 78, role: "VYB", color: "primary" as const },
-      { id: "3", x: 38, y: 75, role: "VMB", color: "primary" as const },
-      { id: "4", x: 62, y: 75, role: "HMB", color: "primary" as const },
-      { id: "5", x: 85, y: 78, role: "HYB", color: "primary" as const },
-      { id: "6", x: 50, y: 55, role: "6:a", color: "accent" as const },
-      { id: "7", x: 30, y: 58, role: "8:a", color: "primary" as const },
-      { id: "8", x: 70, y: 58, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 28, role: "9:a", color: "accent" as const },
-      { id: "10", x: 18, y: 35, role: "VY", color: "primary" as const },
-      { id: "11", x: 82, y: 35, role: "HY", color: "primary" as const },
-    ],
-  },
-  {
-    name: "3-2-2-3 Anfall",
-    players: [
-      { id: "3", x: 30, y: 85, role: "VMB", color: "primary" as const },
-      { id: "4", x: 50, y: 88, role: "HMB", color: "primary" as const },
-      { id: "5", x: 70, y: 85, role: "HYB (stannar)", color: "primary" as const },
-      { id: "2", x: 45, y: 68, role: "VYB (inv.)", color: "accent" as const },
-      { id: "6", x: 55, y: 68, role: "6:a", color: "accent" as const },
-      { id: "7", x: 32, y: 48, role: "8:a", color: "primary" as const },
-      { id: "8", x: 68, y: 48, role: "7:a", color: "primary" as const },
-      { id: "9", x: 50, y: 22, role: "9:a", color: "accent" as const },
-      { id: "10", x: 12, y: 28, role: "VY", color: "primary" as const },
-      { id: "11", x: 88, y: 28, role: "HY", color: "primary" as const },
-    ],
-  },
-];
+/* Formation-presets borttagna — taktiktavlan ligger nu på /taktiktavla */
 
 /* ── Accordion section ── */
 export const AccordionSection = ({ title, children }: { title: string; children: React.ReactNode }) => {
