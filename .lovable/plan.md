@@ -1,74 +1,47 @@
 
 
-# Förtydligande + ny enkel taktiktavla
+## Mål
+Skapa en **delad inloggning** för matchen mot Lerum så att så många som möjligt (spelare/föräldrar/ledare) kan komma in utan individuella konton eller manuellt godkännande.
 
-## Vad jag gör med bilderna (förtydligat)
+## Rekommenderad lösning: Delat konto via "fejk"-mejl
 
-**Helt nya bilder** — inte bara ramar/färger runtomkring. Varje av de 12 PNG-filerna ritas om från grunden i Midnight Pitch-stil:
+Eftersom Supabase kräver e-post som identifierare, mappar vi användarnamnet till en e-postadress internt. Användaren skriver fortfarande `Lerum20260424` i fältet — vi lägger till `@gunnilse.local` bakom kulisserna innan vi skickar till Supabase.
 
-- **Bevaras (informationen):** formationen, spelarpositioner, pilar (passning/löpning/press), zoner, korridorer, principen som visas.
-- **Bevaras (spelarbrickor):** cirklar med nummer/positionsbokstav (VM, MV, IB osv) där det förekommer.
-- **Tas bort:** spelarnamn, gamla färger, gamla bakgrunder, gamla typsnitt, gammal stil.
-- **Ny visuell stil:** mörk plan (#0F1419), hairline-linjer, Gold-spelare hemma, Navy-spelare borta, mono uppercase-etiketter.
+**Inloggningsuppgifter (det användaren skriver):**
+- Användarnamn: `Lerum20260424`
+- Lösenord: `vikommeralltidförberedda`
 
-Resultat: samma taktiska information, helt nytt utseende, ingen kvar av den gamla bildstilen.
+**Vad sker bakom kulisserna:**
+- E-post i Supabase: `lerum20260424@gunnilse.local`
+- Kontot skapas en gång, förgodkänns (`approved = true`) direkt i databasen
+- Alla som har uppgifterna kan logga in samtidigt på samma konto
 
-## Ny enklare taktiktavla med flyttbara pluppar
+## Steg
 
-Utöver bildregenereringen bygger jag en **ny, enkel taktiktavla** som ersätter dagens komplexa `Taktiktavla.tsx` (som har ritverktyg, lager, timeline, animationer m.m. — för mycket).
+### 1. Skapa det delade kontot i backend
+Migration som:
+- Skapar användaren `lerum20260424@gunnilse.local` med lösenordet `vikommeralltidförberedda` direkt i `auth.users` (e-postverifierad, ingen bekräftelselänk behövs)
+- Sätter `profiles.approved = true` för det kontot så det slipper admin-godkännande
 
-### Den nya tavlan
-```text
-┌─────────────────────────────────────┐
-│  Formation: [4-3-3] [4-4-2] [3-5-2] │  ← byt formation
-│  [Återställ]  [Rensa namn]          │
-├─────────────────────────────────────┤
-│                                     │
-│         ⬤ Mörk fotbollsplan         │
-│         (Midnight Pitch-stil)       │
-│                                     │
-│         11 Gold-pluppar (hemma)     │
-│         11 Navy-pluppar (motst.)    │
-│         1 vit boll                  │
-│                                     │
-│   → dra med fingret/musen           │
-│   → dubbelklick = döp om            │
-│                                     │
-└─────────────────────────────────────┘
-```
+### 2. Uppdatera `src/pages/Login.tsx`
+- Byt etikett "E-post" → "Användarnamn"
+- Ändra `<Input type="email">` → `<Input type="text">`
+- Före `signInWithPassword`: om värdet inte innehåller `@`, lägg till `@gunnilse.local`
+- Samma transform för signup-flödet (eller dölj signup-knappen helt — se fråga nedan)
+- Uppdatera placeholder och hjälptexter till svenska användarnamnstermer
 
-### Funktioner (medvetet få)
-- **Dra spelare** med mus/touch — flyter mjukt, snäpper inte.
-- **Välj formation** för hemmalaget (4-3-3, 4-4-2, 3-5-2, 4-2-3-1).
-- **Visa/dölj motståndare** (toggle).
-- **Visa/dölj korridorer** (toggle, samma 5 korridorer som i resten av sidan).
-- **Dubbelklicka en plupp** → liten input för att döpa (annars bara nummer).
-- **Återställ** → tillbaka till vald formations grundpositioner.
+### 3. Inget behöver ändras i `AuthGuard` eller RLS
+Det delade kontot är en vanlig godkänd användare — alla befintliga policys fungerar.
 
-### Vad den INTE har (avsiktligt borttaget)
-- Inga ritverktyg (linjer, vågor, rektanglar)
-- Ingen timeline / animationer / play-knapp
-- Inga lager-toggles utöver korridorer + motståndare
-- Ingen koner-meny
-- Ingen zoom-läge
+## Säkerhetsnotering (viktig att förmedla)
+- Alla som loggar in på det delade kontot ser **samma data** och kan **redigera samma matchanteckningar** (eftersom RLS bygger på "godkänd användare", inte per person).
+- Lösenordet sprids okontrollerat så fort det delas — vem som helst med uppgifterna kommer åt allt fram tills du byter lösenord eller raderar kontot.
+- Eftersom kontot är förgodkänt syns det inte i admin-panelens "väntar"-lista, men det dyker upp i "godkända".
 
-Det är en **renodlad pluppmatta** för snabb taktiksnack — inte en komplett illustrator.
+## Frågor innan jag bygger
 
-## Genomförande
+1. **Signup-knappen "Ingen tillgång? Begär åtkomst"** på loginsidan — ska den vara kvar (för framtida personliga konton) eller döljas så det bara blir en ren delad inloggning?
+2. **Giltighetstid** — ska kontot leva för evigt, eller vill du att jag ska göra det enkelt att inaktivera (t.ex. byta lösen) efter Lerum-matchen?
 
-1. **Generera 12 nya bilder** (Gemini 3 Pro Image) → ersätter filerna i `src/assets/` enligt stilguiden i förra planen. Visuell QA per bild.
-2. **Skapa `src/components/SimpleTacticsBoard.tsx`** — ny komponent med flyttbara pluppar (Framer Motion `drag`, samma teknik som `InteractiveFootballPitch.tsx` men förenklad och med båda lagen + ball).
-3. **Skriv om `src/pages/Taktiktavla.tsx`** — ersätt nuvarande tunga implementation med `<SimpleTacticsBoard />` + en kort instruktionsruta.
-4. **Behåll oförändrat:** routing, alla andra sidor, navigation, auth.
-
-## Tekniska detaljer
-- Bilder: använder `lovable_ai.py` med `--image --model google/gemini-3-pro-image-preview`, 1024×1280 px, sparar över befintliga filer i `src/assets/`.
-- Tavlan: bygger på Framer Motion (redan installerad), inga nya beroenden.
-- Pluppar: 32×32 px, hairline border, Gold/Navy fyllning, mono-siffror — matchar Midnight Pitch.
-- Touch-stöd: `dragMomentum={false}`, `touch-none` på containern.
-
-## Vad du får
-- 12 helt omgjorda taktiska bilder i enhetlig mörk stil — gammal stil försvinner helt.
-- En ny, mycket enklare taktiktavla med flyttbara pluppar — fokus på snabb användning, inte avancerade verktyg.
-- Den gamla komplexa tavlan ersätts (innehållet i den var aldrig avsett att sparas).
+Säg till så kör jag — eller svara bara "kör som det är" så antar jag: signup kvar, kontot lever tills du själv tar bort det.
 
