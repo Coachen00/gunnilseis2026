@@ -7,11 +7,11 @@ import ScrollCue from "@/components/ScrollCue";
 import PhaseFlow from "@/components/PhaseFlow";
 
 const identityWords = [
-  { word: "Duell", meaning: "Vi förlorar aldrig en duell utan kamp." },
-  { word: "Omställning", meaning: "Vi byter skede snabbare än motståndaren." },
-  { word: "Rörelse", meaning: "Vi står aldrig stilla utan boll." },
-  { word: "Djup", meaning: "Vi attackerar bakom backlinjen." },
-  { word: "Tillsammans", meaning: "Vi pressar och faller som ett lag." },
+  { word: "Duell", meaning: "Du ska aldrig förlora en duell — i sämsta fall oavgjort." },
+  { word: "Spelbarhet", meaning: "Rörelse utan boll och position i farligaste ytan." },
+  { word: "Rättvänd", meaning: "Sök rättvänd mottagning — det utlöser progression och spelvändning." },
+  { word: "Djup", meaning: "Höghastighetslöpning i djupled när vi är rättvända i spelyta 2–3." },
+  { word: "Tillsammans", meaning: "Vi pressar och faller som ett lag — första försvarare först." },
 ];
 
 const Hem = () => {
@@ -36,8 +36,8 @@ const Hem = () => {
           className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
           style={{ animationDelay: "260ms" }}
         >
-          Så här försvarar vi. Så här anfaller vi. Så här ställer vi om. <br className="hidden md:inline" />
-          <span className="text-foreground/80 font-semibold">Fem principer per skede</span> — en gemensam förståelse för hela laget.
+          Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
+          <span className="text-foreground/80 font-semibold">En princip per skede</span> — samma vokabulär från målvakt till anfallare.
         </p>
         <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
           <ScrollCue />
@@ -89,18 +89,18 @@ const Hem = () => {
             <div className="relative">
               <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">När vi försvarar</div>
               <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                Kompakt 4-3-3.<br />
-                <span className="text-muted-foreground">Vi styr ut.</span>
+                Förhindra avslut.<br />
+                <span className="text-muted-foreground">I gyllene zonen.</span>
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                Vi pressar i tre korridorer, tvingar motståndaren mot kanten och slår igen pressfällan. Andrabollar vinner vi som ett lag.
+                Positionering, press och markering — vi blockerar avslutsytor och styr pressen åt en sida. Andrabollar vinner vi som ett lag.
               </p>
             </div>
           </div>
           <PrincipleTeaser
             index="1"
-            quote="Splitta planen. Försvara i tre korridorer. Styr ut."
-            detail="Vi delar planen i inre och yttre korridorer. Mittfältet täcker centralt — backarna stänger djupet. Bollen ska aldrig gå genom mitten."
+            quote="Förhindra avslut i gyllene zonen — positionering, press, markering."
+            detail="Vi styr pressen åt en sida och håller kompakt form genom överflyttning, centrering, upp- och nedflyttning. Bollen ska aldrig gå genom mitten."
             to="/forsvar"
           />
         </div>
@@ -111,8 +111,8 @@ const Hem = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
           <PrincipleTeaser
             index="1"
-            quote="Rättvänd → spelvändning → full fart framåt."
-            detail="När vi får tid och är rättvända — bytt sida. Då är motståndaren oorganiserad och vi accelererar mot gyllene zonen."
+            quote="Avslut i gyllene zonen — alltid med övertal."
+            detail="Rättvänd spelare i spelyta 2–3 löper i djupled, hittar assistytan och passar in i gyllene zonen. Övertalighet i gyllene zonen och assistzon är målet."
             to="/anfall"
           />
           <div className="relative order-first lg:order-last">
@@ -120,11 +120,11 @@ const Hem = () => {
             <div className="relative">
               <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">När vi anfaller</div>
               <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                3-2-2-3.<br />
-                <span className="text-muted-foreground">Inverterad ytterback.</span>
+                Spelbarhet, avstånd,<br />
+                <span className="text-muted-foreground">bredd och djup.</span>
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                Vi bygger via inre korridor, överbelastar en sida, vänder spelet och attackerar gyllene zonen i full fart.
+                De fyra grundförutsättningarna är vårt ramverk. Vi söker rättvänd spelare, vänder spelet och accelererar mot gyllene zonen.
               </p>
             </div>
           </div>
@@ -144,7 +144,7 @@ const Hem = () => {
           <PrincipleTeaser
             index="1"
             quote="Hybridförsvar: zon i boxen + två strikta man-markeringar."
-            detail="Vi täcker farliga ytor med zon — och låser de två största lufthoten man-mot-man. Inget överlämnas åt slumpen."
+            detail="Vi täcker farliga ytor med zon — och låser de två största lufthoten man-mot-man. Offensivt: leverera till gyllene zonen via assistytan."
             to="/fasta"
             ctaLabel="Se alla fasta situationer"
           />
