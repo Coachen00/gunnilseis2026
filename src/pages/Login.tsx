@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -37,6 +37,11 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
 
+    // Map username -> email behind the scenes (Supabase requires email).
+    const email = username.includes("@")
+      ? username.trim()
+      : `${username.trim().toLowerCase()}@gunnilse.local`;
+
     try {
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
@@ -61,7 +66,7 @@ const Login = () => {
         setSignUpDone(true);
         toast({
           title: "Förfrågan skickad!",
-          description: "Kolla din e-post för verifiering. Du får tillgång efter godkännande.",
+          description: "En administratör behöver godkänna ditt konto innan du får tillgång.",
         });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -95,8 +100,8 @@ const Login = () => {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-black text-foreground">📩 Förfrågan skickad</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Vi har skickat en verifieringslänk till <strong>{email}</strong>. 
-              Efter att du verifierat din e-post behöver en administratör godkänna ditt konto.
+              Din förfrågan för <strong>{username}</strong> är registrerad.
+              En administratör behöver godkänna kontot innan du kan logga in.
             </CardDescription>
           </CardHeader>
           <CardContent className="text-center">
@@ -128,13 +133,14 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-foreground">E-post</Label>
+              <Label htmlFor="username" className="text-foreground">Användarnamn</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="din@email.se"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="username"
+                type="text"
+                autoComplete="username"
+                placeholder="t.ex. Lerum20260424"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
                 className="bg-background border-border"
               />
