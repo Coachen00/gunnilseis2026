@@ -80,14 +80,15 @@
   /* Typography hierarchy */
   h1 {
     @apply tracking-tight;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.04em;
   }
   h2 {
     @apply tracking-tight;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.03em;
   }
   h3 {
     @apply tracking-tight;
+    letter-spacing: -0.02em;
   }
 }
 
