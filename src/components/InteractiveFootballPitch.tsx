@@ -129,10 +129,10 @@ const InteractiveFootballPitch = ({
           
           {showZones && (
             <>
-              <text x="50" y="10" textAnchor="middle" fontSize="4" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 3</text>
-              <text x="50" y="40" textAnchor="middle" fontSize="4" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 2</text>
-              <text x="50" y="90" textAnchor="middle" fontSize="4" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 1</text>
-              <text x="50" y="125" textAnchor="middle" fontSize="4" fill="hsl(var(--foreground))" opacity="0.4">Utgångsyta</text>
+              <text x="50" y="10" textAnchor="middle" fontSize="3.5" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 3 (bakom backlinjen)</text>
+              <text x="50" y="40" textAnchor="middle" fontSize="3.5" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 2 (mellan led)</text>
+              <text x="50" y="90" textAnchor="middle" fontSize="3.5" fill="hsl(var(--foreground))" opacity="0.4">Spelyta 1 (mellan led)</text>
+              <text x="50" y="125" textAnchor="middle" fontSize="3.5" fill="hsl(var(--foreground))" opacity="0.4">Utgångsyta</text>
             </>
           )}
         </svg>

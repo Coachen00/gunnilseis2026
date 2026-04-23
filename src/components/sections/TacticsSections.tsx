@@ -285,13 +285,13 @@ export const AnfallsspelSection = () => (
     </div>
 
     <div className="bg-card/85 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-sm mb-12">
-      <SectionHeader badge="Spelytor" title="Spelytor" subtitle="Planen är fyra korridorer. Vi vill veta var bollen är, och vad vi ska göra i just den korridoren." className="mb-8" />
+      <SectionHeader badge="Spelytor" title="Spelytor (dynamiska)" subtitle="Spelytorna är ytorna mellan motståndarens lagdelar — de flyttar sig när motståndaren flyttar sig. Vi söker rättvänd mottagning i ytan mellan deras led." className="mb-8" />
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
-          { name: "Utgångsyta", desc: "Här startar vi – nära vår målvakt och våra första passningar.", bg: "bg-muted/40", border: "border-border" },
-          { name: "Spelyta 1", desc: "Här bygger vi upp och letar nästa passning framåt.", bg: "bg-primary/3", border: "border-primary/15" },
-          { name: "Spelyta 2", desc: "Här i mitten vill vi spela oss förbi och komma loss.", bg: "bg-primary/6", border: "border-primary/20" },
-          { name: "Spelyta 3", desc: "Nära deras mål – här vill vi skapa chans och avslut.", bg: "bg-accent/8", border: "border-accent/20" },
+          { name: "Utgångsyta", desc: "Bakom motståndarens första press — här startar uppbyggnaden hos MV/backar.", bg: "bg-muted/40", border: "border-border" },
+          { name: "Spelyta 1", desc: "Mellan deras anfallare och mittfält — vi spelar oss förbi första presslinjen.", bg: "bg-primary/3", border: "border-primary/15" },
+          { name: "Spelyta 2", desc: "Mellan deras mittfält och backlinje — här söker vi rättvänd mottagning för spelvändning.", bg: "bg-primary/6", border: "border-primary/20" },
+          { name: "Spelyta 3", desc: "Bakom deras backlinje — här hotar vi djupet och söker gyllene zonen.", bg: "bg-accent/8", border: "border-accent/20" },
         ].map((zone) => (
           <div key={zone.name} className={`${zone.bg} rounded-xl p-4 border ${zone.border} card-hover`}>
             <h5 className="text-sm font-semibold text-foreground mb-1">{zone.name}</h5>
