@@ -79,8 +79,8 @@ const matchGroups: NavGroup[] = [
 ];
 
 const navItems: NavItem[] = [
-  { to: "/", label: "Hem" },
-  { to: "/spelide", label: "Spelidé" },
+  { kind: "link", to: "/", label: "Hem" },
+  { kind: "link", to: "/spelide", label: "Spelidé" },
   {
     kind: "dropdown",
     label: "Skeden",
@@ -95,9 +95,9 @@ const navItems: NavItem[] = [
     variant: "narrow",
     activePathPrefixes: ["/match"],
   },
-  { to: "/roller", label: "Roller & Trupp" },
-  { to: "/verktyg", label: "Verktyg" },
-].map((item) => (typeof (item as SimpleItem).to === "string" && !(item as DropdownItem).kind ? { kind: "link", ...(item as Omit<SimpleItem, "kind">) } : item)) as NavItem[];
+  { kind: "link", to: "/roller", label: "Roller & Trupp" },
+  { kind: "link", to: "/verktyg", label: "Verktyg" },
+];
 
 const TopNav = () => {
   const [scrolled, setScrolled] = useState(false);
