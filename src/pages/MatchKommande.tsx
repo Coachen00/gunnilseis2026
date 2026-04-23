@@ -1,26 +1,117 @@
 import PageHero from "@/components/PageHero";
-import SectionHeader from "@/components/SectionHeader";
+import MatchHeader from "@/components/match/MatchHeader";
+import PhaseBlock from "@/components/match/PhaseBlock";
 
 const MatchKommande = () => (
   <>
     <PageHero
       eyebrow="Match · Veckans"
       title="Veckans match"
-      description="Motståndare, plan, fokus — allt på ett ställe inför avspark."
+      description="Motståndare, plan, fokus — allt på ett ställe inför avspark. Texter och media sparas automatiskt."
     />
-    <div className="container pb-24 space-y-16">
-      <section>
-        <SectionHeader badge="Motståndare" title="Motståndaranalys" />
-        <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">Fyll i motståndarens formation, styrkor, svagheter och triggers.</div>
-      </section>
-      <section>
-        <SectionHeader badge="Vår plan" title="Matchplan" />
-        <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">Vår formation, anpassningar, fasta situationer.</div>
-      </section>
-      <section>
-        <SectionHeader badge="Fokus" title="Veckans fokuspunkter" />
-        <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">3 saker vi särskilt ska göra bra i denna match.</div>
-      </section>
+    <div className="container pb-24 space-y-12">
+      <MatchHeader status="upcoming" />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Motståndare"
+        title="Motståndaranalys"
+        subtitle="Formation, styrkor, svagheter och triggers."
+        sectionKey="motstandare"
+        fields={[
+          { key: "formation", label: "Formation", placeholder: "t.ex. 4-4-2" },
+          { key: "styrkor", label: "Styrkor", placeholder: "Vad gör de bra?" },
+          { key: "svagheter", label: "Svagheter", placeholder: "Vad kan vi utnyttja?" },
+          { key: "triggers", label: "Triggers", placeholder: "När pressar/drar de?" },
+        ]}
+        mediaSlots={[
+          { key: "formation-bild", title: "Formationsbild", description: "Bild eller film på deras uppställning." },
+          { key: "klipp", title: "Klipp att titta på", description: "Länka YouTube eller ladda upp." },
+        ]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Anfallsspel"
+        title="Plan i anfall"
+        subtitle="Hur vi tänker bygga upp och skapa lägen."
+        sectionKey="anfall"
+        fields={[
+          { key: "uppbyggnad", label: "Uppbyggnad", placeholder: "Hur bygger vi upp mot deras press?" },
+          { key: "yta", label: "Var skapar vi yta?", placeholder: "Korridor, spelyta…" },
+          { key: "avslut", label: "Avslutsmönster", placeholder: "Cutback, djupledspass…" },
+        ]}
+        mediaSlots={[{ key: "anfall-bild", title: "Anfallsskiss" }]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Försvarsspel"
+        title="Plan i försvar"
+        subtitle="Pressmönster och hur vi försvarar våra korridorer."
+        sectionKey="forsvar"
+        fields={[
+          { key: "press", label: "Press-trigger", placeholder: "När pressar vi?" },
+          { key: "kompakthet", label: "Kompakthet", placeholder: "Hur tight ska vi stå?" },
+          { key: "korridorer", label: "Korridor-fokus", placeholder: "Tvinga utåt?" },
+        ]}
+        mediaSlots={[{ key: "forsvar-bild", title: "Försvarsskiss" }]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Omställning"
+        title="Omställning anfall → försvar"
+        subtitle="Vad gör vi direkt vid bollförlust?"
+        sectionKey="omst-forsvar"
+        fields={[
+          { key: "regel", label: "Regel direkt", placeholder: "Motpress 5 sek?" },
+          { key: "fallback", label: "Faller vi tillbaka?", placeholder: "Eller pressar?" },
+        ]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Omställning"
+        title="Omställning försvar → anfall"
+        subtitle="Vad gör vi direkt vid bollvinst?"
+        sectionKey="omst-anfall"
+        fields={[
+          { key: "forsta-pass", label: "Första passet", placeholder: "Djupled? Säkra?" },
+          { key: "lopningar", label: "Löpningar", placeholder: "Vem springer i djupled?" },
+        ]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Fasta situationer"
+        title="Fasta situationer"
+        subtitle="Hörnor, frisparkar, inkast — anfall och försvar."
+        sectionKey="fasta"
+        fields={[
+          { key: "hornor-anfall", label: "Hörnor anfall", placeholder: "Vilken signal? Vilka rör sig vart?" },
+          { key: "hornor-forsvar", label: "Hörnor försvar", placeholder: "Zon + man-markering" },
+          { key: "frisparkar", label: "Frisparkar", placeholder: "Skytt, mur, löpningar…" },
+          { key: "inkast", label: "Inkast", placeholder: "Långt eller kort?" },
+        ]}
+        mediaSlots={[
+          { key: "hornor-anfall-bild", title: "Hörna anfall" },
+          { key: "hornor-forsvar-bild", title: "Hörna försvar" },
+        ]}
+      />
+
+      <PhaseBlock
+        status="upcoming"
+        badge="Fokus"
+        title="Veckans fokuspunkter"
+        subtitle="3 saker vi särskilt ska göra bra."
+        sectionKey="fokus"
+        fields={[
+          { key: "fokus-1", label: "1", placeholder: "Första fokuset" },
+          { key: "fokus-2", label: "2", placeholder: "Andra fokuset" },
+          { key: "fokus-3", label: "3", placeholder: "Tredje fokuset" },
+        ]}
+      />
     </div>
   </>
 );

@@ -1,1 +1,4 @@
 project_id = "fojviymdmhjlpyrpjexp"
+
+[functions.sync-gunnilse-calendar]
+verify_jwt = false

@@ -14,6 +14,148 @@ export type Database = {
   }
   public: {
     Tables: {
+      match_sections: {
+        Row: {
+          content: string | null
+          created_at: string
+          field_key: string
+          id: string
+          match_id: string
+          section_key: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          field_key: string
+          id?: string
+          match_id: string
+          section_key: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          field_key?: string
+          id?: string
+          match_id?: string
+          section_key?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "match_sections_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      matches: {
+        Row: {
+          competition: string | null
+          created_at: string
+          external_id: string | null
+          home_away: string | null
+          id: string
+          manual_override: boolean
+          match_date: string | null
+          opponent: string
+          our_score: number | null
+          source: string
+          status: string
+          their_score: number | null
+          updated_at: string
+          venue: string | null
+        }
+        Insert: {
+          competition?: string | null
+          created_at?: string
+          external_id?: string | null
+          home_away?: string | null
+          id?: string
+          manual_override?: boolean
+          match_date?: string | null
+          opponent: string
+          our_score?: number | null
+          source?: string
+          status?: string
+          their_score?: number | null
+          updated_at?: string
+          venue?: string | null
+        }
+        Update: {
+          competition?: string | null
+          created_at?: string
+          external_id?: string | null
+          home_away?: string | null
+          id?: string
+          manual_override?: boolean
+          match_date?: string | null
+          opponent?: string
+          our_score?: number | null
+          source?: string
+          status?: string
+          their_score?: number | null
+          updated_at?: string
+          venue?: string | null
+        }
+        Relationships: []
+      }
+      media_items: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          match_id: string
+          media_type: string
+          slot_key: string
+          source_kind: string
+          storage_path: string | null
+          updated_at: string
+          uploaded_by: string | null
+          url: string | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          match_id: string
+          media_type?: string
+          slot_key: string
+          source_kind?: string
+          storage_path?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          url?: string | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          match_id?: string
+          media_type?: string
+          slot_key?: string
+          source_kind?: string
+          storage_path?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_items_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           approved: boolean
@@ -69,6 +211,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      is_approved_user: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "user"
