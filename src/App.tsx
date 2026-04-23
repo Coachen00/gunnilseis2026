@@ -11,6 +11,13 @@ import Anfall from "./pages/Anfall";
 import Fasta from "./pages/Fasta";
 import Roller from "./pages/Roller";
 import Verktyg from "./pages/Verktyg";
+import OmstallningForsvar from "./pages/OmstallningForsvar";
+import OmstallningAnfall from "./pages/OmstallningAnfall";
+import FastaForsvar from "./pages/FastaForsvar";
+import FastaAnfall from "./pages/FastaAnfall";
+import MatchForra from "./pages/MatchForra";
+import MatchKommande from "./pages/MatchKommande";
+import MatchReflektioner from "./pages/MatchReflektioner";
 import TrainingPlan from "./pages/TrainingPlan";
 import Matchblad from "./pages/Matchblad";
 import Motstandaranalys from "./pages/Motstandaranalys";
@@ -43,7 +50,14 @@ const App = () => (
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected><Anfall /></Protected>} />
+          <Route path="/omstallning-forsvar" element={<Protected><OmstallningForsvar /></Protected>} />
+          <Route path="/omstallning-anfall" element={<Protected><OmstallningAnfall /></Protected>} />
           <Route path="/fasta" element={<Protected><Fasta /></Protected>} />
+          <Route path="/fasta/forsvar" element={<Protected><FastaForsvar /></Protected>} />
+          <Route path="/fasta/anfall" element={<Protected><FastaAnfall /></Protected>} />
+          <Route path="/match/forra" element={<Protected><MatchForra /></Protected>} />
+          <Route path="/match/kommande" element={<Protected><MatchKommande /></Protected>} />
+          <Route path="/match/reflektioner" element={<Protected><MatchReflektioner /></Protected>} />
           <Route path="/roller" element={<Protected><Roller /></Protected>} />
           <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
 

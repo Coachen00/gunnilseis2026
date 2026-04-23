@@ -1,11 +1,12 @@
 import PageHero from "@/components/PageHero";
-import { AnfallsspelSection, OmstallningAnfallSection } from "@/components/sections/TacticsSections";
+import SectionHeader from "@/components/SectionHeader";
+import { AnfallsspelSection } from "@/components/sections/TacticsSections";
 
 const Anfall = () => (
   <>
     <PageHero
       eyebrow="Anfall"
-      title="Anfallsspel & Omställning"
+      title="Anfallsspel"
       description="3-2-2-3 med inverterad ytterback. Vi bygger via inre korridor och accelererar mot gyllene zonen."
     />
     <div className="container">
@@ -16,8 +17,22 @@ const Anfall = () => (
       </div>
     </div>
     <div className="container pb-24 space-y-24">
-      <AnfallsspelSection />
-      <OmstallningAnfallSection />
+      <section id="speluppbyggnad" className="scroll-mt-24">
+        <SectionHeader badge="01 · Speluppbyggnad" title="Speluppbyggnad" subtitle="3-2-2-3 från botten — säkra första passningarna och hitta rättvänd spelare." />
+        <AnfallsspelSection />
+      </section>
+      <section id="skapa" className="scroll-mt-24">
+        <SectionHeader badge="02 · Skapa" title="Skapa chans" subtitle="Spelvändning, överbelastning och acceleration mot gyllene zonen." />
+        <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">
+          Detaljer kring chansskapande — överlapp/underlapp, kortsida, cutback — finns inom Speluppbyggnad ovan. Fyll på med specifika mönster.
+        </div>
+      </section>
+      <section id="avsluta" className="scroll-mt-24">
+        <SectionHeader badge="03 · Avsluta" title="Avsluta" subtitle="Cutback in i gyllene zonen — tydliga löpvägar och avslutsregler." />
+        <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">
+          Fyll på med avslutsprinciper, löpmönster i boxen och regler för andraboll.
+        </div>
+      </section>
     </div>
   </>
 );

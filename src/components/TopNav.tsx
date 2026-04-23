@@ -1,18 +1,102 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Menu, X, Lock } from "lucide-react";
+import { Menu, X, Lock, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import LogoutButton from "@/components/LogoutButton";
+import NavDropdown, { NavGroup } from "@/components/NavDropdown";
 
-const navItems = [
-  { to: "/", label: "Hem" },
-  { to: "/spelide", label: "Spelidé" },
-  { to: "/forsvar", label: "Försvar" },
-  { to: "/anfall", label: "Anfall" },
-  { to: "/fasta", label: "Fasta situationer" },
-  { to: "/roller", label: "Roller & Trupp" },
-  { to: "/verktyg", label: "Verktyg" },
+type SimpleItem = { kind: "link"; to: string; label: string };
+type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
+type NavItem = SimpleItem | DropdownItem;
+
+const skedenGroups: NavGroup[] = [
+  {
+    label: "Anfall",
+    to: "/anfall",
+    children: [
+      { label: "Speluppbyggnad", to: "/anfall#speluppbyggnad" },
+      { label: "Skapa", to: "/anfall#skapa" },
+      { label: "Avsluta", to: "/anfall#avsluta" },
+    ],
+  },
+  {
+    label: "Omställning → försvar",
+    to: "/omstallning-forsvar",
+    children: [
+      { label: "Direkt (motpress)", to: "/omstallning-forsvar#direkt" },
+      { label: "Tillbaka till kontroll", to: "/omstallning-forsvar#kontroll" },
+    ],
+  },
+  {
+    label: "Försvar",
+    to: "/forsvar",
+    children: [
+      { label: "Högt försvar", to: "/forsvar#hogt" },
+      { label: "Medelhögt försvar", to: "/forsvar#medel" },
+      { label: "Lågt försvar", to: "/forsvar#lagt" },
+    ],
+  },
+  {
+    label: "Omställning → anfall",
+    to: "/omstallning-anfall",
+    children: [
+      { label: "Kontring", to: "/omstallning-anfall#kontring" },
+      { label: "Starta speluppbyggnad", to: "/omstallning-anfall#uppbyggnad" },
+    ],
+  },
+  {
+    label: "Fasta — Försvar",
+    to: "/fasta/forsvar",
+    children: [
+      { label: "Hörnor", to: "/fasta/forsvar#hornor" },
+      { label: "Inläggsfrisparkar", to: "/fasta/forsvar#frisparkar" },
+      { label: "Inkast", to: "/fasta/forsvar#inkast" },
+      { label: "Avspark", to: "/fasta/forsvar#avspark" },
+    ],
+  },
+  {
+    label: "Fasta — Anfall",
+    to: "/fasta/anfall",
+    children: [
+      { label: "Hörnor", to: "/fasta/anfall#hornor" },
+      { label: "Inläggsfrisparkar", to: "/fasta/anfall#frisparkar" },
+      { label: "Inkast", to: "/fasta/anfall#inkast" },
+      { label: "Avspark", to: "/fasta/anfall#avspark" },
+    ],
+  },
+];
+
+const matchGroups: NavGroup[] = [
+  {
+    label: "Match",
+    children: [
+      { label: "Förra matchen", to: "/match/forra", hint: "Resultat & lärdomar" },
+      { label: "Veckans match", to: "/match/kommande", hint: "Motståndare & plan" },
+      { label: "Samlade tankar", to: "/match/reflektioner", hint: "Sista periodens trender" },
+    ],
+  },
+];
+
+const navItems: NavItem[] = [
+  { kind: "link", to: "/", label: "Hem" },
+  { kind: "link", to: "/spelide", label: "Spelidé" },
+  {
+    kind: "dropdown",
+    label: "Skeden",
+    groups: skedenGroups,
+    variant: "wide",
+    activePathPrefixes: ["/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+  },
+  {
+    kind: "dropdown",
+    label: "Match",
+    groups: matchGroups,
+    variant: "narrow",
+    activePathPrefixes: ["/match"],
+  },
+  { kind: "link", to: "/roller", label: "Roller & Trupp" },
+  { kind: "link", to: "/verktyg", label: "Verktyg" },
 ];
 
 const TopNav = () => {
@@ -37,6 +121,8 @@ const TopNav = () => {
       if (session?.user?.email === "leojsjoqvist@gmail.com") setIsAdmin(true);
     });
   }, []);
+
+  const [mobileOpenGroup, setMobileOpenGroup] = useState<string | null>(null);
 
   return (
     <header
@@ -65,32 +151,45 @@ const TopNav = () => {
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "relative px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
-                  "text-muted-foreground hover:text-foreground",
-                  isActive && "text-foreground"
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  {item.label}
-                  <span
-                    className={cn(
-                      "absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-accent transition-all duration-300",
-                      isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
-                    )}
-                  />
-                </>
-              )}
-            </NavLink>
-          ))}
+          {navItems.map((item) => {
+            if (item.kind === "dropdown") {
+              return (
+                <NavDropdown
+                  key={item.label}
+                  label={item.label}
+                  groups={item.groups}
+                  variant={item.variant}
+                  activePathPrefixes={item.activePathPrefixes}
+                />
+              );
+            }
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  cn(
+                    "relative px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
+                    "text-muted-foreground hover:text-foreground",
+                    isActive && "text-foreground"
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {item.label}
+                    <span
+                      className={cn(
+                        "absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-accent transition-all duration-300",
+                        isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+                      )}
+                    />
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* Right cluster */}
@@ -126,23 +225,72 @@ const TopNav = () => {
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
-                  isActive
-                    ? "bg-card text-accent border-l-2 border-accent"
-                    : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
-                )
-              }
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          {navItems.map((item) => {
+            if (item.kind === "dropdown") {
+              const isOpen = mobileOpenGroup === item.label;
+              return (
+                <div key={item.label}>
+                  <button
+                    type="button"
+                    onClick={() => setMobileOpenGroup(isOpen ? null : item.label)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-card transition-colors border-l-2 border-transparent"
+                  >
+                    <span>{item.label}</span>
+                    <ChevronDown className={cn("w-4 h-4 transition-transform", isOpen && "rotate-180")} />
+                  </button>
+                  {isOpen && (
+                    <div className="pl-3 pb-2 space-y-3">
+                      {item.groups.map((group) => (
+                        <div key={group.label}>
+                          {group.to ? (
+                            <Link
+                              to={group.to}
+                              className="block px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent"
+                            >
+                              {group.label}
+                            </Link>
+                          ) : (
+                            <div className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent">
+                              {group.label}
+                            </div>
+                          )}
+                          <ul>
+                            {group.children.map((child) => (
+                              <li key={child.to}>
+                                <Link
+                                  to={child.to}
+                                  className="block px-3 py-1.5 rounded text-sm text-muted-foreground hover:bg-card hover:text-foreground"
+                                >
+                                  {child.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  cn(
+                    "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
+                    isActive
+                      ? "bg-card text-accent border-l-2 border-accent"
+                      : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
+                  )
+                }
+              >
+                {item.label}
+              </NavLink>
+            );
+          })}
           {isAdmin && (
             <Link
               to="/admin"
