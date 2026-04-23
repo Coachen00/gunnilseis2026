@@ -44,7 +44,7 @@ const AnimatedBackground = () => {
       <div className="absolute inset-0 bg-background" />
 
       {/* Animated gradient mesh */}
-      <div className="absolute inset-0 opacity-[0.35] animate-mesh-shift bg-mesh-gradient" />
+      <div className="absolute inset-0 opacity-[0.18] animate-mesh-shift bg-mesh-gradient" />
 
       {/* Parallax blobs */}
       <div
