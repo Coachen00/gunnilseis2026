@@ -55,9 +55,14 @@ Deno.serve(async (req) => {
 
     // Upload to storage (service role bypasses RLS)
     const admin = createClient(supabaseUrl, serviceKey);
+
+    // Remove existing object first — Supabase Storage locks the original content-type
+    // on upsert, so we must delete and re-create to refresh it.
+    await admin.storage.from(BUCKET).remove([OBJECT_PATH]);
+
     const { error: upErr } = await admin.storage.from(BUCKET).upload(OBJECT_PATH, blob, {
       contentType: "text/html; charset=utf-8",
-      upsert: true,
+      upsert: false,
       cacheControl: "60",
     });
     if (upErr) {
