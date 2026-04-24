@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
 const FALLBACK_URL = "/matchplan-lerum.html";
-const STORAGE_PATH = "matchplan-lerum.html";
+const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sync-matchplan`;
 
 const MatchKommande = () => {
   const [matchplanUrl, setMatchplanUrl] = useState<string>(FALLBACK_URL);
@@ -15,15 +15,13 @@ const MatchKommande = () => {
   const [lastSynced, setLastSynced] = useState<string | null>(null);
 
   useEffect(() => {
-    const { data } = supabase.storage.from("matchplan").getPublicUrl(STORAGE_PATH);
-    if (data?.publicUrl) {
-      // Probe — if the object doesn't exist yet, fall back to the bundled file.
-      fetch(data.publicUrl, { method: "HEAD" })
-        .then((r) => {
-          if (r.ok) setMatchplanUrl(`${data.publicUrl}?t=${Date.now()}`);
-        })
-        .catch(() => {});
-    }
+    fetch(FUNCTION_URL, { method: "HEAD" })
+      .then((r) => {
+        if (r.ok) setMatchplanUrl(`${FUNCTION_URL}?t=${Date.now()}`);
+      })
+      .catch(() => {
+        setMatchplanUrl(FALLBACK_URL);
+      });
   }, []);
 
   const handleSync = async () => {
@@ -32,7 +30,7 @@ const MatchKommande = () => {
       const { data, error } = await supabase.functions.invoke("sync-matchplan");
       if (error) throw error;
       if (!data?.ok) throw new Error(data?.error ?? "Okänt fel");
-      setMatchplanUrl(`${data.url}?t=${Date.now()}`);
+      setMatchplanUrl(`${data.viewUrl ?? FUNCTION_URL}?t=${Date.now()}`);
       setLastSynced(new Date().toLocaleTimeString("sv-SE"));
       toast({ title: "Matchplan uppdaterad", description: "Senaste versionen från GitHub är nu live." });
     } catch (e) {
