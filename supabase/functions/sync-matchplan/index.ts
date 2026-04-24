@@ -10,6 +10,35 @@ const SOURCE_URL =
 const BUCKET = "matchplan";
 const OBJECT_PATH = "matchplan-lerum.html";
 
+const htmlHeaders = {
+  ...corsHeaders,
+  "Content-Type": "text/html; charset=utf-8",
+  "Cache-Control": "no-store",
+};
+
+const fetchLatestHtml = async () => {
+  const res = await fetch(`${SOURCE_URL}?t=${Date.now()}`, {
+    headers: { "Cache-Control": "no-cache" },
+  });
+
+  if (!res.ok) {
+    throw new Error(`GitHub fetch failed: ${res.status}`);
+  }
+
+  return await res.text();
+};
+
+const loadStoredHtml = async (supabaseUrl: string, serviceKey: string) => {
+  const admin = createClient(supabaseUrl, serviceKey);
+  const { data, error } = await admin.storage.from(BUCKET).download(OBJECT_PATH);
+
+  if (error || !data) {
+    return null;
+  }
+
+  return await data.text();
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -18,6 +47,24 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+    if (req.method === "GET" || req.method === "HEAD") {
+      const storedHtml = await loadStoredHtml(supabaseUrl, serviceKey);
+      const html = storedHtml ?? await fetchLatestHtml();
+
+      return new Response(req.method === "HEAD" ? null : html, {
+        status: 200,
+        headers: htmlHeaders,
+      });
+    }
+
+    if (req.method !== "POST") {
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const anonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
     // Verify caller is an approved user
@@ -40,17 +87,7 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch latest from GitHub (cache-bust)
-    const res = await fetch(`${SOURCE_URL}?t=${Date.now()}`, {
-      headers: { "Cache-Control": "no-cache" },
-    });
-    if (!res.ok) {
-      return new Response(
-        JSON.stringify({ error: `GitHub fetch failed: ${res.status}` }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
-    }
-    const html = await res.text();
+    const html = await fetchLatestHtml();
     const blob = new Blob([html], { type: "text/html; charset=utf-8" });
 
     // Upload to storage (service role bypasses RLS)
@@ -78,6 +115,7 @@ Deno.serve(async (req) => {
         ok: true,
         size: blob.size,
         url: pub.publicUrl,
+        viewUrl: `${supabaseUrl}/functions/v1/sync-matchplan`,
         syncedAt: new Date().toISOString(),
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
