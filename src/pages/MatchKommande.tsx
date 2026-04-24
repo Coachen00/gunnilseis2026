@@ -1,12 +1,53 @@
 import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
 import PhaseBlock from "@/components/match/PhaseBlock";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
-const MATCHPLAN_URL = "/matchplan-lerum.html";
+const FALLBACK_URL = "/matchplan-lerum.html";
+const STORAGE_PATH = "matchplan-lerum.html";
 
-const MatchKommande = () => (
-  <>
+const MatchKommande = () => {
+  const [matchplanUrl, setMatchplanUrl] = useState<string>(FALLBACK_URL);
+  const [syncing, setSyncing] = useState(false);
+  const [lastSynced, setLastSynced] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { data } = supabase.storage.from("matchplan").getPublicUrl(STORAGE_PATH);
+    if (data?.publicUrl) {
+      // Probe — if the object doesn't exist yet, fall back to the bundled file.
+      fetch(data.publicUrl, { method: "HEAD" })
+        .then((r) => {
+          if (r.ok) setMatchplanUrl(`${data.publicUrl}?t=${Date.now()}`);
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-matchplan");
+      if (error) throw error;
+      if (!data?.ok) throw new Error(data?.error ?? "Okänt fel");
+      setMatchplanUrl(`${data.url}?t=${Date.now()}`);
+      setLastSynced(new Date().toLocaleTimeString("sv-SE"));
+      toast({ title: "Matchplan uppdaterad", description: "Senaste versionen från GitHub är nu live." });
+    } catch (e) {
+      toast({
+        title: "Synk misslyckades",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  return (
+   <>
     <PageHero
       eyebrow="Match · Veckans"
       title="Veckans match"
@@ -15,28 +56,42 @@ const MatchKommande = () => (
     <div className="container pb-24 space-y-12">
       <MatchHeader status="upcoming" />
 
-      <a
-        href={MATCHPLAN_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group flex items-center justify-between gap-4 rounded-xl border-2 border-primary/40 bg-gradient-to-r from-primary/10 to-accent/10 p-5 hover:border-primary hover:shadow-lg transition-all"
-      >
-        <div className="min-w-0">
-          <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
-            Interaktiv matchplan
-          </p>
-          <h3 className="text-lg md:text-xl font-black text-foreground truncate">
-            Matchplan — Gunnilse IS vs Lerum IS
-          </h3>
-          <p className="text-xs text-muted-foreground mt-1">
-            Öppnas i ny flik. Innehåller hela uppställningen, faser och fokuspunkter.
-          </p>
+      <div className="rounded-xl border-2 border-primary/40 bg-gradient-to-r from-primary/10 to-accent/10 p-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
+              Interaktiv matchplan
+            </p>
+            <h3 className="text-lg md:text-xl font-black text-foreground truncate">
+              Matchplan — Gunnilse IS vs Lerum IS
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Öppnas i ny flik. Synkas från GitHub — alltid senaste versionen.
+              {lastSynced && <span className="ml-1">Senast synkad {lastSynced}.</span>}
+            </p>
+          </div>
+          <div className="flex flex-shrink-0 gap-2">
+            <button
+              type="button"
+              onClick={handleSync}
+              disabled={syncing}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-primary/40 bg-background text-foreground font-bold text-sm hover:border-primary disabled:opacity-50 transition-all"
+            >
+              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
+              {syncing ? "Synkar…" : "Synka från GitHub"}
+            </button>
+            <a
+              href={matchplanUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:gap-3 transition-all"
+            >
+              Öppna matchplan
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
         </div>
-        <span className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm group-hover:gap-3 transition-all">
-          Öppna matchplan
-          <ExternalLink className="w-4 h-4" />
-        </span>
-      </a>
+      </div>
 
       <PhaseBlock
         status="upcoming"
@@ -139,7 +194,8 @@ const MatchKommande = () => (
         ]}
       />
     </div>
-  </>
-);
+   </>
+  );
+};
 
 export default MatchKommande;
