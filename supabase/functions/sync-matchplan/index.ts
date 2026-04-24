@@ -51,11 +51,11 @@ Deno.serve(async (req) => {
       );
     }
     const html = await res.text();
-    const bytes = new TextEncoder().encode(html);
+    const blob = new Blob([html], { type: "text/html; charset=utf-8" });
 
     // Upload to storage (service role bypasses RLS)
     const admin = createClient(supabaseUrl, serviceKey);
-    const { error: upErr } = await admin.storage.from(BUCKET).upload(OBJECT_PATH, bytes, {
+    const { error: upErr } = await admin.storage.from(BUCKET).upload(OBJECT_PATH, blob, {
       contentType: "text/html; charset=utf-8",
       upsert: true,
       cacheControl: "60",
@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         ok: true,
-        size: bytes.length,
+        size: blob.size,
         url: pub.publicUrl,
         syncedAt: new Date().toISOString(),
       }),
