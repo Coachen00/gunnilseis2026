@@ -24,6 +24,54 @@ const MatchKommande = () => {
       });
   }, []);
 
+  const handleOpenMatchplan = async () => {
+    const newTab = window.open("", "_blank");
+
+    if (newTab) {
+      newTab.document.write(`
+        <!doctype html>
+        <html lang="sv">
+          <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>Laddar matchplan…</title>
+            <style>
+              body { font-family: Inter, system-ui, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: hsl(var(--background, 222 47% 11%)); color: hsl(var(--foreground, 210 40% 98%)); }
+            </style>
+          </head>
+          <body>Laddar matchplan…</body>
+        </html>
+      `);
+      newTab.document.close();
+    }
+
+    try {
+      const response = await fetch(matchplanUrl, { cache: "no-store" });
+      if (!response.ok) throw new Error("Kunde inte läsa matchplanen.");
+
+      const html = await response.text();
+
+      if (newTab) {
+        newTab.document.open();
+        newTab.document.write(html);
+        newTab.document.close();
+        return;
+      }
+
+      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      const blobUrl = URL.createObjectURL(blob);
+      window.location.assign(blobUrl);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
+    } catch (e) {
+      newTab?.close();
+      toast({
+        title: "Kunde inte öppna matchplan",
+        description: (e as Error).message,
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleSync = async () => {
     setSyncing(true);
     try {
@@ -78,15 +126,14 @@ const MatchKommande = () => {
               <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
               {syncing ? "Synkar…" : "Synka från GitHub"}
             </button>
-            <a
-              href={matchplanUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={handleOpenMatchplan}
               className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:gap-3 transition-all"
             >
               Öppna matchplan
               <ExternalLink className="w-4 h-4" />
-            </a>
+            </button>
           </div>
         </div>
       </div>
