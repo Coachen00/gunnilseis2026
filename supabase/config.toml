@@ -2,3 +2,6 @@ project_id = "fojviymdmhjlpyrpjexp"
 
 [functions.sync-gunnilse-calendar]
 verify_jwt = false
+
+[functions.sync-matchplan]
+verify_jwt = false
