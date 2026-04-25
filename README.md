@@ -3,7 +3,7 @@
 Webbplats för Gunnilse IS spelmodell — identitet, fyra skedena, fasta situationer, roller, matchplaner och tränarverktyg.
 
 Stack: **Vite 6 · React 18 · TypeScript · Tailwind · shadcn/ui · Supabase · React Router**.
-Hostas via **Cloudflare Pages** (auto-deploy från `main`).
+Hostas på **[spelmodellen.se](https://spelmodellen.se)** via **GitHub Pages** — auto-deploy från `main` via GitHub Actions (`.github/workflows/deploy.yml`).
 
 ---
 
@@ -72,9 +72,11 @@ För att lägga till en tränare: be hen registrera sig på `/login`, godkänn i
 
 ## Deploy
 
-Push till `main` → Cloudflare Pages bygger och deployar automatiskt. Inga manuella steg.
+Push till `main` → GitHub Actions (`.github/workflows/deploy.yml`) bygger med Bun, kopierar `dist/index.html` till `dist/404.html` (SPA-fallback för React Router) och deployar till GitHub Pages. Live på <https://spelmodellen.se>.
 
-Om Cloudflare-bygget faller över Vite-versionen, säkerställ att `package.json` har `"vite": "^6.0.0"` eller högre (Cloudflare auto-config kräver Vite 6+).
+**DNS:** spelmodellen.se peker mot GitHubs Pages-IP:er via 4 A-records hos Loopia. `public/CNAME` innehåller `spelmodellen.se` så GitHub vet vilken host som ska serveras.
+
+**Manuell deploy / re-deploy:** Actions-tab → "Deploy to GitHub Pages" → "Run workflow".
 
 ---
 

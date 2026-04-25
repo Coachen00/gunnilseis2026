@@ -14,6 +14,14 @@ dist-ssr
 .worktrees
 .claude
 
+# Skydd mot att framtida .env-filer (inkl ev. service_role) committas av misstag.
+# Den existerande .env med anon-key är redan trackad och behålls — endast NYA
+# .env-filer ignoreras. Vill man rotera värden: editera den befintliga .env.
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
