@@ -1,73 +1,100 @@
-# Welcome to your Lovable project
+# Gunnilse IS · Spelmodell 2026
 
-## Project info
+Webbplats för Gunnilse IS spelmodell — identitet, fyra skedena, fasta situationer, roller, matchplaner och tränarverktyg.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Stack: **Vite 6 · React 18 · TypeScript · Tailwind · shadcn/ui · Supabase · React Router**.
+Hostas via **Cloudflare Pages** (auto-deploy från `main`).
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## Lokal utveckling
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm install
+npm run dev          # http://localhost:8080
 ```
 
-**Edit a file directly in GitHub**
+Andra kommandon:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build        # produktionsbygge → dist/
+npm run preview      # förhandsvisa byggd version lokalt
+npm run lint         # ESLint
+npm run test         # Vitest (engångskörning)
+npm run test:watch   # Vitest watch-läge
+```
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Projektstruktur
 
-## What technologies are used for this project?
+```
+src/
+├── App.tsx               Routing — alla 22 sidor är lazy-loadade
+├── pages/                En fil per route (Hem, Spelide, Forsvar, …)
+├── components/
+│   ├── Layout.tsx        Topbar + animerad bakgrund + footer (alla skyddade sidor)
+│   ├── TopNav.tsx        Sticky-nav med dropdowns
+│   ├── AuthGuard.tsx     Skyddar routes — kräver session + admin-godkännande
+│   ├── match/            Matchplan-flödet (EditableText sparar mot Supabase)
+│   ├── sections/         Längre innehållssektioner
+│   └── ui/               shadcn-baserade primitiver
+├── data/                 Hårdkodat innehåll (identity, principles, phaseCues, matchplan)
+├── hooks/                useMatch (Supabase), useInView, use-mobile, use-toast
+├── integrations/supabase Auto-genererad supabase-klient + typer
+└── test/                 Vitest-suiter
+supabase/
+├── migrations/           Schema-historik
+└── functions/            Edge functions (notify-new-signup, sync-gunnilse-calendar, sync-matchplan)
+```
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Auth-flöde
 
-## How can I deploy this project?
+1. Användare registrerar sig via `/login` (Supabase Auth → e-post + lösen).
+2. Konto skapas i `auth.users` + en rad i `profiles` med `approved=false`.
+3. Adminbehöriga ser nya förfrågningar i `/admin` och kan godkänna.
+4. Edge function `notify-new-signup` skickar mejl till admin vid ny registrering.
+5. `AuthGuard` stoppar oapprover­ade konton från att se innehåll (visar väntar-vy).
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+För att lägga till en tränare: be hen registrera sig på `/login`, godkänn i `/admin`.
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## Innehåll & uppdateringar
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**Idag:** Mest innehåll ligger som TypeScript-data i `src/data/` — ändringar kräver kod-deploy. Undantag är **Matchplan** (`/match/kommande`), där varje sektion har en `EditableText`-kommentar som autospar mot Supabase-tabellen `match_section_text`.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+**Roadmap:** Flytta `identity.ts`, `principles.ts`, `phaseCues.ts` till Supabase-tabeller och bygg redigeringsvyer i `/admin` så icke-tekniska användare kan uppdatera utan deploy.
+
+---
+
+## Deploy
+
+Push till `main` → Cloudflare Pages bygger och deployar automatiskt. Inga manuella steg.
+
+Om Cloudflare-bygget faller över Vite-versionen, säkerställ att `package.json` har `"vite": "^6.0.0"` eller högre (Cloudflare auto-config kräver Vite 6+).
+
+---
+
+## Print-vyer
+
+Dessa routes saknar Layout (nav/footer) för rent A4-tryck:
+
+- `/traningsplan`
+- `/matchblad`
+- `/motstandaranalys`
+- `/taktiktavla`
+
+Använd webbläsarens utskrift (Ctrl+P) → spara som PDF.
+
+---
+
+## Edge functions (Supabase)
+
+| Funktion | Trigger | Syfte |
+|---|---|---|
+| `notify-new-signup` | DB-webhook vid ny `profiles`-rad | Mejl till admin om nytt konto |
+| `sync-gunnilse-calendar` | Cron / manuell | Hämtar Gunnilse-kalender (Laget.se) |
+| `sync-matchplan` | Manuell | Importerar extern matchplan-data (legacy, ersatt av inbäddad Matchplan-komponent) |
