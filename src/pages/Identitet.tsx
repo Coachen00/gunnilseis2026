@@ -1,22 +1,24 @@
 import { Link, useParams, Navigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
-import { IDENTITY, findIdentity } from "@/data/identity";
+import { IDENTITY, type IdentityItem } from "@/data/identity";
+import { useContent } from "@/hooks/useContent";
 import PageHero from "@/components/PageHero";
 
 const Identitet = () => {
   const { slug } = useParams<{ slug: string }>();
-  const item = slug ? findIdentity(slug) : undefined;
+  const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
+  const item = slug ? identity.find((i) => i.slug === slug) : undefined;
 
   if (!item) return <Navigate to="/" replace />;
 
-  const index = IDENTITY.findIndex((i) => i.slug === item.slug);
-  const prev = IDENTITY[(index - 1 + IDENTITY.length) % IDENTITY.length];
-  const next = IDENTITY[(index + 1) % IDENTITY.length];
+  const index = identity.findIndex((i) => i.slug === item.slug);
+  const prev = identity[(index - 1 + identity.length) % identity.length];
+  const next = identity[(index + 1) % identity.length];
 
   return (
     <>
       <PageHero
-        eyebrow={`Identitet · 0${index + 1} av 0${IDENTITY.length}`}
+        eyebrow={`Identitet · 0${index + 1} av 0${identity.length}`}
         title={item.title}
         description={item.short}
       />

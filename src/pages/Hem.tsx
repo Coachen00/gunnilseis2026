@@ -5,9 +5,12 @@ import ChapterNumber from "@/components/ChapterNumber";
 import PrincipleTeaser from "@/components/PrincipleTeaser";
 import ScrollCue from "@/components/ScrollCue";
 import PhaseFlow from "@/components/PhaseFlow";
-import { IDENTITY } from "@/data/identity";
+import { IDENTITY, type IdentityItem } from "@/data/identity";
+import { useContent } from "@/hooks/useContent";
 
 const Hem = () => {
+  const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
+
   return (
     <>
       {/* HERO */}
@@ -46,7 +49,7 @@ const Hem = () => {
             Fem saker vi gör i varje match — oavsett vem vi möter.
           </p>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {IDENTITY.map((w, i) => (
+            {identity.map((w, i) => (
               <li key={w.slug}>
                 <Link
                   to={`/identitet/${w.slug}`}

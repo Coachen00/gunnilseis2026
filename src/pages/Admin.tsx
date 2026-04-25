@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, X, Loader2, Shield } from "lucide-react";
+import { ArrowLeft, Check, X, Loader2, Shield, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import ContentEditor from "@/components/admin/ContentEditor";
+import { IDENTITY } from "@/data/identity";
 
 interface Profile {
   id: string;
@@ -80,7 +82,7 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-primary hover:underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Tillbaka till spelkarta
@@ -90,7 +92,14 @@ const Admin = () => {
           <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
             <Shield className="w-5 h-5 text-primary" />
           </div>
-          <h1 className="text-2xl font-black text-foreground">Hantera användare</h1>
+          <h1 className="text-2xl font-black text-foreground">Admin</h1>
+        </div>
+
+        <div className="flex items-center gap-2 mb-3">
+          <Shield className="w-4 h-4 text-muted-foreground" />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            Användare
+          </h2>
         </div>
 
         {pending.length > 0 && (
@@ -144,6 +153,23 @@ const Admin = () => {
                 </button>
               </div>
             ))}
+          </div>
+        </div>
+
+        <div className="mt-12">
+          <div className="flex items-center gap-2 mb-3">
+            <FileText className="w-4 h-4 text-muted-foreground" />
+            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+              Innehåll
+            </h2>
+          </div>
+          <div className="space-y-4">
+            <ContentEditor
+              contentKey="identity"
+              label="Identitetsord"
+              description="Fem beteenden i varje match. Visas på Hem och /identitet/<slug>."
+              fallback={IDENTITY}
+            />
           </div>
         </div>
       </div>
