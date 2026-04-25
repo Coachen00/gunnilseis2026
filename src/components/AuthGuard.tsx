@@ -6,10 +6,11 @@ import { Loader2, Clock } from "lucide-react";
 
 interface AuthGuardProps {
   children: React.ReactNode;
+  requireAuth?: boolean;
   requireApproval?: boolean;
 }
 
-const AuthGuard = ({ children, requireApproval = true }: AuthGuardProps) => {
+const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: AuthGuardProps) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [approved, setApproved] = useState<boolean | null>(null);
@@ -20,7 +21,7 @@ const AuthGuard = ({ children, requireApproval = true }: AuthGuardProps) => {
       setSession(session);
       if (!session) {
         setLoading(false);
-        navigate("/login");
+        if (requireAuth) navigate("/login");
       }
     });
 
@@ -28,12 +29,12 @@ const AuthGuard = ({ children, requireApproval = true }: AuthGuardProps) => {
       setSession(session);
       if (!session) {
         setLoading(false);
-        navigate("/login");
+        if (requireAuth) navigate("/login");
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, requireAuth]);
 
   useEffect(() => {
     if (!session || !requireApproval) {
@@ -70,7 +71,7 @@ const AuthGuard = ({ children, requireApproval = true }: AuthGuardProps) => {
     );
   }
 
-  if (!session) return null;
+  if (!session) return requireAuth ? null : <>{children}</>;
 
   if (requireApproval && approved === false) {
     return (

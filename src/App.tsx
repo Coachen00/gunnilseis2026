@@ -54,6 +54,12 @@ const Protected = ({ children, requireApproval = true }: { children: React.React
 );
 
 // Print-vy: ingen Layout (för ren A4), men fortfarande Suspense.
+const Public = ({ children }: { children: React.ReactNode }) => (
+  <Layout>
+    <Suspense fallback={<PageFallback />}>{children}</Suspense>
+  </Layout>
+);
+
 const PrintRoute = ({ children }: { children: React.ReactNode }) => (
   <AuthGuard>
     <Suspense fallback={<PageFallback />}>{children}</Suspense>
@@ -70,7 +76,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
 
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
-          <Route path="/" element={<Protected><Hem /></Protected>} />
+          <Route path="/" element={<Public><Hem /></Public>} />
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected><Anfall /></Protected>} />

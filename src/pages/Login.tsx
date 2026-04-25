@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,12 @@ const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [signUpDone, setSignUpDone] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
+
+  useEffect(() => {
+    setIsSignUp(searchParams.get("mode") === "signup");
+  }, [searchParams]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -111,6 +116,11 @@ const Login = () => {
             >
               Tillbaka till inloggning
             </button>
+            <div className="mt-3">
+              <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                Till startsidan
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -181,6 +191,11 @@ const Login = () => {
                 ? "Har du redan ett konto? Logga in" 
                 : "Ingen tillgång? Begär åtkomst"}
             </button>
+          </div>
+          <div className="mt-3 text-center">
+            <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              Tillbaka till startsidan
+            </Link>
           </div>
         </CardContent>
       </Card>

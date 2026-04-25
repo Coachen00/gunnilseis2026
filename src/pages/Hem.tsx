@@ -41,6 +41,39 @@ const Hem = () => {
       </section>
 
       {/* KAPITEL 1 — IDENTITET */}
+      <section className="px-6 pb-16 -mt-4 relative z-10">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch">
+          <div className="bg-card/75 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 shadow-sm">
+            <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent mb-4">Vad är detta?</div>
+            <h2 className="text-2xl md:text-4xl font-black tracking-tight text-foreground mb-4">
+              En gemensam spelmodell för Gunnilse IS 2026.
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              Startsidan är öppen för föräldrar, spelare och nyfikna runt laget. Här får du en överblick av hur vi vill spela, vilka ord vi använder och varför det ska kännas igen från träning till match.
+            </p>
+          </div>
+          <div className="bg-background/70 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 flex flex-col justify-between gap-5">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Detaljerade principsidor, matchplaner och tränarverktyg är skyddade för laget. Logga in om du redan har tillgång, eller registrera en förfrågan.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Logga in <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/login?mode=signup"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card/70 px-4 py-2.5 text-sm font-bold text-foreground hover:bg-muted transition-colors"
+              >
+                Registrera
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <ScrollChapter>
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 01</div>
