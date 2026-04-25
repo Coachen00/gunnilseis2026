@@ -76,9 +76,19 @@ export default function EditableText({ matchId, sectionKey, fieldKey, placeholde
           className
         )}
       />
-      <div className="absolute top-2 right-2 text-muted-foreground">
-        {status === "saving" && <Loader2 className="w-3 h-3 animate-spin" />}
-        {status === "saved" && <Check className="w-3 h-3 text-primary" />}
+      <div className="pointer-events-none absolute top-2 right-2 flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider">
+        {status === "saving" && (
+          <>
+            <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />
+            <span className="text-muted-foreground">Sparar</span>
+          </>
+        )}
+        {status === "saved" && (
+          <>
+            <Check className="h-3 w-3 text-primary" />
+            <span className="text-primary">Sparat</span>
+          </>
+        )}
       </div>
     </div>
   );

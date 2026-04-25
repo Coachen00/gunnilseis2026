@@ -1,10 +1,16 @@
+import { Printer } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
+import MatchPicker from "@/components/match/MatchPicker";
 import Matchplan from "@/components/match/Matchplan";
 import Formation from "@/components/match/Formation";
+import { useMatch } from "@/hooks/useMatch";
 import { COHERENCE, FOCUS } from "@/data/matchplan";
 
-const MatchKommande = () => (
+const MatchKommande = () => {
+  const { match } = useMatch("upcoming");
+
+  return (
   <>
     <PageHero
       eyebrow="Match · Veckans"
@@ -13,6 +19,7 @@ const MatchKommande = () => (
     />
 
     <div className="container pb-24 space-y-6">
+      <MatchPicker status="upcoming" currentMatchId={match?.id} />
       <MatchHeader status="upcoming" />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
@@ -60,6 +67,28 @@ const MatchKommande = () => (
           <div className="rounded-xl border border-border bg-card">
             <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                Verktyg
+              </span>
+            </div>
+            <div className="p-3">
+              <a
+                href="/matchblad"
+                target="_blank"
+                rel="noopener"
+                className="flex items-center justify-between gap-2 rounded-md border border-border bg-muted/40 px-3 py-2 text-xs font-semibold hover:border-accent/40 hover:bg-accent/5 transition-colors"
+              >
+                <span className="flex items-center gap-2">
+                  <Printer className="h-3.5 w-3.5" />
+                  Skriv ut matchplan
+                </span>
+                <span className="text-muted-foreground">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card">
+            <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                 Genvägar
               </span>
             </div>
@@ -81,5 +110,6 @@ const MatchKommande = () => (
     </div>
    </>
   );
+};
 
 export default MatchKommande;
