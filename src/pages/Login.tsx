@@ -82,10 +82,10 @@ const Login = () => {
         });
         navigate("/");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         title: "Fel",
-        description: error.message || "Något gick fel",
+        description: error instanceof Error ? error.message : "Något gick fel",
         variant: "destructive",
       });
     } finally {
