@@ -1,0 +1,4 @@
+# GitHub Pages är känsligt för CRLF — håll CNAME och YAML strikt LF.
+public/CNAME text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
