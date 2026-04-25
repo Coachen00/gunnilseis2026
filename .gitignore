@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .worktrees
+.claude
 
 # Skydd mot att framtida .env-filer (inkl ev. service_role) committas av misstag.
 # Den existerande .env med anon-key är redan trackad och behålls — endast NYA

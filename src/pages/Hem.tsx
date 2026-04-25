@@ -14,33 +14,98 @@ const Hem = () => {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6">
-        <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-          <span className="inline-block w-10 h-px bg-accent" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">
-            Gunnilse IS · Vår identitet på planen
-          </span>
-          <span className="inline-block w-10 h-px bg-accent" />
-        </div>
-        <h1
-          className="font-black tracking-tight leading-[0.95] text-foreground animate-fade-in-up"
-          style={{ fontSize: "clamp(3rem, 10vw, 8rem)", animationDelay: "120ms" }}
+      <section className="relative min-h-[88vh] overflow-hidden">
+        {/*
+          Bakgrundsfilm. Lägg filen som /public/hero.mp4 (rendereras som /hero.mp4 i prod).
+          Saknas filen är taggen tyst och AnimatedBackground (från Layout) lyser igenom.
+          Tips: håll filen ≤ 6 MB, h264 1080p, ingen ljudspår — vi spelar ändå muted.
+        */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.jpg"
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
         >
-          Spelmodell <span className="text-gradient-accent">2026</span>
-        </h1>
-        <p
-          className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
-          style={{ animationDelay: "260ms" }}
-        >
-          Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
-          <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
-        </p>
-        <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
-          <ScrollCue />
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+
+        {/* Mörk gradient för läsbar text ovanpå filmen */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background/90 pointer-events-none"
+          aria-hidden="true"
+        />
+
+        {/* Innehåll — centrerat ovanpå film + overlay */}
+        <div className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6">
+          {/* Klubbsigill — placeholder, byts mot riktig Gunnilse IS-logga */}
+          <Shield
+            className="w-12 h-12 md:w-16 md:h-16 text-gunnilse-gold mb-6 animate-fade-in-up"
+            strokeWidth={1.25}
+            aria-label="Gunnilse IS"
+          />
+          <div className="flex items-center gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: "60ms" }}>
+            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground">
+              Gunnilse IS · Vår identitet på planen
+            </span>
+            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
+          </div>
+          <h1
+            className="font-black tracking-tight leading-[0.95] text-foreground animate-fade-in-up"
+            style={{ fontSize: "clamp(3rem, 10vw, 8rem)", animationDelay: "120ms" }}
+          >
+            Spelmodell <span className="text-gunnilse-gold">2026</span>
+          </h1>
+          <p
+            className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
+            style={{ animationDelay: "260ms" }}
+          >
+            Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
+            <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
+          </p>
+          <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
+            <ScrollCue />
+          </div>
         </div>
       </section>
 
       {/* KAPITEL 1 — IDENTITET */}
+      <section className="px-6 pb-16 -mt-4 relative z-10">
+        <div className="max-w-5xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch">
+          <div className="bg-card/75 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 shadow-sm">
+            <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent mb-4">Vad är detta?</div>
+            <h2 className="text-2xl md:text-4xl font-black tracking-tight text-foreground mb-4">
+              En gemensam spelmodell för Gunnilse IS 2026.
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              Startsidan är öppen för föräldrar, spelare och nyfikna runt laget. Här får du en överblick av hur vi vill spela, vilka ord vi använder och varför det ska kännas igen från träning till match.
+            </p>
+          </div>
+          <div className="bg-background/70 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 flex flex-col justify-between gap-5">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Detaljerade principsidor, matchplaner och tränarverktyg är skyddade för laget. Logga in om du redan har tillgång, eller registrera en förfrågan.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Logga in <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link
+                to="/login?mode=signup"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card/70 px-4 py-2.5 text-sm font-bold text-foreground hover:bg-muted transition-colors"
+              >
+                Registrera
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <ScrollChapter>
         <div className="max-w-4xl mx-auto text-center">
           <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 01</div>

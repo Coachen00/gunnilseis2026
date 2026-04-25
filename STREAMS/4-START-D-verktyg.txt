@@ -1,0 +1,79 @@
+================================================================================
+ STREAM 4 / D — TRÄNARVERKTYG & UTSKRIFTER
+================================================================================
+
+STEG 1 — Öppna nytt Claude Code-fönster och cd till STREAM D:s WORKTREE:
+
+    cd C:\Scripts\fotboll\Material\Gunnilse\matcher\gunnilseis2026-source\.worktrees\feat-D-verktyg
+
+STEG 2 — Verifiera worktree + branch:
+
+    git rev-parse --abbrev-ref HEAD     # ska säga feat/D-verktyg
+    git worktree list                   # din katalog ska finnas i listan
+
+STEG 3 — Första gången? Installera dependencies:
+
+    npm install
+
+STEG 4 — VIKTIGT: branchen är INTE pushad ännu. Pusha först:
+
+    git push -u origin feat/D-verktyg
+
+STEG 5 — Klistra in EXAKT denna prompt till Claude:
+
+--------------------------------------------------------------------------------
+
+Du är Stream D i repo:t gunnilseis2026.
+
+LÄS FÖRST, INNAN DU GÖR NÅGOT:
+1. STREAMS/00-COORDINATION.md
+2. STREAMS/04-verktyg.md
+3. C:\Users\joel.sjoqvist\.claude\projects\C--Scripts-fotboll\memory\project_canonical_repo.md
+
+REGLER SOM ÄR ABSOLUTA:
+- Du står på branch feat/D-verktyg i WORKTREE
+  .worktrees/feat-D-verktyg. BYT ALDRIG BRANCH. Lämna aldrig denna katalog.
+- Du äger: src/pages/Roller.tsx, Verktyg.tsx (hub), Traningsplan.tsx (print),
+  Matchblad.tsx (print), Motstandaranalys.tsx (print), Taktiktavla.tsx,
+  components/PrintLayout.tsx, src/data/roster.ts (eller players.ts).
+- Rör INTE: Hem/Login/Layout (Stream A), match-sidor (Stream B) — du får dock
+  LÄSA src/data/matchplan.ts (MATCH_META, FORMATION) för att rendera matchblad.
+  Princip-sidor (Stream C). App.tsx routes.
+- Vill du ändra App.tsx, src/data/matchplan.ts (Stream B äger den), Supabase-
+  schema eller lägga till storage-policy för foto-upload — STANNA och fråga
+  Joel.
+
+NULÄGE: Senaste commit gjorde rollkort + verktygshub + persistent taktiktavla +
+print-CSS. Branchen är NU pushad (du gjorde det i STEG 4).
+
+UPPGIFTER ATT FORTSÄTTA MED:
+1. Verifiera A4-utskrift på alla print-routes:
+   - Öppna /matchblad i webbläsaren → Ctrl+P
+   - Marginaler, sida-bryt, font-size, ingen header/footer/sidebar
+   - Samma för /traningsplan och /motstandaranalys
+   - Justera @media print-CSS i src/index.css eller PrintLayout om något bryter
+2. /verktyg-hub: 4-5 stora kort (Roller & trupp, Träningsplan, Matchblad,
+   Motståndaranalys, Taktiktavla). Varje kort: lucide-react-ikon, titel,
+   beskrivning, "Öppna"-knapp. Print-routes ska öppnas i ny flik
+   (window.open('/matchblad', '_blank')).
+3. Polera /roller: rollkort med foto-placeholder, position (LB/CM/ST etc),
+   2-3 anvisningar per roll. Trupp-lista i botten.
+4. Taktiktavla: drag-och-släpp spelare på SVG-plan. Spara position till
+   localStorage först (Supabase senare om Joel godkänner schema).
+
+TEST INNAN PR:
+- npm run dev -- --port 8083
+- Logga in → /verktyg visar 4-5 kort
+- /roller visar rollkort + trupp
+- /matchblad Ctrl+P → ren A4 utan sidebar
+- /traningsplan Ctrl+P → ren A4
+- /taktiktavla → flytta spelare → reload → positioner kvar
+- npx tsc --noEmit tyst
+- npm run build går igenom
+
+NÄR KLAR:
+    git push
+    # öppna PR mot main på GitHub
+    # säg till Joel
+
+--------------------------------------------------------------------------------
