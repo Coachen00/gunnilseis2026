@@ -1,0 +1,63 @@
+================================================================================
+ STREAM 1 / A — LANDNINGSSIDA & PUBLIK VY
+================================================================================
+
+STEG 1 — Öppna nytt Claude Code-fönster och cd till HUVUDKATALOGEN:
+
+    cd C:\Scripts\fotboll\Material\Gunnilse\matcher\gunnilseis2026-source
+
+STEG 2 — Verifiera att du står på rätt branch (ska säga feat/A-landningssida):
+
+    git rev-parse --abbrev-ref HEAD
+
+STEG 3 — Klistra in EXAKT denna prompt till Claude:
+
+--------------------------------------------------------------------------------
+
+Du är Stream A i repo:t gunnilseis2026 (Gunnilse IS U-lag-sajten).
+
+LÄS FÖRST, INNAN DU GÖR NÅGOT:
+1. STREAMS/00-COORDINATION.md (i denna repo) — koordineringsregler
+2. STREAMS/01-landningssida.md (i denna repo) — din scope-brief
+3. C:\Users\joel.sjoqvist\.claude\projects\C--Scripts-fotboll\memory\project_canonical_repo.md
+
+REGLER SOM ÄR ABSOLUTA:
+- Du står på branch feat/A-landningssida i HUVUDKATALOGEN. BYT ALDRIG BRANCH.
+- Du äger ENDAST: src/pages/Hem.tsx, src/pages/Login.tsx, src/components/Layout.tsx,
+  src/components/AuthGuard.tsx, src/components/PageHero.tsx, ScrollChapter,
+  ChapterNumber, PrincipleTeaser, ScrollCue, PhaseFlow.
+- Rör INTE: src/App.tsx (routes), match/* (Stream B), Identitet/Forsvar/Anfall/
+  Fasta/Spelide (Stream C), Roller/Verktyg/print-routes (Stream D).
+- Vill du ändra App.tsx, Layout som påverkar arbetssidor, eller lägga till
+  npm-paket — STANNA och fråga Joel.
+
+NULÄGE NÄR DU TAR ÖVER:
+Det finns ocommitade ändringar i tree:t (kör `git status` först) som rör Hem,
+Login, Layout, TopNav, AuthGuard, LogoutButton, App.tsx. Granska dem en och en
+med `git diff <fil>`. För varje fil:
+- Hör den till Stream A's scope? Committa.
+- Är det test-skräp? Stash:a.
+- Rör den App.tsx eller annan delad fil? Pinga Joel innan du committar.
+
+UPPGIFTER ATT FORTSÄTTA MED EFTER ATT TREE:T ÄR RENT:
+1. Säkerställ att / (Hem) är publik (icke-inloggad ser den utan redirect).
+2. Header-CTA: "Logga in / Registrera" för utloggade, namn + "Logga ut" för
+   inloggade.
+3. Trasiga länkar från Hem → principsidor ska ge login-prompt (inte blank).
+4. "Vad är detta?"-sektion på Hem för föräldraperspektiv.
+5. Polera hero-copy om något känns off (kolla med Joel innan stora textbyten).
+
+TEST INNAN PR:
+- npm run dev (port 8080) — startar utan fel
+- Inkognito-flik → / visar Hem direkt utan redirect
+- Klick på principsida utloggad → login-prompt
+- Logga in → namn + utlogg syns i header
+- npx tsc --noEmit — tyst
+- npm run build — går igenom
+
+NÄR KLAR:
+    git push -u origin feat/A-landningssida
+    # öppna PR mot main på GitHub
+    # säg till Joel
+
+--------------------------------------------------------------------------------

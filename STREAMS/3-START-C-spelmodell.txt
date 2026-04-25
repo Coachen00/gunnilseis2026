@@ -1,0 +1,71 @@
+================================================================================
+ STREAM 3 / C — SPELMODELL (PRINCIPSIDOR)
+================================================================================
+
+STEG 1 — Öppna nytt Claude Code-fönster och cd till STREAM C:s WORKTREE:
+
+    cd C:\Scripts\fotboll\Material\Gunnilse\matcher\gunnilseis2026-source\.worktrees\feat-C-spelmodell
+
+STEG 2 — Verifiera worktree + branch:
+
+    git rev-parse --abbrev-ref HEAD     # ska säga feat/C-spelmodell
+    git worktree list                   # din katalog ska finnas i listan
+
+STEG 3 — Första gången? Installera dependencies:
+
+    npm install
+
+STEG 4 — Klistra in EXAKT denna prompt till Claude:
+
+--------------------------------------------------------------------------------
+
+Du är Stream C i repo:t gunnilseis2026.
+
+LÄS FÖRST, INNAN DU GÖR NÅGOT:
+1. STREAMS/00-COORDINATION.md
+2. STREAMS/03-spelmodell.md
+3. C:\Users\joel.sjoqvist\.claude\projects\C--Scripts-fotboll\memory\project_canonical_repo.md
+
+REGLER SOM ÄR ABSOLUTA:
+- Du står på branch feat/C-spelmodell i WORKTREE
+  .worktrees/feat-C-spelmodell. BYT ALDRIG BRANCH. Lämna aldrig denna katalog.
+- Du äger: src/pages/Identitet.tsx + IdentitetDetalj.tsx, Forsvar.tsx,
+  Anfall.tsx, Fasta.tsx, Spelide.tsx, src/data/identity.ts, principles.ts,
+  phaseCues.ts, src/hooks/useContent.ts.
+- Rör INTE: Hem/Login/Layout (Stream A) — även om PrincipleTeaser visas på Hem,
+  ägs själva komponenten av Stream A. Match-sidor (Stream B), Roller/Verktyg
+  (Stream D), App.tsx routes.
+- Vill du lägga till ny route (t.ex. /admin/spelmodell), Supabase-tabell, eller
+  ändra Layout — STANNA och fråga Joel.
+
+NULÄGE: Senaste commit kopplade principer + phase cues till useContent (alla
+text-edits går nu via Supabase content_blocks-tabellen). Branchen är pushad.
+
+UPPGIFTER ATT FORTSÄTTA MED:
+1. /admin/spelmodell — bygg en redigeringsvy där coach kan klicka och uppdatera
+   principer (titel, kort beskrivning, bullets, exempel-text). Spara via
+   useContent → content_blocks-tabellen i Supabase. Om /admin redan finns: lägg
+   till en undersektion. Annars: bygg ny route (kräver Joel-godkännande för
+   App.tsx-ändring).
+2. Polera /identitet/<slug> — typografi, plats för exempel-text, bild/video-
+   placeholder med upload-knapp (kräver Supabase storage — pinga Joel).
+3. "Nästa princip"-navigation i botten på varje principdetalj så man kan bläddra
+   som i en bok.
+4. Spelide.tsx — sammanställ alla principer på en helhetssida (för utskrift +
+   onboarding av nya spelare). Kan länka till /matchblad-stilen för print.
+
+TEST INNAN PR:
+- npm run dev -- --port 8082
+- Logga in → /identitet listar 5 punkter
+- /identitet/<slug> visar detaljvy
+- /forsvar, /anfall, /fasta, /spelide visar respektive vy
+- Ändra text i admin → reload publik sida → ny text syns
+- npx tsc --noEmit tyst
+- npm run build går igenom
+
+NÄR KLAR:
+    git push
+    # öppna PR mot main på GitHub
+    # säg till Joel
+
+--------------------------------------------------------------------------------

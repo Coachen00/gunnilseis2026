@@ -1,0 +1,68 @@
+================================================================================
+ STREAM 2 / B — VECKANS MATCH & MATCHPLAN
+================================================================================
+
+STEG 1 — Öppna nytt Claude Code-fönster och cd till STREAM B:s WORKTREE:
+
+    cd C:\Scripts\fotboll\Material\Gunnilse\matcher\gunnilseis2026-source\.worktrees\feat-B-matchplan
+
+STEG 2 — Verifiera worktree + branch:
+
+    git rev-parse --abbrev-ref HEAD     # ska säga feat/B-matchplan
+    git worktree list                   # din katalog ska finnas i listan
+
+STEG 3 — Första gången? Installera dependencies (egen node_modules per worktree):
+
+    npm install
+
+STEG 4 — Klistra in EXAKT denna prompt till Claude:
+
+--------------------------------------------------------------------------------
+
+Du är Stream B i repo:t gunnilseis2026.
+
+LÄS FÖRST, INNAN DU GÖR NÅGOT:
+1. STREAMS/00-COORDINATION.md
+2. STREAMS/02-matchplan.md
+3. C:\Users\joel.sjoqvist\.claude\projects\C--Scripts-fotboll\memory\project_canonical_repo.md
+
+REGLER SOM ÄR ABSOLUTA:
+- Du står på branch feat/B-matchplan i WORKTREE
+  .worktrees/feat-B-matchplan. BYT ALDRIG BRANCH. Lämna aldrig denna katalog.
+- Du äger: src/pages/MatchKommande.tsx, MatchHistorik.tsx, components/match/*,
+  components/EditableText.tsx, src/data/matchplan.ts, src/hooks/useMatch.ts,
+  Supabase-tabellen match_section_text.
+- Rör INTE: Hem/Login/Layout (Stream A), princip-sidor (Stream C),
+  Roller/Verktyg/print-routes (Stream D), App.tsx routes.
+- Vill du ändra App.tsx, Supabase-schema eller supabaseClient.ts — STANNA och
+  fråga Joel.
+
+NULÄGE: Senaste commit gjorde matchväljare + formation-tooltip + autospar-text +
+print-knapp. Branchen är pushad till origin.
+
+UPPGIFTER ATT FORTSÄTTA MED:
+1. /match/historik — lista tidigare matcher med plan + utfall så coach kan
+   jämföra. Datakälla: Supabase-tabellen matches om den finns, annars hardcodad
+   array i src/data/matchplan.ts.
+2. Autospar-feedback i EditableText: liten "Sparat ✓" som syns 3 sek efter
+   lyckad skrivning till Supabase (visuell bekräftelse, inte bara tyst spara).
+3. Polering av MatchKommande: anchor-länkar i sidofältet ska scrolla mjukt till
+   rätt sektion (scroll-behavior: smooth + scroll-margin-top för fixed header).
+4. Verifiera "Skriv ut matchplan"-knappen öppnar /matchblad i ny flik. Om
+   matchblad-CSS behöver justeras → koordinera med Stream D (de äger Matchblad).
+
+TEST INNAN PR:
+- npm run dev -- --port 8081 (Stream A äger 8080)
+- Logga in → /match/kommande visar header + formation + 9 sektioner
+- Skriv i EditableText-fält → reload → texten kvar + "Sparat ✓" syntes
+- Hovra spelare i Formation → tooltip syns
+- Anchor-länkar scrollar rätt
+- npx tsc --noEmit tyst
+- npm run build går igenom
+
+NÄR KLAR:
+    git push                                # branch redan trackad
+    # öppna PR mot main på GitHub
+    # säg till Joel
+
+--------------------------------------------------------------------------------
