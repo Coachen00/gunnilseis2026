@@ -1,6 +1,7 @@
 import PageHero from "@/components/PageHero";
 import { FastaSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
+import PhaseNav from "@/components/PhaseNav";
 
 const Fasta = () => (
   <>
@@ -19,9 +20,10 @@ const Fasta = () => (
         <PrincipleBlock phase="fasta" showSource />
       </div>
     </div>
-    <div className="container pb-24">
+    <div className="container pb-16">
       <FastaSection />
     </div>
+    <PhaseNav current="/fasta" />
   </>
 );
 

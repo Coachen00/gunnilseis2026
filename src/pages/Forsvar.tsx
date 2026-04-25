@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { ForsvarsspelSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
-import { PHASE_CUES } from "@/data/phaseCues";
+import PhaseNav from "@/components/PhaseNav";
 
 const Forsvar = () => (
   <>
@@ -13,7 +13,7 @@ const Forsvar = () => (
       description="Vi förhindrar avslut i gyllene zonen genom positionering, press och markering — tre höjder, samma logik."
     />
     <div className="container">
-      <CuesBlock set={PHASE_CUES.forsvar} />
+      <CuesBlock phaseKey="forsvar" />
       <div className="max-w-3xl mb-16 border-l-2 border-accent/60 pl-6">
         <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
           <span className="font-bold">En princip — tre höjder.</span> Oavsett om vi pressar högt, står medelhögt eller faller lågt så är målet detsamma: förhindra avslut i gyllene zonen. Vi styr pressen åt en sida, håller kompakt form och vinner andrabollar tillsammans.
@@ -23,7 +23,7 @@ const Forsvar = () => (
         <PrincipleBlock phase="forsvar" showSource />
       </div>
     </div>
-    <div className="container pb-24 space-y-24">
+    <div className="container space-y-24 pb-16">
       <section id="hogt" className="scroll-mt-24">
         <SectionHeader badge="01 · Högt" title="Högt försvar" subtitle="Press hög upp i plan — trigger på deras vänsterback." />
         <ForsvarsspelSection />
@@ -41,6 +41,7 @@ const Forsvar = () => (
         </div>
       </section>
     </div>
+    <PhaseNav current="/forsvar" />
   </>
 );
 

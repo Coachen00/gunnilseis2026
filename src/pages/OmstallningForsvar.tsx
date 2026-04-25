@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { OmstallningForsvarSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
-import { PHASE_CUES } from "@/data/phaseCues";
+import PhaseNav from "@/components/PhaseNav";
 
 const OmstallningForsvar = () => (
   <>
@@ -13,10 +13,10 @@ const OmstallningForsvar = () => (
       description="Vinn tillbaka bollen, hindra spel framåt, förhindra kontring. Forwarden är vår första försvarare."
     />
     <div className="container mb-16">
-      <CuesBlock set={PHASE_CUES["omstallning-forsvar"]} />
+      <CuesBlock phaseKey="omstallning-forsvar" />
       <PrincipleBlock phase="omstallning-forsvar" showSource />
     </div>
-    <div className="container pb-24 space-y-24">
+    <div className="container space-y-24 pb-16">
       <section id="direkt" className="scroll-mt-24">
         <SectionHeader badge="01 · Direkt" title="Direkt motpress" subtitle="De första 5 sekunderna — press med central spelare, minska tid och ytor." />
         <OmstallningForsvarSection />
@@ -30,6 +30,7 @@ const OmstallningForsvar = () => (
         </div>
       </section>
     </div>
+    <PhaseNav current="/omstallning-forsvar" />
   </>
 );
 

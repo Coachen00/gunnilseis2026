@@ -3,7 +3,7 @@ import SectionHeader from "@/components/SectionHeader";
 import { OmstallningAnfallSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
-import { PHASE_CUES } from "@/data/phaseCues";
+import PhaseNav from "@/components/PhaseNav";
 
 const OmstallningAnfall = () => (
   <>
@@ -13,10 +13,10 @@ const OmstallningAnfall = () => (
       description="Snabba omställningspass eller spelvändningar — utnyttja motståndarens obalans. Press- och brytteknik skapar offensiva omställningar."
     />
     <div className="container mb-16">
-      <CuesBlock set={PHASE_CUES["omstallning-anfall"]} />
+      <CuesBlock phaseKey="omstallning-anfall" />
       <PrincipleBlock phase="omstallning-anfall" showSource />
     </div>
-    <div className="container pb-24 space-y-24">
+    <div className="container space-y-24 pb-16">
       <section id="kontring" className="scroll-mt-24">
         <SectionHeader badge="01 · Kontring" title="Direkt kontring" subtitle="Rättvänd spelare → spelvändning eller djupledspass → full fart mot gyllene zonen." />
         <OmstallningAnfallSection />
@@ -30,6 +30,7 @@ const OmstallningAnfall = () => (
         </div>
       </section>
     </div>
+    <PhaseNav current="/omstallning-anfall" />
   </>
 );
 

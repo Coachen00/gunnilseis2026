@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
 import PageHero from "@/components/PageHero";
+import MediaPlaceholder from "@/components/MediaPlaceholder";
 
 const Identitet = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -14,11 +15,13 @@ const Identitet = () => {
   const index = identity.findIndex((i) => i.slug === item.slug);
   const prev = identity[(index - 1 + identity.length) % identity.length];
   const next = identity[(index + 1) % identity.length];
+  const chapter = String(index + 1).padStart(2, "0");
+  const total = String(identity.length).padStart(2, "0");
 
   return (
     <>
       <PageHero
-        eyebrow={`Identitet · 0${index + 1} av 0${identity.length}`}
+        eyebrow={`Identitet · ${chapter} av ${total}`}
         title={item.title}
         description={item.short}
       />
@@ -28,13 +31,18 @@ const Identitet = () => {
           className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors mb-10"
         >
           <ArrowLeft className="w-4 h-4" />
-          Tillbaka till identitet
+          Tillbaka
         </Link>
 
-        <div className="max-w-3xl space-y-10">
-          <div className="border-l-2 border-accent/60 pl-6">
-            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">{item.oneLiner}</p>
-          </div>
+        <article className="max-w-3xl space-y-12">
+          <section className="border-l-2 border-accent/60 pl-6">
+            <div className="text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-accent mb-3">
+              I en mening
+            </div>
+            <p className="text-xl md:text-2xl text-foreground leading-relaxed font-medium">
+              {item.oneLiner}
+            </p>
+          </section>
 
           <section>
             <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-4">Så gör vi det</h2>
@@ -53,6 +61,17 @@ const Identitet = () => {
             </ul>
           </section>
 
+          <section>
+            <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-4">
+              Exempel · video eller bild
+            </h2>
+            <MediaPlaceholder
+              type="video"
+              title={`Klipp som visar ${item.title.toLowerCase()} live i match`}
+              description="Lägg till klipp via admin när det är redo — coach kan välja från egen telefon."
+            />
+          </section>
+
           <section className="grid md:grid-cols-2 gap-4">
             <div className="bg-card/85 backdrop-blur-sm border border-border rounded-lg p-5">
               <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
@@ -68,23 +87,33 @@ const Identitet = () => {
             </div>
           </section>
 
-          <nav className="flex items-center justify-between border-t border-border pt-8">
+          <nav className="grid grid-cols-2 gap-4 border-t border-border pt-8">
             <Link
               to={`/identitet/${prev.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              className="group flex flex-col gap-1 rounded-lg border border-border bg-card/60 p-4 hover:bg-card transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
-              {prev.title}
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                <ArrowLeft className="w-3 h-3" />
+                Föregående
+              </span>
+              <span className="text-sm md:text-base font-bold text-foreground group-hover:text-accent transition-colors">
+                {prev.title}
+              </span>
             </Link>
             <Link
               to={`/identitet/${next.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors"
+              className="group flex flex-col gap-1 rounded-lg border border-accent/40 bg-accent/5 p-4 hover:bg-accent/10 transition-colors text-right"
             >
-              {next.title}
-              <ArrowRight className="w-4 h-4" />
+              <span className="inline-flex items-center justify-end gap-1.5 text-[10px] font-mono uppercase tracking-[0.2em] text-accent">
+                Nästa princip
+                <ArrowRight className="w-3 h-3" />
+              </span>
+              <span className="text-sm md:text-base font-bold text-foreground group-hover:text-accent transition-colors">
+                {next.title}
+              </span>
             </Link>
           </nav>
-        </div>
+        </article>
       </div>
     </>
   );

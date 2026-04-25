@@ -1,4 +1,5 @@
-import { PHASES, type Phase, type Principle } from "@/data/principles";
+import { PHASES, type Phase, type PhaseSpec, type Principle } from "@/data/principles";
+import { useContent } from "@/hooks/useContent";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -12,10 +13,12 @@ interface PrincipleBlockProps {
 
 /**
  * Standardiserad presentation av principer per skede.
- * All text läses från `src/data/principles.ts` — single source of truth.
+ * All text läses via useContent("principles", PHASES) — fallback till hårdkodad data.
  */
 const PrincipleBlock = ({ phase, showSource = false, limit }: PrincipleBlockProps) => {
-  const spec = PHASES[phase];
+  const { data: phases } = useContent<Record<Phase, PhaseSpec>>("principles", PHASES);
+  const spec = phases[phase];
+  if (!spec) return null;
   const items = limit ? spec.principles.slice(0, limit) : spec.principles;
 
   return (
