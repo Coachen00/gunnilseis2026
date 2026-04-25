@@ -1,246 +1,85 @@
 import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
-import PhaseBlock from "@/components/match/PhaseBlock";
-import { ExternalLink, RefreshCw } from "lucide-react";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import Matchplan from "@/components/match/Matchplan";
+import Formation from "@/components/match/Formation";
+import { COHERENCE, FOCUS } from "@/data/matchplan";
 
-const FALLBACK_URL = "/matchplan-lerum.html";
-const FUNCTION_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sync-matchplan`;
-
-const MatchKommande = () => {
-  const [matchplanUrl, setMatchplanUrl] = useState<string>(FALLBACK_URL);
-  const [syncing, setSyncing] = useState(false);
-  const [lastSynced, setLastSynced] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch(FUNCTION_URL, { method: "HEAD" })
-      .then((r) => {
-        if (r.ok) setMatchplanUrl(`${FUNCTION_URL}?t=${Date.now()}`);
-      })
-      .catch(() => {
-        setMatchplanUrl(FALLBACK_URL);
-      });
-  }, []);
-
-  const handleOpenMatchplan = async () => {
-    const newTab = window.open("", "_blank");
-
-    if (newTab) {
-      newTab.document.write(`
-        <!doctype html>
-        <html lang="sv">
-          <head>
-            <meta charset="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <title>Laddar matchplan…</title>
-            <style>
-              body { font-family: Inter, system-ui, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: hsl(var(--background, 222 47% 11%)); color: hsl(var(--foreground, 210 40% 98%)); }
-            </style>
-          </head>
-          <body>Laddar matchplan…</body>
-        </html>
-      `);
-      newTab.document.close();
-    }
-
-    try {
-      const response = await fetch(matchplanUrl, { cache: "no-store" });
-      if (!response.ok) throw new Error("Kunde inte läsa matchplanen.");
-
-      const html = await response.text();
-
-      if (newTab) {
-        newTab.document.open();
-        newTab.document.write(html);
-        newTab.document.close();
-        return;
-      }
-
-      const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-      const blobUrl = URL.createObjectURL(blob);
-      window.location.assign(blobUrl);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000);
-    } catch (e) {
-      newTab?.close();
-      toast({
-        title: "Kunde inte öppna matchplan",
-        description: (e as Error).message,
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleSync = async () => {
-    setSyncing(true);
-    try {
-      const { data, error } = await supabase.functions.invoke("sync-matchplan");
-      if (error) throw error;
-      if (!data?.ok) throw new Error(data?.error ?? "Okänt fel");
-      setMatchplanUrl(`${data.viewUrl ?? FUNCTION_URL}?t=${Date.now()}`);
-      setLastSynced(new Date().toLocaleTimeString("sv-SE"));
-      toast({ title: "Matchplan uppdaterad", description: "Senaste versionen från GitHub är nu live." });
-    } catch (e) {
-      toast({
-        title: "Synk misslyckades",
-        description: (e as Error).message,
-        variant: "destructive",
-      });
-    } finally {
-      setSyncing(false);
-    }
-  };
-
-  return (
-   <>
+const MatchKommande = () => (
+  <>
     <PageHero
       eyebrow="Match · Veckans"
       title="Veckans match"
-      description="Motståndare, plan, fokus — allt på ett ställe inför avspark. Texter och media sparas automatiskt."
+      description="Motståndare, matchplan och fokus — allt på ett ställe. Sparas automatiskt."
     />
-    <div className="container pb-24 space-y-12">
+
+    <div className="container pb-24 space-y-6">
       <MatchHeader status="upcoming" />
 
-      <div className="rounded-xl border-2 border-primary/40 bg-gradient-to-r from-primary/10 to-accent/10 p-5">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="min-w-0">
-            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
-              Interaktiv matchplan
-            </p>
-            <h3 className="text-lg md:text-xl font-black text-foreground truncate">
-              Matchplan — Gunnilse IS vs Lerum IS
-            </h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Öppnas i ny flik. Synkas från GitHub — alltid senaste versionen.
-              {lastSynced && <span className="ml-1">Senast synkad {lastSynced}.</span>}
-            </p>
-          </div>
-          <div className="flex flex-shrink-0 gap-2">
-            <button
-              type="button"
-              onClick={handleSync}
-              disabled={syncing}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-primary/40 bg-background text-foreground font-bold text-sm hover:border-primary disabled:opacity-50 transition-all"
-            >
-              <RefreshCw className={`w-4 h-4 ${syncing ? "animate-spin" : ""}`} />
-              {syncing ? "Synkar…" : "Synka från GitHub"}
-            </button>
-            <button
-              type="button"
-              onClick={handleOpenMatchplan}
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:gap-3 transition-all"
-            >
-              Öppna matchplan
-              <ExternalLink className="w-4 h-4" />
-            </button>
-          </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
+        {/* Huvudkolumn — matchplanen */}
+        <div>
+          <Matchplan />
         </div>
+
+        {/* Sidofält — sticky */}
+        <aside className="lg:sticky lg:top-20 space-y-4">
+          <div className="rounded-xl border border-border bg-card">
+            <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                Start-11
+              </span>
+              <span className="text-sm font-extrabold">4-3-3</span>
+            </div>
+            <div className="p-4">
+              <Formation height={340} />
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card">
+            <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                03 fokus
+              </span>
+              <span className="text-sm font-extrabold">Veckans fokuspunkter</span>
+            </div>
+            <div className="space-y-2.5 p-4">
+              {FOCUS.map((f, i) => (
+                <div
+                  key={i}
+                  className="grid grid-cols-[28px_1fr] items-start gap-3"
+                >
+                  <div className="grid h-6 w-6 place-items-center rounded-md bg-accent text-xs font-black text-background">
+                    {i + 1}
+                  </div>
+                  <p className="text-sm font-semibold leading-relaxed">{f}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card">
+            <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                Genvägar
+              </span>
+            </div>
+            <nav className="p-3 text-xs">
+              {COHERENCE.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className="flex gap-3 py-1.5 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <span className="font-mono text-accent">{s.num}</span>
+                  <span>{s.title}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
       </div>
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Motståndare"
-        title="Motståndaranalys"
-        subtitle="Formation, styrkor, svagheter och triggers."
-        sectionKey="motstandare"
-        fields={[
-          { key: "formation", label: "Formation", placeholder: "t.ex. 4-4-2" },
-          { key: "styrkor", label: "Styrkor", placeholder: "Vad gör de bra?" },
-          { key: "svagheter", label: "Svagheter", placeholder: "Vad kan vi utnyttja?" },
-          { key: "triggers", label: "Triggers", placeholder: "När pressar/drar de?" },
-        ]}
-        mediaSlots={[
-          { key: "formation-bild", title: "Formationsbild", description: "Bild eller film på deras uppställning." },
-          { key: "klipp", title: "Klipp att titta på", description: "Länka YouTube eller ladda upp." },
-        ]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Anfallsspel"
-        title="Plan i anfall"
-        subtitle="Hur vi tänker bygga upp och skapa lägen."
-        sectionKey="anfall"
-        fields={[
-          { key: "uppbyggnad", label: "Uppbyggnad", placeholder: "Hur bygger vi upp mot deras press?" },
-          { key: "yta", label: "Var skapar vi yta?", placeholder: "Korridor, spelyta…" },
-          { key: "avslut", label: "Avslutsmönster", placeholder: "Cutback, djupledspass…" },
-        ]}
-        mediaSlots={[{ key: "anfall-bild", title: "Anfallsskiss" }]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Försvarsspel"
-        title="Plan i försvar"
-        subtitle="Pressmönster och hur vi försvarar våra korridorer."
-        sectionKey="forsvar"
-        fields={[
-          { key: "press", label: "Press-trigger", placeholder: "När pressar vi?" },
-          { key: "kompakthet", label: "Kompakthet", placeholder: "Hur tight ska vi stå?" },
-          { key: "korridorer", label: "Korridor-fokus", placeholder: "Tvinga utåt?" },
-        ]}
-        mediaSlots={[{ key: "forsvar-bild", title: "Försvarsskiss" }]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Omställning"
-        title="Omställning anfall → försvar"
-        subtitle="Vad gör vi direkt vid bollförlust?"
-        sectionKey="omst-forsvar"
-        fields={[
-          { key: "regel", label: "Regel direkt", placeholder: "Motpress 5 sek?" },
-          { key: "fallback", label: "Faller vi tillbaka?", placeholder: "Eller pressar?" },
-        ]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Omställning"
-        title="Omställning försvar → anfall"
-        subtitle="Vad gör vi direkt vid bollvinst?"
-        sectionKey="omst-anfall"
-        fields={[
-          { key: "forsta-pass", label: "Första passet", placeholder: "Djupled? Säkra?" },
-          { key: "lopningar", label: "Löpningar", placeholder: "Vem springer i djupled?" },
-        ]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Fasta situationer"
-        title="Fasta situationer"
-        subtitle="Hörnor, frisparkar, inkast — anfall och försvar."
-        sectionKey="fasta"
-        fields={[
-          { key: "hornor-anfall", label: "Hörnor anfall", placeholder: "Vilken signal? Vilka rör sig vart?" },
-          { key: "hornor-forsvar", label: "Hörnor försvar", placeholder: "Zon + man-markering" },
-          { key: "frisparkar", label: "Frisparkar", placeholder: "Skytt, mur, löpningar…" },
-          { key: "inkast", label: "Inkast", placeholder: "Långt eller kort?" },
-        ]}
-        mediaSlots={[
-          { key: "hornor-anfall-bild", title: "Hörna anfall" },
-          { key: "hornor-forsvar-bild", title: "Hörna försvar" },
-        ]}
-      />
-
-      <PhaseBlock
-        status="upcoming"
-        badge="Fokus"
-        title="Veckans fokuspunkter"
-        subtitle="3 saker vi särskilt ska göra bra."
-        sectionKey="fokus"
-        fields={[
-          { key: "fokus-1", label: "1", placeholder: "Första fokuset" },
-          { key: "fokus-2", label: "2", placeholder: "Andra fokuset" },
-          { key: "fokus-3", label: "3", placeholder: "Tredje fokuset" },
-        ]}
-      />
     </div>
    </>
   );
-};
 
 export default MatchKommande;
