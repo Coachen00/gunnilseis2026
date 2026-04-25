@@ -16,10 +16,15 @@ interface Props {
 type Status = "idle" | "typing" | "saving" | "saved" | "error";
 
 export const MATCH_SECTION_SAVED_EVENT = "match-section:saved";
+export const MATCH_SECTION_RELOAD_EVENT = "match-section:reload";
 
 export type MatchSectionSavedDetail = {
   matchId: string;
   at: string;
+};
+
+export type MatchSectionReloadDetail = {
+  matchId: string;
 };
 
 export default function EditableText({
@@ -34,9 +39,12 @@ export default function EditableText({
   const [value, setValue] = useState("");
   const [savedValue, setSavedValue] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [reloadKey, setReloadKey] = useState(0);
   const debounceTimer = useRef<number | null>(null);
   const fadeTimer = useRef<number | null>(null);
   const fieldRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+  const dirtyRef = useRef(false);
+  dirtyRef.current = value !== savedValue;
 
   useEffect(() => {
     if (!matchId) return;
@@ -58,7 +66,21 @@ export default function EditableText({
     return () => {
       cancelled = true;
     };
-  }, [matchId, sectionKey, fieldKey]);
+  }, [matchId, sectionKey, fieldKey, reloadKey]);
+
+  // Lyssna på prefill-broadcast från "Hämta från förra matchen". Skippa reload
+  // om fältet är dirty så att coachens pågående skrivande inte överskrivs.
+  useEffect(() => {
+    if (!matchId) return;
+    function onReload(e: Event) {
+      const detail = (e as CustomEvent<MatchSectionReloadDetail>).detail;
+      if (detail?.matchId !== matchId) return;
+      if (dirtyRef.current) return;
+      setReloadKey((k) => k + 1);
+    }
+    window.addEventListener(MATCH_SECTION_RELOAD_EVENT, onReload);
+    return () => window.removeEventListener(MATCH_SECTION_RELOAD_EVENT, onReload);
+  }, [matchId]);
 
   const persist = useCallback(
     async (next: string) => {

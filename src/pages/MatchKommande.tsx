@@ -4,6 +4,7 @@ import MatchHeader from "@/components/match/MatchHeader";
 import MatchPicker from "@/components/match/MatchPicker";
 import Matchplan from "@/components/match/Matchplan";
 import Formation from "@/components/match/Formation";
+import LoadFromPreviousButton from "@/components/match/LoadFromPreviousButton";
 import { useMatch } from "@/hooks/useMatch";
 import { COHERENCE, FOCUS } from "@/data/matchplan";
 
@@ -19,7 +20,14 @@ const MatchKommande = () => {
     />
 
     <div className="container pb-24 space-y-6">
-      <MatchPicker status="upcoming" currentMatchId={match?.id} />
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+        <div className="flex-1">
+          <MatchPicker status="upcoming" currentMatchId={match?.id} />
+        </div>
+        <div className="flex sm:items-end">
+          <LoadFromPreviousButton match={match} />
+        </div>
+      </div>
       <MatchHeader status="upcoming" />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
