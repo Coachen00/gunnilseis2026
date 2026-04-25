@@ -14,29 +14,61 @@ const Hem = () => {
   return (
     <>
       {/* HERO */}
-      <section className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6">
-        <div className="flex items-center gap-3 mb-8 animate-fade-in-up">
-          <span className="inline-block w-10 h-px bg-accent" />
-          <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">
-            Gunnilse IS · Vår identitet på planen
-          </span>
-          <span className="inline-block w-10 h-px bg-accent" />
-        </div>
-        <h1
-          className="font-black tracking-tight leading-[0.95] text-foreground animate-fade-in-up"
-          style={{ fontSize: "clamp(3rem, 10vw, 8rem)", animationDelay: "120ms" }}
+      <section className="relative min-h-[88vh] overflow-hidden">
+        {/*
+          Bakgrundsfilm. Lägg filen som /public/hero.mp4 (rendereras som /hero.mp4 i prod).
+          Saknas filen är taggen tyst och AnimatedBackground (från Layout) lyser igenom.
+          Tips: håll filen ≤ 6 MB, h264 1080p, ingen ljudspår — vi spelar ändå muted.
+        */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/hero-poster.jpg"
+          className="absolute inset-0 w-full h-full object-cover"
+          aria-hidden="true"
         >
-          Spelmodell <span className="text-gradient-accent">2026</span>
-        </h1>
-        <p
-          className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
-          style={{ animationDelay: "260ms" }}
-        >
-          Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
-          <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
-        </p>
-        <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
-          <ScrollCue />
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+
+        {/* Mörk gradient för läsbar text ovanpå filmen */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background/90 pointer-events-none"
+          aria-hidden="true"
+        />
+
+        {/* Innehåll — centrerat ovanpå film + overlay */}
+        <div className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6">
+          {/* Klubbsigill — placeholder, byts mot riktig Gunnilse IS-logga */}
+          <Shield
+            className="w-12 h-12 md:w-16 md:h-16 text-gunnilse-gold mb-6 animate-fade-in-up"
+            strokeWidth={1.25}
+            aria-label="Gunnilse IS"
+          />
+          <div className="flex items-center gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: "60ms" }}>
+            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
+            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground">
+              Gunnilse IS · Vår identitet på planen
+            </span>
+            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
+          </div>
+          <h1
+            className="font-black tracking-tight leading-[0.95] text-foreground animate-fade-in-up"
+            style={{ fontSize: "clamp(3rem, 10vw, 8rem)", animationDelay: "120ms" }}
+          >
+            Spelmodell <span className="text-gunnilse-gold">2026</span>
+          </h1>
+          <p
+            className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
+            style={{ animationDelay: "260ms" }}
+          >
+            Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
+            <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
+          </p>
+          <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
+            <ScrollCue />
+          </div>
         </div>
       </section>
 
