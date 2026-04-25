@@ -30,11 +30,17 @@ export default function Formation({ height = 360 }: Props) {
       {FORMATION.map((p) => (
         <div
           key={p.id}
-          className="absolute grid -translate-x-1/2 -translate-y-1/2 place-items-center"
+          className="group absolute grid -translate-x-1/2 -translate-y-1/2 place-items-center"
           style={{ left: `${p.x}%`, top: `${100 - p.y}%` }}
         >
+          {/* Tooltip — visas vid hover */}
+          <div className="pointer-events-none absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+            {p.label}
+            <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-foreground" />
+          </div>
+
           <div
-            className="grid h-[34px] w-[34px] place-items-center rounded-full border-2 text-[13px] font-black shadow-md"
+            className="grid h-[34px] w-[34px] cursor-pointer place-items-center rounded-full border-2 text-[13px] font-black shadow-md transition-transform group-hover:scale-110"
             style={{
               background: "hsl(47 78% 56%)",
               color: "hsl(215 30% 6%)",

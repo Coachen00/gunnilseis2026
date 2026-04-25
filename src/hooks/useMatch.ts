@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 export type MatchRow = {
@@ -15,21 +16,32 @@ export type MatchRow = {
 };
 
 export function useMatch(status: "upcoming" | "played") {
+  const [searchParams] = useSearchParams();
+  const overrideId = searchParams.get("match");
   const [match, setMatch] = useState<MatchRow | null>(null);
   const [loading, setLoading] = useState(true);
 
   const reload = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase
-      .from("matches")
-      .select("*")
-      .eq("status", status)
-      .order("match_date", { ascending: status === "upcoming", nullsFirst: false })
-      .limit(1)
-      .maybeSingle();
-    setMatch((data as MatchRow | null) ?? null);
+    if (overrideId) {
+      const { data } = await supabase
+        .from("matches")
+        .select("*")
+        .eq("id", overrideId)
+        .maybeSingle();
+      setMatch((data as MatchRow | null) ?? null);
+    } else {
+      const { data } = await supabase
+        .from("matches")
+        .select("*")
+        .eq("status", status)
+        .order("match_date", { ascending: status === "upcoming", nullsFirst: false })
+        .limit(1)
+        .maybeSingle();
+      setMatch((data as MatchRow | null) ?? null);
+    }
     setLoading(false);
-  }, [status]);
+  }, [status, overrideId]);
 
   useEffect(() => {
     reload();

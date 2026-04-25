@@ -1,4 +1,4 @@
-import { COHERENCE, FOCUS, MATCH_META } from "@/data/matchplan";
+import { COHERENCE, FOCUS } from "@/data/matchplan";
 import EditableText from "./EditableText";
 import { useMatch } from "@/hooks/useMatch";
 
@@ -18,7 +18,7 @@ export default function Matchplan() {
             Matchplan
           </p>
           <h2 className="text-2xl font-black tracking-tight">
-            Så spelar vi mot {MATCH_META.opponent}
+            Så spelar vi mot {match?.opponent || "—"}
           </h2>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">

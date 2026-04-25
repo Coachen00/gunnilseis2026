@@ -1,16 +1,38 @@
 import { useMatch } from "@/hooks/useMatch";
+import { useLastSaved } from "@/hooks/useLastSaved";
 import EditableText from "./EditableText";
 import { RefreshCw, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
   status: "upcoming" | "played";
 }
 
+function formatLastSaved(d: Date, now: Date): string {
+  const diffMin = Math.floor((now.getTime() - d.getTime()) / 60_000);
+  if (diffMin < 1) return "just nu";
+  if (diffMin < 60) return `för ${diffMin} ${diffMin === 1 ? "minut" : "minuter"} sedan`;
+  const time = d.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const day = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const dayDiff = Math.round((today.getTime() - day.getTime()) / 86_400_000);
+  if (dayDiff === 0) return `idag kl ${time}`;
+  if (dayDiff === 1) return `igår kl ${time}`;
+  return `${d.toLocaleDateString("sv-SE", { day: "numeric", month: "short" })} kl ${time}`;
+}
+
 export default function MatchHeader({ status }: Props) {
   const { match, loading, update, reload } = useMatch(status);
+  const lastSaved = useLastSaved(match?.id);
   const [syncing, setSyncing] = useState(false);
+  const [now, setNow] = useState(() => new Date());
+
+  // Tick var 30:e sekund så att relativ tid stannar fräsch.
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 30_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   async function syncCalendar() {
     setSyncing(true);
@@ -50,6 +72,12 @@ export default function MatchHeader({ status }: Props) {
           {syncing ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
           Synka kalender
         </button>
+      </div>
+
+      <div className="-mt-2 mb-3 text-xs text-muted-foreground" aria-live="polite">
+        {lastSaved
+          ? `Senast uppdaterad ${formatLastSaved(lastSaved, now)}`
+          : "Inget sparat ännu"}
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">

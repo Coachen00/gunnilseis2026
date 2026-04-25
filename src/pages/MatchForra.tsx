@@ -1,8 +1,13 @@
 import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
+import MatchPicker from "@/components/match/MatchPicker";
 import PhaseBlock from "@/components/match/PhaseBlock";
+import { useMatch } from "@/hooks/useMatch";
 
-const MatchForra = () => (
+const MatchForra = () => {
+  const { match } = useMatch("played");
+
+  return (
   <>
     <PageHero
       eyebrow="Match · Förra"
@@ -10,6 +15,7 @@ const MatchForra = () => (
       description="Vad hände, vad lärde vi oss, vad tar vi med oss. Texter och media sparas automatiskt."
     />
     <div className="container pb-24 space-y-12">
+      <MatchPicker status="played" currentMatchId={match?.id} />
       <MatchHeader status="played" />
 
       <PhaseBlock
@@ -93,6 +99,7 @@ const MatchForra = () => (
       />
     </div>
   </>
-);
+  );
+};
 
 export default MatchForra;
