@@ -1,51 +1,146 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, BookOpen, ClipboardList, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
-import SimpleTacticsBoard from "@/components/SimpleTacticsBoard";
+import boardMarkup from "./tactic-board-markup.html?raw";
+import boardScript from "./tactic-board-script.js?raw";
+import "./tactic-board.css";
+
+declare global {
+  interface Window {
+    html2canvas?: unknown;
+    __cleanupTacticBoard?: () => void;
+  }
+}
+
+const HTML2CANVAS_SRC = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+
+function loadHtml2Canvas() {
+  if (window.html2canvas) return Promise.resolve();
+
+  return new Promise<void>((resolve, reject) => {
+    const existingScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${HTML2CANVAS_SRC}"]`
+    );
+
+    if (existingScript) {
+      existingScript.addEventListener("load", () => resolve(), { once: true });
+      existingScript.addEventListener("error", () => reject(), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = HTML2CANVAS_SRC;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject();
+    document.head.appendChild(script);
+  });
+}
 
 const Taktiktavla = () => {
+  const boardRootRef = useRef<HTMLDivElement>(null);
+  const [loadError, setLoadError] = useState(false);
+
+  useEffect(() => {
+    const boardRoot = boardRootRef.current;
+    if (!boardRoot) return;
+
+    let mounted = true;
+    const script = document.createElement("script");
+
+    boardRoot.innerHTML = boardMarkup;
+
+    loadHtml2Canvas()
+      .catch(() => {
+        setLoadError(true);
+      })
+      .finally(() => {
+        if (!mounted) return;
+        script.text = boardScript;
+        document.body.appendChild(script);
+      });
+
+    return () => {
+      mounted = false;
+      window.__cleanupTacticBoard?.();
+      delete window.__cleanupTacticBoard;
+      script.remove();
+      boardRoot.innerHTML = "";
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top bar */}
-      <div className="border-b border-border bg-card/40 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
           <Link
             to="/verktyg"
-            className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-primary"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Tillbaka
+            <ArrowLeft className="h-4 w-4" />
+            Verktyg
           </Link>
-          <LogoutButton />
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-6">
-          <p className="text-xs font-mono uppercase tracking-[0.2em] text-accent mb-2">Verktyg</p>
-          <h1 className="text-3xl md:text-4xl font-black text-foreground mb-2">Taktiktavla</h1>
-          <p className="text-sm text-muted-foreground max-w-2xl">
-            En enkel pluppmatta för snabb taktiksnack. Dra spelarna med musen eller fingret. Dubbelklicka en spelare för att döpa den. Byt formation, dölj motståndare eller visa korridorer.
-          </p>
-        </div>
-
-        <SimpleTacticsBoard />
-
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-          <div className="p-3 rounded-lg border border-border bg-card/40">
-            <p className="font-mono uppercase tracking-wider text-accent mb-1">Hemma</p>
-            <p className="text-muted-foreground">Guldpluppar med positionsbokstav (MV, VB, CM…).</p>
-          </div>
-          <div className="p-3 rounded-lg border border-border bg-card/40">
-            <p className="font-mono uppercase tracking-wider text-primary mb-1">Motståndare</p>
-            <p className="text-muted-foreground">Marinblåa pluppar med nummer 1–11. Kan döljas.</p>
-          </div>
-          <div className="p-3 rounded-lg border border-border bg-card/40">
-            <p className="font-mono uppercase tracking-wider text-foreground mb-1">Boll</p>
-            <p className="text-muted-foreground">Vit plupp i mitten — flytta dit du vill.</p>
+          <div className="flex items-center gap-4">
+            <div className="hidden items-center gap-2 text-sm font-display font-bold text-primary sm:flex">
+              <ClipboardList className="h-4 w-4" />
+              Taktiktavla
+            </div>
+            <LogoutButton />
           </div>
         </div>
-      </div>
+      </header>
+
+      <section className="border-b border-border bg-card/35">
+        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-7 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="mb-3 flex items-center gap-3">
+              <div className="h-px w-10 bg-primary" />
+              <span className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                Gunnilse IS 2026
+              </span>
+            </div>
+            <h1 className="font-display text-3xl font-bold leading-tight sm:text-4xl">
+              Matchdagens taktiktavla
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Forma laget, visa ytorna och spara bilder direkt i samma miljö som resten av matchplanen.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <Link
+              to="/verktyg"
+              className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Verktyg
+            </Link>
+            <Link
+              to="/match/kommande"
+              className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+            >
+              <BookOpen className="h-4 w-4" />
+              Matchplan
+            </Link>
+            <a
+              href="#tactic-board-workspace"
+              className="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-3 text-xs font-semibold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              <ClipboardList className="h-4 w-4" />
+              Arbetsyta
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {loadError && (
+        <div className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-xs text-amber-100">
+          Skärmbildsfunktionen kunde inte laddas just nu. Tavlan fungerar ändå.
+        </div>
+      )}
+
+      <div id="tactic-board-workspace" ref={boardRootRef} className="tactic-board-page" />
     </div>
   );
 };
