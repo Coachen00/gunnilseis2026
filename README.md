@@ -98,5 +98,45 @@ Använd webbläsarens utskrift (Ctrl+P) → spara som PDF.
 | Funktion | Trigger | Syfte |
 |---|---|---|
 | `notify-new-signup` | DB-webhook vid ny `profiles`-rad | Mejl till admin om nytt konto |
-| `sync-gunnilse-calendar` | Cron / manuell | Hämtar Gunnilse-kalender (Laget.se) |
+| `sync-gunnilse-calendar` | Cron / manuell | Synkar **alla** matcher från svenskalag.se till `matches`-tabellen. Status (upcoming/played) härleds från datum. Respekterar `manual_override`. |
+| `sync-gunnilse-squad` | Cron / manuell | Synkar truppen + ledarstaben från svenskalag.se till `players`-tabellen. |
 | `sync-matchplan` | Manuell | Importerar extern matchplan-data (legacy, ersatt av inbäddad Matchplan-komponent) |
+
+### Deploya truppen + matcher (Fas 2-uppsättning)
+
+```bash
+# Kör migration (skapar players-tabellen)
+supabase db push
+
+# Deploya nya edge function
+supabase functions deploy sync-gunnilse-squad
+supabase functions deploy sync-gunnilse-calendar
+
+# Test-kör
+supabase functions invoke sync-gunnilse-squad
+supabase functions invoke sync-gunnilse-calendar
+```
+
+### Cron (Fas 3 — automatisk uppdatering)
+
+Tre alternativ:
+
+1. **Supabase pg_cron** (kräver Pro-plan): Lägg till en SQL-migration:
+   ```sql
+   select cron.schedule('sync-squad', '0 5 * * *',
+     $$ select net.http_post('https://<project>.supabase.co/functions/v1/sync-gunnilse-squad',
+        headers := jsonb_build_object('Authorization', 'Bearer <anon-key>'),
+        body := '{}'::jsonb) $$);
+   select cron.schedule('sync-calendar', '0 5 * * *',
+     $$ select net.http_post('https://<project>.supabase.co/functions/v1/sync-gunnilse-calendar',
+        headers := jsonb_build_object('Authorization', 'Bearer <anon-key>'),
+        body := '{}'::jsonb) $$);
+   ```
+
+2. **GitHub Action** (gratis): Lägg till `.github/workflows/sync.yml` som anropar funktionerna varje natt med `curl`.
+
+3. **Extern cron** (cron-job.org, EasyCron): Pinga edge-function-URL:erna enligt schema.
+
+### Fallback-logik
+
+Om Supabase `players` eller `matches` är tom använder frontenden statisk data från `src/data/squad.ts` och `src/data/season.ts`. En liten gul "Fallback-data"-pille visas på sidorna tills första syncen körts.

@@ -27,41 +27,58 @@ function stripTags(s: string): string {
 }
 
 function parseMatches(html: string): ParsedMatch[] {
-  // Best-effort parse: svenskalag.se renders match rows that contain "Match" / opponent / date.
-  // We extract anchor text patterns of form "Gunnilse IS - <opponent>" or "<opponent> - Gunnilse IS"
   const matches: ParsedMatch[] = [];
-  const rowRegex = /<a[^>]*href="([^"]*\/aktivitet\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
-  let m: RegExpExecArray | null;
+  const rowMatches = Array.from(html.matchAll(/<a[^>]*href="([^"]*\/aktivitet\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi));
   const seen = new Set<string>();
-  while ((m = rowRegex.exec(html)) !== null) {
+
+  for (const m of rowMatches) {
     const href = m[1];
     const text = stripTags(m[2]);
+    const matchIndex = m.index ?? 0;
     if (!text || seen.has(href)) continue;
     if (!/gunnilse/i.test(text) && !/match/i.test(text)) continue;
     seen.add(href);
-    // Try to extract opponent
-    let opponent = text.replace(/Gunnilse IS( Herr)?/i, "").replace(/[-–—]/g, " ").replace(/\s+/g, " ").trim();
+
+    let opponent = text
+      .replace(/Gunnilse IS( Herr)?/i, "")
+      .replace(/[-–—]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
     if (!opponent) opponent = text.trim();
-    // Try to extract date near the link
-    const around = html.slice(Math.max(0, m.index - 600), m.index + 600);
-    const dateMatch = around.match(/(\d{1,2})\s*(jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)[a-z]*\.?\s*(\d{4})?/i);
+
+    const around = html.slice(Math.max(0, matchIndex - 600), matchIndex + 600);
+    const dateMatch = around.match(
+      /(\d{1,2})\s*(jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)[a-z]*\.?\s*(\d{4})?/i
+    );
     let isoDate: string | null = null;
+    let timeMatch: RegExpMatchArray | null = null;
+    timeMatch = around.match(/(\d{1,2}):(\d{2})/);
     if (dateMatch) {
-      const monthMap: Record<string, number> = { jan: 0, feb: 1, mar: 2, apr: 3, maj: 4, jun: 5, jul: 6, aug: 7, sep: 8, okt: 9, nov: 10, dec: 11 };
+      const monthMap: Record<string, number> = {
+        jan: 0, feb: 1, mar: 2, apr: 3, maj: 4, jun: 5,
+        jul: 6, aug: 7, sep: 8, okt: 9, nov: 10, dec: 11,
+      };
       const day = parseInt(dateMatch[1], 10);
       const monthKey = dateMatch[2].toLowerCase().slice(0, 3) as keyof typeof monthMap;
       const month = monthMap[monthKey] ?? 0;
       const year = dateMatch[3] ? parseInt(dateMatch[3], 10) : new Date().getFullYear();
-      const d = new Date(Date.UTC(year, month, day, 13, 0, 0));
+      const hours = timeMatch ? parseInt(timeMatch[1], 10) : 13;
+      const minutes = timeMatch ? parseInt(timeMatch[2], 10) : 0;
+      const d = new Date(Date.UTC(year, month, day, hours - 2, minutes, 0));
       isoDate = d.toISOString();
     }
+
+    // Hämta tävling och plats om de finns i närheten
+    const compMatch = around.match(/Division\s+\d+[A-Z]?(?:\s+\w+)?/i);
+    const venueMatch = around.match(/(?:Hjällbo|Stenkullen|Rydsbergsplan|Gunnilseplan|Partille|Ytterby)[^<\n]*/i);
+
     matches.push({
       external_id: href,
       opponent: opponent || "Okänd motståndare",
       match_date: isoDate,
       home_away: /hemma/i.test(around) ? "home" : /borta/i.test(around) ? "away" : null,
-      competition: null,
-      venue: null,
+      competition: compMatch ? compMatch[0].trim() : null,
+      venue: venueMatch ? venueMatch[0].trim() : null,
     });
   }
   return matches;
@@ -75,68 +92,77 @@ Deno.serve(async (req) => {
     const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    const res = await fetch(CALENDAR_URL, { headers: { "User-Agent": "Mozilla/5.0 GunnilseTacticsBot" } });
+    const res = await fetch(CALENDAR_URL, {
+      headers: { "User-Agent": "Mozilla/5.0 GunnilseTacticsBot" },
+    });
     if (!res.ok) {
-      return new Response(JSON.stringify({ ok: false, error: `Calendar fetch failed: ${res.status}` }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ ok: false, error: `Calendar fetch failed: ${res.status}` }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
     const html = await res.text();
     const parsed = parseMatches(html);
 
+    if (parsed.length === 0) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "No matches parsed", parsed_count: 0 }),
+        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Hämta befintliga matcher för att respektera manual_override
+    const { data: existing } = await supabase
+      .from("matches")
+      .select("id, external_id, manual_override");
+    const overridden = new Set(
+      (existing ?? [])
+        .filter((m: { manual_override?: boolean }) => m.manual_override)
+        .map((m: { external_id?: string | null }) => m.external_id)
+        .filter(Boolean) as string[]
+    );
+
+    // Räkna ut status (upcoming/played) per match från datum
     const now = Date.now();
-    let upcomingFound: ParsedMatch | null = null;
-    let lastPlayed: ParsedMatch | null = null;
-    for (const p of parsed) {
-      if (!p.match_date) continue;
-      const t = new Date(p.match_date).getTime();
-      if (t >= now && (!upcomingFound || t < new Date(upcomingFound.match_date!).getTime())) upcomingFound = p;
-      if (t < now && (!lastPlayed || t > new Date(lastPlayed.match_date!).getTime())) lastPlayed = p;
+    const upserts = parsed
+      .filter((p) => !overridden.has(p.external_id))
+      .map((p) => {
+        const t = p.match_date ? new Date(p.match_date).getTime() : null;
+        const status: "upcoming" | "played" = t !== null && t < now ? "played" : "upcoming";
+        return {
+          external_id: p.external_id,
+          opponent: p.opponent,
+          match_date: p.match_date,
+          home_away: p.home_away,
+          competition: p.competition,
+          venue: p.venue,
+          status,
+          source: "scraped",
+          manual_override: false,
+        };
+      });
+
+    const { error: upsertError, data: upserted } = await supabase
+      .from("matches")
+      .upsert(upserts, { onConflict: "external_id" })
+      .select("id");
+
+    if (upsertError) {
+      return new Response(
+        JSON.stringify({ ok: false, error: upsertError.message, parsed_count: parsed.length }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    const results: Record<string, unknown> = { parsed_count: parsed.length };
-
-    async function upsert(p: ParsedMatch, status: "upcoming" | "played") {
-      // Skip if a manual_override match with the same status exists
-      const { data: existing } = await supabase
-        .from("matches")
-        .select("id, manual_override, external_id")
-        .eq("status", status)
-        .order("updated_at", { ascending: false })
-        .limit(1);
-      const current = existing?.[0];
-      if (current?.manual_override && current.external_id !== p.external_id) {
-        return { skipped: "manual_override", id: current.id };
-      }
-      const { data, error } = await supabase
-        .from("matches")
-        .upsert(
-          {
-            external_id: p.external_id,
-            opponent: p.opponent,
-            match_date: p.match_date,
-            home_away: p.home_away,
-            competition: p.competition,
-            venue: p.venue,
-            status,
-            source: "scraped",
-            manual_override: false,
-          },
-          { onConflict: "external_id" }
-        )
-        .select()
-        .single();
-      if (error) return { error: error.message };
-      return { id: data.id };
-    }
-
-    if (upcomingFound) results.upcoming = await upsert(upcomingFound, "upcoming");
-    if (lastPlayed) results.played = await upsert(lastPlayed, "played");
-
-    return new Response(JSON.stringify({ ok: true, results }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        parsed_count: parsed.length,
+        upserted_count: upserted?.length ?? 0,
+        skipped_overrides: overridden.size,
+      }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return new Response(JSON.stringify({ ok: false, error: msg }), {

@@ -75,6 +75,7 @@ const matchGroups: NavGroup[] = [
       { label: "Förra matchen", to: "/match/forra", hint: "Resultat & lärdomar" },
       { label: "Veckans match", to: "/match/kommande", hint: "Motståndare & plan" },
       { label: "Samlade tankar", to: "/match/reflektioner", hint: "Sista periodens trender" },
+      { label: "Årets matcher", to: "/match/matcher", hint: "Hela säsongen" },
     ],
   },
 ];
@@ -96,7 +97,8 @@ const navItems: NavItem[] = [
     variant: "narrow",
     activePathPrefixes: ["/match"],
   },
-  { kind: "link", to: "/roller", label: "Roller & Trupp" },
+  { kind: "link", to: "/truppen", label: "Trupp" },
+  { kind: "link", to: "/roller", label: "Roller" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
 ];
 
