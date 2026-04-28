@@ -7,11 +7,14 @@ interface ImagePlaceholderProps {
   description?: string;
   className?: string;
   compact?: boolean;
+  src?: string;
+  alt?: string;
 }
 
-const ImagePlaceholder = ({ title, description, className, compact = false }: ImagePlaceholderProps) => {
+const ImagePlaceholder = ({ title, description, className, compact = false, src, alt }: ImagePlaceholderProps) => {
   const [expanded, setExpanded] = useState(false);
   const patternId = useId();
+  const hasImage = Boolean(src);
 
   return (
     <>
@@ -27,38 +30,55 @@ const ImagePlaceholder = ({ title, description, className, compact = false }: Im
             compact ? "aspect-[4/3]" : "aspect-video"
           )}
         >
-          <PitchArc id={patternId} />
+          {hasImage ? (
+            <img
+              src={src}
+              alt={alt ?? title}
+              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.015]"
+            />
+          ) : (
+            <>
+              <PitchArc id={patternId} />
+
+              {/* Centered ghost icon */}
+              <div className="absolute inset-0 grid place-items-center">
+                <div className="flex items-center gap-1.5 text-muted-foreground/70 transition group-hover:text-foreground">
+                  <Camera className="h-4 w-4" strokeWidth={1.5} />
+                  <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-muted-foreground/60">/</span>
+                  <Film className="h-4 w-4" strokeWidth={1.5} />
+                </div>
+              </div>
+
+              {/* Bottom-left status (empty state only) */}
+              <div className="absolute bottom-2.5 left-2.5">
+                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+                  Tom slot
+                </span>
+              </div>
+            </>
+          )}
+
           <CornerTicks />
 
           {/* Top-left type stamp */}
           <div className="absolute left-2.5 top-2.5 flex items-center gap-1.5">
             <span className="block h-1 w-1 rounded-full bg-accent" />
-            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.24em] text-muted-foreground">
-              Bild · Film
+            <span className={cn(
+              "font-mono text-[9px] font-bold uppercase tracking-[0.24em]",
+              hasImage ? "rounded-sm bg-background/70 px-1 py-0.5 text-muted-foreground backdrop-blur-sm" : "text-muted-foreground"
+            )}>
+              {hasImage ? "Bild" : "Bild · Film"}
             </span>
           </div>
 
           {/* Top-right open hint */}
-          <div className="absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-sm border border-border/60 bg-background/40 text-muted-foreground transition group-hover:border-accent/40 group-hover:text-accent">
+          <div className={cn(
+            "absolute right-2 top-2 grid h-6 w-6 place-items-center rounded-sm border text-muted-foreground transition",
+            hasImage
+              ? "border-border/70 bg-background/70 backdrop-blur-sm group-hover:border-accent/50 group-hover:text-accent"
+              : "border-border/60 bg-background/40 group-hover:border-accent/40 group-hover:text-accent"
+          )}>
             <Maximize2 className="h-3 w-3" strokeWidth={2} />
-          </div>
-
-          {/* Centered ghost icon */}
-          <div className="absolute inset-0 grid place-items-center">
-            <div className="flex flex-col items-center gap-2 opacity-70 transition group-hover:opacity-100">
-              <div className="flex items-center gap-1.5 text-muted-foreground/80 transition group-hover:text-foreground">
-                <Camera className="h-4 w-4" strokeWidth={1.5} />
-                <span className="font-mono text-[10px] font-semibold tracking-[0.2em] text-muted-foreground/70">/</span>
-                <Film className="h-4 w-4" strokeWidth={1.5} />
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom-left status */}
-          <div className="absolute bottom-2.5 left-2.5">
-            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
-              Tom slot
-            </span>
           </div>
         </div>
 
@@ -84,7 +104,10 @@ const ImagePlaceholder = ({ title, description, className, compact = false }: Im
           onClick={() => setExpanded(false)}
         >
           <div
-            className="relative w-full max-w-2xl overflow-hidden rounded-md border border-border bg-card"
+            className={cn(
+              "relative w-full overflow-hidden rounded-md border border-border bg-card",
+              hasImage ? "max-w-5xl" : "max-w-2xl"
+            )}
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -96,20 +119,41 @@ const ImagePlaceholder = ({ title, description, className, compact = false }: Im
               <X className="h-3.5 w-3.5" />
             </button>
 
-            <div className="border-b border-border/70 px-6 py-5">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
-                Mediaslot
-              </p>
-              <h3 className="mt-1.5 text-xl font-black leading-tight tracking-tight text-foreground">{title}</h3>
-              {description && (
-                <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
-              )}
-            </div>
+            {hasImage ? (
+              <>
+                <img
+                  src={src}
+                  alt={alt ?? title}
+                  className="block max-h-[80vh] w-full object-contain bg-background"
+                />
+                <div className="border-t border-border/70 px-6 py-4">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+                    Spelmodell
+                  </p>
+                  <h3 className="mt-1 text-base font-black leading-tight tracking-tight text-foreground">{title}</h3>
+                  {description && (
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{description}</p>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="border-b border-border/70 px-6 py-5">
+                  <p className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+                    Mediaslot
+                  </p>
+                  <h3 className="mt-1.5 text-xl font-black leading-tight tracking-tight text-foreground">{title}</h3>
+                  {description && (
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+                  )}
+                </div>
 
-            <div className="grid gap-3 p-6 sm:grid-cols-2">
-              <DropZone icon={<Camera className="h-5 w-5" strokeWidth={1.5} />} label="Bild" formats="PNG · JPG · WebP · GIF · HEIC" />
-              <DropZone icon={<Film className="h-5 w-5" strokeWidth={1.5} />} label="Film" formats="MP4 · MOV · WebM · AVI · MKV" />
-            </div>
+                <div className="grid gap-3 p-6 sm:grid-cols-2">
+                  <DropZone icon={<Camera className="h-5 w-5" strokeWidth={1.5} />} label="Bild" formats="PNG · JPG · WebP · GIF · HEIC" />
+                  <DropZone icon={<Film className="h-5 w-5" strokeWidth={1.5} />} label="Film" formats="MP4 · MOV · WebM · AVI · MKV" />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

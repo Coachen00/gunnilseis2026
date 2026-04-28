@@ -32,6 +32,13 @@ import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
 import hornaTyper from "@/assets/horna-typer.png";
 import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
 
+import imgLagtForsvar from "@/assets/spelmodell/lagt-forsvar.png";
+import imgHogtForsvar from "@/assets/spelmodell/hogt-forsvarsspel.png";
+import imgForsvaraYttre from "@/assets/spelmodell/forsvara-yttre-korridor.png";
+import imgForsvarMotKontring from "@/assets/spelmodell/forsvar-mot-kontring.png";
+import imgKontring from "@/assets/spelmodell/kontring.png";
+import imgDirektBollatererovring from "@/assets/spelmodell/direkt-bollatererovring.png";
+
 /* ── Expandable image overlay ── */
 export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: string; className?: string }) => {
   const [expanded, setExpanded] = useState(false);
@@ -182,7 +189,7 @@ export const ForsvarsspelSection = () => (
         <PrincipleCardWrap n={5} title="Om bollen är 'I' oss = maximal ansträngning" description="Se till att vinna 1, få den till bättre yta 2. Styr alltid mot yttre korridor." />
       </div>
       <div className="flex flex-col gap-3">
-        <ImagePlaceholder title="Försvarsspel" description="Bild på kompakt försvar" />
+        <ImagePlaceholder title="Försvarsspel" description="Lågt block — kompakthet i egen halva" src={imgLagtForsvar} alt="Lågt block — kompakt försvar nära egen box" />
       </div>
     </div>
 
@@ -207,9 +214,9 @@ export const ForsvarsspelSection = () => (
           <TriggerCard number={3} condition="ABSOLUT KRAV" action="HINDRA SPELVÄNDNING" variant="defense" />
         </div>
         <div className="space-y-4">
-          <ImagePlaceholder title="Pressfälla vänsterback" description="Visa positionering vid press" compact />
-          <ImagePlaceholder title="Splitta planen" description="Bortre spelare säkrar centralt" compact />
-          <ImagePlaceholder title="Restförsvar +1" description="Kompakthet vid kontring" compact />
+          <ImagePlaceholder title="Pressfälla vänsterback" description="Hög press, kollektiv styrning utåt" compact src={imgHogtForsvar} alt="Högt försvarsspel — pressfälla mot motståndarens vänsterback" />
+          <ImagePlaceholder title="Splitta planen" description="Bortre spelare säkrar centralt, bollnära jagar utåt" compact src={imgForsvaraYttre} alt="Försvara yttre korridor — splitta planen" />
+          <ImagePlaceholder title="Restförsvar +1" description="Kompakt försvar mot kontring" compact src={imgForsvarMotKontring} alt="Försvar mot kontring — restförsvar +1" />
         </div>
       </div>
     </div>
@@ -253,7 +260,7 @@ export const OmstallningAnfallSection = () => (
         </ul>
       </div>
       <div className="flex flex-col gap-3">
-        <ImagePlaceholder title="Omställning till anfall" description="Bild på snabb omställning" />
+        <ImagePlaceholder title="Omställning till anfall" description="Snabb kontring efter bollvinst" src={imgKontring} alt="Kontring — omställning till anfall" />
       </div>
     </div>
 
@@ -381,7 +388,7 @@ export const OmstallningForsvarSection = () => (
         </ul>
       </div>
       <div className="flex flex-col gap-3">
-        <ImagePlaceholder title="Omställning till försvar" description="Bild på counterpress" />
+        <ImagePlaceholder title="Omställning till försvar" description="Direkt återerövring inom 5 sekunder" src={imgDirektBollatererovring} alt="Direkt bollåtererövring — counterpress" />
       </div>
     </div>
 
