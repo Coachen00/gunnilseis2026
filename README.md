@@ -102,20 +102,16 @@ Använd webbläsarens utskrift (Ctrl+P) → spara som PDF.
 | `sync-gunnilse-squad` | Cron / manuell | Synkar truppen + ledarstaben från svenskalag.se till `players`-tabellen. |
 | `sync-matchplan` | Manuell | Importerar extern matchplan-data (legacy, ersatt av inbäddad Matchplan-komponent) |
 
-### Deploya truppen + matcher (Fas 2-uppsättning)
+### Deploya Supabase (auto via GitHub Action)
 
-```bash
-# Kör migration (skapar players-tabellen)
-supabase db push
+`deploy-supabase.yml` deployar automatiskt migrationer + edge functions när något under `supabase/**` ändras i `main`. **Engångskonfiguration**:
 
-# Deploya nya edge function
-supabase functions deploy sync-gunnilse-squad
-supabase functions deploy sync-gunnilse-calendar
-
-# Test-kör
-supabase functions invoke sync-gunnilse-squad
-supabase functions invoke sync-gunnilse-calendar
-```
+1. Hämta personal access token: https://supabase.com/dashboard/account/tokens → "Generate new token"
+2. Hämta databaslösenord: https://supabase.com/dashboard/project/fojviymdmhjlpyrpjexp/settings/database → fältet "Database password" (kan behöva resettas om bortglömt)
+3. Lägg till båda som GitHub-secrets på https://github.com/Coachen00/gunnilseis2026/settings/secrets/actions :
+   - `SUPABASE_ACCESS_TOKEN`
+   - `SUPABASE_DB_PASSWORD`
+4. Push valfritt nästa gång eller kör workflow:n manuellt → första deployen sker automatiskt och initial-syncen triggas i sista steget.
 
 ### Cron (Fas 3 — automatisk uppdatering)
 
@@ -133,11 +129,7 @@ Tre alternativ:
         body := '{}'::jsonb) $$);
    ```
 
-2. **GitHub Action** (gratis, vald): Workflow `.github/workflows/sync-svenskalag.yml` triggar funktionerna nattligt 03:00 UTC och måndag 06:00 UTC. Manuell trigger via "Run workflow"-knappen i Actions-fliken. **Kräver** två repo-secrets:
-   - `SUPABASE_URL` (ex. `https://abcdefgh.supabase.co`)
-   - `SUPABASE_ANON_KEY` (publika anon-nyckeln från Supabase-projektets API-inställningar)
-
-   Lägg till dem under repo Settings → Secrets and variables → Actions → New repository secret.
+2. **GitHub Action** (gratis, vald): Workflow `.github/workflows/sync-svenskalag.yml` triggar funktionerna nattligt 03:00 UTC och måndag 06:00 UTC. Manuell trigger via "Run workflow"-knappen i Actions-fliken. Inga secrets behövs — funktionerna är publika (verify_jwt=false) så curl utan auth räcker.
 
 3. **Extern cron** (cron-job.org, EasyCron): Pinga edge-function-URL:erna enligt schema.
 

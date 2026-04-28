@@ -1,50 +1,44 @@
 name: Sync svenskalag.se
 
 # Triggar de två edge-funktionerna sync-gunnilse-squad och sync-gunnilse-calendar.
-# - Nattligt vid 03:00 UTC (~05:00 svensk tid) för truppen och hela kalendern
-# - Måndag 06:00 UTC (~08:00 svensk tid) extra inför veckans träningsupplägg
+# Funktionerna är konfigurerade verify_jwt=false → publika, ingen auth behövs.
+# - Nattligt vid 03:00 UTC (~05:00 svensk tid)
+# - Måndag 06:00 UTC (~08:00 svensk tid) extra inför veckans matchplan
 # - Manuellt via "Run workflow"-knappen i Actions-fliken
 
 on:
   schedule:
-    # Varje natt 03:00 UTC
     - cron: "0 3 * * *"
-    # Måndag morgon 06:00 UTC — extra check inför veckans matchplan
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
+env:
+  SUPABASE_URL: https://fojviymdmhjlpyrpjexp.supabase.co
+
 jobs:
-  sync:
+  sync-calendar:
     runs-on: ubuntu-latest
     steps:
-      - name: Sync squad (truppen)
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      - name: POST sync-gunnilse-calendar
         run: |
-          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
-            echo "::error::SUPABASE_URL eller SUPABASE_ANON_KEY saknas i GitHub secrets"
-            exit 1
-          fi
-          response=$(curl --silent --show-error --fail-with-body \
-            --max-time 60 \
-            -X POST "$SUPABASE_URL/functions/v1/sync-gunnilse-squad" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{}')
-          echo "Squad sync response: $response"
-          echo "$response" | grep -q '"ok":true' || { echo "::error::Squad sync failed"; exit 1; }
-
-      - name: Sync calendar (årets matcher)
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: |
-          response=$(curl --silent --show-error --fail-with-body \
-            --max-time 60 \
+          response=$(curl --silent --show-error --max-time 60 \
             -X POST "$SUPABASE_URL/functions/v1/sync-gunnilse-calendar" \
-            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
             -H "Content-Type: application/json" \
             -d '{}')
           echo "Calendar sync response: $response"
           echo "$response" | grep -q '"ok":true' || { echo "::error::Calendar sync failed"; exit 1; }
+
+  sync-squad:
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST sync-gunnilse-squad
+        run: |
+          response=$(curl --silent --show-error --max-time 60 \
+            -X POST "$SUPABASE_URL/functions/v1/sync-gunnilse-squad" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          echo "Squad sync response: $response"
+          # Squad-funktionen kanske inte är deployad än — varna men misslyckas inte
+          if ! echo "$response" | grep -q '"ok":true'; then
+            echo "::warning::Squad sync svarade inte ok=true. Är funktionen deployad? Svar: $response"
+          fi

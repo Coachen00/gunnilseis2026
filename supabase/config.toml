@@ -3,5 +3,8 @@ project_id = "fojviymdmhjlpyrpjexp"
 [functions.sync-gunnilse-calendar]
 verify_jwt = false
 
+[functions.sync-gunnilse-squad]
+verify_jwt = false
+
 [functions.sync-matchplan]
 verify_jwt = false
