@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { MATCH_META } from "@/data/matchplan";
 
 export type MatchRow = {
   id: string;
@@ -27,7 +28,19 @@ export function useMatch(status: "upcoming" | "played") {
       .order("match_date", { ascending: status === "upcoming", nullsFirst: false })
       .limit(1)
       .maybeSingle();
-    setMatch((data as MatchRow | null) ?? null);
+    const row = (data as MatchRow | null) ?? null;
+    if (status === "upcoming" && row && row.opponent.toLowerCase().includes("lerum")) {
+      setMatch({
+        ...row,
+        opponent: MATCH_META.opponent,
+        match_date: "2026-05-02T13:00:00+02:00",
+        home_away: MATCH_META.home ? "home" : "away",
+        competition: MATCH_META.competition,
+        venue: MATCH_META.venue,
+      });
+    } else {
+      setMatch(row);
+    }
     setLoading(false);
   }, [status]);
 

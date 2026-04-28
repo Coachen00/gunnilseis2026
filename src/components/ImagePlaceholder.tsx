@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { Image, Maximize2, Upload, Video, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Image, Video, X, ZoomIn } from "lucide-react";
 
 interface ImagePlaceholderProps {
   title: string;
@@ -15,55 +15,90 @@ const ImagePlaceholder = ({ title, description, className, compact = false }: Im
   return (
     <>
       <button
+        type="button"
         onClick={() => setExpanded(true)}
         className={cn(
-          "group relative flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-all cursor-pointer text-left w-full",
-          compact ? "p-3 min-h-[80px]" : "p-6 min-h-[120px]",
+          "group relative w-full overflow-hidden rounded-lg border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 text-left shadow-sm ring-1 ring-white/[0.03] transition-all duration-200 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5",
+          compact ? "min-h-[112px] p-3" : "min-h-[150px] p-5",
           className
         )}
       >
-        <div className={cn("rounded-lg bg-primary/20 flex items-center justify-center", compact ? "w-8 h-8" : "w-10 h-10")}>
-          <Image className={cn("text-primary", compact ? "w-4 h-4" : "w-5 h-5")} />
-        </div>
-        <p className={cn("font-bold uppercase tracking-wider text-primary text-center", compact ? "text-[10px]" : "text-xs")}>{title}</p>
-        {description && !compact && (
-          <p className="text-xs text-muted-foreground text-center">{description}</p>
-        )}
-        <div className="absolute top-1.5 right-1.5 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Video className="w-3 h-3 text-muted-foreground" />
-          <Image className="w-3 h-3 text-muted-foreground" />
-          <ZoomIn className="w-3 h-3 text-primary" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
+        <div
+          className="absolute inset-0 opacity-25"
+          style={{
+            backgroundImage:
+              "linear-gradient(90deg, hsl(var(--primary) / 0.15) 1px, transparent 1px), linear-gradient(0deg, hsl(var(--primary) / 0.1) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+
+        <div className="relative flex h-full flex-col justify-between gap-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="grid h-9 w-9 place-items-center rounded-md border border-primary/25 bg-primary/10 text-primary">
+              <Image className="h-4 w-4" />
+            </div>
+            <div className="flex items-center gap-1 rounded-md border border-border bg-background/60 p-1 text-muted-foreground opacity-80 transition group-hover:text-foreground group-hover:opacity-100">
+              <Video className="h-3 w-3" />
+              <Image className="h-3 w-3" />
+              <Maximize2 className="h-3 w-3 text-primary" />
+            </div>
+          </div>
+
+          <div className="relative">
+            <p className={cn("font-black uppercase tracking-[0.16em] text-foreground", compact ? "text-[11px]" : "text-xs")}>
+              {title}
+            </p>
+            {description && !compact && (
+              <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{description}</p>
+            )}
+            <div className="mt-3 inline-flex items-center gap-1.5 rounded border border-primary/25 bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+              <Upload className="h-3 w-3" />
+              Media
+            </div>
+          </div>
         </div>
       </button>
 
       {expanded && (
-        <div 
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-8"
-          onClick={() => setExpanded(false)}
-        >
-          <div className="relative bg-card rounded-xl border border-border p-8 max-w-lg w-full" onClick={e => e.stopPropagation()}>
-            <button 
-              onClick={() => setExpanded(false)} 
-              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-muted flex items-center justify-center hover:bg-muted/80"
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" onClick={() => setExpanded(false)}>
+          <div
+            className="relative w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card shadow-2xl ring-1 ring-white/[0.06]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-primary/20 via-accent to-primary/20" />
+            <button
+              type="button"
+              onClick={() => setExpanded(false)}
+              className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:text-foreground"
+              aria-label="Stäng"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
-            <div className="flex flex-col items-center justify-center gap-4 min-h-[300px]">
-              <div className="flex gap-3">
-                <div className="w-14 h-14 rounded-xl bg-primary/20 flex items-center justify-center">
-                  <Image className="w-7 h-7 text-primary" />
+
+            <div className="p-6">
+              <div className="mb-6 flex items-start gap-3 pr-12">
+                <div className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-md border border-primary/25 bg-primary/10 text-primary">
+                  <Image className="h-5 w-5" />
                 </div>
-                <div className="w-14 h-14 rounded-xl bg-accent/20 flex items-center justify-center">
-                  <Video className="w-7 h-7 text-accent" />
+                <div>
+                  <h3 className="text-xl font-black leading-tight text-foreground">{title}</h3>
+                  {description && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>}
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-foreground text-center">{title}</h3>
-              {description && (
-                <p className="text-sm text-muted-foreground text-center">{description}</p>
-              )}
-              <p className="text-xs text-muted-foreground italic text-center mt-2">
-                Platshållare — ladda upp bild eller film här
-              </p>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-lg border border-dashed border-primary/30 bg-primary/5 p-5">
+                  <Image className="mb-3 h-6 w-6 text-primary" />
+                  <p className="text-xs font-black uppercase tracking-wider text-foreground">Bildplats</p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">PNG, JPG/JPEG, WebP, GIF eller HEIC.</p>
+                </div>
+                <div className="rounded-lg border border-dashed border-accent/30 bg-accent/5 p-5">
+                  <Video className="mb-3 h-6 w-6 text-accent" />
+                  <p className="text-xs font-black uppercase tracking-wider text-foreground">Filmplats</p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">MP4, MOV, WebM, AVI, MKV eller MPEG.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

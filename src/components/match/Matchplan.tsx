@@ -1,9 +1,10 @@
 import { COHERENCE, FOCUS, MATCH_META } from "@/data/matchplan";
 import EditableText from "./EditableText";
 import { useMatch } from "@/hooks/useMatch";
+import MediaSlot from "./MediaSlot";
 
 /**
- * Matchplan — inbäddad version av det tidigare /matchplan-lerum.html.
+ * Matchplan — inbäddad version av veckans matchplan.
  * Ersätter den externa CTA-länken i MatchKommande. Sektioner sparar text
  * per matchId via EditableText (Supabase).
  */
@@ -88,6 +89,27 @@ export default function Matchplan() {
           {sec.note && (
             <p className="mt-3 text-xs italic text-muted-foreground">{sec.note}</p>
           )}
+
+          <div className="mt-4 border-t border-border pt-3">
+            <div className="mb-2 flex items-baseline justify-between gap-3">
+              <label className="block text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                Bilder & filmer
+              </label>
+              <span className="text-[10px] text-muted-foreground">PNG, JPG, JPEG, WebP, GIF, MP4, MOV, WebM...</span>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+              {(sec.principles && sec.principles.length > 0 ? sec.principles : ["Bild/film"]).map((area, i) => (
+                <MediaSlot
+                  key={`${sec.id}-${area}`}
+                  matchId={match?.id}
+                  slotKey={`plan:${sec.id}:media:${i}`}
+                  title={area}
+                  description={`${sec.title} - ${area}`}
+                  compact
+                />
+              ))}
+            </div>
+          </div>
 
           {/* Tränarens kommentar per sektion — sparas i Supabase */}
           <div className="mt-4 border-t border-border pt-3">

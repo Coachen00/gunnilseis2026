@@ -104,6 +104,6 @@ CREATE POLICY "Approved users delete match-media" ON storage.objects FOR DELETE 
   USING (bucket_id = 'match-media' AND public.is_approved_user());
 
 -- Seed current and previous match per user request
-INSERT INTO public.matches (opponent, status, source, manual_override)
-VALUES ('Lerum', 'upcoming', 'manual', true),
-       ('Partille', 'played', 'manual', true);
+INSERT INTO public.matches (opponent, match_date, home_away, status, competition, venue, source, manual_override)
+VALUES ('Velebit', '2026-05-02 13:00:00+02', 'home', 'upcoming', 'Hemma · 13:00', 'Gunnilseplan', 'manual', true),
+       ('Partille', NULL, NULL, 'played', NULL, NULL, 'manual', true);

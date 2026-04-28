@@ -33,38 +33,38 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Lerum IS",
-  venue: "Aspevallen",
-  home: false,
-  kickoff: "Lör 3 maj · 15:00",
-  competition: "Div 4 · Omg 7",
-  weather: "14°, molnigt",
-  absent: ["Pascal"],
+  opponent: "Velebit",
+  venue: "Gunnilseplan",
+  home: true,
+  kickoff: "Lör 2 maj · 13:00",
+  competition: "Hemma · 13:00",
+  weather: "",
+  absent: [],
 };
 
 export const FOCUS: string[] = [
-  "Vinn våra 1-mot-1 i gyllene zonen.",
-  "Samma ord från målvakt till anfallare.",
-  "Andrabollsspel — attackera bollen direkt.",
+  "Stäng centrala ytor tidigt mot ett målglatt Velebit.",
+  "Var noggranna i återerövringen när vi tappar boll.",
+  "Attackera ytorna bakom dem när de fyller på framåt.",
 ];
 
 export const FORMATION: FormationSlot[] = [
-  { id: "gk", n: 1, name: "Li", label: "MV", x: 50, y: 8 },
-  { id: "lb", n: 2, name: "Rayan", label: "VB", x: 15, y: 28 },
-  { id: "lcb", n: 3, name: "Sabarr", label: "VMB", x: 37, y: 22 },
-  { id: "rcb", n: 4, name: "Ado", label: "HMB", x: 63, y: 22 },
-  { id: "rb", n: 5, name: "Daniel", label: "HB", x: 85, y: 28 },
-  { id: "dm", n: 6, name: "Ahmed", label: "CM-6", x: 50, y: 45 },
-  { id: "lcm", n: 10, name: "Galvan", label: "CM-10", x: 32, y: 55 },
-  { id: "rcm", n: 9, name: "Yosef", label: "CM-9", x: 68, y: 55 },
-  { id: "lw", n: 11, name: "Haris", label: "VY", x: 15, y: 78 },
-  { id: "st", n: 7, name: "Leo", label: "FW", x: 50, y: 82 },
-  { id: "rw", n: 8, name: "Benji", label: "HY", x: 85, y: 78 },
+  { id: "gk", n: 1, name: "1", label: "MV", x: 50, y: 8 },
+  { id: "lb", n: 2, name: "2", label: "VB", x: 15, y: 28 },
+  { id: "lcb", n: 3, name: "3", label: "VMB", x: 37, y: 22 },
+  { id: "rcb", n: 4, name: "4", label: "HMB", x: 63, y: 22 },
+  { id: "rb", n: 5, name: "5", label: "HB", x: 85, y: 28 },
+  { id: "dm", n: 6, name: "6", label: "CM-6", x: 50, y: 45 },
+  { id: "lcm", n: 10, name: "10", label: "CM-10", x: 32, y: 55 },
+  { id: "rcm", n: 9, name: "9", label: "CM-9", x: 68, y: 55 },
+  { id: "lw", n: 11, name: "11", label: "VY", x: 15, y: 78 },
+  { id: "st", n: 7, name: "7", label: "FW", x: 50, y: 82 },
+  { id: "rw", n: 8, name: "8", label: "HY", x: 85, y: 78 },
 ];
 
 export const COHERENCE: CoherenceSection[] = [
   { id: "forutsattningar", num: "01", title: "Förutsättningar", eyebrow: "Kontext",
-    bullets: ["Bra trupp. Svår bortamatch.", "Lerum längre i sin resa — vi är underdogs.", "Gör en bra insats. Utgången blir vad den blir."] },
+    bullets: ["Hemmamatch lördag 2 maj klockan 13.00.", "Velebit ligger trea i tabellen.", "De är ett målglatt lag — vi behöver vara kompakta, aggressiva och noggranna i våra omställningar."] },
   { id: "identitet", num: "02", title: "Identitet — och varför", eyebrow: "Vem vi är",
     principles: ["Duellspel", "Andrabollsspel", "Fasta situationer", "Avstånd mellan linjerna"],
     bullets: ["Vi pressar högt och jagar åt samma håll.", "Vi försvarar gyllene zonen — inget skott från mitten.", "Vi spelar framåt så fort det är på.", "Håll koll på avstånden mellan linjerna i planens djup — kompakt i försvar, stöd i anfall."] },
@@ -82,5 +82,5 @@ export const COHERENCE: CoherenceSection[] = [
   { id: "fasta-anfall", num: "08", title: "Anfall från fasta", eyebrow: "Vår hörna",
     note: "Adnan går igenom inför match." },
   { id: "ovrigt", num: "09", title: "Övriga roller", eyebrow: "Ansvar",
-    roles: [["Kapten","Ado"],["Straff","Haris"],["Frispark","Galvan"],["Hörnor V","Galvan"],["Hörnor H","Haris"]] },
+    roles: [["Kapten","1"],["Straff","1"],["Frispark","1"],["Hörnor V","1"],["Hörnor H","1"]] },
 ];

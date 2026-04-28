@@ -1,6 +1,7 @@
 import { PHASES, type Phase, type Principle } from "@/data/principles";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import MediaSlot from "@/components/match/MediaSlot";
 
 interface PrincipleBlockProps {
   phase: Phase;
@@ -30,7 +31,7 @@ const PrincipleBlock = ({ phase, showSource = false, limit }: PrincipleBlockProp
       </div>
       <ol className="space-y-3 counter-reset-principles">
         {items.map((p, i) => (
-          <PrincipleItem key={p.headline} index={i + 1} principle={p} showSource={showSource} />
+          <PrincipleItem key={p.headline} phase={phase} index={i + 1} principle={p} showSource={showSource} />
         ))}
       </ol>
     </div>
@@ -39,10 +40,12 @@ const PrincipleBlock = ({ phase, showSource = false, limit }: PrincipleBlockProp
 
 const PrincipleItem = ({
   index,
+  phase,
   principle,
   showSource,
 }: {
   index: number;
+  phase: Phase;
   principle: Principle;
   showSource: boolean;
 }) => {
@@ -73,6 +76,29 @@ const PrincipleItem = ({
                 ))}
               </ul>
             )}
+            <div className="mt-5 border-t border-border pt-4">
+              <div className="mb-2 flex items-baseline justify-between gap-3">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  Bilder & filmer
+                </span>
+                <span className="text-[10px] text-muted-foreground">Små platshållare · klicka för att expandera</span>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  principle.headline,
+                  ...principle.sub,
+                ].map((area, mediaIndex) => (
+                  <MediaSlot
+                    key={`${phase}-${index}-${mediaIndex}-${area}`}
+                    matchId={undefined}
+                    slotKey={`spelmodell:${phase}:princip:${index}:media:${mediaIndex}`}
+                    title={area}
+                    description={`${PHASES[phase].label} - ${area}`}
+                    compact
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         {showSource && (

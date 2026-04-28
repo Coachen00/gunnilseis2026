@@ -8,7 +8,7 @@ const corsHeaders = {
 const SOURCE_URL =
   "https://raw.githubusercontent.com/Newbi00/matchplan-gunnilse/main/matchplan-standalone.html";
 const BUCKET = "matchplan";
-const OBJECT_PATH = "matchplan-lerum.html";
+const OBJECT_PATH = "matchplan-velebit.html";
 
 const htmlHeaders = {
   ...corsHeaders,

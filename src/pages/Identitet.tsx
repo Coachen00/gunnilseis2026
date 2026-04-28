@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
 import PageHero from "@/components/PageHero";
+import MediaSlot from "@/components/match/MediaSlot";
 
 const Identitet = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -42,12 +43,23 @@ const Identitet = () => {
               {item.practice.map((p, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-3 bg-card/85 backdrop-blur-sm border border-border rounded-lg p-4"
+                  className="bg-card/85 backdrop-blur-sm border border-border rounded-lg p-4"
                 >
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-black flex items-center justify-center mt-0.5">
-                    {i + 1}
-                  </span>
-                  <span className="text-sm md:text-base text-foreground/90 leading-relaxed">{p}</span>
+                  <div className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-black flex items-center justify-center mt-0.5">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm md:text-base text-foreground/90 leading-relaxed">{p}</span>
+                  </div>
+                  <div className="mt-4 pl-9">
+                    <MediaSlot
+                      matchId={undefined}
+                      slotKey={`identitet:${item.slug}:practice:${i}`}
+                      title={`Exempel ${i + 1}`}
+                      description={`${item.title} - ${p}`}
+                      compact
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -59,12 +71,30 @@ const Identitet = () => {
                 <Check className="w-4 h-4" /> Godkänt
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">{item.gVillkor}</p>
+              <div className="mt-4">
+                <MediaSlot
+                  matchId={undefined}
+                  slotKey={`identitet:${item.slug}:godkant`}
+                  title="Godkänt beteende"
+                  description={item.gVillkor}
+                  compact
+                />
+              </div>
             </div>
             <div className="bg-card/85 backdrop-blur-sm border border-destructive/30 rounded-lg p-5">
               <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-destructive">
                 <X className="w-4 h-4" /> Inte godkänt
               </div>
               <p className="text-sm text-foreground/85 leading-relaxed">{item.igVillkor}</p>
+              <div className="mt-4">
+                <MediaSlot
+                  matchId={undefined}
+                  slotKey={`identitet:${item.slug}:inte-godkant`}
+                  title="Inte godkänt"
+                  description={item.igVillkor}
+                  compact
+                />
+              </div>
             </div>
           </section>
 

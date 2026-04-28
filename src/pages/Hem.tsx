@@ -81,7 +81,7 @@ const Hem = () => {
               En gemensam spelmodell för Gunnilse IS 2026.
             </h2>
             <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-              Startsidan är öppen för föräldrar, spelare och nyfikna runt laget. Här får du en överblick av hur vi vill spela, vilka ord vi använder och varför det ska kännas igen från träning till match.
+              Det tillhör herrtruppen i Gunnilse under 2026.
             </p>
           </div>
           <div className="bg-background/70 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 flex flex-col justify-between gap-5">

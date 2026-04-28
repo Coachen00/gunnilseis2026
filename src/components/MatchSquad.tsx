@@ -16,8 +16,8 @@ interface Roles {
 }
 
 const defaultPlayers: PlayerEntry[] = Array.from({ length: 16 }, (_, i) => ({
-  number: "",
-  name: "",
+  number: String(i + 1),
+  name: String(i + 1),
 }));
 
 const MatchSquad = () => {
