@@ -133,7 +133,11 @@ Tre alternativ:
         body := '{}'::jsonb) $$);
    ```
 
-2. **GitHub Action** (gratis): Lägg till `.github/workflows/sync.yml` som anropar funktionerna varje natt med `curl`.
+2. **GitHub Action** (gratis, vald): Workflow `.github/workflows/sync-svenskalag.yml` triggar funktionerna nattligt 03:00 UTC och måndag 06:00 UTC. Manuell trigger via "Run workflow"-knappen i Actions-fliken. **Kräver** två repo-secrets:
+   - `SUPABASE_URL` (ex. `https://abcdefgh.supabase.co`)
+   - `SUPABASE_ANON_KEY` (publika anon-nyckeln från Supabase-projektets API-inställningar)
+
+   Lägg till dem under repo Settings → Secrets and variables → Actions → New repository secret.
 
 3. **Extern cron** (cron-job.org, EasyCron): Pinga edge-function-URL:erna enligt schema.
 
