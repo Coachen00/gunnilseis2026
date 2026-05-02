@@ -28,7 +28,7 @@ const MatchKommande = () => (
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                 Start-11
               </span>
-              <span className="text-sm font-extrabold">4-3-3</span>
+              <span className="text-sm font-extrabold">4-2-1-3</span>
             </div>
             <div className="p-4">
               <Formation height={340} />

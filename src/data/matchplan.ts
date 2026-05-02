@@ -1,6 +1,4 @@
-/* Data för Veckans match — byts per match.
- * Motståndare, trupp, formation och matchplanens koherens-sektioner.
- */
+/* Data för Veckans match: motståndare, fokus, formation och matchplan. */
 
 export type MatchMeta = {
   opponent: string;
@@ -17,8 +15,8 @@ export type FormationSlot = {
   n: number;
   name: string;
   label: string;
-  x: number; // 0–100, bredd
-  y: number; // 0–100, djup (0 = vår MV-linje)
+  x: number; // 0-100, bredd
+  y: number; // 0-100, djup (0 = vår MV-linje)
 };
 
 export type CoherenceSection = {
@@ -43,44 +41,133 @@ export const MATCH_META: MatchMeta = {
 };
 
 export const FOCUS: string[] = [
-  "Stäng centrala ytor tidigt mot ett målglatt Velebit.",
-  "Var noggranna i återerövringen när vi tappar boll.",
-  "Attackera ytorna bakom dem när de fyller på framåt.",
+  "Dueller upp. Andrabollar fortsätt. Djupled alltid.",
+  "Samla först. Lås bollsida. Tryck deras vänster.",
+  "In-ut-fram-box. Låst? Ta djupt inkast och vinn högt.",
 ];
 
 export const FORMATION: FormationSlot[] = [
   { id: "gk", n: 1, name: "1", label: "MV", x: 50, y: 8 },
-  { id: "lb", n: 2, name: "2", label: "VB", x: 15, y: 28 },
-  { id: "lcb", n: 3, name: "3", label: "VMB", x: 37, y: 22 },
-  { id: "rcb", n: 4, name: "4", label: "HMB", x: 63, y: 22 },
-  { id: "rb", n: 5, name: "5", label: "HB", x: 85, y: 28 },
-  { id: "dm", n: 6, name: "6", label: "CM-6", x: 50, y: 45 },
-  { id: "lcm", n: 10, name: "10", label: "CM-10", x: 32, y: 55 },
-  { id: "rcm", n: 9, name: "9", label: "CM-9", x: 68, y: 55 },
-  { id: "lw", n: 11, name: "11", label: "VY", x: 15, y: 78 },
-  { id: "st", n: 7, name: "7", label: "FW", x: 50, y: 82 },
-  { id: "rw", n: 8, name: "8", label: "HY", x: 85, y: 78 },
+  { id: "lb", n: 2, name: "2", label: "VB", x: 14, y: 28 },
+  { id: "lcb", n: 3, name: "3", label: "VMB", x: 36, y: 23 },
+  { id: "rcb", n: 4, name: "4", label: "HMB", x: 64, y: 23 },
+  { id: "rb", n: 5, name: "5", label: "HB", x: 86, y: 28 },
+  { id: "ldm", n: 6, name: "6", label: "DM", x: 38, y: 48 },
+  { id: "rdm", n: 8, name: "8", label: "DM", x: 62, y: 48 },
+  { id: "am", n: 10, name: "10", label: "AM", x: 50, y: 63 },
+  { id: "lw", n: 11, name: "11", label: "VY", x: 16, y: 82 },
+  { id: "st", n: 9, name: "9", label: "FW", x: 50, y: 86 },
+  { id: "rw", n: 7, name: "7", label: "HY", x: 84, y: 82 },
 ];
 
 export const COHERENCE: CoherenceSection[] = [
-  { id: "forutsattningar", num: "01", title: "Förutsättningar", eyebrow: "Kontext",
-    bullets: ["Hemmamatch lördag 2 maj klockan 13.00.", "Velebit ligger trea i tabellen.", "De är ett målglatt lag — vi behöver vara kompakta, aggressiva och noggranna i våra omställningar."] },
-  { id: "identitet", num: "02", title: "Identitet — och varför", eyebrow: "Vem vi är",
-    principles: ["Duellspel", "Andrabollsspel", "Fasta situationer", "Avstånd mellan linjerna"],
-    bullets: ["Vi pressar högt och jagar åt samma håll.", "Vi försvarar gyllene zonen — inget skott från mitten.", "Vi spelar framåt så fort det är på.", "Håll koll på avstånden mellan linjerna i planens djup — kompakt i försvar, stöd i anfall."] },
-  { id: "forsvar", num: "03", title: "Försvarsspel", eyebrow: "När de har bollen",
-    principles: ["Tre korridorer", "Splitta planen", "Aldrig på insidan"],
-    bullets: ["Hög press på utspel — FW stänger lång bana.", "Mellanblock om de passerar — jaga åt samma håll.", "Lågt block i box: hybridförsvar."] },
-  { id: "omst-anfall", num: "04", title: "Omställning → anfall", eyebrow: "Vi vinner bollen",
-    principles: ["Kontra först", "Annars uppbyggnad", "Fyra alternativ"] },
-  { id: "anfall", num: "05", title: "Anfallsspel — gyllene femman", eyebrow: "Vi har bollen",
-    principles: ["Spelbarhet", "Avstånd", "Bredd", "Djup", "Övertal"] },
-  { id: "omst-forsvar", num: "06", title: "Omställning → försvar", eyebrow: "Vi tappar bollen",
-    principles: ["Direkt återerövring", "Indirekt återerövring"] },
-  { id: "fasta-forsvar", num: "07", title: "Försvar mot fasta", eyebrow: "Deras hörna",
-    principles: ["Fyra zoner", "Övriga markering", "Diagonal utgång"] },
-  { id: "fasta-anfall", num: "08", title: "Anfall från fasta", eyebrow: "Vår hörna",
-    note: "Adnan går igenom inför match." },
-  { id: "ovrigt", num: "09", title: "Övriga roller", eyebrow: "Ansvar",
-    roles: [["Kapten","1"],["Straff","1"],["Frispark","1"],["Hörnor V","1"],["Hörnor H","1"]] },
+  {
+    id: "forutsattningar",
+    num: "01",
+    title: "Veckans match",
+    eyebrow: "Kontext",
+    bullets: [
+      "Genomgång 11.45. Uppvärmning 12.15-12.45. Match 13.00.",
+      "4-2-1-3.",
+      "Kapten: Ado.",
+    ],
+  },
+  {
+    id: "identitet",
+    num: "02",
+    title: "Identitet",
+    eyebrow: "Veckans krav",
+    principles: ["Dueller", "Andrabollar", "Djupled"],
+    bullets: [
+      "Duellerna måste upp flera nivåer.",
+      "Andrabollsspelet är bättre: visa det i match.",
+      "Sluta möt boll hela tiden: spring bakom även utan boll.",
+    ],
+  },
+  {
+    id: "forsvar",
+    num: "03",
+    title: "Försvar",
+    eyebrow: "Samla -> lås -> vinn",
+    principles: ["Samla först", "Höga linjer", "Tre korridorer"],
+    bullets: [
+      "Ingen tokpress innan vi är kompakta.",
+      "Bollvinnarpress först när linjerna är höga och lagdelarna korta.",
+      "Styr mot deras vänster. YB på YB. Lås bollsida. Stoppa spelvändning.",
+    ],
+  },
+  {
+    id: "anfall",
+    num: "04",
+    title: "Anfall",
+    eyebrow: "In-ut-fram-box",
+    principles: ["In", "Ut", "Fram", "Box"],
+    bullets: [
+      "In i spelyta 1/2: hitta rättvänd.",
+      "Ut: flytta blocket och isolera kanten.",
+      "Fram: hota spelyta 3 med djupled.",
+      "In i box: första, straffpunkt, bortre, cutback och andraboll.",
+    ],
+  },
+  {
+    id: "last",
+    num: "05",
+    title: "Om det låser sig",
+    eyebrow: "Territorium",
+    principles: ["Djupt inkast", "Vinn högt", "Oorganiserat försvar"],
+    bullets: [
+      "Spela inte fast centralt.",
+      "Ta djupt inkast/långsida.",
+      "Vinn bollen högt när de går anfall -> försvar.",
+    ],
+  },
+  {
+    id: "omst-forsvar",
+    num: "06",
+    title: "Omställning försvar",
+    eyebrow: "Direkt eller indirekt",
+    principles: ["Direkt", "Indirekt"],
+    bullets: [
+      "Direkt: nära, samlade, täckning bakom.",
+      "Indirekt: utdragna, centralt tapp, rättvänd motståndare.",
+      "Fel bild: samla, centrera, lås nästa boll.",
+    ],
+  },
+  {
+    id: "omst-anfall",
+    num: "07",
+    title: "Omställning anfall",
+    eyebrow: "Ut ur gröten",
+    principles: ["Diagonal utgång", "Djupled", "Box"],
+    bullets: [
+      "Första passningen bort från het yta.",
+      "Rättvänd söker diagonal, djupled eller spelvändning.",
+      "Ytter/9:a löper direkt. Övriga fyller box eller säkrar andraboll.",
+    ],
+  },
+  {
+    id: "fasta",
+    num: "08",
+    title: "Fasta",
+    eyebrow: "Kort ansvar",
+    principles: ["Haris/Gelo", "Hybrid", "Andraboll"],
+    bullets: [
+      "Försvar: hörna, inläggsfrispark, målchansfrispark, inkast. Första kontakt + andraboll.",
+      "Anfall: hörnor och inläggsfrisparkar Haris/Gelo. Målchansfrispark: bestäm själva.",
+      "Inkast: djupt = tryck + direkt återerövring.",
+    ],
+  },
+  {
+    id: "ovrigt",
+    num: "09",
+    title: "Roller",
+    eyebrow: "Ansvar",
+    roles: [
+      ["Kapten", "Ado"],
+      ["Hörnor", "Haris / Gelo"],
+      ["Inläggsfrispark", "Haris / Gelo"],
+      ["Målchansfrispark", "Bestäm själva"],
+      ["Matchstart", "13.00"],
+    ],
+  },
 ];
