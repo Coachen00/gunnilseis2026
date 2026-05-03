@@ -99,6 +99,7 @@ const navItems: NavItem[] = [
   },
   { kind: "link", to: "/truppen", label: "Trupp" },
   { kind: "link", to: "/roller", label: "Roller" },
+  { kind: "link", to: "/spelmodell-labb", label: "Labb" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
 ];
 

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
-import { ClipboardList, FileText, Search, Target, ArrowRight } from "lucide-react";
+import { ClipboardList, FileText, Search, Target, ArrowRight, Sparkles } from "lucide-react";
 
 const tools = [
+  { to: "/spelmodell-labb", label: "Spelmodell-labb", desc: "Välj fokus, diagnosticera matchbild och skapa träningspass med kopierbar coachbrief.", icon: Sparkles },
   { to: "/traningsplan", label: "Träningsplan", desc: "Planera passet — tema, fokus, övningar och coach-cues. Utskriftsoptimerat A4.", icon: ClipboardList },
   { to: "/matchblad", label: "Matchblad", desc: "Förbered matchen: trupp, fokuspunkter, planritningar och påminnelser.", icon: FileText },
   { to: "/motstandaranalys", label: "Motståndaranalys", desc: "Strukturerad genomgång av motståndarens spelidé, styrkor och svagheter.", icon: Search },

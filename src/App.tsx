@@ -20,6 +20,7 @@ const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
+const SpelmodellLab = lazy(() => import("./pages/SpelmodellLab"));
 const OmstallningForsvar = lazy(() => import("./pages/OmstallningForsvar"));
 const OmstallningAnfall = lazy(() => import("./pages/OmstallningAnfall"));
 const FastaForsvar = lazy(() => import("./pages/FastaForsvar"));
@@ -94,6 +95,7 @@ const App = () => (
           <Route path="/truppen" element={<Public><Truppen /></Public>} />
           <Route path="/roller" element={<Protected><Roller /></Protected>} />
           <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
+          <Route path="/spelmodell-labb" element={<Protected><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
 
           {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}

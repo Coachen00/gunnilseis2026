@@ -2,6 +2,9 @@ import PageHero from "@/components/PageHero";
 import MatchHeader from "@/components/match/MatchHeader";
 import Matchplan from "@/components/match/Matchplan";
 import Formation from "@/components/match/Formation";
+import PresentationBrief from "@/components/match/PresentationBrief";
+import MatchdayCommandPanel from "@/components/match/MatchdayCommandPanel";
+import HalftimeAdjustmentPanel from "@/components/match/HalftimeAdjustmentPanel";
 import { COHERENCE, FOCUS } from "@/data/matchplan";
 
 const MatchKommande = () => (
@@ -78,6 +81,10 @@ const MatchKommande = () => (
           </div>
         </aside>
       </div>
+
+      <MatchdayCommandPanel />
+      <HalftimeAdjustmentPanel />
+      <PresentationBrief />
     </div>
    </>
   );
