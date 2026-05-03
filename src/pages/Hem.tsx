@@ -1,282 +1,173 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Swords, Zap, Users, Wrench } from "lucide-react";
-import ScrollChapter from "@/components/ScrollChapter";
-import ChapterNumber from "@/components/ChapterNumber";
-import PrincipleTeaser from "@/components/PrincipleTeaser";
-import ScrollCue from "@/components/ScrollCue";
+import {
+  ArrowRight,
+  ClipboardList,
+  Lock,
+  Shield,
+  Sparkles,
+  Users,
+  Wrench,
+} from "lucide-react";
 import PhaseFlow from "@/components/PhaseFlow";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
+
+const primaryLinks = [
+  { to: "/spelide", label: "Spelidé", text: "Principerna i rätt ordning.", icon: Sparkles },
+  { to: "/match/kommande", label: "Veckans match", text: "Fokus och matchplan.", icon: ClipboardList },
+  { to: "/truppen", label: "Trupp", text: "Spelare och roller.", icon: Users },
+  { to: "/verktyg", label: "Verktyg", text: "Plan, analys och tavla.", icon: Wrench },
+];
 
 const Hem = () => {
   const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
 
   return (
     <>
-      {/* HERO */}
-      <section className="relative min-h-[88vh] overflow-hidden">
-        {/*
-          Bakgrundsfilm. Lägg filen som /public/hero.mp4 (rendereras som /hero.mp4 i prod).
-          Saknas filen är taggen tyst och AnimatedBackground (från Layout) lyser igenom.
-          Tips: håll filen ≤ 6 MB, h264 1080p, ingen ljudspår — vi spelar ändå muted.
-        */}
+      <section className="relative min-h-[76vh] overflow-hidden">
         <video
           autoPlay
           muted
           loop
           playsInline
           poster="/hero-poster.jpg"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
           aria-hidden="true"
         >
           <source src="/hero.mp4" type="video/mp4" />
         </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/72 to-background" />
 
-        {/* Mörk gradient för läsbar text ovanpå filmen */}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/55 to-background/90 pointer-events-none"
-          aria-hidden="true"
-        />
-
-        {/* Innehåll — centrerat ovanpå film + overlay */}
-        <div className="relative min-h-[88vh] flex flex-col items-center justify-center text-center px-6">
-          {/* Klubbsigill — placeholder, byts mot riktig Gunnilse IS-logga */}
-          <Shield
-            className="w-12 h-12 md:w-16 md:h-16 text-gunnilse-gold mb-6 animate-fade-in-up"
-            strokeWidth={1.25}
-            aria-label="Gunnilse IS"
-          />
-          <div className="flex items-center gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: "60ms" }}>
-            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-foreground">
-              Gunnilse IS · Vår identitet på planen
-            </span>
-            <span className="inline-block w-10 h-px bg-gunnilse-gold" />
-          </div>
-          <h1
-            className="font-black tracking-tight leading-[0.95] text-foreground animate-fade-in-up"
-            style={{ fontSize: "clamp(3rem, 10vw, 8rem)", animationDelay: "120ms" }}
-          >
-            Spelmodell <span className="text-gunnilse-gold">2026</span>
-          </h1>
-          <p
-            className="mt-8 max-w-2xl text-base md:text-xl text-muted-foreground leading-relaxed animate-fade-in-up"
-            style={{ animationDelay: "260ms" }}
-          >
-            Så här bygger vi. Så här gör vi mål. Så här försvarar vi. <br className="hidden md:inline" />
-            <span className="text-foreground/80 font-semibold">En tydlig idé per skede</span> — samma ord från målvakten till anfallaren.
-          </p>
-          <div className="absolute bottom-10 animate-fade-in-up" style={{ animationDelay: "500ms" }}>
-            <ScrollCue />
-          </div>
-        </div>
-      </section>
-
-      {/* KAPITEL 1 — IDENTITET */}
-      <section className="px-6 pb-16 -mt-4 relative z-10">
-        <div className="max-w-5xl mx-auto grid lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch">
-          <div className="bg-card/75 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 shadow-sm">
-            <div className="text-xs font-bold uppercase tracking-[0.24em] text-accent mb-4">Vad är detta?</div>
-            <h2 className="text-2xl md:text-4xl font-black tracking-tight text-foreground mb-4">
-              En gemensam spelmodell för Gunnilse IS 2026.
-            </h2>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-              Det tillhör herrtruppen i Gunnilse under 2026.
+        <div className="container relative flex min-h-[76vh] items-center py-20">
+          <div className="max-w-3xl">
+            <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-gunnilse-gold">
+              <Shield className="h-5 w-5" strokeWidth={1.5} />
+              Gunnilse IS 2026
+            </div>
+            <h1 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-normal text-foreground md:text-7xl">
+              Spelmodell 2026
+            </h1>
+            <p className="mt-6 max-w-xl text-base font-semibold leading-relaxed text-foreground/82 md:text-lg">
+              Vinn kampen. Spela framåt. Skydda mitten.
             </p>
-          </div>
-          <div className="bg-background/70 backdrop-blur-sm border border-border rounded-lg p-6 md:p-8 flex flex-col justify-between gap-5">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Detaljerade principsidor, matchplaner och tränarverktyg är skyddade för laget. Logga in om du redan har tillgång, eller registrera en förfrågan.
+            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              En kort gemensam modell för hur vi anfaller, försvarar och ställer om.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
               >
-                Logga in <ArrowRight className="w-4 h-4" />
+                Logga in <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                to="/login?mode=signup"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card/70 px-4 py-2.5 text-sm font-bold text-foreground hover:bg-muted transition-colors"
+                to="/match/matcher"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/45 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
               >
-                Registrera
+                Se matcher
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <ScrollChapter>
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 01</div>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Vår identitet</h2>
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-14">
-            Fem saker vi gör i varje match — oavsett vem vi möter.
-          </p>
-          <ul className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {identity.map((w, i) => (
-              <li key={w.slug}>
+      <section className="border-y border-border bg-card/35">
+        <div className="container grid gap-0 md:grid-cols-4">
+          {primaryLinks.map(({ to, label, text, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="group border-b border-border py-6 md:border-b-0 md:border-r md:last:border-r-0"
+            >
+              <div className="flex items-start gap-3 md:block">
+                <Icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent md:mb-4 md:mt-0" strokeWidth={1.75} />
+                <div>
+                  <h2 className="text-sm font-black uppercase tracking-wide text-foreground">{label}</h2>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
+                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-accent opacity-80 transition group-hover:gap-2.5 group-hover:opacity-100">
+                    Öppna <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="container py-20">
+        <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
+          <header>
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Identitet</p>
+            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
+              Fem beteenden vi alltid återvänder till.
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Kort nog att komma ihåg under match. Tydligt nog att följa upp efteråt.
+            </p>
+          </header>
+
+          <ol className="divide-y divide-border border-y border-border">
+            {identity.map((item, index) => (
+              <li key={item.slug}>
                 <Link
-                  to={`/identitet/${w.slug}`}
-                  className="group block h-full bg-card/70 backdrop-blur-sm border border-border rounded-2xl p-5 text-left transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-lg"
+                  to={`/identitet/${item.slug}`}
+                  className="group grid gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[64px_220px_1fr_28px]"
                 >
-                  <div className="text-[10px] font-bold text-muted-foreground mb-2">0{i + 1}</div>
-                  <div className="text-xl font-black tracking-tight text-foreground mb-2">{w.title}</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed mb-4">{w.short}</div>
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-accent group-hover:gap-2.5 transition-all">
-                    Läs mer här <ArrowRight className="w-3 h-3" />
-                  </div>
+                  <span className="font-mono text-xs font-black text-muted-foreground">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-lg font-black leading-snug tracking-normal text-foreground">{item.title}</span>
+                  <span className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{item.short}</span>
+                  <ArrowRight className="hidden h-4 w-4 self-center text-accent transition group-hover:translate-x-1 md:block" />
                 </Link>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
-      </ScrollChapter>
+      </section>
 
-      {/* KAPITEL 2 — DE FYRA SKEDENA */}
-      <ScrollChapter>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 02</div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">De fyra skedena</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              En match består av fyra olika lägen. Vi vet vad vi ska göra i varje läge — och vad som gör att vi byter läge.
+      <section className="border-y border-border bg-card/30 py-20">
+        <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
+          <header>
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Fyra skeden</p>
+            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
+              Samma struktur i varje match.
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Vi byter beteende när bollinnehavet byter ägare.
             </p>
-          </div>
+          </header>
           <PhaseFlow />
         </div>
-      </ScrollChapter>
+      </section>
 
-      {/* KAPITEL 3 — FÖRSVAR */}
-      <ScrollChapter>
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-          <div className="relative">
-            <ChapterNumber number="03" className="absolute -top-12 -left-4 opacity-60" />
-            <div className="relative">
-              <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">När vi försvarar</div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                Förhindra avslut.<br />
-                <span className="text-muted-foreground">I gyllene zonen.</span>
-              </h2>
-              <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                Vi står på rätt plats, jagar bollen åt samma håll och täcker farliga ytor. Inget skott från mitten — vi tvingar dem ut till kanten.
-              </p>
-            </div>
-          </div>
-          <PrincipleTeaser
-            index="1"
-            quote="Förhindra avslut i gyllene zonen — positionering, press, markering."
-            to="/forsvar"
-          />
-        </div>
-      </ScrollChapter>
-
-      {/* KAPITEL 4 — ANFALL */}
-      <ScrollChapter>
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-          <PrincipleTeaser
-            index="1"
-            quote="Avslut i gyllene zonen — alltid med övertal."
-            to="/anfall"
-          />
-          <div className="relative order-first lg:order-last">
-            <ChapterNumber number="04" className="absolute -top-12 -right-4 opacity-60 text-right" />
-            <div className="relative">
-              <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">När vi anfaller</div>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                Spelbarhet, avstånd,<br />
-                <span className="text-muted-foreground">bredd och djup.</span>
-              </h2>
-              <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                Fyra enkla saker styr vårt anfall: erbjud passning (spelbarhet), stå rätt avstånd från varandra, använd hela planens bredd och hota bakom backlinjen (djup).
-              </p>
-            </div>
-          </div>
-        </div>
-      </ScrollChapter>
-
-      {/* KAPITEL 5 — FASTA */}
-      <ScrollChapter>
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 05</div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">När spelet stannar</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Hörnor och frisparkar avgör matcher. Vi chansar inte — alla vet sin uppgift.
+      <section className="container py-20">
+        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+          <div>
+            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
+              <Lock className="h-3.5 w-3.5" />
+              För laget
             </p>
+            <h2 className="max-w-2xl text-3xl font-black leading-tight tracking-normal md:text-4xl">
+              Detaljer, matchplan och tränarverktyg finns bakom inloggning.
+            </h2>
           </div>
-          <PrincipleTeaser
-            index="1"
-            quote="Hybridförsvar: zon i boxen + två strikta man-markeringar."
-            to="/fasta"
-            ctaLabel="Se alla fasta situationer"
-          />
-        </div>
-      </ScrollChapter>
-
-      {/* KAPITEL 6 — ROLLER & VERKTYG */}
-      <ScrollChapter>
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-4">Kapitel 06</div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tight mb-6">Roller & verktyg</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Det här är spelarnas uppgifter på planen och tränarnas verktyg vid sidan om.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-5">
-            {[
-              { to: "/roller", label: "Roller & Trupp", desc: "Rollkort, exempel från match och matchtrupp.", icon: Users },
-              { to: "/verktyg", label: "Tränarverktyg", desc: "Träningsplan, matchblad, motståndaranalys, taktiktavla.", icon: Wrench },
-            ].map(({ to, label, desc, icon: Icon }) => (
-              <Link
-                key={to}
-                to={to}
-                className="group relative bg-card/80 backdrop-blur-sm rounded-2xl p-8 border border-border shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-lg"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:scale-105 transition-transform">
-                  <Icon className="w-5 h-5" />
-                </div>
-                <h3 className="text-xl font-black text-foreground mb-2 tracking-tight">{label}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-                <div className="mt-5 inline-flex items-center gap-1.5 text-xs font-bold text-primary group-hover:gap-2.5 transition-all">
-                  Öppna <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              </Link>
-            ))}
+          <div className="flex flex-col justify-end gap-3 sm:flex-row lg:flex-col">
+            <Link
+              to="/spelmodell-labb"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-background transition hover:bg-accent/90"
+            >
+              Öppna labbet <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/login?mode=signup"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
+            >
+              Begär tillgång
+            </Link>
           </div>
         </div>
-      </ScrollChapter>
-
-      {/* AVSLUT */}
-      <ScrollChapter minHeight="min-h-[60vh]">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="text-xs font-bold uppercase tracking-[0.3em] text-accent mb-6">Avslut</div>
-          <blockquote className="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-            "Spelmodellen är inte ett dokument.<br />
-            <span className="text-gradient-accent">Den är ett beteende.</span>"
-          </blockquote>
-          <div className="mt-10 flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-muted-foreground">
-            <span className="inline-block w-8 h-px bg-accent" />
-            Gunnilse IS · 2026
-            <span className="inline-block w-8 h-px bg-accent" />
-          </div>
-          <Link
-            to="/spelide"
-            className="mt-10 inline-flex items-center gap-2 text-sm font-bold text-primary group"
-          >
-            Läs hela spelidén
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
-      </ScrollChapter>
-
-      {/* hidden import to keep referenced icons tree-shaken correctly */}
-      <span className="hidden">
-        <Shield />
-        <Swords />
-        <Zap />
-      </span>
+      </section>
     </>
   );
 };

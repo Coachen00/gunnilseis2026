@@ -1,41 +1,41 @@
 import { Link } from "react-router-dom";
-import { Shield, Zap, Swords, RotateCcw, ArrowRight } from "lucide-react";
+import { ArrowRight, RotateCcw, Shield, Swords, Zap } from "lucide-react";
 
 const phases = [
-  { icon: Shield, label: "Försvar", sub: "4-3-3 kompakt", to: "/forsvar#cues" },
-  { icon: Zap, label: "Omställning", sub: "till anfall", to: "/omstallning-anfall#cues" },
-  { icon: Swords, label: "Anfall", sub: "3-2-2-3", to: "/anfall#cues" },
-  { icon: RotateCcw, label: "Omställning", sub: "till försvar", to: "/omstallning-forsvar#cues" },
+  { icon: Swords, label: "Anfall", sub: "Skapa avslut", to: "/anfall#cues" },
+  { icon: RotateCcw, label: "Tapp", sub: "Jaga eller samla", to: "/omstallning-forsvar#cues" },
+  { icon: Shield, label: "Försvar", sub: "Stäng mitten", to: "/forsvar#cues" },
+  { icon: Zap, label: "Vinst", sub: "Ut och fram", to: "/omstallning-anfall#cues" },
 ];
 
 const PhaseFlow = () => (
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-3">
-    {phases.map((p, i) => (
-      <div key={i} className="relative">
-        <Link
-          to={p.to}
-          className="group block rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-5 md:p-6 text-white transition-all hover:-translate-y-1 hover:border-white/40 hover:bg-white/10"
-        >
-          <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-3">
-            <p.icon className="w-5 h-5 text-white" />
-          </div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-70 mb-1">
-            Skede {i + 1}
-          </div>
-          <div className="text-lg font-black tracking-tight">{p.label}</div>
-          <div className="text-xs opacity-80 mt-0.5">{p.sub}</div>
-          <div className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-white/80 group-hover:gap-2.5 transition-all">
-            Match-cues <ArrowRight className="w-3 h-3" />
-          </div>
-        </Link>
-        {i < phases.length - 1 && (
-          <div className="hidden md:flex absolute top-1/2 -right-2 -translate-y-1/2 z-10 w-4 h-4 items-center justify-center text-white/60 text-xl font-bold pointer-events-none">
-            ›
-          </div>
-        )}
-      </div>
-    ))}
-  </div>
+  <ol className="divide-y divide-border border-y border-border">
+    {phases.map((phase, index) => {
+      const Icon = phase.icon;
+      return (
+        <li key={phase.label}>
+          <Link
+            to={phase.to}
+            className="group grid items-center gap-4 py-5 transition hover:bg-background/35 md:grid-cols-[56px_1fr_1fr_28px]"
+          >
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background/40 text-accent">
+              <Icon className="h-4 w-4" strokeWidth={1.75} />
+            </span>
+            <span>
+              <span className="block font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+                Skede {index + 1}
+              </span>
+              <span className="mt-1 block text-lg font-black leading-tight tracking-normal text-foreground">
+                {phase.label}
+              </span>
+            </span>
+            <span className="text-sm font-semibold text-muted-foreground">{phase.sub}</span>
+            <ArrowRight className="hidden h-4 w-4 text-accent transition group-hover:translate-x-1 md:block" />
+          </Link>
+        </li>
+      );
+    })}
+  </ol>
 );
 
 export default PhaseFlow;

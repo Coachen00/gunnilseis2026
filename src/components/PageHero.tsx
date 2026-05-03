@@ -18,7 +18,7 @@ const PageHero = ({ eyebrow, title, description, children }: PageHeroProps) => {
               {eyebrow}
             </span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.02] tracking-[-0.04em]">
+          <h1 className="text-4xl md:text-6xl font-black text-foreground leading-[1.02] tracking-normal">
             {title}
           </h1>
           {description && (

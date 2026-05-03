@@ -82,6 +82,7 @@ const matchGroups: NavGroup[] = [
 
 const navItems: NavItem[] = [
   { kind: "link", to: "/", label: "Hem" },
+  { kind: "link", to: "/spelide#nulage", label: "Nuläge" },
   { kind: "link", to: "/spelide", label: "Spelidé" },
   {
     kind: "dropdown",
@@ -99,7 +100,6 @@ const navItems: NavItem[] = [
   },
   { kind: "link", to: "/truppen", label: "Trupp" },
   { kind: "link", to: "/roller", label: "Roller" },
-  { kind: "link", to: "/spelmodell-labb", label: "Labb" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
 ];
 

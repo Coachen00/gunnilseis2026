@@ -1,36 +1,61 @@
 import { Link } from "react-router-dom";
+import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
 import PageHero from "@/components/PageHero";
-import { ClipboardList, FileText, Search, Target, ArrowRight, Sparkles } from "lucide-react";
 
 const tools = [
-  { to: "/spelmodell-labb", label: "Spelmodell-labb", desc: "Välj fokus, diagnosticera matchbild och skapa träningspass med kopierbar coachbrief.", icon: Sparkles },
-  { to: "/traningsplan", label: "Träningsplan", desc: "Planera passet — tema, fokus, övningar och coach-cues. Utskriftsoptimerat A4.", icon: ClipboardList },
-  { to: "/matchblad", label: "Matchblad", desc: "Förbered matchen: trupp, fokuspunkter, planritningar och påminnelser.", icon: FileText },
-  { to: "/motstandaranalys", label: "Motståndaranalys", desc: "Strukturerad genomgång av motståndarens spelidé, styrkor och svagheter.", icon: Search },
-  { to: "/taktiktavla", label: "Taktiktavla", desc: "Interaktiv tavla — flytta spelare, rita linjer, animera sekvenser.", icon: Target },
+  {
+    to: "/spelmodell-labb",
+    label: "Spelmodell-labb",
+    desc: "Fokus, matchbild och passupplägg.",
+    icon: Sparkles,
+  },
+  {
+    to: "/traningsplan",
+    label: "Träningsplan",
+    desc: "A4 för passet.",
+    icon: ClipboardList,
+  },
+  {
+    to: "/matchblad",
+    label: "Matchblad",
+    desc: "Trupp och fokuspunkter.",
+    icon: FileText,
+  },
+  {
+    to: "/motstandaranalys",
+    label: "Motståndaranalys",
+    desc: "Styrkor, svagheter och plan.",
+    icon: Search,
+  },
+  {
+    to: "/taktiktavla",
+    label: "Taktiktavla",
+    desc: "Flytta spelare och rita sekvenser.",
+    icon: Target,
+  },
 ];
 
 const Verktyg = () => (
   <>
-    <PageHero eyebrow="Verktyg" title="Tränarverktyg" description="Allt du behöver för att förbereda och genomföra träning och match. Kräver inloggning." />
+    <PageHero
+      eyebrow="Verktyg"
+      title="Tränarverktyg"
+      description="Välj det du behöver inför träning eller match."
+    />
     <section className="container pb-24">
-      <div className="grid sm:grid-cols-2 gap-5">
+      <div className="divide-y divide-border border-y border-border">
         {tools.map(({ to, label, desc, icon: Icon }) => (
           <Link
             key={to}
             to={to}
-            className="group bg-card/85 backdrop-blur-sm rounded-2xl p-6 border border-border shadow-sm card-hover flex items-start gap-5"
+            className="group grid items-center gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[48px_220px_1fr_28px]"
           >
-            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-              <Icon className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-foreground mb-1.5 tracking-tight">{label}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-              <div className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:gap-2.5 transition-all">
-                Öppna verktyg <ArrowRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent">
+              <Icon className="h-4 w-4" strokeWidth={1.75} />
+            </span>
+            <h2 className="text-lg font-black tracking-normal text-foreground">{label}</h2>
+            <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
+            <ArrowRight className="hidden h-4 w-4 text-accent transition group-hover:translate-x-1 md:block" />
           </Link>
         ))}
       </div>

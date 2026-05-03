@@ -82,9 +82,16 @@ const MatchKommande = () => (
         </aside>
       </div>
 
-      <MatchdayCommandPanel />
-      <HalftimeAdjustmentPanel />
-      <PresentationBrief />
+      <details className="rounded-lg border border-border bg-card">
+        <summary className="cursor-pointer px-5 py-4 text-sm font-black uppercase tracking-wide text-foreground">
+          Ledarpanel
+        </summary>
+        <div className="space-y-5 border-t border-border p-5">
+          <MatchdayCommandPanel />
+          <HalftimeAdjustmentPanel />
+          <PresentationBrief />
+        </div>
+      </details>
     </div>
    </>
   );
