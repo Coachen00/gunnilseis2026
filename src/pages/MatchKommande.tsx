@@ -1,5 +1,5 @@
 import PageHero from "@/components/PageHero";
-import MatchHeader from "@/components/match/MatchHeader";
+import StaticMatchHeader from "@/components/match/StaticMatchHeader";
 import Matchplan from "@/components/match/Matchplan";
 import Formation from "@/components/match/Formation";
 import PresentationBrief from "@/components/match/PresentationBrief";
@@ -60,7 +60,7 @@ const MatchKommande = () => (
         </ol>
       </section>
 
-      <MatchHeader status="upcoming" />
+      <StaticMatchHeader />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
         {/* Huvudkolumn — matchplanen */}
