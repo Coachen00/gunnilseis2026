@@ -47,7 +47,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     oneLiner:
       "Vi anfaller med balans — kontroll bakom bollen, redo att försvara direkt.",
     forklaring:
-      "Innan vi går framåt ska vi ha kontroll bakom bollen. Den dyraste tappningen är den som sker när vi själva är utdragna och felställda. Vinner vi inte tillbaka direkt ska vi minst stoppa att de kommer igenom mitten.",
+      "Innan vi går framåt ska vi ha kontroll bakom bollen. Den dyraste tappningen sker när vi själva är utdragna och felställda. Vinner vi inte tillbaka direkt ska vi minst stoppa att de kommer igenom mitten.",
     tittaEfter: [
       "Hur många motståndare står framför oss om vi tappar nu?",
       "Har vi minst lika många bakom bollen som de har framför?",
@@ -78,7 +78,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     oneLiner:
       "Vi söker passningen mellan motståndarens led — för att hota, vända upp eller starta nästa.",
     forklaring:
-      "När vi har bollen i låg eller mellanhög zon letar vi efter en medspelare i halvytan eller mellan deras backar och mittfältare. Att spela in är inte målet i sig — det är trigger för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led att reagera.",
+      "När vi har bollen i låg eller mellanhög zon letar vi efter en medspelare i halvytan eller mellan deras backar och mittfältare. Att spela in är inte målet i sig — det är triggern för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led ur balans.",
     tittaEfter: [
       "Står en medspelare mellan deras led — i halvyta eller centralt?",
       "Är hen rättvänd, eller kan hen öppna kroppen mot motståndarmål utan press?",

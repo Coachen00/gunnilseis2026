@@ -57,11 +57,11 @@ export const PHASE_CUES: Record<"forsvar" | "omstallning-anfall" | "anfall" | "o
     label: "Anfall · fem principer",
     oneLiner: "Skydda kontring → spela in → spela ut → framåt → fyll på box. I den ordningen.",
     rules: [
-      "1. Skydda mot kontring först — 6:an säkrar central yta, mittbackarna håller halvbacksavstånd.",
-      "2. Spela in bollen — sök rättvänd i halvyta, mellan deras lagdelar.",
+      "1. Skydda mot kontring först — 6:an står kvar i central yta, mittbackarna håller avstånd till varandra.",
+      "2. Spela in bollen — sök rättvänd medspelare i halvyta, mellan deras led.",
       "3. Spela ut — trångt centralt? Vänd via 6/MB till motsatt ytter. Acceptera 1 sek mer på bollen.",
-      "4. Ta med framåt — yta öppen? Driv eller passa framåt med fart, inte sidled.",
-      "5. Fyll på box — minst 4 i/runt boxen vid varje inlägg.",
+      "4. Ta med framåt — yta öppen? Driv eller passa framåt med fart, inte i sidled.",
+      "5. Fyll på box — minst 4 av oss i/runt boxen vid varje inlägg.",
     ],
     cues: [
       { trigger: "Vi har bollen och ska anfallsväxla", action: "Kolla balansen bakom — 6:an står kvar, mittbackarna håller avstånd" },
