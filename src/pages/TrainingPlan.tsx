@@ -41,7 +41,13 @@ const TrainingPlan = () => {
             },
             {
               title: "Principer i anfallsspel",
-              items: ["• Överbelasta för att isolera 3vs2"],
+              items: [
+                "1. Skydda mot kontring",
+                "2. Spela in bollen",
+                "3. Spela ut bollen",
+                "4. Ta med den framåt",
+                "5. Fyll på i/runt box",
+              ],
               sub: { title: "Försvarsspel", items: ["• Högt med triggers", "• Principer är gällande"] },
             },
             {
