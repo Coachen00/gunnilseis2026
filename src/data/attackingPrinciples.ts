@@ -51,9 +51,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 1,
     headline: "Skydda mot kontring",
     oneLiner:
-      "Vi anfaller med balans — kontroll bakom bollen, redo att försvara direkt.",
+      "Vi anfaller med balans. Innan vi går framåt ska vi ha kontroll bakom bollen och vara redo att försvara direkt om vi tappar den.",
     forklaring:
-      "Innan vi går framåt ska vi ha kontroll bakom bollen. Den dyraste tappningen sker när vi själva är utdragna och felställda. Vinner vi inte tillbaka direkt ska vi minst stoppa att de kommer igenom mitten.",
+      "Den dyraste tappningen sker när vi själva är utdragna och felställda. Vinner vi inte tillbaka direkt ska vi minst stoppa att de kommer igenom mitten.",
     tittaEfter: [
       "Hur många motståndare står framför oss om vi tappar nu?",
       "Har vi minst lika många bakom bollen som de har framför?",
@@ -83,9 +83,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 2,
     headline: "Spela in bollen",
     oneLiner:
-      "Vi söker passningen mellan motståndarens led — för att hota, vända upp eller starta nästa.",
+      "Vi söker möjligheten att spela in bollen centralt eller mellan motståndarens led när läget finns. Syftet är att hota, vända upp eller skapa nästa passning.",
     forklaring:
-      "När vi har bollen i låg eller mellanhög zon letar vi efter en medspelare i halvytan eller mellan deras backar och mittfältare. Att spela in är inte målet i sig — det är triggern för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led ur balans.",
+      "Att spela in är inte målet i sig — det är triggern för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led ur balans.",
     tittaEfter: [
       "Står en medspelare mellan deras led — i halvyta eller centralt?",
       "Är hen rättvänd, eller kan hen öppna kroppen mot motståndarmål utan press?",
@@ -115,9 +115,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 3,
     headline: "Spela ut bollen",
     oneLiner:
-      "När det är trångt centralt flyttar vi blocket — spelvändning öppnar nästa väg framåt.",
+      "Om det är trångt centralt spelar vi ut bollen för att flytta motståndaren, hitta yta och skapa bättre lägen att komma framåt.",
     forklaring:
-      "Är centrala korridoren stängd ska vi inte forcera. Vi vänder spelet via 6:an, en mittback eller direkt till motsatt ytter, och accepterar 1 sekund extra på bollen för att tvinga blocket att flytta sig. När motståndaren har flyttat sig är ny central korridor öppen — det är den vi attackerar.",
+      "Vi vänder spelet via 6:an, en mittback eller direkt till motsatt ytter — och accepterar 1 sekund extra på bollen för att tvinga blocket att flytta sig. När motståndaren har flyttat sig är ny central korridor öppen — det är den vi attackerar.",
     tittaEfter: [
       "Är centralt fullt av motståndare?",
       "Är motsatt kant friställd — står deras sidoback för centralt?",
@@ -147,9 +147,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 4,
     headline: "Ta med den framåt",
     oneLiner:
-      "Har vi yta — driv eller passa framåt med fart. Vi vinner meter, inte bara boll.",
+      "När vi har yta ska vi driva eller passa framåt med fart och mod. Vi ska inte bara flytta bollen, utan vinna meter och sätta press på motståndaren.",
     forklaring:
-      "När motståndaren har flyttat sig öppnas yta. Då ska vi inte växla i sidled — vi ska ta meter. Drivet eller djupledspasset tvingar deras backlinje att backa, vilket öppnar centrala korridoren igen (princip 2) och boxytan (princip 5).",
+      "Drivet eller djupledspasset tvingar deras backlinje att backa, vilket öppnar centrala korridoren igen (princip 2) och boxytan (princip 5). Sidledsväxlar nu = bortkastat tempo.",
     tittaEfter: [
       "Är ytan framför mig öppen i minst 5 meter?",
       "Springer en medspelare i djupled — kan jag slå hen?",
@@ -179,9 +179,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 5,
     headline: "Fyll på spelare i och runt box",
     oneLiner:
-      "Sista tredjedelen — minst fyra i/runt boxen. Mål, andraboll eller direkt återerövring.",
+      "När vi kommer till sista tredjedelen ska vi fylla på med spelare i boxen och runt boxen — för att göra mål, vinna andrabollar eller återerövra bollen snabbt efter tapp.",
     forklaring:
-      "Vi gör inte mål med en man i boxen. När bollen är på sista tredjedelen ska 9, motsatt ytter och en av 8/10 attackera fyra zoner: första stolpen, straffpunkten, bortre stolpen och cutback-ytan. En till hänger 18 m utanför för andraboll och skott. Tappar vi i hög zon ligger vi rätt för direkt motpress.",
+      "Vi gör inte mål med en man i boxen. 9, motsatt ytter och en av 8/10 attackerar fyra zoner: första stolpen, straffpunkten, bortre stolpen och cutback-ytan. En till hänger 18 m utanför för andraboll och skott. Tappar vi i hög zon ligger vi rätt för direkt motpress.",
     tittaEfter: [
       "Är vi minst fyra i och runt boxen när inlägget kommer?",
       "Är första stolpen, straffpunkten och bortre stolpen täckta?",
