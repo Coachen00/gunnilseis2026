@@ -143,12 +143,12 @@ const PHASE_CUES: PhaseCue[] = [
   {
     id: "attack",
     label: "Anfall",
-    headline: "In-ut-fram-box",
-    definition: "Flytta blocket, hitta rättvänd spelare och fyll fem ytor när bollen går in.",
+    headline: "Skydda · in · ut · framåt · box",
+    definition: "Fem principer i ordning. Balans bakom bollen, sen in i halvyta, ut i sidled vid trångt, framåt med fart, fyll boxen.",
     Icon: Target,
     tone: "green",
     board: "flow",
-    bullets: ["In i spelyta 1/2.", "Ut för isolering.", "Box med fem ytor."],
+    bullets: ["Skydda kontring (6:an står).", "In i halvyta — annars ut.", "Fyll på 4+ i/runt box."],
   },
   {
     id: "transition",

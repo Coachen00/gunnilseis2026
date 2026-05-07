@@ -16,9 +16,11 @@ const skedenGroups: NavGroup[] = [
     label: "Anfall",
     to: "/anfall",
     children: [
-      { label: "Speluppbyggnad", to: "/anfall#speluppbyggnad" },
-      { label: "Skapa", to: "/anfall#skapa" },
-      { label: "Avsluta", to: "/anfall#avsluta" },
+      { label: "1 · Skydda mot kontring", to: "/anfall#skydda-mot-kontring" },
+      { label: "2 · Spela in bollen", to: "/anfall#spela-in" },
+      { label: "3 · Spela ut bollen", to: "/anfall#spela-ut" },
+      { label: "4 · Ta med den framåt", to: "/anfall#ta-med-framat" },
+      { label: "5 · Fyll på i och runt box", to: "/anfall#fyll-pa-box" },
     ],
   },
   {

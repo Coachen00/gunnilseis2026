@@ -57,7 +57,7 @@ const RULES = [
 ];
 
 const SLIDES: SlideSpec[] = [
-  ["01", "Veckans match", `${MATCH_META.opponent} · 13.00`, "Full-bleed mörk matchplan/tunnel med gul titel.", "Cinematic dark football matchday tunnel, yellow club light, serious dressing-room mood.", "hero", "gold"],
+  ["01", "Veckans match", `${MATCH_META.opponent} · ${MATCH_META.kickoff.split(" · ")[1] ?? ""}`, "Full-bleed mörk matchplan/tunnel med gul titel.", "Cinematic dark football matchday tunnel, yellow club light, serious dressing-room mood.", "hero", "gold"],
   ["02", "Identitet", "Dueller · Andrabollar · Djupled", "Tre hårda block med ikon/silhuett.", "Three-panel tactical board: duel collision, loose ball zone, deep run behind back line.", "identity", "gold"],
   ["03", "Duellspel", "Upp flera nivåer", "Närkamp i centrum, röd riskmarkering.", "Top-down football duel graphic, two player markers colliding, red warning halo.", "duel", "red"],
   ["04", "Andrabollar", "Först på nästa boll", "Landningsyta ringas in, tre egna attackerar.", "Loose second ball, yellow landing circle, three player markers collapsing toward ball.", "second", "green"],
@@ -65,7 +65,7 @@ const SLIDES: SlideSpec[] = [
   ["06", "Samla", "Samla först. Pressa sen.", "Lagdelar trycks ihop, avstånd minskar.", "Compact football block, three horizontal team lines squeezed together.", "compact", "blue"],
   ["07", "Pressvillkor", "Höga linjer · kompakt · tre korridorer", "Plan med tre korridorer och pressbild.", "Pitch split into three vertical corridors, high line, compact distances.", "corridors", "gold"],
   ["08", "Pressfälla", "Lås deras vänster", "Röd zon vänster, YB på YB, stoppad spelvändning.", "Press trap on opponent left side, red lock zone, blocked switch arrow.", "trap", "red"],
-  ["09", "Anfall", "In · Ut · Fram · Box", "Sekventiell bollväg med fyra ord.", "Attack sequence: in, out, forward, box, yellow ball arrows and blue runs.", "flow", "gold"],
+  ["09", "Anfall · 5 principer", "Skydda · In · Ut · Framåt · Box", "Sekventiell bollväg med fem nummerband.", "Attack sequence five steps: cover, in, out, forward, box, yellow ball arrows and blue runs.", "flow", "gold"],
   ["10", "Spelytor", "Rättvänd i spelyta 2", "Horisontella band, spelyta 2 starkast.", "Horizontal playing zones, zone 2 highlighted bright yellow, right-facing marker.", "zones", "gold"],
   ["11", "Box", "Fyll fem ytor", "Första, straffpunkt, bortre, cutback, andraboll.", "Penalty box map with five highlighted attacking zones.", "box", "green"],
   ["12", "Låst spel", "Ta territorium", "Pil mot djupt inkast, röd återerövring.", "Ball forced to deep throw-in near corner, immediate high regain press.", "throw", "red"],
