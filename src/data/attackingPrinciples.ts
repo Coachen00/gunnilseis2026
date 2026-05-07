@@ -60,7 +60,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     matchExempel: {
       motstandare: "Velebit (2 maj, 1–0)",
       situation:
-        "Mot Velebit gav vi inte bort en enda farlig kontring trots att vi gick fram och tillbaka mycket — det är denna princip som gjorde det möjligt.",
+        "Frågor till klippanalysen: Hur många farliga kontringar gav vi bort? Var stod 6:an när vi anfallsväxlade? Målbild: 0 farliga kontringar bortgivna och 6:an alltid på rätt sida om bollen.",
     },
     ovning: {
       rubrik: "Cover-zone 8v8",
@@ -73,7 +73,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     order: 2,
     headline: "Spela in bollen",
     oneLiner:
-      "Vi söker passningen mellan motståndarens led — för att hota, öppna kroppen eller starta nästa.",
+      "Vi söker passningen mellan motståndarens led — för att hota, vända upp eller starta nästa.",
     forklaring:
       "När vi har bollen i låg eller mellanhög zon letar vi efter en medspelare i halvytan eller mellan deras backar och mittfältare. Att spela in är inte målet i sig — det är trigger för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led att reagera.",
     tittaEfter: [
@@ -90,7 +90,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     matchExempel: {
       motstandare: "Velebit (2 maj, 1–0)",
       situation:
-        "Mot Velebit hittade vi flera in-pass i halvytan i 1:a halvlek — det skapade både 1–0-målet och fler chanser som inte gick i mål.",
+        "Frågor till klippanalysen: Hur många in-pass slog vi bakom deras första press i 1:a halvlek? Vilken som ledde till 1–0:an? Räkna även in-pass där mottagaren sköt rätt vidare på första touch.",
     },
     ovning: {
       rubrik: "Tredje man bryter linjen",
@@ -120,7 +120,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     matchExempel: {
       motstandare: "Velebit (2 maj, 1–0)",
       situation:
-        "I 2:a halvlek mot Velebit fastnade vi flera gånger centralt — när vi vände till motsatt sida via 6:an öppnade nya inre korridor och vi fick chans.",
+        "Frågor till klippanalysen: I trånga centrala lägen — hur ofta valde vi spelvändning vs dribbling? Hur många gånger kom vi tillbaka in centralt på den nya sidan efter en spelvändning?",
     },
     ovning: {
       rubrik: "Position-spel 8v6 med tysta zoner",
@@ -148,9 +148,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       "Är du felvänd? Spela till rättvänd medspelare och stötta uppåt — driv inte förbi din egen led.",
     ],
     matchExempel: {
-      motstandare: "Stenkullen (10 apr, 4–2 borta)",
+      motstandare: "Stenkullen (10 apr, 4–2 borta) + Velebit",
       situation:
-        "Bortavinsten i Stenkullen kom till stor del genom att vi vågade driva och passa framåt direkt vid bollvinst — vi tvingade deras backlinje att backa flera gånger.",
+        "Frågor till klippanalysen: I varje sekvens där en av oss hade 5+ m yta framför sig — drev vi/passade framåt eller växlade vi i sidled? Räkna båda matcherna och jämför.",
     },
     ovning: {
       rubrik: "4-mål-spel: framåt-regel",
@@ -179,9 +179,9 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       "10 stänger cutback-ytan (assistytan) — redo för in-passningen.",
     ],
     matchExempel: {
-      motstandare: "Partille (18 apr, 3–2 hemma)",
+      motstandare: "Partille (18 apr, 3–2) + Velebit (1–0)",
       situation:
-        "Tre mål mot Partille — alla kom när vi var minst fyra i/runt boxen i avslutsögonblicket. Mot Velebit (1–0) syntes detta i färre tillfällen och vi missade flera lägen för 2–0.",
+        "Frågor till klippanalysen: Räkna spelare i/runt boxen vid varje inlägg och cutback. Mål: minst 4 i/runt, helst 5. Hur många inlägg per match nådde tröskeln? Jämför Partille (3 mål) med Velebit (1 mål).",
     },
     ovning: {
       rubrik: "Inläggsövning 4v3 + 1",

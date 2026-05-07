@@ -65,7 +65,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         <div className="grid gap-5 md:grid-cols-2">
           <div className="border-l-2 border-accent/60 pl-4">
             <div className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-muted-foreground mb-1.5">
-              Matchexempel · {p.matchExempel.motstandare}
+              Klippanalys · {p.matchExempel.motstandare}
             </div>
             <p className="text-sm text-foreground/85 leading-relaxed">
               {p.matchExempel.situation}
