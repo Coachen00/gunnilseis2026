@@ -3,6 +3,11 @@ import CuesBlock from "@/components/CuesBlock";
 import AttackingPrincipleCard from "@/components/AttackingPrincipleCard";
 import { PHASE_CUES } from "@/data/phaseCues";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
+import { MATCH_META } from "@/data/matchplan";
+
+// Veckans anfallsfokus — vilka principer betonar vi inför nästa motståndare.
+// Hålls i synk med matchplan FOCUS-bullets så texten blir konsistent.
+const WEEKS_FOCUS_PRINCIPLES = ["skydda-mot-kontring", "spela-in", "spela-ut", "fyll-pa-box"] as const;
 
 const Anfall = () => (
   <>
@@ -14,6 +19,33 @@ const Anfall = () => (
 
     <div className="container">
       <CuesBlock set={PHASE_CUES.anfall} />
+
+      <div className="mb-8 rounded-xl border border-accent/40 bg-accent/[0.04] p-5">
+        <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent mb-3">
+          Veckans anfallsfokus · {MATCH_META.opponent}
+        </div>
+        <p className="text-sm md:text-base text-foreground/90 mb-3">
+          Vi övar och utvärderar dessa principer extra denna vecka — utifrån vad vi tar med från förra match.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {WEEKS_FOCUS_PRINCIPLES.map((slug) => {
+            const p = ATTACKING_PRINCIPLES.find((x) => x.slug === slug);
+            if (!p) return null;
+            return (
+              <a
+                key={slug}
+                href={`#${slug}`}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-accent/40 bg-background/60 hover:border-accent transition-colors"
+              >
+                <span className="font-mono font-black text-accent text-xs">
+                  {String(p.order).padStart(2, "0")}
+                </span>
+                <span className="text-xs font-bold">{p.headline}</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="mb-12 max-w-3xl border-l-2 border-accent/60 pl-6">
         <p className="text-base md:text-lg text-foreground/90 leading-relaxed">
