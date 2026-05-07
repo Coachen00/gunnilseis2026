@@ -23,10 +23,10 @@ const PHASES: MacroPhase[] = [
   {
     num: "01",
     label: "Anfall",
-    oneLiner: "Gör planen stor och fyll boxen.",
+    oneLiner: "Skydda kontring först — sen in, ut, framåt, fyll boxen.",
     Icon: Swords,
     tone: "gold",
-    principles: ["Spelbarhet", "Avstånd", "Bredd", "Djup", "Övertal"],
+    principles: ["Skydda", "In", "Ut", "Framåt", "Box"],
   },
   {
     num: "02",
