@@ -35,6 +35,8 @@ export interface AttackingPrinciple {
   matchExempel: { motstandare: string; situation: string };
   /** En övning eller coachningspunkt som tränar principen. */
   ovning: { rubrik: string; beskrivning: string };
+  /** 1–3 ord man ropar från sidlinjen — ska räcka som påminnelse. */
+  coachrop: string[];
 }
 
 export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
@@ -67,6 +69,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       beskrivning:
         "Spel 8v8 med två markerade cover-zoner bakom bollen. Saknas en spelare i någon zon vid bollförlust = poäng till motståndaren oavsett vad som händer sen.",
     },
+    coachrop: ["Cover!", "6:an stå!", "Balans!"],
   },
   {
     slug: "spela-in",
@@ -97,6 +100,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       beskrivning:
         "Rondo 6v3 med två motståndarled. Bonuspoäng när passningen går till en spelare som står mellan led och hen kan slå pass vidare på första touch.",
     },
+    coachrop: ["In!", "Mellan!", "Hitta 10!"],
   },
   {
     slug: "spela-ut",
@@ -127,6 +131,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       beskrivning:
         "Två 'tysta zoner' på var sin kant. Bollen MÅSTE passera båda tysta zoner innan ett mål kan göras. Tränar tålamodet att flytta blocket istället för att forcera centralt.",
     },
+    coachrop: ["Ut!", "Vänd!", "Tysta sidan!"],
   },
   {
     slug: "ta-med-framat",
@@ -157,6 +162,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       beskrivning:
         "Spel 7v7 med fyra mål (2 i varje kortlinje). Mål kan bara erkännas om sista passningen eller löpningen vunnit minst 10 m framåt. Sidledsväxel = noll.",
     },
+    coachrop: ["Driv!", "Framåt!", "Ta meter!"],
   },
   {
     slug: "fyll-pa-box",
@@ -188,6 +194,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       beskrivning:
         "3v3 inne i boxen + 1 bonusspelare 18 m. Cutback eller inlägg från kant. Byt sida varje gång. Räkna hur ofta vi får 4 in i boxen — under 70% är inte godkänt.",
     },
+    coachrop: ["Box!", "Fyll!", "4 in!"],
   },
 ];
 

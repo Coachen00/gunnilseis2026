@@ -20,6 +20,21 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         <h3 className="text-xl md:text-2xl font-black text-foreground leading-tight tracking-tight">
           {p.oneLiner}
         </h3>
+        {p.coachrop && p.coachrop.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-muted-foreground self-center mr-1">
+              Coachrop:
+            </span>
+            {p.coachrop.map((rop) => (
+              <span
+                key={rop}
+                className="rounded-md border border-primary/40 bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary"
+              >
+                {rop}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
     </header>
 
