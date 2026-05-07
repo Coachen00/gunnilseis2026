@@ -1,4 +1,5 @@
 import type { AttackingPrinciple } from "@/data/attackingPrinciples";
+import { findIdentity } from "@/data/identity";
 
 interface Props {
   principle: AttackingPrinciple;
@@ -96,6 +97,29 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
           </div>
         </div>
       </section>
+
+      {p.aktiverarIdentitet && p.aktiverarIdentitet.length > 0 && (
+        <section className="md:col-span-2 border-t border-border pt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              Aktiverar identitet:
+            </span>
+            {p.aktiverarIdentitet.map((slug) => {
+              const id = findIdentity(slug);
+              if (!id) return null;
+              return (
+                <a
+                  key={slug}
+                  href={`/identitet/${slug}`}
+                  className="rounded-md border border-border bg-background/60 px-2.5 py-1 text-xs font-bold text-foreground/85 hover:border-accent/60 transition-colors"
+                >
+                  {id.title}
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </div>
   </article>
 );
