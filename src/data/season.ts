@@ -2,7 +2,8 @@
  * När `sync-gunnilse-calendar` har körts läses hela säsongen från Supabase
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
- * Källa: https://www.svenskalag.se/gunnilseis-herr/kalender
+ * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
+ * Senast uppdaterad: 2026-05-07 (efter Velebit + inför Kareby).
  */
 
 export type SeasonMatch = {
@@ -21,9 +22,11 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     id: "2026-04-02-ytterby",
     date: "2026-04-02T19:00:00+02:00",
     opponent: "Ytterby IS",
-    homeAway: "away",
+    homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 2 Konstgräs",
+    ourScore: 3,
+    theirScore: 1,
   },
   {
     id: "2026-04-10-stenkullen",
@@ -32,6 +35,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Stenkullens IP 2 KG",
+    ourScore: 4,
+    theirScore: 2,
   },
   {
     id: "2026-04-18-partille",
@@ -40,6 +45,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 2 Konstgräs",
+    ourScore: 3,
+    theirScore: 2,
   },
   {
     id: "2026-04-24-lerum",
@@ -48,14 +55,26 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Rydsbergsplan 1 Konstgräs",
+    ourScore: 0,
+    theirScore: 0,
   },
   {
     id: "2026-05-02-velebit",
     date: "2026-05-02T13:00:00+02:00",
-    opponent: "Velebit",
+    opponent: "KF Velebit",
     homeAway: "home",
     competition: "Division 4A Herr",
-    venue: "Gunnilseplan",
+    venue: "Hjällbovallen 2 Konstgräs",
+    ourScore: 1,
+    theirScore: 0,
+  },
+  {
+    id: "2026-05-08-kareby",
+    date: "2026-05-08T19:00:00+02:00",
+    opponent: "Kareby IS",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Kareby Hed",
   },
 ];
 

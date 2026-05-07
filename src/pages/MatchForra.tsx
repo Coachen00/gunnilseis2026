@@ -1,98 +1,172 @@
 import PageHero from "@/components/PageHero";
-import MatchHeader from "@/components/match/MatchHeader";
-import PhaseBlock from "@/components/match/PhaseBlock";
+import { FORRA_MATCH } from "@/data/forraMatch";
 
-const MatchForra = () => (
-  <>
-    <PageHero
-      eyebrow="Match · Förra"
-      title="Förra matchen"
-      description="Vad hände, vad lärde vi oss, vad tar vi med oss. Texter och media sparas automatiskt."
-    />
-    <div className="container pb-24 space-y-12">
-      <MatchHeader status="played" />
+const homeAwayLabel = (m: typeof FORRA_MATCH.meta) =>
+  m.homeAway === "home" ? "Hemma" : "Borta";
 
-      <PhaseBlock
-        status="played"
-        badge="Bra"
-        title="Det här fungerade"
-        sectionKey="bra"
-        fields={[
-          { key: "bra-1", label: "1", placeholder: "Vad gick enligt plan?" },
-          { key: "bra-2", label: "2", placeholder: "Något mer som vi tar med oss?" },
-        ]}
-      />
+const dateLabel = (iso: string) => {
+  const d = new Date(iso);
+  const days = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
+  const months = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "maj",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "okt",
+    "nov",
+    "dec",
+  ];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} · ${d
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+};
 
-      <PhaseBlock
-        status="played"
-        badge="Förbättra"
-        title="Det här tar vi tag i"
-        sectionKey="forbattra"
-        fields={[
-          { key: "forb-1", label: "1", placeholder: "Konkret förbättring" },
-          { key: "forb-2", label: "2", placeholder: "Konkret förbättring" },
-        ]}
-      />
-
-      <PhaseBlock
-        status="played"
-        badge="Anfallsspel"
-        title="Anfallsspel — så blev det"
-        sectionKey="anfall"
-        fields={[
-          { key: "vad-blev", label: "Vad blev det?", placeholder: "Hur såg vårt anfallsspel ut?" },
-          { key: "moment", label: "Moment att titta på", placeholder: "Specifika sekvenser" },
-        ]}
-        mediaSlots={[{ key: "anfall-klipp", title: "Klipp anfall", description: "YouTube-länk eller film." }]}
-      />
-
-      <PhaseBlock
-        status="played"
-        badge="Försvarsspel"
-        title="Försvarsspel — så blev det"
-        sectionKey="forsvar"
-        fields={[
-          { key: "vad-blev", label: "Vad blev det?", placeholder: "Hur försvarade vi?" },
-          { key: "moment", label: "Moment att titta på", placeholder: "Specifika sekvenser" },
-        ]}
-        mediaSlots={[{ key: "forsvar-klipp", title: "Klipp försvar" }]}
-      />
-
-      <PhaseBlock
-        status="played"
-        badge="Omställningar"
-        title="Omställningar"
-        sectionKey="omst"
-        fields={[
-          { key: "anf-fors", label: "Anfall → försvar", placeholder: "Hur reagerade vi vid bollförlust?" },
-          { key: "fors-anf", label: "Försvar → anfall", placeholder: "Hur startade vi om?" },
-        ]}
-      />
-
-      <PhaseBlock
-        status="played"
-        badge="Fasta"
-        title="Fasta situationer"
-        sectionKey="fasta"
-        fields={[
-          { key: "anfall", label: "Våra fasta", placeholder: "Hörnor, frisparkar, inkast" },
-          { key: "forsvar", label: "Försvar fasta", placeholder: "Höll zonen? Höll markeringen?" },
-        ]}
-        mediaSlots={[{ key: "fasta-klipp", title: "Klipp fasta situationer" }]}
-      />
-
-      <PhaseBlock
-        status="played"
-        badge="Lärdom"
-        title="Lärdomar till nästa match"
-        sectionKey="lardomar"
-        fields={[
-          { key: "lar-1", label: "1", placeholder: "Vad tar vi med oss?" },
-          { key: "lar-2", label: "2", placeholder: "Vad ändrar vi?" },
-        ]}
-      />
-    </div>
-  </>
+const Placeholder = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-sm italic text-muted-foreground">{children}</p>
 );
+
+const MatchForra = () => {
+  const m = FORRA_MATCH;
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Match · Förra"
+        title={`${m.meta.opponent} · ${m.meta.ourScore}–${m.meta.theirScore}`}
+        description={m.summary}
+      />
+
+      <div className="container pb-24 space-y-12">
+        {/* Match-meta + summering */}
+        <section className="bg-card/85 rounded-lg p-6 border border-border">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
+                Datum
+              </div>
+              <div className="font-semibold">{dateLabel(m.meta.date)}</div>
+            </div>
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
+                Plats
+              </div>
+              <div className="font-semibold">
+                {homeAwayLabel(m.meta)} · {m.meta.venue}
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
+                Tävling
+              </div>
+              <div className="font-semibold">{m.meta.competition}</div>
+            </div>
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
+                Resultat
+              </div>
+              <div className="font-black text-lg">
+                {m.meta.ourScore}–{m.meta.theirScore}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Trupp */}
+        <section>
+          <div className="mb-4">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+              Trupp · matchen
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+              Vilka spelade
+            </h2>
+          </div>
+          {m.truppen.length > 0 ? (
+            <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 text-sm">
+              {m.truppen.map((p, i) => (
+                <li
+                  key={i}
+                  className="bg-card/60 border border-border rounded-md px-3 py-1.5"
+                >
+                  {p}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Placeholder>
+              Truppen fylls i av tränaren — startelva och avbytare som spelade.
+            </Placeholder>
+          )}
+          {m.ejTillgangliga.length > 0 && (
+            <div className="mt-4">
+              <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
+                Ej tillgängliga
+              </div>
+              <p className="text-sm">{m.ejTillgangliga.join(" · ")}</p>
+            </div>
+          )}
+        </section>
+
+        {/* Reflektionsblock */}
+        {m.blocks.map((b) => (
+          <section key={b.badge}>
+            <div className="mb-4">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+                {b.badge}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+                {b.title}
+              </h2>
+            </div>
+            {b.bullets.length > 0 ? (
+              <ul className="space-y-2 text-sm md:text-base text-foreground/90 leading-relaxed">
+                {b.bullets.map((x, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="text-accent mt-1.5 select-none">•</span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Placeholder>Fylls i av tränaren.</Placeholder>
+            )}
+          </section>
+        ))}
+
+        {/* Lärdomar */}
+        <section className="border-t border-border pt-10">
+          <div className="mb-4">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+              Lärdom
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+              Det här tar vi med till nästa match
+            </h2>
+          </div>
+          {m.larDomar.length > 0 ? (
+            <ol className="space-y-3 text-sm md:text-base text-foreground/90 leading-relaxed">
+              {m.larDomar.map((x, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <span className="font-mono font-black text-accent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>{x}</span>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <Placeholder>Fylls i av tränaren.</Placeholder>
+          )}
+        </section>
+      </div>
+    </>
+  );
+};
 
 export default MatchForra;
