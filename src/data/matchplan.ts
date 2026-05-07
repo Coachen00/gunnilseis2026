@@ -80,12 +80,12 @@ export const COHERENCE: CoherenceSection[] = [
     id: "forra-match",
     num: "02",
     title: "Förra match — Velebit 1–0",
-    eyebrow: "Vad vi tar med",
+    eyebrow: "Vad vi tar med till Kareby",
     principles: ["Box-fyllnad", "Spelvändning", "Defensiv balans"],
     bullets: [
-      "Vinst 1–0 hemma 2 maj — femte raka utan förlust.",
-      "Tar med: defensiv balans i anfall fungerade — inga farliga kontringar bortgivna.",
-      "Tar tag i: för få spelare i/runt boxen vid inlägg + dribbling istället för spelvändning när det var trångt.",
+      "Vinst 1–0 hemma 2 maj — femte raka utan förlust (4V 1O, 11/15 möjliga).",
+      "Detaljerade reflektioner: se /match/forra (fylls i av tränaren).",
+      "Veckans tre fokuspunkter inför Kareby ligger i sidospalten — princip 1, 2/3 och 5.",
     ],
   },
   {
@@ -94,10 +94,11 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Vad vi vet om Kareby",
     eyebrow: "Motståndaren",
     bullets: [
-      "Borta på Kareby Hed — kortare och tightare plan kräver kortare avstånd.",
-      "Hemmalag — räkna med tidig press och energi första 15 min.",
-      "Specifik motståndaranalys: se /motstandaranalys.",
+      "Borta på Kareby Hed — räkna med kortare och tightare plan: kortare avstånd mellan oss, mer en-touch i mottagningen.",
+      "Hemmalag fredag kväll — räkna med tidig och hög press första 15 min. Princip 1 (skydda kontring) blir extra viktig från start.",
+      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys (fylls i av tränarstaben).",
     ],
+    note: "Kareby-specifika anpassningar (formation, hot, var vi pressar) ligger på /motstandaranalys.",
   },
   {
     id: "identitet",

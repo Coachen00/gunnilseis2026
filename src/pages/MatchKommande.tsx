@@ -11,11 +11,55 @@ const MatchKommande = () => (
   <>
     <PageHero
       eyebrow="Match · Veckans"
-      title="Veckans match"
-      description="Motståndare, matchplan och fokus — allt på ett ställe. Sparas automatiskt."
+      title="Kareby — fre 8 maj"
+      description="Borta · Kareby Hed · 19:00. Femte raka utan förlust (4V 1O, 11/15) — vi vill hem med tre poäng till."
     />
 
     <div className="container pb-24 space-y-6">
+      <section className="rounded-xl border border-accent/40 bg-accent/[0.04] p-5 md:p-6">
+        <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent mb-3">
+          Inför Kareby · 10 min genomgång
+        </div>
+        <ol className="space-y-2 text-sm md:text-base text-foreground/90">
+          <li className="flex items-start gap-3">
+            <span className="font-mono font-black text-accent">01</span>
+            <span>
+              Läs förra matchen kort —{" "}
+              <a href="/match/forra" className="underline hover:text-accent">
+                Velebit 1–0
+              </a>
+              . Vad tar vi med, vad tar vi tag i.
+            </span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="font-mono font-black text-accent">02</span>
+            <span>
+              Skanna de fem anfallsprinciperna —{" "}
+              <a href="/anfall" className="underline hover:text-accent">
+                /anfall
+              </a>
+              . Speciellt princip 1 (skydda kontring), 2/3 (in/ut) och 5 (fylla på box).
+            </span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="font-mono font-black text-accent">03</span>
+            <span>
+              Tre fokuspunkter i sidospalten — det är vad vi gör annorlunda denna vecka.
+            </span>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="font-mono font-black text-accent">04</span>
+            <span>
+              Kolla{" "}
+              <a href="/motstandaranalys" className="underline hover:text-accent">
+                motståndaranalysen
+              </a>{" "}
+              — formation, hot, var vi pressar.
+            </span>
+          </li>
+        </ol>
+      </section>
+
       <MatchHeader status="upcoming" />
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
