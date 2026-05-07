@@ -45,9 +45,9 @@ export const MATCH_META: MatchMeta = {
 };
 
 export const FOCUS: string[] = [
-  "Skydda mot kontring först. Balans bakom bollen alltid.",
-  "Spela in i halvyta. När det är trångt — vänd och spela in på nya sidan.",
-  "Fyll på minst 4 i/runt boxen vid varje inlägg.",
+  "Princip 1 — Skydda mot kontring först. Balans bakom bollen alltid.",
+  "Princip 2/3 — Spela in i halvyta. När det är trångt: vänd och spela in på nya sidan.",
+  "Princip 5 — Fyll på minst 4 av oss i/runt boxen vid varje inlägg.",
 ];
 
 export const FORMATION: FormationSlot[] = [
