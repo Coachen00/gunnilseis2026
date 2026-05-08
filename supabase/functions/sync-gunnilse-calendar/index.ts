@@ -1,87 +1,133 @@
-import { corsHeaders } from "https://esm.sh/@supabase/supabase-js@2.95.0/cors";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 
-const CALENDAR_URL = "https://www.svenskalag.se/gunnilseis-herr/kalender";
+const MATCHES_URL = "https://www.svenskalag.se/gunnilseis-herr/matcher";
+const SVENSKALAG_ORIGIN = "https://www.svenskalag.se";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+};
 
 interface ParsedMatch {
   external_id: string;
   opponent: string;
-  match_date: string | null;
-  home_away: "home" | "away" | null;
+  match_date: string;
+  home_away: "home" | "away";
   competition: string | null;
   venue: string | null;
+  our_score?: number;
+  their_score?: number;
 }
 
 function decode(html: string): string {
   return html
+    .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, " ");
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, num) => String.fromCodePoint(parseInt(num, 10)));
 }
 
-function stripTags(s: string): string {
-  return decode(s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+function stripTags(value: string): string {
+  return decode(value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+}
+
+function getCompetitionMap(html: string): Map<string, string> {
+  const map = new Map<string, string>();
+  const filterRegex = /id="link-(\d+)"[^>]*class="sfilter[^>]*>[\s\S]*?<\/i>([^<]+)<\/a>/gi;
+  for (const match of html.matchAll(filterRegex)) {
+    map.set(match[1], stripTags(match[2]));
+  }
+  return map;
+}
+
+function swedishUtcOffset(year: number, month: number, day: number): "+01:00" | "+02:00" {
+  if (month < 3 || month > 10) return "+01:00";
+  if (month > 3 && month < 10) return "+02:00";
+
+  const lastSunday = (monthIndex: number) => {
+    const date = new Date(Date.UTC(year, monthIndex + 1, 0));
+    return date.getUTCDate() - date.getUTCDay();
+  };
+
+  if (month === 3) return day >= lastSunday(2) ? "+02:00" : "+01:00";
+  return day < lastSunday(9) ? "+02:00" : "+01:00";
+}
+
+function buildLocalIso(year: number, month: number, day: number, time: string): string {
+  const [hour, minute] = time.split(":").map(Number);
+  const offset = swedishUtcOffset(year, month, day);
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00${offset}`;
+}
+
+function parseTeams(teams: string): { opponent: string; homeAway: "home" | "away" } | null {
+  const parts = teams.split(/\s+[-–—]\s+/);
+  if (parts.length < 2) return null;
+
+  const home = parts[0].trim();
+  const away = parts.slice(1).join(" - ").trim();
+  const homeAway = /gunnilse is/i.test(home) ? "home" : "away";
+  const opponent = (homeAway === "home" ? away : home)
+    .replace(/\s*\([^)]*\)\s*$/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return opponent ? { opponent, homeAway } : null;
+}
+
+function parseScore(row: string, homeAway: "home" | "away"): { our_score?: number; their_score?: number } {
+  const resultHtml = row.match(/<div class="schedule-result">([\s\S]*?)<\/div>/i)?.[1] ?? "";
+  const result = stripTags(resultHtml);
+  const score = result.match(/^(\d+)\s*-\s*(\d+)$/);
+  if (!score) return {};
+
+  const left = Number(score[1]);
+  const right = Number(score[2]);
+  return homeAway === "home"
+    ? { our_score: left, their_score: right }
+    : { our_score: right, their_score: left };
 }
 
 function parseMatches(html: string): ParsedMatch[] {
-  const matches: ParsedMatch[] = [];
-  const rowMatches = Array.from(html.matchAll(/<a[^>]*href="([^"]*\/aktivitet\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/gi));
-  const seen = new Set<string>();
+  const competitions = getCompetitionMap(html);
+  const parsed: ParsedMatch[] = [];
+  const rowRegex = /<tr class="season month-item-(\d{4})(\d{1,2})" seasonId="(\d+)">([\s\S]*?)<\/tr>/gi;
 
-  for (const m of rowMatches) {
-    const href = m[1];
-    const text = stripTags(m[2]);
-    const matchIndex = m.index ?? 0;
-    if (!text || seen.has(href)) continue;
-    if (!/gunnilse/i.test(text) && !/match/i.test(text)) continue;
-    seen.add(href);
+  for (const rowMatch of html.matchAll(rowRegex)) {
+    const year = Number(rowMatch[1]);
+    const month = Number(rowMatch[2]);
+    const seasonId = rowMatch[3];
+    const row = rowMatch[4];
+    const dateMatch = row.match(/<nobr>\s*[^<]*?\s+(\d{1,2})\s*<\/nobr>[\s\S]*?<span class="text-muted">(\d{1,2}:\d{2})<\/span>/i);
+    const linkMatch = row.match(/<a href="([^"]+)" class="ListLink"[^>]*>([\s\S]*?)<\/a>/i);
 
-    let opponent = text
-      .replace(/Gunnilse IS( Herr)?/i, "")
-      .replace(/[-–—]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-    if (!opponent) opponent = text.trim();
+    if (!dateMatch || !linkMatch) continue;
 
-    const around = html.slice(Math.max(0, matchIndex - 600), matchIndex + 600);
-    const dateMatch = around.match(
-      /(\d{1,2})\s*(jan|feb|mar|apr|maj|jun|jul|aug|sep|okt|nov|dec)[a-z]*\.?\s*(\d{4})?/i
-    );
-    let isoDate: string | null = null;
-    let timeMatch: RegExpMatchArray | null = null;
-    timeMatch = around.match(/(\d{1,2}):(\d{2})/);
-    if (dateMatch) {
-      const monthMap: Record<string, number> = {
-        jan: 0, feb: 1, mar: 2, apr: 3, maj: 4, jun: 5,
-        jul: 6, aug: 7, sep: 8, okt: 9, nov: 10, dec: 11,
-      };
-      const day = parseInt(dateMatch[1], 10);
-      const monthKey = dateMatch[2].toLowerCase().slice(0, 3) as keyof typeof monthMap;
-      const month = monthMap[monthKey] ?? 0;
-      const year = dateMatch[3] ? parseInt(dateMatch[3], 10) : new Date().getFullYear();
-      const hours = timeMatch ? parseInt(timeMatch[1], 10) : 13;
-      const minutes = timeMatch ? parseInt(timeMatch[2], 10) : 0;
-      const d = new Date(Date.UTC(year, month, day, hours - 2, minutes, 0));
-      isoDate = d.toISOString();
-    }
+    const teams = stripTags(linkMatch[2]);
+    const teamInfo = parseTeams(teams);
+    if (!teamInfo) continue;
 
-    // Hämta tävling och plats om de finns i närheten
-    const compMatch = around.match(/Division\s+\d+[A-Z]?(?:\s+\w+)?/i);
-    const venueMatch = around.match(/(?:Hjällbo|Stenkullen|Rydsbergsplan|Gunnilseplan|Partille|Ytterby)[^<\n]*/i);
+    const day = Number(dateMatch[1]);
+    const match_date = buildLocalIso(year, month, day, dateMatch[2]);
+    const venue = stripTags(row.match(/<span class="text-muted small">([\s\S]*?)<\/span>/i)?.[1] ?? "");
+    const external_id = decode(linkMatch[1]);
 
-    matches.push({
-      external_id: href,
-      opponent: opponent || "Okänd motståndare",
-      match_date: isoDate,
-      home_away: /hemma/i.test(around) ? "home" : /borta/i.test(around) ? "away" : null,
-      competition: compMatch ? compMatch[0].trim() : null,
-      venue: venueMatch ? venueMatch[0].trim() : null,
+    parsed.push({
+      external_id,
+      opponent: teamInfo.opponent,
+      match_date,
+      home_away: teamInfo.homeAway,
+      competition: competitions.get(seasonId) ?? null,
+      venue: venue || null,
+      ...parseScore(row, teamInfo.homeAway),
     });
   }
-  return matches;
+
+  return parsed;
 }
 
 Deno.serve(async (req) => {
@@ -92,55 +138,45 @@ Deno.serve(async (req) => {
     const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
 
-    const res = await fetch(CALENDAR_URL, {
+    const res = await fetch(MATCHES_URL, {
       headers: { "User-Agent": "Mozilla/5.0 GunnilseTacticsBot" },
     });
+
     if (!res.ok) {
-      return new Response(
-        JSON.stringify({ ok: false, error: `Calendar fetch failed: ${res.status}` }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ ok: false, error: `Matches fetch failed: ${res.status}` }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
-    const html = await res.text();
-    const parsed = parseMatches(html);
 
+    const parsed = parseMatches(await res.text());
     if (parsed.length === 0) {
-      return new Response(
-        JSON.stringify({ ok: false, error: "No matches parsed", parsed_count: 0 }),
-        { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ ok: false, error: "No matches parsed", parsed_count: 0, source: MATCHES_URL }), {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    // Hämta befintliga matcher för att respektera manual_override
     const { data: existing } = await supabase
       .from("matches")
-      .select("id, external_id, manual_override");
+      .select("external_id, manual_override");
+
     const overridden = new Set(
       (existing ?? [])
-        .filter((m: { manual_override?: boolean }) => m.manual_override)
-        .map((m: { external_id?: string | null }) => m.external_id)
+        .filter((match: { manual_override?: boolean }) => match.manual_override)
+        .map((match: { external_id?: string | null }) => match.external_id)
         .filter(Boolean) as string[]
     );
 
-    // Räkna ut status (upcoming/played) per match från datum
     const now = Date.now();
     const upserts = parsed
-      .filter((p) => !overridden.has(p.external_id))
-      .map((p) => {
-        const t = p.match_date ? new Date(p.match_date).getTime() : null;
-        const status: "upcoming" | "played" = t !== null && t < now ? "played" : "upcoming";
-        return {
-          external_id: p.external_id,
-          opponent: p.opponent,
-          match_date: p.match_date,
-          home_away: p.home_away,
-          competition: p.competition,
-          venue: p.venue,
-          status,
-          source: "scraped",
-          manual_override: false,
-        };
-      });
+      .filter((match) => !overridden.has(match.external_id))
+      .map((match) => ({
+        ...match,
+        status: new Date(match.match_date).getTime() < now ? "played" : "upcoming",
+        source: "scraped",
+        manual_override: false,
+      }));
 
     const { error: upsertError, data: upserted } = await supabase
       .from("matches")
@@ -148,21 +184,22 @@ Deno.serve(async (req) => {
       .select("id");
 
     if (upsertError) {
-      return new Response(
-        JSON.stringify({ ok: false, error: upsertError.message, parsed_count: parsed.length }),
-        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ ok: false, error: upsertError.message, parsed_count: parsed.length }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    return new Response(
-      JSON.stringify({
-        ok: true,
-        parsed_count: parsed.length,
-        upserted_count: upserted?.length ?? 0,
-        skipped_overrides: overridden.size,
-      }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({
+      ok: true,
+      source: MATCHES_URL,
+      parsed_count: parsed.length,
+      upserted_count: upserted?.length ?? 0,
+      skipped_overrides: overridden.size,
+      source_origin: SVENSKALAG_ORIGIN,
+    }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     return new Response(JSON.stringify({ ok: false, error: msg }), {

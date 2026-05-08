@@ -15,6 +15,7 @@ export type SeasonMatch = {
   venue: string;
   ourScore?: number;
   theirScore?: number;
+  sourceUrl?: string;
 };
 
 export const SEASON_MATCHES: SeasonMatch[] = [
@@ -27,6 +28,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     venue: "Hjällbovallen 2 Konstgräs",
     ourScore: 3,
     theirScore: 1,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901093/ytterby-is",
   },
   {
     id: "2026-04-10-stenkullen",
@@ -37,6 +39,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     venue: "Stenkullens IP 2 KG",
     ourScore: 4,
     theirScore: 2,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901094/stenkullen-goik",
   },
   {
     id: "2026-04-18-partille",
@@ -47,6 +50,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     venue: "Hjällbovallen 2 Konstgräs",
     ourScore: 3,
     theirScore: 2,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901095/partille-if-fk",
   },
   {
     id: "2026-04-24-lerum",
@@ -57,6 +61,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     venue: "Rydsbergsplan 1 Konstgräs",
     ourScore: 0,
     theirScore: 0,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901096/lerums-is",
   },
   {
     id: "2026-05-02-velebit",
@@ -67,6 +72,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     venue: "Hjällbovallen 2 Konstgräs",
     ourScore: 1,
     theirScore: 0,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901097/kf-velebit",
   },
   {
     id: "2026-05-08-kareby",
@@ -75,6 +81,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Kareby Hed",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901098/kareby-is",
   },
 ];
 

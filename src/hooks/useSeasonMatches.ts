@@ -12,7 +12,7 @@ export function useSeasonMatches() {
     (async () => {
       const { data, error } = await supabase
         .from("matches")
-        .select("id, opponent, match_date, home_away, competition, venue, our_score, their_score")
+        .select("id, opponent, match_date, home_away, competition, venue, our_score, their_score, external_id, manual_override")
         .not("match_date", "is", null)
         .order("match_date", { ascending: true });
 
@@ -25,6 +25,7 @@ export function useSeasonMatches() {
       setMatches(
         data
           .filter((row) => row.match_date && row.opponent)
+          .filter((row) => !(row.manual_override && !row.external_id))
           .map((row) => ({
             id: row.id,
             date: row.match_date as string,
@@ -34,6 +35,7 @@ export function useSeasonMatches() {
             venue: row.venue ?? "",
             ourScore: row.our_score ?? undefined,
             theirScore: row.their_score ?? undefined,
+            sourceUrl: toSvenskalagUrl(row.external_id),
           }))
       );
       setUsingFallback(false);
@@ -45,4 +47,11 @@ export function useSeasonMatches() {
   }, []);
 
   return { matches, loading, usingFallback };
+}
+
+function toSvenskalagUrl(externalId: string | null): string | undefined {
+  if (!externalId) return undefined;
+  if (externalId.startsWith("http")) return externalId;
+  if (externalId.startsWith("/")) return `https://www.svenskalag.se${externalId}`;
+  return undefined;
 }

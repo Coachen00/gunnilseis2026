@@ -65,7 +65,7 @@ const Matcher = () => {
         </div>
 
         <a
-          href="https://www.svenskalag.se/gunnilseis-herr/kalender"
+          href="https://www.svenskalag.se/gunnilseis-herr/matcher"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
@@ -87,23 +87,49 @@ const MatchRow = ({
   isUpcoming: boolean;
   isPast: boolean;
 }) => {
+  const result = resultOf(match);
+  const rowClassName = cn(
+    "group grid grid-cols-[64px_1fr_auto] items-center gap-4 rounded-md border bg-card px-4 py-3 transition",
+    match.sourceUrl && "cursor-pointer",
+    isUpcoming
+      ? "border-accent/60 shadow-[0_0_0_1px_hsl(var(--accent)/0.3)] hover:border-accent"
+      : "border-border/70 hover:border-accent/40",
+    isPast && !isUpcoming && "opacity-70 hover:opacity-100"
+  );
+
+  return (
+    <li>
+      {match.sourceUrl ? (
+        <a href={match.sourceUrl} target="_blank" rel="noopener noreferrer" className={rowClassName}>
+          <MatchRowContent match={match} isUpcoming={isUpcoming} isPast={isPast} result={result} />
+        </a>
+      ) : (
+        <div className={rowClassName}>
+          <MatchRowContent match={match} isUpcoming={isUpcoming} isPast={isPast} result={result} />
+        </div>
+      )}
+    </li>
+  );
+};
+
+const MatchRowContent = ({
+  match,
+  isUpcoming,
+  isPast,
+  result,
+}: {
+  match: SeasonMatch;
+  isUpcoming: boolean;
+  isPast: boolean;
+  result: { outcome: "W" | "D" | "L"; us: number; them: number } | null;
+}) => {
   const date = new Date(match.date);
   const day = String(date.getDate()).padStart(2, "0");
   const weekday = SHORT_DAY[date.getDay()];
   const time = date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
 
-  const result = resultOf(match);
-
   return (
-    <li
-      className={cn(
-        "group grid grid-cols-[64px_1fr_auto] items-center gap-4 rounded-md border bg-card px-4 py-3 transition",
-        isUpcoming
-          ? "border-accent/60 shadow-[0_0_0_1px_hsl(var(--accent)/0.3)] hover:border-accent"
-          : "border-border/70 hover:border-accent/40",
-        isPast && !isUpcoming && "opacity-70"
-      )}
-    >
+    <>
       {/* Date stamp */}
       <div className="flex flex-col items-center justify-center border-r border-border/60 pr-4">
         <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
@@ -137,6 +163,7 @@ const MatchRow = ({
             {match.homeAway === "home" ? "Gunnilse — " : ""}
             {match.opponent}
             {match.homeAway === "away" ? " — Gunnilse" : ""}
+            {match.sourceUrl && <ExternalLink className="ml-1.5 inline h-3 w-3 text-muted-foreground transition group-hover:text-accent" />}
           </p>
         </div>
         <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
@@ -175,11 +202,11 @@ const MatchRow = ({
           </div>
         ) : !isUpcoming ? (
           <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            Kommande
+            {isPast ? "Spelad" : "Kommande"}
           </span>
         ) : null}
       </div>
-    </li>
+    </>
   );
 };
 
