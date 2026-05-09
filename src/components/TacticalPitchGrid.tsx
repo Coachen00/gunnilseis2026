@@ -6,12 +6,13 @@
 const TacticalPitchGrid = () => (
   <svg
     aria-hidden="true"
-    className="pointer-events-none absolute inset-0 h-full w-full text-pitch-lines/40 animate-pitch-pulse"
+    className="pointer-events-none absolute inset-0 h-full w-full overflow-hidden text-pitch-lines/40 animate-pitch-pulse"
     viewBox="0 0 1600 900"
     preserveAspectRatio="xMidYMid slice"
     fill="none"
     stroke="currentColor"
     strokeWidth="1"
+    style={{ overflow: "hidden" }}
   >
     {/* Outer touchline */}
     <rect x="80" y="80" width="1440" height="740" />
