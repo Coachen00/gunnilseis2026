@@ -95,17 +95,29 @@ const Hem = () => {
           className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/55 to-background/30 md:via-background/40 md:to-transparent"
         />
 
+        {/* Subtle film grain over the hero — adds organic texture under the H1 */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-grain opacity-[0.35] mix-blend-overlay"
+        />
+
         {/* Content */}
         <div className="container relative z-10 flex min-h-[88vh] flex-col justify-between py-16 md:min-h-[92vh] md:py-20">
           <div className="max-w-4xl">
-            <div className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent md:text-xs">
+            <div
+              className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent animate-hero-reveal md:text-xs"
+              style={{ ["--reveal-delay" as string]: "0s" }}
+            >
               <span className="h-px w-8 bg-accent/70" aria-hidden="true" />
               Tränarplattform · Spelmodell · 2026
             </div>
 
             <h1
-              className="mt-7 font-black uppercase leading-[0.92] tracking-tight text-foreground"
-              style={{ fontSize: "clamp(2.5rem, 10.5vw, 9rem)" }}
+              className="mt-7 font-black uppercase leading-[0.92] tracking-tight text-foreground animate-hero-reveal animate-shine"
+              style={{
+                fontSize: "clamp(2.5rem, 10.5vw, 9rem)",
+                ["--reveal-delay" as string]: "0.15s",
+              }}
             >
               Spelmodellen
             </h1>
@@ -113,9 +125,13 @@ const Hem = () => {
             <div className="mt-7 flex max-w-2xl items-start gap-4">
               <span
                 aria-hidden="true"
-                className="mt-2 hidden h-12 w-[3px] flex-shrink-0 bg-accent md:block"
+                className="mt-2 hidden h-12 w-[3px] flex-shrink-0 bg-accent animate-accent-grow md:block"
+                style={{ ["--reveal-delay" as string]: "0.55s" }}
               />
-              <p className="text-xl font-semibold leading-snug text-foreground md:text-2xl">
+              <p
+                className="text-xl font-semibold leading-snug text-foreground animate-hero-reveal md:text-2xl"
+                style={{ ["--reveal-delay" as string]: "0.4s" }}
+              >
                 Från idé till beteende.
                 <span className="mt-1 block text-accent">
                   Från princip till prestation.
@@ -123,42 +139,64 @@ const Hem = () => {
               </p>
             </div>
 
-            <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            <p
+              className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground animate-hero-reveal md:text-lg"
+              style={{ ["--reveal-delay" as string]: "0.7s" }}
+            >
               En digital spelmodell för tränare, spelare och ledare som vill göra
               fotbollens principer begripliga, träningsbara och synliga i match.
             </p>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div
+              className="mt-10 flex flex-col gap-3 animate-hero-reveal sm:flex-row"
+              style={{ ["--reveal-delay" as string]: "0.85s" }}
+            >
               <Link
                 to="/spelide"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-6 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                Utforska spelmodellen
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                <span className="relative z-10 inline-flex items-center gap-2">
+                  Utforska spelmodellen
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/15 to-transparent transition-transform duration-700 group-hover:translate-x-full motion-reduce:hidden"
+                />
               </Link>
               <Link
                 to="/anfall"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 Se principerna
+                <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               </Link>
             </div>
           </div>
 
           {/* Hero footer — 3 stat cards */}
           <div className="mt-16 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 sm:grid-cols-3 md:mt-20">
-            {heroCards.map(({ label, eyebrow, text, to, icon: Icon }) => (
+            {heroCards.map(({ label, eyebrow, text, to, icon: Icon }, idx) => (
               <Link
                 key={label}
                 to={to}
-                className="group relative flex items-start gap-4 bg-background/75 p-5 backdrop-blur-md transition hover:bg-card/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset md:p-6"
+                className="group relative flex items-start gap-4 overflow-hidden bg-background/75 p-5 backdrop-blur-md transition animate-hero-reveal hover:bg-card/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset md:p-6"
+                style={{ ["--reveal-delay" as string]: `${1.05 + idx * 0.1}s` }}
               >
+                {/* Animated top-edge accent line — grows on hover */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-500 group-hover:scale-x-100 motion-reduce:hidden"
+                />
                 <span className="font-mono text-[10px] font-black tracking-[0.2em] text-muted-foreground">
                   {eyebrow}
                 </span>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.22em] text-accent">
-                    <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+                    <Icon
+                      className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-[8deg] motion-reduce:transition-none motion-reduce:group-hover:rotate-0"
+                      strokeWidth={2}
+                    />
                     {label}
                   </div>
                   <p className="mt-2 text-sm leading-snug text-foreground/90">{text}</p>

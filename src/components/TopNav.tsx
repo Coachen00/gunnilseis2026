@@ -181,8 +181,8 @@ const TopNav = () => {
           className="flex items-center gap-2.5 group flex-shrink-0"
           aria-label="Spelmodellen — Start"
         >
-          <div className="w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm transition-colors group-hover:border-accent/60">
-            S
+          <div className="relative w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm transition-all duration-300 group-hover:border-accent/60 group-hover:shadow-[0_0_24px_-4px_hsl(var(--accent)/0.55)]">
+            <span className="relative z-10">S</span>
           </div>
           <span className="hidden sm:flex flex-col leading-none">
             <span className="font-extrabold tracking-tight text-foreground">Spelmodellen</span>
