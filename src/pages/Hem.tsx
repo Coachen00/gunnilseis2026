@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  CalendarDays,
   ClipboardList,
   Lock,
   Shield,
@@ -9,7 +10,12 @@ import {
   Wrench,
 } from "lucide-react";
 import PhaseFlow from "@/components/PhaseFlow";
+import EffectLogic from "@/components/period/EffectLogicBlock";
+import { PeriodGraphic } from "@/components/period/PeriodGraphics";
+import PeriodTimeline from "@/components/period/PeriodTimeline";
+import WeekCard from "@/components/period/WeekCard";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
+import { PERIOD_1, PERIOD_1_COACH_LANGUAGE, totalSessions } from "@/data/period1";
 import { useContent } from "@/hooks/useContent";
 
 const primaryLinks = [
@@ -138,6 +144,75 @@ const Hem = () => {
             </p>
           </header>
           <PhaseFlow />
+        </div>
+      </section>
+
+      <section id="period-1" className="container scroll-mt-20 py-20">
+        <header className="mb-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
+          <div>
+            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
+              <CalendarDays className="h-3.5 w-3.5" />
+              Period 1 – {PERIOD_1.dateRange}
+            </p>
+            <h2 className="max-w-2xl text-3xl font-black leading-tight tracking-normal md:text-4xl">
+              Diagonalt spel från korridor till korridor.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+              {PERIOD_1.objective}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                to={PERIOD_1.detailRoute}
+                className="inline-flex h-11 items-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-accent-foreground transition hover:bg-accent/90"
+              >
+                Öppna detaljplanering för alla {totalSessions(PERIOD_1)} pass
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+          <PeriodGraphic kind="diagonal-pattern" label="MV → YB → MF → OM → YF" />
+        </header>
+
+        <div className="mb-10">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+            Sex veckor
+          </p>
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {PERIOD_1.weeks.map((week) => (
+              <li key={week.weekNumber}>
+                <WeekCard week={week} />
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="mb-10">
+          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+            Progression
+          </p>
+          <PeriodTimeline />
+        </div>
+
+        <div className="mb-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)]">
+          <div>
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
+              Effektlogik
+            </p>
+            <EffectLogic blocks={PERIOD_1.effectLogic} />
+          </div>
+          <div className="rounded-xl border border-border bg-card/35 p-5">
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
+              Tränarens språk
+            </p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm font-semibold text-foreground/85">
+              {PERIOD_1_COACH_LANGUAGE.map((cue) => (
+                <li key={cue} className="flex items-baseline gap-2">
+                  <span className="text-accent">›</span>
+                  {cue}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
