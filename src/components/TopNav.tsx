@@ -190,8 +190,8 @@ const TopNav = () => {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        {/* Desktop nav — endast inloggade ser strukturen */}
+        <nav className={cn("hidden items-center gap-1", user ? "lg:flex" : "lg:hidden")}>
           {navItems.map((item) => {
             if (item.kind === "dropdown") {
               return (
@@ -266,23 +266,25 @@ const TopNav = () => {
               </Link>
             </div>
           )}
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-muted transition-colors"
-            aria-label={open ? "Stäng meny" : "Öppna meny"}
-            aria-expanded={open}
-          >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {user && (
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-muted transition-colors"
+              aria-label={open ? "Stäng meny" : "Öppna meny"}
+              aria-expanded={open}
+            >
+              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — endast inloggade har en meny att öppna */}
       <div
         className={cn(
           "lg:hidden overflow-hidden transition-all duration-300 ease-out border-t border-border/60",
-          open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
+          user && open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
