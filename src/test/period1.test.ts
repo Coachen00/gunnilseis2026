@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { PERIOD_1, PERIOD_1_TIMELINE, totalSessions } from "@/data/period1";
+import {
+  PERIOD_1,
+  PERIOD_1_PRINCIPLES,
+  PERIOD_1_REFERENCES,
+  PERIOD_1_TIMELINE,
+  aggregateCommonErrors,
+  aggregateCues,
+  aggregateKpis,
+  totalSessions,
+} from "@/data/period1";
 
 describe("Period 1 — datamodellens grundstruktur", () => {
   it("har exakt 6 veckor", () => {
@@ -65,5 +74,38 @@ describe("Period 1 — datamodellens grundstruktur", () => {
 
   it("detaljrouten är /period/1", () => {
     expect(PERIOD_1.detailRoute).toBe("/period/1");
+  });
+
+  it("har 10 principer med childFriendly + detail + grafik", () => {
+    expect(PERIOD_1_PRINCIPLES).toHaveLength(10);
+    for (const p of PERIOD_1_PRINCIPLES) {
+      expect(p.childFriendly.length).toBeGreaterThan(0);
+      expect(p.detail.length).toBeGreaterThan(0);
+      expect(p.slug.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("har 3 inspirationskällor (Bødø/City/GAIS)", () => {
+    expect(PERIOD_1_REFERENCES).toHaveLength(3);
+    expect(PERIOD_1_REFERENCES.map((r) => r.team)).toEqual([
+      "Bodø/Glimt",
+      "Manchester City",
+      "GAIS",
+    ]);
+  });
+
+  it("aggregateKpis returnerar 6 KPIs i veckoordning", () => {
+    const kpis = aggregateKpis(PERIOD_1);
+    expect(kpis).toHaveLength(6);
+    expect(kpis.map((k) => k.week)).toEqual([1, 2, 3, 4, 5, 6]);
+  });
+
+  it("aggregateCues + aggregateCommonErrors returnerar unika sorterade listor", () => {
+    const cues = aggregateCues(PERIOD_1);
+    const errors = aggregateCommonErrors(PERIOD_1);
+    expect(cues.length).toBeGreaterThan(0);
+    expect(errors.length).toBeGreaterThan(0);
+    expect(new Set(cues).size).toBe(cues.length);
+    expect(new Set(errors).size).toBe(errors.length);
   });
 });
