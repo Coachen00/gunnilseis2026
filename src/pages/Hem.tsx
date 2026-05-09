@@ -218,7 +218,7 @@ const Hem = () => {
                   aria-hidden="true"
                   className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-transparent via-accent to-transparent transition-transform duration-500 group-hover:scale-x-100 motion-reduce:hidden"
                 />
-                <span className="font-mono text-[10px] font-black tracking-[0.2em] text-muted-foreground">
+                <span className="font-mono text-base font-black leading-none tracking-tight text-muted-foreground/60 transition-colors duration-300 group-hover:text-accent md:text-lg">
                   {eyebrow}
                 </span>
                 <div className="flex-1">
