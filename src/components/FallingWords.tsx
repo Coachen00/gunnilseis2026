@@ -51,12 +51,15 @@ const seedDrops = (count: number): Drop[] => {
 const sizeClass = (s: Drop["size"]) => {
   switch (s) {
     case "lg":
-      return "text-2xl md:text-4xl tracking-[0.32em] opacity-[0.10]";
+      // Stora ord: skarpa, fram i bilden — cinematisk djup
+      return "text-2xl md:text-4xl tracking-[0.32em] opacity-[0.10] blur-[0.5px]";
     case "md":
-      return "text-base md:text-2xl tracking-[0.32em] opacity-[0.08]";
+      // Mellan: lätt blur, bakom de stora
+      return "text-base md:text-2xl tracking-[0.32em] opacity-[0.08] blur-[0.5px]";
     case "sm":
     default:
-      return "text-xs md:text-sm tracking-[0.32em] opacity-[0.06]";
+      // Små ord: tydligt blurrade — depth-of-field, sitter längst bak
+      return "text-xs md:text-sm tracking-[0.32em] opacity-[0.06] blur-[1px]";
   }
 };
 
