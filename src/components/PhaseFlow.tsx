@@ -22,7 +22,7 @@ const PhaseFlow = () => (
               <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100" strokeWidth={1.75} />
             </span>
             <span>
-              <span className="block font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
+              <span className="block font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-300 group-hover:text-accent">
                 Skede {index + 1}
               </span>
               <span className="mt-1 block text-lg font-black leading-tight tracking-normal text-foreground">
