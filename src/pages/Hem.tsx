@@ -101,6 +101,12 @@ const Hem = () => {
           className="pointer-events-none absolute inset-0 bg-grain opacity-[0.35] mix-blend-overlay"
         />
 
+        {/* Cinematic corner vignettes — pulls focus toward content */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,transparent_55%,hsl(var(--background)/0.55)_100%),radial-gradient(ellipse_at_top_right,transparent_55%,hsl(var(--background)/0.55)_100%),radial-gradient(ellipse_at_bottom_left,transparent_55%,hsl(var(--background)/0.55)_100%),radial-gradient(ellipse_at_bottom_right,transparent_55%,hsl(var(--background)/0.55)_100%)]"
+        />
+
         {/* Content */}
         <div className="container relative z-10 flex min-h-[88vh] flex-col justify-between py-16 md:min-h-[92vh] md:py-20">
           <div className="max-w-4xl">
