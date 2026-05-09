@@ -134,7 +134,7 @@ const Hem = () => {
             </div>
 
             <h1
-              className="mt-7 font-black uppercase leading-[0.92] tracking-tight text-foreground animate-hero-reveal animate-shine"
+              className="mt-7 font-black uppercase leading-[0.92] tracking-tight text-foreground animate-hero-reveal-grand animate-shine"
               style={{
                 fontSize: "clamp(2.5rem, 10.5vw, 9rem)",
                 ["--reveal-delay" as string]: "0.15s",

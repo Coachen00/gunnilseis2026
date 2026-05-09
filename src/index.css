@@ -197,6 +197,12 @@
     animation-delay: var(--reveal-delay, 0s);
   }
 
+  .animate-hero-reveal-grand {
+    opacity: 0;
+    animation: heroRevealGrand 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--reveal-delay, 0s);
+  }
+
   .animate-accent-grow {
     transform-origin: top center;
     transform: scaleY(0);
@@ -325,6 +331,25 @@
   }
 }
 
+@keyframes heroRevealGrand {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale3d(0.96, 0.96, 1);
+    filter: blur(10px);
+    letter-spacing: 0.05em;
+  }
+  50% {
+    filter: blur(0);
+    letter-spacing: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    filter: blur(0);
+    letter-spacing: -0.025em;
+  }
+}
+
 @keyframes accentGrow {
   0%   { transform: scaleY(0); opacity: 0; }
   60%  { opacity: 1; }
@@ -347,11 +372,13 @@
   .animate-fall,
   .animate-pitch-pulse,
   .animate-hero-reveal,
+  .animate-hero-reveal-grand,
   .animate-accent-grow {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+    letter-spacing: revert !important;
   }
   .animate-shine::after {
     display: none !important;
