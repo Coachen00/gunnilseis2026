@@ -14,6 +14,14 @@ import TacticalPitchGrid from "@/components/TacticalPitchGrid";
 import PhaseFlow from "@/components/PhaseFlow";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
+import { useInView } from "@/hooks/useInView";
+
+const revealClass = (inView: boolean, base = "transition-all duration-700") =>
+  `${base} ${
+    inView
+      ? "opacity-100 translate-y-0"
+      : "opacity-0 translate-y-6 motion-reduce:translate-y-0 motion-reduce:opacity-100"
+  }`;
 
 /**
  * Hero-video. Lägg ny fil i public/ och peka om denna konstant.
@@ -55,6 +63,9 @@ const quickLinks = [
 
 const Hem = () => {
   const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
+  const identitySection = useInView<HTMLElement>();
+  const phaseSection = useInView<HTMLElement>();
+  const librarySection = useInView<HTMLElement>();
 
   return (
     <>
@@ -222,7 +233,10 @@ const Hem = () => {
       </section>
 
       {/* === IDENTITY — fem beteenden ================================== */}
-      <section className="container py-20 md:py-28">
+      <section
+        ref={identitySection.ref}
+        className={`container py-20 md:py-28 ${revealClass(identitySection.inView)}`}
+      >
         <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
@@ -261,7 +275,10 @@ const Hem = () => {
       </section>
 
       {/* === PHASE FLOW — fyra skeden ================================== */}
-      <section className="border-y border-border bg-card/30 py-20 md:py-28">
+      <section
+        ref={phaseSection.ref}
+        className={`border-y border-border bg-card/30 py-20 md:py-28 ${revealClass(phaseSection.inView)}`}
+      >
         <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
             <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
@@ -279,7 +296,10 @@ const Hem = () => {
       </section>
 
       {/* === QUICK LINKS — bibliotek =================================== */}
-      <section className="container py-20 md:py-24">
+      <section
+        ref={librarySection.ref}
+        className={`container py-20 md:py-24 ${revealClass(librarySection.inView)}`}
+      >
         <header className="max-w-3xl">
           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
             Bibliotek
