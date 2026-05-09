@@ -81,7 +81,7 @@ const App = () => (
 
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
           <Route path="/" element={<Public><Hem /></Public>} />
-          <Route path="/period/1" element={<Public><Period1 /></Public>} />
+          <Route path="/period/1" element={<Protected><Period1 /></Protected>} />
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected><Anfall /></Protected>} />
@@ -93,8 +93,8 @@ const App = () => (
           <Route path="/match/forra" element={<Protected><MatchForra /></Protected>} />
           <Route path="/match/kommande" element={<Protected><MatchKommande /></Protected>} />
           <Route path="/match/reflektioner" element={<Protected><MatchReflektioner /></Protected>} />
-          <Route path="/match/matcher" element={<Public><Matcher /></Public>} />
-          <Route path="/truppen" element={<Public><Truppen /></Public>} />
+          <Route path="/match/matcher" element={<Protected><Matcher /></Protected>} />
+          <Route path="/truppen" element={<Protected><Truppen /></Protected>} />
           <Route path="/roller" element={<Protected><Roller /></Protected>} />
           <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected><SpelmodellLab /></Protected>} />

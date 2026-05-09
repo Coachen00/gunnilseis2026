@@ -1,217 +1,84 @@
 import { Link } from "react-router-dom";
-import {
-  ArrowRight,
-  CalendarDays,
-  ClipboardList,
-  Lock,
-  Shield,
-  Sparkles,
-  Users,
-  Wrench,
-} from "lucide-react";
-import PhaseFlow from "@/components/PhaseFlow";
-import { PeriodGraphic } from "@/components/period/PeriodGraphics";
-import WeekJourney from "@/components/period/WeekJourney";
-import { IDENTITY, type IdentityItem } from "@/data/identity";
-import { PERIOD_1, totalSessions } from "@/data/period1";
-import { useContent } from "@/hooks/useContent";
-
-const primaryLinks = [
-  { to: "/spelide", label: "Spelidé", text: "Principerna i rätt ordning.", icon: Sparkles },
-  { to: "/match/kommande", label: "Veckans match", text: "Fokus och matchplan.", icon: ClipboardList },
-  { to: "/truppen", label: "Trupp", text: "Spelare och roller.", icon: Users },
-  { to: "/verktyg", label: "Verktyg", text: "Plan, analys och tavla.", icon: Wrench },
-];
+import { ArrowRight, LogIn, Shield, UserPlus } from "lucide-react";
 
 const Hem = () => {
-  const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
-
   return (
-    <>
-      <section className="relative min-h-[76vh] overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/hero-poster.jpg"
-          className="absolute inset-0 h-full w-full object-cover"
-          aria-hidden="true"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/72 to-background" />
+    <section className="relative min-h-[88vh] overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/hero-poster.jpg"
+        className="absolute inset-0 h-full w-full object-cover"
+        aria-hidden="true"
+      >
+        <source src="/hero.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/92 via-background/82 to-background" />
 
-        <div className="container relative flex min-h-[76vh] items-center py-20">
-          <div className="max-w-3xl">
-            <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-gunnilse-gold">
-              <Shield className="h-5 w-5" strokeWidth={1.5} />
-              Gunnilse IS 2026
-            </div>
-            <h1 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-normal text-foreground md:text-7xl">
-              Spelmodell 2026
-            </h1>
-            <p className="mt-6 max-w-xl text-base font-semibold leading-relaxed text-foreground/82 md:text-lg">
-              Vinn kampen. Spela framåt. Skydda mitten.
-            </p>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
-              En kort gemensam modell för hur vi anfaller, försvarar och ställer om.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link
-                to="/login"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
-              >
-                Logga in <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/match/matcher"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/45 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
-              >
-                Se matcher
-              </Link>
-            </div>
+      <div className="container relative flex min-h-[88vh] flex-col justify-center py-20">
+        <div className="max-w-3xl">
+          <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-gunnilse-gold">
+            <Shield className="h-5 w-5" strokeWidth={1.5} />
+            Gunnilse IS · Angereds lag
           </div>
-        </div>
-      </section>
 
-      <section className="border-y border-border bg-card/35">
-        <div className="container grid gap-0 md:grid-cols-4">
-          {primaryLinks.map(({ to, label, text, icon: Icon }) => (
+          <h1 className="text-4xl font-black leading-[1.05] tracking-normal text-foreground md:text-5xl lg:text-6xl">
+            Gunnilse IS är inte bara en fotbollsförening.
+          </h1>
+
+          <div className="mt-8 space-y-5 text-base leading-relaxed text-foreground/90 md:text-lg">
+            <p>
+              Gunnilse IS är områdets lag. En förening född 1950, byggd av människor med
+              fotbollen som gemensam kraft och med Angered som hemmaplan.
+            </p>
+            <p>
+              Klubben har redan visat vad som är möjligt: herrlaget hade sin starkaste period
+              under 1990-talet, vann division 2 1989, spelade i division 1 1990–2000 och
+              nådde Superettan år 2000. 1997 var Allsvenskan nära när Gunnilse slutade trea —
+              fortfarande en av klubbens största historiska meriter.
+            </p>
+            <p className="font-semibold text-foreground">
+              Det gör Gunnilse speciellt. Vi behöver inte uppfinna en dröm från ingenting.
+              Vi ska väcka en kraft som redan har funnits.
+            </p>
+            <p>
+              Angered är dessutom inte ett litet upptagningsområde. Området planerades en
+              gång för över 100 000 invånare och bär fortfarande känslan av en egen stad i
+              staden: Hjällbo, Hammarkullen, Gårdsten, Lövgärdet, Rannebergen och Gunnilse
+              med omnejd. Här finns barn, ungdomar, familjer, ledare, förebilder och
+              framtida spelare.
+            </p>
+            <p className="font-semibold text-foreground">
+              Vår uppgift är tydlig: Gunnilse IS ska bli den naturliga samlingspunkten för
+              Angereds fotboll. En förening som bygger stolthet, disciplin, utveckling och
+              gemenskap. Ett lag som området känner igen sig i. Ett lag som visar att
+              Angered inte bara har potential.{" "}
+              <span className="text-accent">Angered har kraft.</span>
+            </p>
+          </div>
+
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
             <Link
-              key={to}
-              to={to}
-              className="group border-b border-border py-6 md:border-b-0 md:border-r md:last:border-r-0"
+              to="/login"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-accent-foreground transition hover:bg-accent/90"
             >
-              <div className="flex items-start gap-3 md:block">
-                <Icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent md:mb-4 md:mt-0" strokeWidth={1.75} />
-                <div>
-                  <h2 className="text-sm font-black uppercase tracking-wide text-foreground">{label}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
-                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-accent opacity-80 transition group-hover:gap-2.5 group-hover:opacity-100">
-                    Öppna <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="container py-20">
-        <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
-          <header>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Identitet</p>
-            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
-              Fem beteenden vi alltid återvänder till.
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Kort nog att komma ihåg under match. Tydligt nog att följa upp efteråt.
-            </p>
-          </header>
-
-          <ol className="divide-y divide-border border-y border-border">
-            {identity.map((item, index) => (
-              <li key={item.slug}>
-                <Link
-                  to={`/identitet/${item.slug}`}
-                  className="group grid gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[64px_220px_1fr_28px]"
-                >
-                  <span className="font-mono text-xs font-black text-muted-foreground">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-lg font-black leading-snug tracking-normal text-foreground">{item.title}</span>
-                  <span className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{item.short}</span>
-                  <ArrowRight className="hidden h-4 w-4 self-center text-accent transition group-hover:translate-x-1 md:block" />
-                </Link>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="border-y border-border bg-card/30 py-20">
-        <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
-          <header>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Fyra skeden</p>
-            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
-              Samma struktur i varje match.
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              Vi byter beteende när bollinnehavet byter ägare.
-            </p>
-          </header>
-          <PhaseFlow />
-        </div>
-      </section>
-
-      <section id="period-1" className="container scroll-mt-20 py-20">
-        <header className="mb-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,440px)]">
-          <div>
-            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
-              <CalendarDays className="h-3.5 w-3.5" />
-              Period 1 – {PERIOD_1.dateRange}
-            </p>
-            <h2 className="max-w-2xl text-3xl font-black leading-tight tracking-normal md:text-4xl">
-              Diagonalt spel från korridor till korridor.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-foreground/85">
-              Vi flyttar bollen diagonalt från en korridor till en annan. Sex veckor. {totalSessions(PERIOD_1)} pass.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                to={PERIOD_1.detailRoute}
-                className="inline-flex h-11 items-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-accent-foreground transition hover:bg-accent/90"
-              >
-                Öppna detaljplanering <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                to="/period/1?tab=principen"
-                className="inline-flex h-11 items-center gap-2 rounded-md border border-border bg-background/40 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
-              >
-                Fördjupa dig i principerna
-              </Link>
-            </div>
-          </div>
-          <PeriodGraphic kind="diagonal-pattern" label="MV → YB → MF → OM → YF" />
-        </header>
-
-        <div>
-          <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-muted-foreground">
-            Sex veckor
-          </p>
-          <WeekJourney to="/period/1?tab=passen" />
-        </div>
-      </section>
-
-      <section className="container py-20">
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-          <div>
-            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
-              <Lock className="h-3.5 w-3.5" />
-              För laget
-            </p>
-            <h2 className="max-w-2xl text-3xl font-black leading-tight tracking-normal md:text-4xl">
-              Detaljer, matchplan och tränarverktyg finns bakom inloggning.
-            </h2>
-          </div>
-          <div className="flex flex-col justify-end gap-3 sm:flex-row lg:flex-col">
-            <Link
-              to="/spelmodell-labb"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-background transition hover:bg-accent/90"
-            >
-              Öppna labbet <ArrowRight className="h-4 w-4" />
+              <LogIn className="h-4 w-4" />
+              Logga in
+              <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/login?mode=signup"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/45 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
             >
+              <UserPlus className="h-4 w-4" />
               Begär tillgång
             </Link>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
