@@ -2,13 +2,51 @@
 
 **Branch:** `feat/kareby-spelmodell-2026-05-07`
 **Worktree:** `C:\Scripts\fotboll\.worktrees\spelmodellen-kareby`
-**Commits (lokala, ej pushade):**
+**PR:** [Coachen00/gunnilseis2026#5](https://github.com/Coachen00/gunnilseis2026/pull/5) — **CONFLICTING med main, kräver designbeslut**
+
+## ⚠️ DESIGNKONFLIKT MED MAIN
+
+Mellan att jag startade och pushade har sibling-streamen `feat/period1-spelmodellen` mergats till `main` (3 merges, senast `f245d16` 2026-05-09 20:32). Den **omdefinierar `/`-sidan**:
+
+**Main idag:**
+- `/` = publik Gunnilse IS-föreningsstoryn (Hem.tsx på main: "Gunnilse IS är inte bara en fotbollsförening...", Allsvenska 1997, "Angered har kraft"). Hero-video pekar på `/hero.mp4`.
+- `/period/1` = ny skyddad sida med 5 tabs (Kartan/Principen/Resan/Passen/Fördjupning), 6 veckor, 18 pass — kärnan i "Period 1" som tidigare slutrapport refererade till.
+- `/match/matcher` och `/truppen` är nu **Protected** (var Public i min pre-fork base).
+- Footer-snabblänkar visas bara för inloggade (inloggningsmur).
+- TopNav fortfarande "Hem"-label, ingen brand-byte.
+
+**Min PR:**
+- `/` = Spelmodellen platform-brand hero.
+- TopNav byter brand till "Spelmodellen / Gunnilse IS · 2026" + "Start"-label.
+- Public CTAs som länkar in i tränarplattformen.
+- Hela paketet följer Champions-League-intro-spec från användarens prompt.
+
+**Båda visioner är legitima — men de är inkompatibla för `/`-rooten.**
+
+### Resolution-alternativ
+
+1. **Hybrid (rekommenderas):** behåll mains `/` som föreningsstoryn (publik marketing-front). Lägg till `/start` som ny route som renderar min Spelmodellen-hero. Public mainland har en länk `/start` i hero-CTAs. Två publika landningssidor med olika tonläge.
+   - Liten App.tsx-edit, allt övrigt från min PR (Footer, TopNav-brand, OG-bild, NotFound, structured data, hero-poster) kan läggas till utan konflikt.
+2. **Ersätt main:** acceptera min vision som "förstasidan" och refactor:a mains storyn till `/om-foreningen` eller liknande.
+3. **Stäng PR:** behåll bara delarna som inte konfliktar (NotFound-redesign, OG-bild, structured data, Footer, hero-poster, skip-link, tester) i en mindre uppföljnings-PR.
+4. **Gör `/` adaptiv:** om visitor är inloggad → Spelmodellen-hero. Oinloggad → föreningsstoryn. (Mer kod, men kan ge bästa av båda.)
+
+Konflikterade filer enligt `git merge-tree`: `src/pages/Hem.tsx`, `src/components/Footer.tsx`, `src/components/TopNav.tsx`, `src/components/Layout.tsx`, `src/components/PhaseFlow.tsx`, `src/index.css`, `index.html`, `src/App.tsx` (route-list).
+
+Inga av mina nya komponenter (FallingWords, TacticalPitchGrid, NotFound-redesign, hero-poster.jpg, OG-image-update, structured-data-tillägg) konfliktar tekniskt — de kan plockas in fritt oavsett `/`-beslut.
+
+---
+
+**Commits (pushade till `feat/kareby-spelmodell-2026-05-07`, ej mergade):**
 - `beb1713` — feat(hero): premium spelmodellen-hero — video, fallande ord, taktisk grid
 - `9645e2e` — fix(hem): bibliotek-länk pekar på publik /match/matcher
 - `b5434d5` — feat(a11y): skip-to-content + unit tests för hero-komponenter
 - `99f98c6` — chore(hero): generera fallback hero-poster.jpg (1920x1080, 15KB)
 - `f56282a` — chore(brand): regenerera og-image med Spelmodellen-identitet
 - `39e7568` — fix(404): NotFound matchar Spelmodellen-brand + svenska + ren prod
+- `b6b26be` — docs: uppdatera slutrapport med commits 3–7 och nya leveranser
+- `e3b7f64` — test(layout): 4 tester för skip-to-content + main-id + nav/footer
+- `8a0e679` — feat(seo): canonical + preconnect + LD+JSON structured data + 404-test
 
 ---
 
