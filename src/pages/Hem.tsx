@@ -336,9 +336,17 @@ const Hem = () => {
             <Link
               key={to}
               to={to}
-              className="group flex items-start gap-4 bg-background p-6 transition hover:bg-card focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:flex-col md:gap-3"
+              className="group relative flex items-start gap-4 overflow-hidden bg-background p-6 transition hover:bg-card focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:flex-col md:gap-3"
             >
-              <Icon className="h-5 w-5 flex-shrink-0 text-accent" strokeWidth={1.75} />
+              {/* Accent linje längs vänsterkant — växer på hover (matchar identity-list) */}
+              <span
+                aria-hidden="true"
+                className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-accent transition-transform duration-500 group-hover:scale-y-100 motion-reduce:hidden"
+              />
+              <Icon
+                className="h-5 w-5 flex-shrink-0 text-accent transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                strokeWidth={1.75}
+              />
               <div className="flex-1">
                 <h3 className="text-sm font-black uppercase tracking-[0.18em] text-foreground">
                   {label}
