@@ -156,7 +156,7 @@ const Hem = () => {
                 style={{ ["--reveal-delay" as string]: "0.4s" }}
               >
                 Från idé till beteende.
-                <span className="mt-1 block text-accent">
+                <span className="mt-1 block font-bold text-accent md:text-[1.65rem]">
                   Från princip till prestation.
                 </span>
               </p>
