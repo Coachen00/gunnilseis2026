@@ -100,7 +100,18 @@ const Login = () => {
 
   if (signUpDone) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
+      <div className="min-h-screen hero-gradient flex flex-col items-center justify-center gap-8 p-4">
+        <Link to="/" className="flex items-center gap-2.5 group" aria-label="Spelmodellen — Start">
+          <div className="grid h-9 w-9 place-items-center rounded-md border border-border bg-card font-mono text-sm font-black text-accent transition-colors group-hover:border-accent/60">
+            S
+          </div>
+          <span className="flex flex-col leading-none">
+            <span className="font-extrabold tracking-tight text-foreground">Spelmodellen</span>
+            <span className="mt-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              Gunnilse IS · 2026
+            </span>
+          </span>
+        </Link>
         <Card className="w-full max-w-md card-gradient border-border">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-black text-foreground">📩 Förfrågan skickad</CardTitle>
@@ -112,12 +123,12 @@ const Login = () => {
           <CardContent className="text-center">
             <button
               onClick={() => { setSignUpDone(false); setIsSignUp(false); }}
-              className="text-sm text-primary hover:underline"
+              className="text-sm text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
             >
               Tillbaka till inloggning
             </button>
             <div className="mt-3">
-              <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded">
                 Till startsidan
               </Link>
             </div>
@@ -128,16 +139,30 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
+    <div className="min-h-screen hero-gradient flex flex-col items-center justify-center gap-8 p-4">
+      <Link to="/" className="flex items-center gap-2.5 group" aria-label="Spelmodellen — Start">
+        <div className="grid h-9 w-9 place-items-center rounded-md border border-border bg-card font-mono text-sm font-black text-accent transition-colors group-hover:border-accent/60">
+          S
+        </div>
+        <span className="flex flex-col leading-none">
+          <span className="font-extrabold tracking-tight text-foreground">Spelmodellen</span>
+          <span className="mt-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+            Gunnilse IS · 2026
+          </span>
+        </span>
+      </Link>
       <Card className="w-full max-w-md card-gradient border-border">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-black text-foreground">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+            {isSignUp ? "Konto · Förfrågan" : "Konto · Inloggning"}
+          </p>
+          <CardTitle className="mt-2 text-2xl font-black text-foreground">
             {isSignUp ? "Begär tillgång" : "Logga in"}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {isSignUp 
-              ? "Ange e-post och lösenord. En admin godkänner din förfrågan." 
-              : "Logga in för att komma åt spelidén"}
+            {isSignUp
+              ? "Ange e-post och lösenord. En admin godkänner din förfrågan."
+              : "Logga in för att komma åt spelmodellen."}
           </CardDescription>
         </CardHeader>
         <CardContent>
