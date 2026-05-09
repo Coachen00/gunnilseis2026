@@ -189,10 +189,17 @@ const Hem = () => {
               </Link>
               <Link
                 to="/anfall"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                Se principerna
-                <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                <span className="relative z-10 inline-flex items-center gap-2">
+                  Se principerna
+                  <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                </span>
+                {/* Tunn accent-glöd från botten på hover */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 bottom-0 h-0 bg-gradient-to-t from-accent/15 to-transparent transition-[height] duration-500 group-hover:h-full motion-reduce:hidden"
+                />
               </Link>
             </div>
           </div>
