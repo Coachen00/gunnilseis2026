@@ -30,6 +30,8 @@ type Drop = {
   duration: number;
   size: "sm" | "md" | "lg";
   drift: number;
+  /** Var ungefär 1 av 7 ord en accent-guld highlight för rytmisk variation */
+  accent: boolean;
 };
 
 const seedDrops = (count: number): Drop[] => {
@@ -41,7 +43,8 @@ const seedDrops = (count: number): Drop[] => {
     const duration = 28 + ((i * 5) % 22);
     const size = sizes[i % sizes.length];
     const drift = ((i * 7) % 11) - 5;
-    return { word, delay, duration, left, size, drift };
+    const accent = i % 7 === 3;
+    return { word, delay, duration, left, size, drift, accent };
   });
 };
 
@@ -95,9 +98,9 @@ const FallingWords = () => {
       {drops.map((d, i) => (
         <span
           key={`${d.word}-${i}`}
-          className={`absolute top-0 -translate-y-full font-mono font-semibold uppercase text-foreground/80 will-change-transform animate-fall ${sizeClass(
-            d.size,
-          )}`}
+          className={`absolute top-0 -translate-y-full font-mono font-semibold uppercase will-change-transform animate-fall ${
+            d.accent ? "text-accent" : "text-foreground/80"
+          } ${sizeClass(d.size)}`}
           style={{
             left: `${d.left}%`,
             animationDelay: `${d.delay}s`,
