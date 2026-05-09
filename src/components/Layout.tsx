@@ -3,6 +3,7 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import TopNav from "@/components/TopNav";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import ScrollToTop from "@/components/ScrollToTop";
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,6 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
       <TopNav />
       <main id="huvudinnehall" className="flex-1 relative z-10">{children}</main>
       <Footer />
+      <ScrollToTop />
     </div>
   );
 };
