@@ -138,6 +138,8 @@ const Hem = () => {
               style={{
                 fontSize: "clamp(2.5rem, 10.5vw, 9rem)",
                 ["--reveal-delay" as string]: "0.15s",
+                textShadow:
+                  "0 1px 0 hsl(var(--background) / 0.5), 0 0 50px hsl(var(--accent) / 0.06), 0 0 120px hsl(var(--primary) / 0.08)",
               }}
             >
               Spelmodellen
