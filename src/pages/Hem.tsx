@@ -204,8 +204,21 @@ const Hem = () => {
             </div>
           </div>
 
+          {/* Editorial footer-stamp — visas på md+ ovanför stat-korten */}
+          <div
+            className="mt-12 hidden items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-muted-foreground/60 animate-hero-reveal md:flex"
+            style={{ ["--reveal-delay" as string]: "0.95s" }}
+          >
+            <span aria-hidden="true" className="h-px w-6 bg-muted-foreground/30" />
+            Edition 2026
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/60" />
+            Premiär maj
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/60" />
+            Spelmodellen.se
+          </div>
+
           {/* Hero footer — 3 stat cards */}
-          <div className="mt-16 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 sm:grid-cols-3 md:mt-20">
+          <div className="mt-6 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 sm:grid-cols-3 md:mt-8">
             {heroCards.map(({ label, eyebrow, text, to, icon: Icon }, idx) => (
               <Link
                 key={label}
