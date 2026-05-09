@@ -572,3 +572,157 @@ export const PERIOD_1_COACH_LANGUAGE = [
 export function totalSessions(period: Period): number {
   return period.weeks.reduce((sum, w) => sum + w.sessions.length, 0);
 }
+
+export interface Principle {
+  slug: string;
+  title: string;
+  childFriendly: string; // En mening en spelare förstår direkt.
+  detail: string; // Tränarnivå.
+  graphic: GraphicType;
+}
+
+export const PERIOD_1_PRINCIPLES: Principle[] = [
+  {
+    slug: "diagonalt-spel",
+    title: "Diagonalt spel",
+    childFriendly: "Vi flyttar bollen snett över planen för att hitta en fri spelare.",
+    detail:
+      "Bollen flyttas i diagonal från MV via YB och MF till OM och vidare ut mot YF. Diagonalen bryter försvarets linjer eftersom passningen kommer från en oväntad vinkel.",
+    graphic: "diagonal-pattern",
+  },
+  {
+    slug: "korridorer",
+    title: "Fem korridorer",
+    childFriendly: "Vi delar upp planen i fem banor — det gör det lättare att hitta varandra.",
+    detail:
+      "Yttre vänster, inre vänster, central, inre höger, yttre höger. Vi söker spelbarhet i inre korridorer och växlar till yttre när motståndaren komprimerar.",
+    graphic: "corridor-map",
+  },
+  {
+    slug: "attrahera-press",
+    title: "Attrahera press",
+    childFriendly: "Vi lockar motståndaren till en sida — sedan spelar vi någon annanstans.",
+    detail:
+      "YB lockar press, fixerar pressaren, frigör 6/8 i halvyta, exploaterar den lediga ytan. Vi spelar inte diagonalen direkt — vi använder den när pressen är på väg.",
+    graphic: "attract-fix-release",
+  },
+  {
+    slug: "rattvand",
+    title: "Rättvänd spelare",
+    childFriendly: "Vi vill stå med bollen och se planen framåt — inte med ryggen mot mål.",
+    detail:
+      "Vi tar inte emot felvänd i onödan. Hellre tredje man som kommer rättvänd än att vända under press. Kroppsvinkel + scanning före mottagning.",
+    graphic: "third-man",
+  },
+  {
+    slug: "tredje-man",
+    title: "Tredje man",
+    childFriendly: "Du spelar till en kompis — som släpper bollen vidare till en tredje.",
+    detail:
+      "A → B → C där C kommer rättvänd. B spelar på ett tillslag. C läser spelet och startar i rätt ögonblick. Används när direkt passning är stängd.",
+    graphic: "third-man",
+  },
+  {
+    slug: "spelvandning",
+    title: "Spelvändning",
+    childFriendly: "När motståndaren stängt ena sidan — flytta bollen till andra sidan snabbt.",
+    detail:
+      "Vi flyttar bollen från korridor 5 till 1 (eller tvärtom) med kontroll och timing. OM blir vändningspunkt. Mål: 1v1/2v1/2v2 på motsatt kant.",
+    graphic: "corridor-map",
+  },
+  {
+    slug: "assistyta",
+    title: "Assistyta",
+    childFriendly: "Området precis utanför straffområdet — där vi vill slå inspel ifrån.",
+    detail:
+      "YF isolerad i 1v1 in i assistyta + cutback till 9, bortre YF och 8 som fyller box. Inspel ska kombineras med boxfyllnad — annars är arbetet bortkastat.",
+    graphic: "final-third",
+  },
+  {
+    slug: "boxfyllnad",
+    title: "Boxfyllnad",
+    childFriendly: "När någon ska slå in bollen — minst tre av oss ska vara framme i boxen.",
+    detail:
+      "Vid inspel: 9 främre stolpe, bortre YF bortre stolpe, 8 cutback-zonen. Timing matters — för tidigt = offside-risk, för sent = ingen i boxen.",
+    graphic: "final-third",
+  },
+  {
+    slug: "restforsvar",
+    title: "Restförsvar",
+    childFriendly: "När vi anfaller måste några stå kvar bakåt — så vi inte blir kontrade.",
+    detail:
+      "6:a under bollen, två/tre spelare bakom. Bortre MB skyddar djup. Restförsvaret är på plats INNAN diagonalen spelas, inte efter.",
+    graphic: "rest-defense",
+  },
+  {
+    slug: "atererövring",
+    title: "Återerövring",
+    childFriendly: "Tappar vi bollen — vinn tillbaka den direkt eller stoppa kontringen.",
+    detail:
+      "Counterpress inom 6 sekunder från närmaste spelare. Misslyckas det → restförsvaret bromsar kontringen tills vi är organiserade.",
+    graphic: "rest-defense",
+  },
+];
+
+export interface Reference {
+  team: string;
+  tag: string;
+  bullets: string[];
+}
+
+export const PERIOD_1_REFERENCES: Reference[] = [
+  {
+    team: "Bodø/Glimt",
+    tag: "Tålamod + 3v2",
+    bullets: [
+      "4-3-3 med deep full-backs.",
+      "No6 (Patrick Berg-roll) som dirigerar tempo.",
+      "3v2 i uppbyggnad lockar press.",
+      "Tålmodig korridorbyte tills rättvänd hittas.",
+    ],
+  },
+  {
+    team: "Manchester City",
+    tag: "Halvytor + tredje man",
+    bullets: [
+      "3-2-5-liknande in-possession-form.",
+      "Tre spelare bakom bollen som restförsvar.",
+      "Breda yttrar håller motståndaren utdragen.",
+      "Halvytor bemannas av 8:or och OM.",
+    ],
+  },
+  {
+    team: "GAIS",
+    tag: "Identitet + kontinuitet",
+    bullets: [
+      "Tydlig spelidé som hela laget kan.",
+      "Strukturerad uppbyggnad utan slarv.",
+      "Kollektiv identitet före individuella val.",
+      "Konsekvent över tid — inte ett quick fix.",
+    ],
+  },
+];
+
+export function aggregateCues(period: Period): string[] {
+  const all = new Set<string>();
+  for (const week of period.weeks) {
+    for (const session of week.sessions) {
+      for (const cue of session.coachingCues) all.add(cue);
+    }
+  }
+  return Array.from(all).sort((a, b) => a.localeCompare(b, "sv"));
+}
+
+export function aggregateCommonErrors(period: Period): string[] {
+  const all = new Set<string>();
+  for (const week of period.weeks) {
+    for (const session of week.sessions) {
+      for (const e of session.commonErrors) all.add(e);
+    }
+  }
+  return Array.from(all).sort((a, b) => a.localeCompare(b, "sv"));
+}
+
+export function aggregateKpis(period: Period): { week: number; kpi: string }[] {
+  return period.weeks.map((w) => ({ week: w.weekNumber, kpi: w.kpi }));
+}
