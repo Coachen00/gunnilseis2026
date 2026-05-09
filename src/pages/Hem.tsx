@@ -114,7 +114,11 @@ const Hem = () => {
               className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent animate-hero-reveal md:text-xs"
               style={{ ["--reveal-delay" as string]: "0s" }}
             >
-              <span className="h-px w-8 bg-accent/70" aria-hidden="true" />
+              <span className="relative inline-flex h-2 w-2 items-center justify-center" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-accent/60 motion-safe:animate-ping" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+              </span>
+              <span className="h-px w-6 bg-accent/70" aria-hidden="true" />
               Tränarplattform · Spelmodell · 2026
             </div>
 
