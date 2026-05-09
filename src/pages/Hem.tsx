@@ -252,12 +252,17 @@ const Hem = () => {
 
           <ol className="divide-y divide-border border-y border-border">
             {identity.map((item, index) => (
-              <li key={item.slug}>
+              <li key={item.slug} className="group/item relative">
+                {/* Vänster accent-bar som glider in från left på hover */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-[2px] origin-top scale-y-0 bg-accent transition-transform duration-500 group-hover/item:scale-y-100 motion-reduce:hidden"
+                />
                 <Link
                   to={`/identitet/${item.slug}`}
                   className="group grid gap-4 py-5 transition hover:bg-card/35 focus-visible:bg-card/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[64px_220px_1fr_28px]"
                 >
-                  <span className="font-mono text-xs font-black text-muted-foreground">
+                  <span className="font-mono text-xs font-black text-muted-foreground transition-colors group-hover:text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="text-lg font-black leading-snug tracking-normal text-foreground">

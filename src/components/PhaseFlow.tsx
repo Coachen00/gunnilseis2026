@@ -18,8 +18,8 @@ const PhaseFlow = () => (
             to={phase.to}
             className="group grid items-center gap-4 py-5 transition hover:bg-background/35 focus-visible:bg-background/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[56px_1fr_1fr_28px]"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background/40 text-accent">
-              <Icon className="h-4 w-4" strokeWidth={1.75} />
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background/40 text-accent transition-all duration-300 group-hover:border-accent/60 group-hover:shadow-[0_0_18px_-2px_hsl(var(--accent)/0.4)]">
+              <Icon className="h-4 w-4 transition-transform duration-300 group-hover:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100" strokeWidth={1.75} />
             </span>
             <span>
               <span className="block font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
