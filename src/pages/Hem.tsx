@@ -336,7 +336,12 @@ const Hem = () => {
       </section>
 
       {/* === GATED CTA ================================================= */}
-      <section className="border-t border-border bg-card/40 py-16 md:py-24">
+      <section className="relative border-t border-border bg-card/40 py-16 md:py-24">
+        {/* Subtle accent halo i botten — bekräftar 'gateway' utan att vara skrik */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
+        />
         <div className="container grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
           <div>
             <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
@@ -350,15 +355,22 @@ const Hem = () => {
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link
               to="/spelmodell-labb"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-5 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              Öppna labbet <ArrowRight className="h-4 w-4" />
+              <span className="relative z-10 inline-flex items-center gap-2">
+                Öppna labbet <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-foreground/15 to-transparent transition-transform duration-700 group-hover:translate-x-full motion-reduce:hidden"
+              />
             </Link>
             <Link
               to="/login?mode=signup"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-bold uppercase tracking-wider text-foreground transition hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border px-5 text-sm font-bold uppercase tracking-wider text-foreground transition hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Begär tillgång
+              <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
             </Link>
           </div>
         </div>
