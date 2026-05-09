@@ -54,6 +54,29 @@ Inga av mina nya komponenter (FallingWords, TacticalPitchGrid, NotFound-redesign
 - `f93dc2d` — test(public-assets): 6 sanity-tester för public/-tillgångar
 - `346d6df` — test(falling): verifiera att vokabulär matchar 20 taktiska kärntermer
 - `7c25ca9` — fix(grid): explicit overflow:hidden på SVG mot subpixel-overflow
+- `3a24b0e` — docs(slutrapport): lägg till 1024-viewport-buggen
+- `69b1844` — fix(test): byt require() → ES-import i public-assets.test.ts
+- `1d40d58` — feat(hero): premium reveal-koreografi + shine + film grain + hover-detaljer
+- `2037c69` — feat(falling): 1/7 ord får accent-guld highlight för rytmisk variation
+- `bd83220` — feat(hero): cinematic corner vignettes för djupare focal-punkt
+- `98d8447` — feat(hero): live-signal-dot på eyebrow ger broadcast-känsla
+- `6bd3717` — feat(hem): scroll-triggered reveal på Identity/Phase/Bibliotek
+- `b698875` — feat(hover): identity-list accent-bar + phase-flow ikon-glow
+- `d7663b4` — feat(footer): brand-mark glow + animated underline på snabblänkar
+- `96cdde9` — feat(hem): gated CTA-section får samma premium-treatment som hero
+- `b2dd7f4` — feat(layout): scroll-progress-bar i toppkanten + 5 unit-tester
+- `9c8330e` — feat(typography): Inter OpenType features + tabular nums + optimized rendering
+- `93f93ac` — feat(eyebrows): konsekvent accent-streck framför alla section-eyebrows
+- `9720641` — feat(hero): subtil ambient text-shadow på H1 ger djup mot den taktiska bg
+- `5e6c47a` — test(footer): 2 nya tester för brand-glow + animerad underline
+- `2448a0e` — feat(hero): subhead andra raden lyfts till bold + 1.65rem för rytm
+- `d2de346` — feat(falling): depth-of-field på fallande ord
+- `b34b304` — feat(hero): H1 'grand reveal' — scale 0.96→1 + letter-spacing
+- `0cc6932` — feat(hero): sekundär CTA får 'glow rises' från botten på hover
+- `14c6170` — feat(hero): stat-card eyebrow-nummer (01/02/03) lyfts till 16/18px
+- `02b27d6` — feat(bibliotek): kort-hover får accent-bar längs vänsterkant + ikon-scale
+- `9495c13` — feat(layout): floating ScrollToTop-knapp som fadar in efter 60vh scroll
+- `a1975e5` — test(scroll-top): 5 tester för ScrollToTop-knapp
 
 ---
 
@@ -162,7 +185,7 @@ Inga andra filer rörda. Inga test-suiter eller komponenter utanför scope ändr
 |---|---|
 | `npx tsc --noEmit` | **0 errors** (tyst exit) |
 | `npx eslint .` | **0 errors, 7 warnings** — alla pre-existing i `src/components/ui/*` (shadcn `react-refresh/only-export-components`). 0 nya warnings introducerade. |
-| `npx vitest run` | **213/213 pass** (var 153 före — +14 Hem-tester, +20 komponenttester (FallingWords/TacticalPitchGrid/Footer), +4 Layout, +5 NotFound, +11 head-meta, +andra dynamiska från `canonical-vocab.test.ts`) |
+| `npx vitest run` | **236/236 pass** (var 153 före — +14 Hem, +20 FallingWords/TacticalPitchGrid/Footer, +4 Layout, +5 NotFound, +11 head-meta, +6 public-assets, +5 ScrollProgress, +5 ScrollToTop, +1 falling-vocab, +2 footer-hover, +andra dynamiska från `canonical-vocab.test.ts`) |
 | `npm run build` | **OK** — kvarvarande `chunk > 500KB`-warning (552KB index-bundle) är pre-existing, inte relaterat till hero. |
 
 ### Browser QA (Claude Preview MCP)
