@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 
 // Innehållsidor — lazy så vi inte skickar 800 KB JS för en första sidladdning på mobil.
 const Hem = lazy(() => import("./pages/Hem"));
+const Start = lazy(() => import("./pages/Start"));
 const Period1 = lazy(() => import("./pages/Period1"));
 const Spelide = lazy(() => import("./pages/Spelide"));
 const Forsvar = lazy(() => import("./pages/Forsvar"));
@@ -81,6 +82,7 @@ const App = () => (
 
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
           <Route path="/" element={<Public><Hem /></Public>} />
+          <Route path="/start" element={<Protected><Start /></Protected>} />
           <Route path="/period/1" element={<Protected><Period1 /></Protected>} />
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
