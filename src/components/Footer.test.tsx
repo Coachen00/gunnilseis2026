@@ -65,4 +65,28 @@ describe("Footer", () => {
     const wordmark = screen.getByText(/^Spelmodellen$/i);
     expect(wordmark.closest("a")).toHaveAttribute("href", "/");
   });
+
+  it("brand wordmark hover-glow + accent-color shift på text", () => {
+    renderFooter();
+    const wordmark = screen.getByText(/^Spelmodellen$/i);
+    const link = wordmark.closest("a")!;
+    // S-monogram-wrapper är den första div-children av länken
+    const monogram = link.firstElementChild as HTMLElement;
+    expect(monogram.className).toMatch(/group-hover:border-accent\/60/);
+    expect(monogram.className).toMatch(/group-hover:shadow/);
+    expect(wordmark.className).toMatch(/group-hover:text-accent/);
+  });
+
+  it("snabblänkar har animerad scale-x underline-effekt", () => {
+    renderFooter();
+    const links = ["Spelidé", "Principer", "Träningspass", "Matcher"];
+    for (const label of links) {
+      const link = screen.getByRole("link", { name: new RegExp(`^${label}$`, "i") });
+      // Underline-spannen är sista barnet i länken
+      const underline = link.querySelector("span[aria-hidden]");
+      expect(underline).not.toBeNull();
+      expect((underline as HTMLElement).className).toMatch(/scale-x-0/);
+      expect((underline as HTMLElement).className).toMatch(/group-hover\/q:scale-x-100/);
+    }
+  });
 });
