@@ -49,7 +49,7 @@ const heroCards = [
 
 const quickLinks = [
   { to: "/spelide", label: "Spelidé", text: "Principerna i rätt ordning.", icon: Sparkles },
-  { to: "/match/kommande", label: "Veckans match", text: "Fokus och matchplan.", icon: ClipboardList },
+  { to: "/match/matcher", label: "Matcher", text: "Resultat, motståndare och fokus.", icon: ClipboardList },
   { to: "/verktyg", label: "Verktyg", text: "Plan, analys och tavla.", icon: Wrench },
 ];
 
