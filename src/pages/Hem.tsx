@@ -239,9 +239,12 @@ const Hem = () => {
       >
         <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
-              Identitet
-            </p>
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-accent/70" />
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+                Identitet
+              </p>
+            </div>
             <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Fem beteenden vi alltid återvänder till.
             </h2>
@@ -286,9 +289,12 @@ const Hem = () => {
       >
         <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
-              Fyra skeden
-            </p>
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-accent/70" />
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+                Fyra skeden
+              </p>
+            </div>
             <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Samma struktur i varje match.
             </h2>
@@ -306,9 +312,12 @@ const Hem = () => {
         className={`container py-20 md:py-24 ${revealClass(librarySection.inView)}`}
       >
         <header className="max-w-3xl">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
-            Bibliotek
-          </p>
+          <div className="flex items-center gap-3">
+            <span aria-hidden="true" className="h-px w-8 bg-accent/70" />
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+              Bibliotek
+            </p>
+          </div>
           <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
             Tre vägar in i modellen.
           </h2>
@@ -344,10 +353,13 @@ const Hem = () => {
         />
         <div className="container grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
           <div>
-            <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
-              <Lock className="h-3.5 w-3.5" />
-              För laget
-            </p>
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-accent/70" />
+              <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+                <Lock className="h-3.5 w-3.5" />
+                För laget
+              </p>
+            </div>
             <h2 className="mt-3 max-w-2xl text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Detaljer, matchplan och tränarverktyg finns bakom inloggning.
             </h2>
