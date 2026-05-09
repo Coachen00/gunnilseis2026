@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, statSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
@@ -11,7 +11,7 @@ const publicDir = join(process.cwd(), "public");
 
 describe("public/ — assets som hero, og och brand pekar på", () => {
   it("CNAME pekar på spelmodellen.se", () => {
-    const cname = require("node:fs").readFileSync(join(publicDir, "CNAME"), "utf-8").trim();
+    const cname = readFileSync(join(publicDir, "CNAME"), "utf-8").trim();
     expect(cname).toBe("spelmodellen.se");
   });
 
@@ -40,7 +40,7 @@ describe("public/ — assets som hero, og och brand pekar på", () => {
   });
 
   it("robots.txt tillåter Googlebot på roten", () => {
-    const robots = require("node:fs").readFileSync(join(publicDir, "robots.txt"), "utf-8");
+    const robots = readFileSync(join(publicDir, "robots.txt"), "utf-8");
     expect(robots).toMatch(/User-agent:\s*Googlebot/i);
     expect(robots).toMatch(/Allow:\s*\//);
   });
