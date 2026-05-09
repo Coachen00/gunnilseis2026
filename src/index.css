@@ -75,6 +75,20 @@
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Inter OpenType-features:
+       - cv11: stylistic alternate single-storey 'a' (cleaner display feel)
+       - ss03: alternate digits with tabular figures-friendly proportions
+       - cv05: alt 'l' for tighter rhythm
+       - ss01: stylistic set 1 (slight optical refinements)
+       Plus standard ligatures + contextual alternates. */
+    font-feature-settings: "cv11" on, "ss03" on, "cv05" on, "ss01" on, "liga" on, "calt" on;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Mono numeric tags (01/02/03) get tabular figures so they line up perfectly */
+  .font-mono {
+    font-feature-settings: "tnum" on, "zero" on;
+    font-variant-numeric: tabular-nums slashed-zero;
   }
 
   /* Typography hierarchy */
