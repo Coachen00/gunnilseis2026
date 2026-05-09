@@ -47,6 +47,9 @@ Inga av mina nya komponenter (FallingWords, TacticalPitchGrid, NotFound-redesign
 - `b6b26be` — docs: uppdatera slutrapport med commits 3–7 och nya leveranser
 - `e3b7f64` — test(layout): 4 tester för skip-to-content + main-id + nav/footer
 - `8a0e679` — feat(seo): canonical + preconnect + LD+JSON structured data + 404-test
+- `4a4ac90` — docs(slutrapport): dokumentera designkonflikt med mains feat/period1-spelmodellen
+- `d21f171` — feat(login): Spelmodellen-wordmark + eyebrow + focus-rings
+- `4c0066c` — test(head): 11 sanity-tester för index.html meta + LD+JSON
 
 ---
 
@@ -155,7 +158,7 @@ Inga andra filer rörda. Inga test-suiter eller komponenter utanför scope ändr
 |---|---|
 | `npx tsc --noEmit` | **0 errors** (tyst exit) |
 | `npx eslint .` | **0 errors, 7 warnings** — alla pre-existing i `src/components/ui/*` (shadcn `react-refresh/only-export-components`). 0 nya warnings introducerade. |
-| `npx vitest run` | **191/191 pass** (var 153 före — +14 Hem-tester, +20 nya komponenttester, +andra dynamiska från `canonical-vocab.test.ts`) |
+| `npx vitest run` | **213/213 pass** (var 153 före — +14 Hem-tester, +20 komponenttester (FallingWords/TacticalPitchGrid/Footer), +4 Layout, +5 NotFound, +11 head-meta, +andra dynamiska från `canonical-vocab.test.ts`) |
 | `npm run build` | **OK** — kvarvarande `chunk > 500KB`-warning (552KB index-bundle) är pre-existing, inte relaterat till hero. |
 
 ### Browser QA (Claude Preview MCP)
