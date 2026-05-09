@@ -2,20 +2,54 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   ClipboardList,
+  Compass,
+  Dumbbell,
+  Flag,
   Lock,
-  Shield,
   Sparkles,
-  Users,
   Wrench,
 } from "lucide-react";
+import FallingWords from "@/components/FallingWords";
+import TacticalPitchGrid from "@/components/TacticalPitchGrid";
 import PhaseFlow from "@/components/PhaseFlow";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
 
-const primaryLinks = [
+/**
+ * Hero-video. Lägg ny fil i public/ och peka om denna konstant.
+ * Filen ska vara H.264 mp4, ~6–10s loop, ~1080p, < 4 MB om möjligt.
+ * Saknas filen renderas bara den taktiska bakgrunden – inget kraschar.
+ */
+export const HERO_VIDEO_URL = "/hero-spelmodellen.mp4";
+export const HERO_POSTER_URL = "/hero-poster.jpg";
+
+const heroCards = [
+  {
+    label: "Principer",
+    eyebrow: "01",
+    text: "Från språk till handling.",
+    to: "/spelide",
+    icon: Compass,
+  },
+  {
+    label: "Träning",
+    eyebrow: "02",
+    text: "Från övning till beteende.",
+    to: "/verktyg",
+    icon: Dumbbell,
+  },
+  {
+    label: "Match",
+    eyebrow: "03",
+    text: "Från beslut till effekt.",
+    to: "/match/matcher",
+    icon: Flag,
+  },
+] as const;
+
+const quickLinks = [
   { to: "/spelide", label: "Spelidé", text: "Principerna i rätt ordning.", icon: Sparkles },
   { to: "/match/kommande", label: "Veckans match", text: "Fokus och matchplan.", icon: ClipboardList },
-  { to: "/truppen", label: "Trupp", text: "Spelare och roller.", icon: Users },
   { to: "/verktyg", label: "Verktyg", text: "Plan, analys och tavla.", icon: Wrench },
 ];
 
@@ -24,81 +58,129 @@ const Hem = () => {
 
   return (
     <>
-      <section className="relative min-h-[76vh] overflow-hidden">
+      {/* === HERO ====================================================== */}
+      <section className="relative isolate min-h-[88vh] overflow-hidden md:min-h-[92vh]">
+        {/* Background video — full-bleed, decorative */}
         <video
           autoPlay
           muted
           loop
           playsInline
-          poster="/hero-poster.jpg"
-          className="absolute inset-0 h-full w-full object-cover"
+          poster={HERO_POSTER_URL}
           aria-hidden="true"
+          className="absolute inset-0 h-full w-full scale-[1.02] object-cover opacity-60 motion-reduce:hidden"
         >
-          <source src="/hero.mp4" type="video/mp4" />
+          <source src={HERO_VIDEO_URL} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/72 to-background" />
 
-        <div className="container relative flex min-h-[76vh] items-center py-20">
-          <div className="max-w-3xl">
-            <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-gunnilse-gold">
-              <Shield className="h-5 w-5" strokeWidth={1.5} />
-              Gunnilse IS 2026
+        {/* Static fallback gradient — visible always; carries hero when video missing */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,hsl(var(--primary)/0.18),transparent_55%),radial-gradient(ellipse_at_75%_85%,hsl(var(--accent)/0.12),transparent_50%),linear-gradient(180deg,hsl(var(--background))_0%,hsl(217_28%_8%)_100%)]"
+        />
+
+        {/* Tactical pitch grid */}
+        <TacticalPitchGrid />
+
+        {/* Falling tactical vocabulary */}
+        <FallingWords />
+
+        {/* Vignette + readability layer */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-background/65 via-background/45 to-background"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/55 to-background/30 md:via-background/40 md:to-transparent"
+        />
+
+        {/* Content */}
+        <div className="container relative z-10 flex min-h-[88vh] flex-col justify-between py-16 md:min-h-[92vh] md:py-20">
+          <div className="max-w-4xl">
+            <div className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent md:text-xs">
+              <span className="h-px w-8 bg-accent/70" aria-hidden="true" />
+              Tränarplattform · Spelmodell · 2026
             </div>
-            <h1 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-normal text-foreground md:text-7xl">
-              Spelmodell 2026
+
+            <h1
+              className="mt-7 font-black uppercase leading-[0.92] tracking-tight text-foreground"
+              style={{ fontSize: "clamp(2.5rem, 10.5vw, 9rem)" }}
+            >
+              Spelmodellen
             </h1>
-            <p className="mt-6 max-w-xl text-base font-semibold leading-relaxed text-foreground/82 md:text-lg">
-              Vinn kampen. Spela framåt. Skydda mitten.
+
+            <div className="mt-7 flex max-w-2xl items-start gap-4">
+              <span
+                aria-hidden="true"
+                className="mt-2 hidden h-12 w-[3px] flex-shrink-0 bg-accent md:block"
+              />
+              <p className="text-xl font-semibold leading-snug text-foreground md:text-2xl">
+                Från idé till beteende.
+                <span className="mt-1 block text-accent">
+                  Från princip till prestation.
+                </span>
+              </p>
+            </div>
+
+            <p className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+              En digital spelmodell för tränare, spelare och ledare som vill göra
+              fotbollens principer begripliga, träningsbara och synliga i match.
             </p>
-            <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
-              En kort gemensam modell för hur vi anfaller, försvarar och ställer om.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/login"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-bold text-primary-foreground transition hover:bg-primary/90"
+                to="/spelide"
+                className="group inline-flex h-12 items-center justify-center gap-2 rounded-md bg-accent px-6 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                Logga in <ArrowRight className="h-4 w-4" />
+                Utforska spelmodellen
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <Link
-                to="/match/matcher"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/45 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
+                to="/anfall"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                Se matcher
+                Se principerna
               </Link>
             </div>
+          </div>
+
+          {/* Hero footer — 3 stat cards */}
+          <div className="mt-16 grid gap-px overflow-hidden rounded-md border border-border/70 bg-border/70 sm:grid-cols-3 md:mt-20">
+            {heroCards.map(({ label, eyebrow, text, to, icon: Icon }) => (
+              <Link
+                key={label}
+                to={to}
+                className="group relative flex items-start gap-4 bg-background/75 p-5 backdrop-blur-md transition hover:bg-card/85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset md:p-6"
+              >
+                <span className="font-mono text-[10px] font-black tracking-[0.2em] text-muted-foreground">
+                  {eyebrow}
+                </span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.22em] text-accent">
+                    <Icon className="h-3.5 w-3.5" strokeWidth={2} />
+                    {label}
+                  </div>
+                  <p className="mt-2 text-sm leading-snug text-foreground/90">{text}</p>
+                </div>
+                <ArrowRight
+                  className="h-4 w-4 self-center text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-accent"
+                  strokeWidth={1.75}
+                />
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="border-y border-border bg-card/35">
-        <div className="container grid gap-0 md:grid-cols-4">
-          {primaryLinks.map(({ to, label, text, icon: Icon }) => (
-            <Link
-              key={to}
-              to={to}
-              className="group border-b border-border py-6 md:border-b-0 md:border-r md:last:border-r-0"
-            >
-              <div className="flex items-start gap-3 md:block">
-                <Icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent md:mb-4 md:mt-0" strokeWidth={1.75} />
-                <div>
-                  <h2 className="text-sm font-black uppercase tracking-wide text-foreground">{label}</h2>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{text}</p>
-                  <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-accent opacity-80 transition group-hover:gap-2.5 group-hover:opacity-100">
-                    Öppna <ArrowRight className="h-3.5 w-3.5" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className="container py-20">
-        <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
+      {/* === IDENTITY — fem beteenden ================================== */}
+      <section className="container py-20 md:py-28">
+        <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Identitet</p>
-            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+              Identitet
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Fem beteenden vi alltid återvänder till.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -111,13 +193,17 @@ const Hem = () => {
               <li key={item.slug}>
                 <Link
                   to={`/identitet/${item.slug}`}
-                  className="group grid gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[64px_220px_1fr_28px]"
+                  className="group grid gap-4 py-5 transition hover:bg-card/35 focus-visible:bg-card/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[64px_220px_1fr_28px]"
                 >
                   <span className="font-mono text-xs font-black text-muted-foreground">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-lg font-black leading-snug tracking-normal text-foreground">{item.title}</span>
-                  <span className="max-w-2xl text-sm leading-relaxed text-muted-foreground">{item.short}</span>
+                  <span className="text-lg font-black leading-snug tracking-normal text-foreground">
+                    {item.title}
+                  </span>
+                  <span className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                    {item.short}
+                  </span>
                   <ArrowRight className="hidden h-4 w-4 self-center text-accent transition group-hover:translate-x-1 md:block" />
                 </Link>
               </li>
@@ -126,11 +212,14 @@ const Hem = () => {
         </div>
       </section>
 
-      <section className="border-y border-border bg-card/30 py-20">
-        <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">
+      {/* === PHASE FLOW — fyra skeden ================================== */}
+      <section className="border-y border-border bg-card/30 py-20 md:py-28">
+        <div className="container grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)] lg:gap-16">
           <header>
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Fyra skeden</p>
-            <h2 className="text-3xl font-black leading-tight tracking-normal md:text-4xl">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+              Fyra skeden
+            </p>
+            <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Samma struktur i varje match.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -141,27 +230,60 @@ const Hem = () => {
         </div>
       </section>
 
-      <section className="container py-20">
-        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+      {/* === QUICK LINKS — bibliotek =================================== */}
+      <section className="container py-20 md:py-24">
+        <header className="max-w-3xl">
+          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
+            Bibliotek
+          </p>
+          <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
+            Tre vägar in i modellen.
+          </h2>
+        </header>
+        <div className="mt-10 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
+          {quickLinks.map(({ to, label, text, icon: Icon }) => (
+            <Link
+              key={to}
+              to={to}
+              className="group flex items-start gap-4 bg-background p-6 transition hover:bg-card focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:flex-col md:gap-3"
+            >
+              <Icon className="h-5 w-5 flex-shrink-0 text-accent" strokeWidth={1.75} />
+              <div className="flex-1">
+                <h3 className="text-sm font-black uppercase tracking-[0.18em] text-foreground">
+                  {label}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-accent opacity-80 transition group-hover:gap-2.5 group-hover:opacity-100">
+                  Öppna <ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* === GATED CTA ================================================= */}
+      <section className="border-t border-border bg-card/40 py-16 md:py-24">
+        <div className="container grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
           <div>
-            <p className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">
+            <p className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent">
               <Lock className="h-3.5 w-3.5" />
               För laget
             </p>
-            <h2 className="max-w-2xl text-3xl font-black leading-tight tracking-normal md:text-4xl">
+            <h2 className="mt-3 max-w-2xl text-3xl font-black leading-tight tracking-tight md:text-4xl">
               Detaljer, matchplan och tränarverktyg finns bakom inloggning.
             </h2>
           </div>
-          <div className="flex flex-col justify-end gap-3 sm:flex-row lg:flex-col">
+          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link
               to="/spelmodell-labb"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-background transition hover:bg-accent/90"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Öppna labbet <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               to="/login?mode=signup"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-border px-5 text-sm font-bold uppercase tracking-wider text-foreground transition hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Begär tillgång
             </Link>

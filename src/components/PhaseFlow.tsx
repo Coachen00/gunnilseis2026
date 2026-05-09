@@ -16,7 +16,7 @@ const PhaseFlow = () => (
         <li key={phase.label}>
           <Link
             to={phase.to}
-            className="group grid items-center gap-4 py-5 transition hover:bg-background/35 md:grid-cols-[56px_1fr_1fr_28px]"
+            className="group grid items-center gap-4 py-5 transition hover:bg-background/35 focus-visible:bg-background/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[56px_1fr_1fr_28px]"
           >
             <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-background/40 text-accent">
               <Icon className="h-4 w-4" strokeWidth={1.75} />

@@ -168,6 +168,15 @@
     animation: bounceSlow 2.4s ease-in-out infinite;
   }
 
+  .animate-fall {
+    animation: fallDown var(--fall-duration, 32s) linear infinite;
+    will-change: transform, opacity;
+  }
+
+  .animate-pitch-pulse {
+    animation: pitchPulse 9s ease-in-out infinite;
+  }
+
   .bg-mesh-gradient {
     background-image:
       radial-gradient(at 18% 22%, hsl(var(--primary) / 0.55) 0px, transparent 50%),
@@ -223,6 +232,28 @@
   50%      { transform: translateY(8px); opacity: 1; }
 }
 
+@keyframes fallDown {
+  0% {
+    transform: translate3d(0, -12vh, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--drift, 0), 112vh, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes pitchPulse {
+  0%, 100% { opacity: 0.18; }
+  50%      { opacity: 0.30; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-mesh-shift,
@@ -230,7 +261,9 @@
   .animate-slide-up,
   .animate-pulse-soft,
   .animate-fade-in-up,
-  .animate-bounce-slow {
+  .animate-bounce-slow,
+  .animate-fall,
+  .animate-pitch-pulse {
     animation: none !important;
   }
 }

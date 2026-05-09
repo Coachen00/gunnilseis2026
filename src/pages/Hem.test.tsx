@@ -1,0 +1,148 @@
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import Hem, { HERO_VIDEO_URL, HERO_POSTER_URL } from "./Hem";
+
+// Replace the network-touching content hook with a synchronous fallback.
+vi.mock("@/hooks/useContent", () => ({
+  useContent: <T,>(_key: string, fallback: T) => ({
+    data: fallback,
+    loading: false,
+    source: "fallback" as const,
+    error: null,
+    reload: () => Promise.resolve(),
+  }),
+}));
+
+const renderHem = () =>
+  render(
+    <MemoryRouter>
+      <Hem />
+    </MemoryRouter>,
+  );
+
+describe("Hem — hero", () => {
+  it("renders H1 'Spelmodellen'", () => {
+    renderHem();
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent(/spelmodellen/i);
+  });
+
+  it("renders the brand subheadline (idé→beteende, princip→prestation)", () => {
+    renderHem();
+    expect(screen.getByText(/Från idé till beteende/i)).toBeInTheDocument();
+    expect(screen.getByText(/Från princip till prestation/i)).toBeInTheDocument();
+  });
+
+  it("renders the descriptive body copy", () => {
+    renderHem();
+    expect(
+      screen.getByText(
+        /digital spelmodell för tränare, spelare och ledare/i,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  it("renders both primary CTAs with the correct copy", () => {
+    renderHem();
+    const primary = screen.getByRole("link", { name: /utforska spelmodellen/i });
+    const secondary = screen.getByRole("link", { name: /se principerna/i });
+    expect(primary).toBeInTheDocument();
+    expect(primary).toHaveAttribute("href", "/spelide");
+    expect(secondary).toBeInTheDocument();
+    expect(secondary).toHaveAttribute("href", "/anfall");
+  });
+
+  it("renders all three hero cards (Principer, Träning, Match)", () => {
+    renderHem();
+    // "Principer" appears in hero card AND in library section — both expected.
+    expect(screen.getAllByText(/^principer$/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/^träning$/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/^match$/i).length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("hero card 'Principer' links to /spelide", () => {
+    renderHem();
+    const principerCards = screen
+      .getAllByRole("link")
+      .filter((a) => /principer/i.test(a.textContent ?? ""));
+    const heroPrinciper = principerCards.find(
+      (a) => a.getAttribute("href") === "/spelide",
+    );
+    expect(heroPrinciper).toBeDefined();
+  });
+
+  it("hero card 'Match' links to /match/matcher", () => {
+    renderHem();
+    const links = screen.getAllByRole("link");
+    const matchCard = links.find(
+      (a) =>
+        a.getAttribute("href") === "/match/matcher" &&
+        /match/i.test(a.textContent ?? ""),
+    );
+    expect(matchCard).toBeDefined();
+  });
+
+  it("renders a hero video element using HERO_VIDEO_URL and HERO_POSTER_URL", () => {
+    const { container } = renderHem();
+    const video = container.querySelector("video") as HTMLVideoElement | null;
+    expect(video).not.toBeNull();
+    if (!video) return;
+    // React maps these to DOM properties, not attributes — assert on the props.
+    expect(video.autoplay).toBe(true);
+    expect(video.muted).toBe(true);
+    expect(video.loop).toBe(true);
+    expect(video.playsInline).toBe(true);
+    expect(video.getAttribute("poster")).toBe(HERO_POSTER_URL);
+    const source = video.querySelector("source");
+    expect(source?.getAttribute("src")).toBe(HERO_VIDEO_URL);
+    expect(source?.getAttribute("type")).toBe("video/mp4");
+  });
+
+  it("exports HERO_VIDEO_URL with .mp4 extension at /hero-spelmodellen.mp4", () => {
+    expect(HERO_VIDEO_URL).toMatch(/\.mp4$/);
+    expect(HERO_VIDEO_URL).toBe("/hero-spelmodellen.mp4");
+  });
+
+  it("eyebrow announces the platform tag", () => {
+    renderHem();
+    expect(
+      screen.getByText(/tränarplattform.*spelmodell.*2026/i),
+    ).toBeInTheDocument();
+  });
+
+  it("renders deep links into spelidén, identity, and gated lab", () => {
+    renderHem();
+    const labLink = screen.getByRole("link", { name: /öppna labbet/i });
+    expect(labLink).toHaveAttribute("href", "/spelmodell-labb");
+    const signupLink = screen.getByRole("link", { name: /begär tillgång/i });
+    expect(signupLink).toHaveAttribute("href", "/login?mode=signup");
+  });
+});
+
+describe("Hem — sections below hero", () => {
+  it("identity section header is present", () => {
+    renderHem();
+    const heading = screen.getByRole("heading", {
+      name: /fem beteenden vi alltid återvänder till/i,
+    });
+    expect(heading).toBeInTheDocument();
+  });
+
+  it("phase flow section header is present", () => {
+    renderHem();
+    const heading = screen.getByRole("heading", {
+      name: /samma struktur i varje match/i,
+    });
+    expect(heading).toBeInTheDocument();
+  });
+
+  it("library quicklinks section is present and links to spelidé", () => {
+    renderHem();
+    const lib = screen.getByRole("heading", { name: /tre vägar in i modellen/i });
+    expect(lib).toBeInTheDocument();
+    // The Spelidé quicklink in the library section
+    const links = screen.getAllByRole("link", { name: /spelidé/i });
+    expect(links.length).toBeGreaterThan(0);
+  });
+});

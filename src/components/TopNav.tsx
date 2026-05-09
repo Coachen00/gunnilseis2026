@@ -83,7 +83,7 @@ const matchGroups: NavGroup[] = [
 ];
 
 const navItems: NavItem[] = [
-  { kind: "link", to: "/", label: "Hem" },
+  { kind: "link", to: "/", label: "Start" },
   { kind: "link", to: "/spelide#nulage", label: "Nuläge" },
   { kind: "link", to: "/spelide", label: "Spelidé" },
   {
@@ -179,14 +179,16 @@ const TopNav = () => {
         <Link
           to="/"
           className="flex items-center gap-2.5 group flex-shrink-0"
-          aria-label="Gunnilse IS — Hem"
+          aria-label="Spelmodellen — Start"
         >
-          <div className="w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm">
-            G
+          <div className="w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm transition-colors group-hover:border-accent/60">
+            S
           </div>
-          <span className="font-extrabold tracking-tight text-foreground hidden sm:inline">
-            Gunnilse IS
-            <span className="text-accent ml-1">2026</span>
+          <span className="hidden sm:flex flex-col leading-none">
+            <span className="font-extrabold tracking-tight text-foreground">Spelmodellen</span>
+            <span className="mt-0.5 font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
+              Gunnilse IS · 2026
+            </span>
           </span>
         </Link>
 
