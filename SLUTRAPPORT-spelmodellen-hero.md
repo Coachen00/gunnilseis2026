@@ -50,6 +50,10 @@ Inga av mina nya komponenter (FallingWords, TacticalPitchGrid, NotFound-redesign
 - `4a4ac90` — docs(slutrapport): dokumentera designkonflikt med mains feat/period1-spelmodellen
 - `d21f171` — feat(login): Spelmodellen-wordmark + eyebrow + focus-rings
 - `4c0066c` — test(head): 11 sanity-tester för index.html meta + LD+JSON
+- `c1c7a75` — docs(slutrapport): uppdatera commit-lista + tester 213/213
+- `f93dc2d` — test(public-assets): 6 sanity-tester för public/-tillgångar
+- `346d6df` — test(falling): verifiera att vokabulär matchar 20 taktiska kärntermer
+- `7c25ca9` — fix(grid): explicit overflow:hidden på SVG mot subpixel-overflow
 
 ---
 
@@ -177,6 +181,7 @@ Inga andra filer rörda. Inga test-suiter eller komponenter utanför scope ändr
 | **Tablet 768×1024** | ✅ OK | Screenshot bekräftat: 3 kort i rad, hamburger-meny synlig, brand intakt. |
 | **Mobil 390×844** | ✅ OK | Screenshot bekräftat: H1 "SPELMODELLEN" 326px brett, ingen overflow, kort staplade, fallande ord eleganta. |
 | **iPhone SE 375×812** | ✅ OK | DOM-mätning: H1 311px brett (= 375 - 64 padding), font 40px (clamp-min), `horizScroll = 0`. |
+| **Tablet landskap 1024×768** | ⚠️ **45px horizScroll** | Pre-existing TopNav-täthetsbugg (8 nav-items + brand + 2 right-cluster-knappar = ~1094px på 1024). Finns även på `main` — ej introducerad av denna PR. Vid 1280+ är `horizScroll = 0`. Föreslås åtgärdas i separat coordineraD PR (Stream A äger Layout/TopNav). |
 
 **Inga horisontella overflow-buggar på någon storlek.**
 **Reducerad rörelse:** video gömd, falling words avregistrerade, alla `animate-*` släckta — verifierat via media-query setup i komponenten.
@@ -214,6 +219,7 @@ Sektioner under hero (Identity/PhaseFlow/Bibliotek/Gated-CTA) använder samma ry
 | 7 | **Låg** | preview_screenshot timeout vid stora viewports (1280, 1440) | Den heavy hero (video + 16 falling words + grid SVG + animationer) verkar trött på MCP-screenshotets render | Verifierat via DOM-mätningar och mindre screenshots. Inte en bugg i koden. | Ingen — det är en MCP-tool-begränsning. |
 | 8 | **Låg** | Pre-existing 7 ESLint warnings i `src/components/ui/*` | shadcn-mönster som blandar component-export + helpers (`react-refresh/only-export-components`) | Pre-existing, ej i scope | Vid refactor av shadcn-bas: splita helpers till egna filer. |
 | 9 | **Mycket låg** | Filnamn `src/components/Matetal.tsx` (ska vara `Mätetal.tsx`) | Pre-existing typo / mojibake | Inte använt av Hem; rör inte annat | Byt filnamn + uppdatera importer i framtida pass. |
+| 10 | **Låg** | 45px horizontal scroll på exakt 1024×N viewport | Pre-existing TopNav-täthetsbugg: 8 nav-items + brand + 2 right-cluster-knappar = ~1094px på 1024-container. Finns även på `main`. | Stream A äger Layout/TopNav per `STREAMS/00-COORDINATION.md`; även en mindre nav-reorg riskerar konflikter. | Coordinated PR som antingen flyttar desktop-nav till `xl:flex` (1280+) eller döljer "Nuläge" / "Roller" på `lg`. |
 
 **Inga öppna fel som blockar shipping av hero.** De medel-allvarliga bristerna (#1, #2) är tillgångar som ska läggas till — kod är klar.
 
