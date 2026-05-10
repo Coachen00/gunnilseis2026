@@ -146,3 +146,60 @@ describe("Hem — sections below hero", () => {
     expect(links.length).toBeGreaterThan(0);
   });
 });
+
+describe("Hem — premium polish", () => {
+  it("renders editorial 'Edition 2026 · Premiär maj' stamp on desktop", () => {
+    renderHem();
+    expect(screen.getByText(/edition 2026/i)).toBeInTheDocument();
+    expect(screen.getByText(/premiär maj/i)).toBeInTheDocument();
+  });
+
+  it("identity-list items have hover accent-bar (group-hover/item:scale-y-100)", () => {
+    const { container } = renderHem();
+    const items = container.querySelectorAll("li.group\\/item");
+    expect(items.length).toBe(5);
+    items.forEach((li) => {
+      const bar = li.querySelector("span[aria-hidden]") as HTMLElement;
+      expect(bar).not.toBeNull();
+      expect(bar.className).toMatch(/scale-y-0/);
+      expect(bar.className).toMatch(/group-hover\/item:scale-y-100/);
+    });
+  });
+
+  it("hero H1 uses animate-hero-reveal-grand + animate-shine", () => {
+    renderHem();
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1.className).toMatch(/animate-hero-reveal-grand/);
+    expect(h1.className).toMatch(/animate-shine/);
+  });
+
+  it("hero eyebrow has live-signal pulsing dot (motion-safe:animate-ping)", () => {
+    const { container } = renderHem();
+    const ping = container.querySelector(".motion-safe\\:animate-ping");
+    expect(ping).not.toBeNull();
+  });
+
+  it("hero has film-grain overlay + corner vignettes", () => {
+    const { container } = renderHem();
+    expect(container.querySelector(".bg-grain")).not.toBeNull();
+    // corner vignettes är ett aria-hidden div med radial-gradient
+    const vignettes = container.querySelectorAll('[aria-hidden="true"].pointer-events-none');
+    expect(vignettes.length).toBeGreaterThan(2);
+  });
+
+  it("primary CTA 'Utforska spelmodellen' har shimmer-sweep span", () => {
+    const { container } = renderHem();
+    const primary = screen
+      .getAllByRole("link")
+      .find((a) => /utforska spelmodellen/i.test(a.textContent ?? ""));
+    expect(primary).toBeDefined();
+    // shimmer span är en absolut positionerad gradient
+    const shimmer = primary?.querySelector(
+      'span[aria-hidden].absolute.inset-0',
+    );
+    expect(shimmer).not.toBeNull();
+    expect((shimmer as HTMLElement)?.className).toMatch(/-translate-x-full/);
+    expect((shimmer as HTMLElement)?.className).toMatch(/group-hover:translate-x-full/);
+    void container; // unused but kept for consistency
+  });
+});
