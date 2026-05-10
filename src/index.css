@@ -401,3 +401,50 @@
     display: none !important;
   }
 }
+
+/* Print-stylsheet — säkerställer att sidan ser ren ut vid Ctrl+P. */
+@media print {
+  /* Göm allt som inte hör hemma i tryck: nav, footer, dekorativa overlays. */
+  header,
+  footer,
+  [aria-hidden="true"],
+  .animate-fall,
+  .animate-pitch-pulse,
+  .animate-hero-reveal,
+  .animate-hero-reveal-grand,
+  video {
+    display: none !important;
+  }
+
+  /* Återställ bakgrund och text för läsbar tryck. */
+  html,
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  a {
+    color: #0b3a91 !important;
+    text-decoration: underline;
+  }
+
+  /* Visa URL efter externa länkar. Interna (#) skippas. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #555;
+  }
+
+  /* Ensure sections don't break in awkward places */
+  section {
+    page-break-inside: avoid;
+  }
+}
