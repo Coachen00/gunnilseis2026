@@ -56,9 +56,11 @@ const Footer = () => {
           <button
             type="button"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="font-mono uppercase tracking-[0.22em] transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="group/top inline-flex items-center gap-1.5 rounded font-mono uppercase tracking-[0.22em] transition-all duration-200 hover:text-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none motion-reduce:active:scale-100"
+            aria-label="Skrolla till toppen av sidan"
           >
-            ↑ Toppen
+            <span aria-hidden="true" className="transition-transform duration-300 group-hover/top:-translate-y-0.5">↑</span>
+            Toppen
           </button>
         </div>
       </div>
