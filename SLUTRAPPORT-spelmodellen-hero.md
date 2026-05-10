@@ -185,7 +185,7 @@ Inga andra filer rörda. Inga test-suiter eller komponenter utanför scope ändr
 |---|---|
 | `npx tsc --noEmit` | **0 errors** (tyst exit) |
 | `npx eslint .` | **0 errors, 7 warnings** — alla pre-existing i `src/components/ui/*` (shadcn `react-refresh/only-export-components`). 0 nya warnings introducerade. |
-| `npx vitest run` | **236/236 pass** (var 153 före — +14 Hem, +20 FallingWords/TacticalPitchGrid/Footer, +4 Layout, +5 NotFound, +11 head-meta, +6 public-assets, +5 ScrollProgress, +5 ScrollToTop, +1 falling-vocab, +2 footer-hover, +andra dynamiska från `canonical-vocab.test.ts`) |
+| `npx vitest run` | **315/315 pass** (var 153 före — +9 Hem (totalt 23 efter polish-tests), +20 FallingWords/TacticalPitchGrid/Footer, +7 Layout, +5 NotFound, +17 head-meta, +6 public-assets, +5 ScrollProgress, +5 ScrollToTop, +33 css-keyframes, +9 Login, +8 TopNav, +7 BrandMark, +falling-vocab, +footer-hover, +andra dynamiska från `canonical-vocab.test.ts`) |
 | `npm run build` | **OK** — kvarvarande `chunk > 500KB`-warning (552KB index-bundle) är pre-existing, inte relaterat till hero. |
 
 ### Browser QA (Claude Preview MCP)
