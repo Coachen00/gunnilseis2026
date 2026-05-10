@@ -67,4 +67,15 @@ describe("public/ — assets som hero, og och brand pekar på", () => {
     expect(Array.isArray(manifest.icons)).toBe(true);
     expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
   });
+
+  it("alla ikoner i manifest pekar på filer som faktiskt existerar", () => {
+    const manifestPath = join(publicDir, "manifest.webmanifest");
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
+    for (const icon of manifest.icons) {
+      // src är en absolut path från sajt-roten — strip leading slash + lookup i public/
+      const src = icon.src.replace(/^\//, "");
+      const filePath = join(publicDir, src);
+      expect(existsSync(filePath)).toBe(true);
+    }
+  });
 });
