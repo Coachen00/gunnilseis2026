@@ -176,7 +176,7 @@ const Hem = () => {
             >
               <Link
                 to="/spelide"
-                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-6 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-6 text-sm font-black uppercase tracking-wider text-accent-foreground transition-all duration-200 hover:bg-accent/90 hover:shadow-[0_8px_30px_-8px_hsl(var(--accent)/0.55)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:active:scale-100"
               >
                 <span className="relative z-10 inline-flex items-center gap-2">
                   Utforska spelmodellen
@@ -189,7 +189,7 @@ const Hem = () => {
               </Link>
               <Link
                 to="/anfall"
-                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition hover:border-accent/60 hover:bg-background/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 overflow-hidden rounded-md border border-border/80 bg-background/40 px-6 text-sm font-bold uppercase tracking-wider text-foreground backdrop-blur-sm transition-all duration-200 hover:border-accent/60 hover:bg-background/70 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:active:scale-100"
               >
                 <span className="relative z-10 inline-flex items-center gap-2">
                   Se principerna
