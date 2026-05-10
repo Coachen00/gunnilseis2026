@@ -164,7 +164,7 @@ const Hem = () => {
             </div>
 
             <p
-              className="mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground animate-hero-reveal md:text-lg"
+              className="mt-8 max-w-2xl text-base leading-relaxed text-foreground/80 animate-hero-reveal md:text-lg md:leading-[1.7]"
               style={{ ["--reveal-delay" as string]: "0.7s" }}
             >
               En digital spelmodell för tränare, spelare och ledare som vill göra
