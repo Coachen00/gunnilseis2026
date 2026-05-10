@@ -55,14 +55,29 @@ describe("index.css — keyframes & utilities", () => {
   });
 
   it("prefers-reduced-motion-block stänger ALL nya animationer", () => {
-    const reducedBlock = css.match(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{([\s\S]*?)\}\s*\}/);
-    expect(reducedBlock).not.toBeNull();
-    const block = reducedBlock![1];
+    // Hitta alla reduced-motion-block och välj det som innehåller animate-fall
+    const blocks = Array.from(
+      css.matchAll(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{([\s\S]*?)\}\s*\}/g),
+    );
+    const animBlock = blocks.find((m) => /animate-fall/.test(m[1]));
+    expect(animBlock).toBeDefined();
+    const block = animBlock![1];
     expect(block).toMatch(/animate-fall/);
     expect(block).toMatch(/animate-pitch-pulse/);
     expect(block).toMatch(/animate-hero-reveal/);
     expect(block).toMatch(/animate-hero-reveal-grand/);
     expect(block).toMatch(/animate-accent-grow/);
+  });
+
+  it("html har smooth scroll-behavior + reduced-motion-fallback", () => {
+    expect(css).toMatch(/html\s*\{[\s\S]*?scroll-behavior:\s*smooth/);
+    expect(css).toMatch(/scroll-padding-top/);
+    // Det andra reduced-motion-blocket ska sätta scroll-behavior:auto
+    const blocks = Array.from(
+      css.matchAll(/@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?\}\s*\}/g),
+    );
+    const scrollBlock = blocks.find((m) => /scroll-behavior:\s*auto/.test(m[0]));
+    expect(scrollBlock).toBeDefined();
   });
 
   it("design-tokens definieras i :root", () => {
