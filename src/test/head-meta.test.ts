@@ -63,6 +63,14 @@ describe("index.html — extended SEO + PWA meta", () => {
   it("format-detection telephone=no (förhindrar iOS auto-tel-länkar)", () => {
     expect(html).toMatch(/name="format-detection"\s+content="telephone=no"/);
   });
+
+  it("manifest.webmanifest länkad i head", () => {
+    expect(html).toMatch(/<link\s+rel="manifest"\s+href="\/manifest\.webmanifest"/);
+  });
+
+  it("favicon.svg länkad (modern browsers)", () => {
+    expect(html).toMatch(/<link\s+rel="icon"\s+href="\/favicon\.svg"\s+type="image\/svg\+xml"/);
+  });
 });
 
 describe("index.html — LD+JSON structured data", () => {

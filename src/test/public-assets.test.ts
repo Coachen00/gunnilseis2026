@@ -44,4 +44,27 @@ describe("public/ — assets som hero, og och brand pekar på", () => {
     expect(robots).toMatch(/User-agent:\s*Googlebot/i);
     expect(robots).toMatch(/Allow:\s*\//);
   });
+
+  it("favicon.svg finns och är SVG-formaterad", () => {
+    const path = join(publicDir, "favicon.svg");
+    expect(existsSync(path)).toBe(true);
+    const svg = readFileSync(path, "utf-8");
+    expect(svg).toMatch(/^<svg/);
+    expect(svg).toMatch(/viewBox/);
+    expect(svg).toMatch(/<\/svg>/);
+  });
+
+  it("manifest.webmanifest är välformad PWA-manifest", () => {
+    const path = join(publicDir, "manifest.webmanifest");
+    expect(existsSync(path)).toBe(true);
+    const manifest = JSON.parse(readFileSync(path, "utf-8"));
+    expect(manifest.name).toMatch(/Spelmodellen/);
+    expect(manifest.short_name).toBe("Spelmodellen");
+    expect(manifest.lang).toBe("sv-SE");
+    expect(manifest.start_url).toBe("/");
+    expect(manifest.display).toBe("standalone");
+    expect(manifest.theme_color).toBe("#0b121a");
+    expect(Array.isArray(manifest.icons)).toBe(true);
+    expect(manifest.icons.length).toBeGreaterThanOrEqual(2);
+  });
 });
