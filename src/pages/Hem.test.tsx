@@ -202,4 +202,40 @@ describe("Hem — premium polish", () => {
     expect((shimmer as HTMLElement)?.className).toMatch(/group-hover:translate-x-full/);
     void container; // unused but kept for consistency
   });
+
+  it("gated section 'För laget' har accent-halo längs topkanten", () => {
+    const { container } = renderHem();
+    const sections = container.querySelectorAll("section");
+    const gated = Array.from(sections).find((s) =>
+      /För laget/i.test(s.textContent ?? ""),
+    );
+    expect(gated).toBeDefined();
+    // Halo är en <div aria-hidden> med absolute top-0 + via-accent gradient.
+    const halos = Array.from(
+      gated?.querySelectorAll('[aria-hidden="true"]') ?? [],
+    ) as HTMLElement[];
+    const halo = halos.find((el) => /via-accent/.test(el.className));
+    expect(halo).toBeDefined();
+    expect(halo?.className).toMatch(/bg-gradient-to-r/);
+    expect(halo?.className).toMatch(/absolute/);
+    expect(halo?.className).toMatch(/top-0/);
+  });
+
+  it("alla section-eyebrows har konsekvent accent-stripe (h-px + bg-accent)", () => {
+    const { container } = renderHem();
+    // Hero har h-px w-6 (efter live-dot tillkom), övriga sektioner h-px w-8.
+    const strokes = container.querySelectorAll(
+      'span[aria-hidden].h-px',
+    );
+    // Hero + Identity + Fyra skeden + Bibliotek + Gated = 5 sektioner
+    expect(strokes.length).toBeGreaterThanOrEqual(5);
+  });
+
+  it("hero-CTAs ('Utforska spelmodellen', 'Se principerna') båda har focus-visible-rings", () => {
+    renderHem();
+    const utforska = screen.getByRole("link", { name: /utforska spelmodellen/i });
+    const principerna = screen.getByRole("link", { name: /se principerna/i });
+    expect(utforska.className).toMatch(/focus-visible:ring-2/);
+    expect(principerna.className).toMatch(/focus-visible:ring-2/);
+  });
 });
