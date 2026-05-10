@@ -37,6 +37,34 @@ describe("index.html — head meta", () => {
   });
 });
 
+describe("index.html — extended SEO + PWA meta", () => {
+  it("robots tillåter index, follow, large image preview", () => {
+    expect(html).toMatch(/name="robots"\s+content="index, follow, max-image-preview:large"/);
+  });
+
+  it("color-scheme deklarerad som dark", () => {
+    expect(html).toMatch(/name="color-scheme"\s+content="dark"/);
+  });
+
+  it("apple-mobile-web-app-capable + status-bar-style", () => {
+    expect(html).toMatch(/name="apple-mobile-web-app-capable"\s+content="yes"/);
+    expect(html).toMatch(/name="apple-mobile-web-app-status-bar-style"\s+content="black-translucent"/);
+    expect(html).toMatch(/name="apple-mobile-web-app-title"\s+content="Spelmodellen"/);
+  });
+
+  it("apple-touch-icon definierad (för iOS hemskärm)", () => {
+    expect(html).toMatch(/<link\s+rel="apple-touch-icon"/);
+  });
+
+  it("viewport har viewport-fit=cover (för iOS notch)", () => {
+    expect(html).toMatch(/name="viewport"[^>]*viewport-fit=cover/);
+  });
+
+  it("format-detection telephone=no (förhindrar iOS auto-tel-länkar)", () => {
+    expect(html).toMatch(/name="format-detection"\s+content="telephone=no"/);
+  });
+});
+
 describe("index.html — LD+JSON structured data", () => {
   const ldMatch = html.match(
     /<script\s+type="application\/ld\+json">([\s\S]*?)<\/script>/,
