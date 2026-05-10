@@ -70,7 +70,7 @@ const Hem = () => {
   return (
     <>
       {/* === HERO ====================================================== */}
-      <section className="relative isolate min-h-[88vh] overflow-hidden md:min-h-[92vh]">
+      <section className="relative isolate min-h-[88svh] overflow-hidden md:min-h-[92svh]">
         {/* Background video — full-bleed, decorative */}
         <video
           autoPlay
@@ -119,7 +119,7 @@ const Hem = () => {
         />
 
         {/* Content */}
-        <div className="container relative z-10 flex min-h-[88vh] flex-col justify-between py-16 md:min-h-[92vh] md:py-20">
+        <div className="container relative z-10 flex min-h-[88svh] flex-col justify-between py-16 md:min-h-[92svh] md:py-20">
           <div className="max-w-4xl">
             <div
               className="flex items-center gap-3 font-mono text-[10px] font-bold uppercase tracking-[0.32em] text-accent animate-hero-reveal md:text-xs"
