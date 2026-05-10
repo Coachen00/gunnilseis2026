@@ -344,6 +344,9 @@ const Hem = () => {
           <h2 className="mt-3 text-3xl font-black leading-tight tracking-tight md:text-4xl">
             Tre vägar in i modellen.
           </h2>
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            Olika ingångar för olika roller — välj den närmast din nästa fråga.
+          </p>
         </header>
         <div className="mt-10 grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
           {quickLinks.map(({ to, label, text, icon: Icon }) => (
