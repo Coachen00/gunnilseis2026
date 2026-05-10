@@ -1,0 +1,32 @@
+{
+  "name": "Spelmodellen — Tränarplattform för Gunnilse IS",
+  "short_name": "Spelmodellen",
+  "description": "En digital spelmodell för tränare, spelare och ledare. Från idé till beteende. Från princip till prestation.",
+  "lang": "sv-SE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b121a",
+  "theme_color": "#0b121a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/og-image.png",
+      "type": "image/png",
+      "sizes": "1200x630",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "32x32"
+    }
+  ],
+  "categories": ["sports", "education"]
+}
