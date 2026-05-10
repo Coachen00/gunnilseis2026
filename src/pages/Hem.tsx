@@ -77,6 +77,7 @@ const Hem = () => {
           muted
           loop
           playsInline
+          preload="metadata"
           poster={HERO_POSTER_URL}
           aria-hidden="true"
           className="absolute inset-0 h-full w-full scale-[1.02] object-cover opacity-60 motion-reduce:hidden"
