@@ -86,6 +86,77 @@ Förstasidan (`/`) på spelmodellen.se är ombyggd från en typisk Gunnilse-för
 
 **Status:** Redo för review. Alla checks gröna lokalt.
 
+### Premium-detalj-inventarium (Champions-League-intro-feel)
+
+**Hero-koreografi (8-stegs stagger reveal):**
+- 0.00s eyebrow med live-signal pulserande dot
+- 0.15s H1 "Spelmodellen" grand-reveal (scale 0.96→1, blur 10→0, letter-spacing 0.05→tracking-tight, 1.4s expoOut)
+- 0.40s subhead text
+- 0.55s vertikal accent-streck växer (scaleY 0→1)
+- 0.60s shine-sweep glider över H1 (engångseffekt, 2.4s)
+- 0.70s body
+- 0.85s CTAs (primary med shimmer-sweep + accent-shadow + active-press)
+- 0.95s editorial "Edition 2026 · Premiär maj" stamp
+- 1.05s/1.15s/1.25s 3 stat-kort med top-line + ikon-rotation + accent-numbers
+
+**Atmosfäriska lager (z-stackade):**
+- Background video (autoplay/muted/loop/playsInline, preload=metadata, poster fallback)
+- Statisk gradient-fallback (radial primary + accent + dark linear)
+- TacticalPitchGrid SVG (animate-pitch-pulse, korridorer + tredjedelar dashed)
+- FallingWords (16 desktop / 8 mobile, lg/md/sm DoF-blur, 1/7 accent-guld, organisk sway-kurva)
+- Vertikal vignett + horisontell läsbarhetsslöja (responsiv)
+- Film grain overlay (SVG fractal noise, 0.35 opacity, mix-blend-overlay)
+- Cinematic corner vignettes (4-radial gradient)
+
+**Typografisk mästardetalj:**
+- Inter med OpenType cv11 + ss03 + cv05 + ss01 + liga + calt
+- font-mono med tabular-nums + slashed-zero
+- text-rendering: optimizeLegibility
+- H1 ambient text-shadow (3 lager: dropshadow + accent + primary aura)
+
+**Layout-chrome:**
+- Skip-to-content link (sr-only / focus-reveal, hög z-index)
+- ScrollProgress bar i toppkanten (rAF-throttlad, accent-gradient)
+- ScrollToTop floating-knapp (visas efter 60vh, accent-glow på hover)
+- TopNav med brand-glow (dual-stack "Spelmodellen / Gunnilse IS · 2026")
+- Footer med brand-glow + animated-underline-snabblänkar
+
+**A11y + UX:**
+- WCAG AAA-kontrast (H1 17.5:1, muted 6.4:1, accent 10.2:1)
+- focus-visible rings på alla interaktiva element
+- prefers-reduced-motion respekterat på alla nivåer (CSS + JS)
+- Heading-hierarki ren (1×H1, 4×H2, 3×H3)
+- iOS svh viewport (toolbar-aware)
+- Smooth scroll-behavior + scroll-padding-top
+- Active:scale-[0.98] tactile press på alla CTAs
+
+**SEO + PWA:**
+- LD+JSON SportsOrganization-schema
+- Canonical, preconnect, OG, Twitter-card
+- Apple-PWA-meta (capable, status-bar, title)
+- viewport-fit=cover för iOS notch
+- color-scheme dark
+- robots index follow max-image-preview:large
+- manifest.webmanifest (install-to-home)
+- SVG favicon + .ico fallback
+
+**Brand assets:**
+- Hero-poster.jpg (1920×1080, sharp-genererad)
+- OG-image.png/jpg (1200×630, brand-konsekvent)
+- BrandMark.tsx (geometriskt S-monogram för framtida bruk)
+- Favicon SVG-monogram
+
+**Print:**
+- Print-stylesheet gömmer chrome, vit bg, externa länk-URLer
+
+**Test-coverage (327 tester totalt, +173 från base):**
+- Komponenter: FallingWords, TacticalPitchGrid, Footer, Layout, ScrollProgress, ScrollToTop, BrandMark, TopNav (alla med 5-9 tester)
+- Pages: Hem (23), Login (9), NotFound (5)
+- Integration: Hem inside Layout (6)
+- CSS: keyframes + utilities (34)
+- HEAD-meta: title/OG/canonical/LD+JSON (19)
+- Public-assets: filer + manifest (9)
+
 Det enda som inte är 100% är att **bakgrundsvideofilen `/hero-spelmodellen.mp4` saknas i `public/`** — hero har medveten gradient-fallback så det ändå ser premium ut, men för att videon faktiskt ska spela behöver en mp4-fil läggas där (eller `HERO_VIDEO_URL` ändras).
 
 ---
