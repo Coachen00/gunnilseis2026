@@ -286,7 +286,7 @@ const Hem = () => {
                 />
                 <Link
                   to={`/identitet/${item.slug}`}
-                  className="group grid gap-4 py-5 transition hover:bg-card/35 focus-visible:bg-card/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[64px_220px_1fr_28px]"
+                  className="group grid gap-4 py-5 pl-3 -ml-3 rounded-md transition-all duration-300 hover:bg-card/35 hover:shadow-[inset_0_0_0_1px_hsl(var(--accent)/0.15)] focus-visible:bg-card/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-inset md:grid-cols-[64px_220px_1fr_28px]"
                 >
                   <span className="font-mono text-xs font-black text-muted-foreground transition-colors group-hover:text-accent">
                     {String(index + 1).padStart(2, "0")}
