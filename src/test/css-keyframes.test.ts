@@ -71,4 +71,34 @@ describe("index.css — keyframes & utilities", () => {
     expect(css).toMatch(/--primary:\s*212\s*50%\s*48%/);
     expect(css).toMatch(/--pitch-lines:\s*142\s*25%\s*45%/);
   });
+
+  it("fallDown har 5 keyframe-stops för organisk sway", () => {
+    const fallBlock = css.match(/@keyframes\s+fallDown\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(fallBlock).not.toBeNull();
+    const block = fallBlock![1];
+    // Bör ha 0% / 10% / 35% / 65% / 90% / 100% — minst 5 stops
+    const stops = block.match(/\d+%\s*\{/g) || [];
+    expect(stops.length).toBeGreaterThanOrEqual(5);
+    // Drift-bezier: ska använda calc med var(--drift)
+    expect(block).toMatch(/calc\(var\(--drift/);
+    // Tiny rotation under fall
+    expect(block).toMatch(/rotate\(-?0?\.\d+deg\)/);
+  });
+
+  it("heroRevealGrand-keyframet inkluderar scale + letter-spacing-animation", () => {
+    const grandBlock = css.match(/@keyframes\s+heroRevealGrand\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(grandBlock).not.toBeNull();
+    const block = grandBlock![1];
+    expect(block).toMatch(/scale3d/);
+    expect(block).toMatch(/letter-spacing/);
+    expect(block).toMatch(/blur/);
+  });
+
+  it("heroReveal-keyframet inkluderar blur-fade och translate-up", () => {
+    const reveal = css.match(/@keyframes\s+heroReveal\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(reveal).not.toBeNull();
+    const block = reveal![1];
+    expect(block).toMatch(/blur\(6px\)/);
+    expect(block).toMatch(/translate3d\(0,\s*18px/);
+  });
 });
