@@ -11,6 +11,11 @@ const AnimatedBackground = () => {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
+    // Hoppa över scroll-parallaxen helt vid reducerad rörelse — sparar
+    // requestAnimationFrame-cykler för användare som föredrar stillhet.
+    const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motionMq.matches) return;
+
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
