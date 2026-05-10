@@ -397,7 +397,7 @@ const Hem = () => {
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link
               to="/spelmodell-labb"
-              className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-5 text-sm font-black uppercase tracking-wider text-accent-foreground transition hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group relative inline-flex h-11 items-center justify-center gap-2 overflow-hidden rounded-md bg-accent px-5 text-sm font-black uppercase tracking-wider text-accent-foreground transition-all duration-200 hover:bg-accent/90 hover:shadow-[0_8px_30px_-8px_hsl(var(--accent)/0.55)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:active:scale-100"
             >
               <span className="relative z-10 inline-flex items-center gap-2">
                 Öppna labbet <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -409,7 +409,7 @@ const Hem = () => {
             </Link>
             <Link
               to="/login?mode=signup"
-              className="group inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border px-5 text-sm font-bold uppercase tracking-wider text-foreground transition hover:border-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="group inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border px-5 text-sm font-bold uppercase tracking-wider text-foreground transition-all duration-200 hover:border-accent/60 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none motion-reduce:active:scale-100"
             >
               Begär tillgång
               <ArrowRight className="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
