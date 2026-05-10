@@ -185,7 +185,7 @@ Inga andra filer rörda. Inga test-suiter eller komponenter utanför scope ändr
 |---|---|
 | `npx tsc --noEmit` | **0 errors** (tyst exit) |
 | `npx eslint .` | **0 errors, 7 warnings** — alla pre-existing i `src/components/ui/*` (shadcn `react-refresh/only-export-components`). 0 nya warnings introducerade. |
-| `npx vitest run` | **316/316 pass** (var 153 före — 60 commits, +163 tester över 20 testfiler) |
+| `npx vitest run` | **326/326 pass** (var 153 före — 66 commits, +173 tester över 21 testfiler) |
 | `npm run build` | **OK** — kvarvarande `chunk > 500KB`-warning (552KB index-bundle) är pre-existing, inte relaterat till hero. |
 
 ### Browser QA (Claude Preview MCP)
