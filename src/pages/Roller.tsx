@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import MediaSlot from "@/components/match/MediaSlot";
 import {
   RollerSection,
   MatchExempelSection,
@@ -22,6 +23,33 @@ const Roller = () => (
         <PrincipleBlock phase="malvakt" showSource />
       </section>
       <MatchExempelSection />
+      <section id="rollklipp" className="scroll-mt-24">
+        <SectionHeader
+          badge="Rollklipp"
+          title="Filmer och bilder kopplade till roller"
+          subtitle="Tre fasta platser för klipp och bilder som visar ansvar, positioner och kroppsspråk i rollen."
+        />
+        <div className="grid gap-4 md:grid-cols-3">
+          <MediaSlot
+            matchId={undefined}
+            slotKey="spelmodell:roller:mittfalt:ansvar"
+            title="Mittfält - ansvar"
+            captionPlaceholder="Beskriv ansvar, avstånd eller beslut i sekvensen..."
+          />
+          <MediaSlot
+            matchId={undefined}
+            slotKey="spelmodell:roller:mohammed"
+            title="Rollsekvens"
+            captionPlaceholder="Beskriv rollen och vad spelaren gör..."
+          />
+          <MediaSlot
+            matchId={undefined}
+            slotKey="spelmodell:roller:bildsekvens"
+            title="Bildsekvens"
+            captionPlaceholder="Beskriv vad bilden förklarar..."
+          />
+        </div>
+      </section>
       <MatchtruppSection />
       <KvalitetSection />
     </div>
