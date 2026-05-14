@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 import { FORRA_MATCH } from "@/data/forraMatch";
 import { formatMatchDate } from "@/lib/dateUtils";
 
@@ -22,7 +23,7 @@ const MatchForra = () => {
 
       <div className="container pb-section space-y-12">
         {/* Match-meta + summering */}
-        <section className="bg-card/85 rounded-lg p-6 border border-border">
+        <SectionReveal as="section" className="bg-card rounded-lg p-6 border border-border">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
               <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
@@ -53,10 +54,10 @@ const MatchForra = () => {
               </div>
             </div>
           </div>
-        </section>
+        </SectionReveal>
 
         {/* Trupp */}
-        <section>
+        <SectionReveal as="section">
           <div className="mb-4">
             <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
               Trupp · matchen
@@ -89,11 +90,11 @@ const MatchForra = () => {
               <p className="text-sm">{m.ejTillgangliga.join(" · ")}</p>
             </div>
           )}
-        </section>
+        </SectionReveal>
 
         {/* Reflektionsblock */}
         {m.blocks.map((b) => (
-          <section key={b.badge}>
+          <SectionReveal key={b.badge} as="section">
             <div className="mb-4">
               <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
                 {b.badge}
@@ -114,11 +115,11 @@ const MatchForra = () => {
             ) : (
               <Placeholder>Fylls i av tränaren.</Placeholder>
             )}
-          </section>
+          </SectionReveal>
         ))}
 
         {/* Lärdomar */}
-        <section className="border-t border-border pt-10">
+        <SectionReveal as="section" className="border-t border-border pt-10">
           <div className="mb-4">
             <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
               Lärdom
@@ -141,7 +142,7 @@ const MatchForra = () => {
           ) : (
             <Placeholder>Fylls i av tränaren.</Placeholder>
           )}
-        </section>
+        </SectionReveal>
       </div>
     </>
   );

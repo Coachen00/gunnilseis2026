@@ -5,6 +5,7 @@ import { useContent } from "@/hooks/useContent";
 import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 import MediaSlot from "@/components/match/MediaSlot";
 import { cn } from "@/lib/utils";
 
@@ -88,7 +89,7 @@ const IdentityOverview = () => {
 
         <div className="space-y-16">
           {IDENTITY_MEDIA_GROUPS.map((group, groupIndex) => (
-            <section key={group.id} id={group.id} className="scroll-mt-24">
+            <SectionReveal key={group.id} as="section" id={group.id} className="scroll-mt-24">
               <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-3xl">
                   <div className="mb-4 flex items-center gap-3">
@@ -129,7 +130,7 @@ const IdentityOverview = () => {
                   </article>
                 ))}
               </div>
-            </section>
+            </SectionReveal>
           ))}
         </div>
       </div>

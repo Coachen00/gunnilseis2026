@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 import { useSquad } from "@/hooks/useSquad";
 import { POSITION_LABELS, groupSquadByPosition, type Position } from "@/data/squad";
 import { Loader2, ExternalLink } from "lucide-react";
@@ -33,7 +34,7 @@ const Truppen = () => {
         )}
 
         {/* Spelare per position */}
-        <div className="grid gap-6 lg:grid-cols-2">
+        <SectionReveal className="grid gap-6 lg:grid-cols-2">
           {POSITION_ORDER.map((pos) => {
             const list = grouped[pos];
             const labels = POSITION_LABELS[pos];
@@ -88,10 +89,10 @@ const Truppen = () => {
               </section>
             );
           })}
-        </div>
+        </SectionReveal>
 
         {/* Ledarstab */}
-        <section className="mt-10 rounded-md border border-border/70 bg-card overflow-hidden">
+        <SectionReveal as="section" className="mt-10 rounded-md border border-border/70 bg-card overflow-hidden">
           <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
@@ -116,7 +117,7 @@ const Truppen = () => {
               </li>
             ))}
           </ul>
-        </section>
+        </SectionReveal>
 
         {/* Källa */}
         <a
