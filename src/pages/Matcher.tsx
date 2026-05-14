@@ -210,7 +210,7 @@ const MatchRowContent = ({
   );
 };
 
-function resultOf(match: SeasonMatch): { outcome: "W" | "D" | "L"; us: number; them: number } | null {
+export function resultOf(match: SeasonMatch): { outcome: "W" | "D" | "L"; us: number; them: number } | null {
   if (typeof match.ourScore !== "number" || typeof match.theirScore !== "number") return null;
   if (match.ourScore > match.theirScore) return { outcome: "W", us: match.ourScore, them: match.theirScore };
   if (match.ourScore < match.theirScore) return { outcome: "L", us: match.ourScore, them: match.theirScore };
