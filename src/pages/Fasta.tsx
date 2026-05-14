@@ -19,7 +19,7 @@ const Fasta = () => (
         <PrincipleBlock phase="fasta" showSource />
       </div>
     </div>
-    <div className="container pb-24">
+    <div className="container pb-section">
       <FastaSection />
     </div>
   </>

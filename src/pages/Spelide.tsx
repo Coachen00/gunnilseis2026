@@ -1,3 +1,4 @@
+import PageHero from "@/components/PageHero";
 import { GenerelltSection, IdentitetSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import SectionHeader from "@/components/SectionHeader";
@@ -8,7 +9,12 @@ import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 
 const Spelide = () => (
   <>
-    <div className="container pb-24 space-y-24">
+    <PageHero
+      eyebrow="Spelidé"
+      title="Hela vårt spel — från nuläge till identitet"
+      description="Nuläget, fem anfallsprinciper, övriga skeden och vad vi gör generellt. Sidans röda tråd ner till varje detalj."
+    />
+    <div className="container pb-section space-y-24">
       <SectionReveal>
         <CurrentStateSection />
       </SectionReveal>

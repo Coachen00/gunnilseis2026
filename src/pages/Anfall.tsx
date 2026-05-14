@@ -84,7 +84,7 @@ const Anfall = () => (
       </SectionReveal>
     </div>
 
-    <div className="container pb-24 space-y-10">
+    <div className="container pb-section space-y-10">
       <StaggerList className="space-y-10" stagger={0.08}>
         {ATTACKING_PRINCIPLES.map((p) => (
           <AttackingPrincipleCard key={p.slug} principle={p} />

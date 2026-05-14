@@ -69,20 +69,20 @@ const IdentityOverview = () => {
         description="Fyra beteenden som ska synas i träning, match och analys."
       >
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-md border border-border bg-card/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+          <span className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
             {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImagePlus className="h-3.5 w-3.5 text-accent" />}
             {loading ? "Kopplar media" : error ? "Media offline" : "Media autosparas"}
           </span>
         </div>
       </PageHero>
 
-      <div className="container pb-24">
+      <div className="container pb-section">
         <nav className="mb-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Identitetsområden">
           {IDENTITY_MEDIA_GROUPS.map((group, index) => (
             <a
               key={group.id}
               href={`#${group.id}`}
-              className="group rounded-lg border border-border bg-card/80 p-4 transition hover:border-accent/50 hover:bg-card"
+              className="group rounded-lg border border-border bg-card p-4 transition hover:border-accent/50"
             >
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
                 {String(index + 1).padStart(2, "0")}
@@ -121,8 +121,7 @@ const IdentityOverview = () => {
                   <article
                     key={slotTitle}
                     className={cn(
-                      "rounded-xl border border-border bg-card/85 p-4 shadow-sm",
-                      "transition hover:border-accent/45 hover:shadow-md hover:shadow-primary/5"
+                      "card-hover rounded-xl border border-border bg-card p-4 shadow-sm"
                     )}
                   >
                     <h3 className="mb-4 text-2xl leading-tight text-foreground">
@@ -164,7 +163,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
         title={item.title}
         description={item.short}
       />
-      <div className="container pb-24">
+      <div className="container pb-section">
         <Link
           to="/identitet"
           className="mb-10 inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
@@ -184,7 +183,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
             </h2>
             <ul className="space-y-3">
               {item.practice.map((p, i) => (
-                <li key={p} className="rounded-lg border border-border bg-card/85 p-4 backdrop-blur-sm">
+                <li key={p} className="rounded-lg border border-border bg-card p-4">
                   <div className="flex items-start gap-3">
                     <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-black text-accent">
                       {i + 1}
@@ -206,7 +205,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
           </section>
 
           <section className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-lg border border-border bg-card/85 p-5 backdrop-blur-sm">
+            <div className="rounded-lg border border-border bg-card p-5">
               <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
                 <Check className="h-4 w-4" /> Godkänt
               </div>
@@ -221,7 +220,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
                 />
               </div>
             </div>
-            <div className="rounded-lg border border-destructive/30 bg-card/85 p-5 backdrop-blur-sm">
+            <div className="rounded-lg border border-destructive/30 bg-card p-5">
               <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-destructive">
                 <X className="h-4 w-4" /> Inte godkänt
               </div>

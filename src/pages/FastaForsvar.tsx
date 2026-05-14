@@ -9,7 +9,7 @@ const FastaForsvar = () => (
       title="Försvar mot fasta situationer"
       description="Hörnor, inläggsfrisparkar, inkast och avspark — defensivt. Vi gissar inte, vi har regler."
     />
-    <div className="container pb-24 space-y-20">
+    <div className="container pb-section space-y-20">
       <section id="hornor" className="scroll-mt-24">
         <SectionHeader badge="01 · Hörnor" title="Försvar mot hörnor" subtitle="Hybrid: zonbas i boxen + 2 spelare i strikt man-markering på största hoten." />
         <FastaSection />

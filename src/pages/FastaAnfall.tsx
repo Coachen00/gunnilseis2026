@@ -8,7 +8,7 @@ const FastaAnfall = () => (
       title="Anfall från fasta situationer"
       description="Hörnor, inläggsfrisparkar, inkast och avspark — offensivt. Tydliga roller, tydliga signaler."
     />
-    <div className="container pb-24 space-y-20">
+    <div className="container pb-section space-y-20">
       <section id="hornor" className="scroll-mt-24">
         <SectionHeader badge="01 · Hörnor" title="Offensiva hörnor" subtitle="Inswing/outswing, korta varianter, andrabollszon." />
         <div className="bg-card/85 rounded-lg p-6 border border-border text-sm text-muted-foreground">Fyll på med offensiva hörnvarianter.</div>

@@ -42,7 +42,7 @@ const Verktyg = () => (
       title="Tränarverktyg"
       description="Välj det du behöver inför träning eller match."
     />
-    <section className="container pb-24">
+    <section className="container pb-section">
       <div className="divide-y divide-border border-y border-border">
         {tools.map(({ to, label, desc, icon: Icon }) => (
           <Link
