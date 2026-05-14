@@ -13,6 +13,15 @@ type NavItem = SimpleItem | DropdownItem;
 
 const skedenGroups: NavGroup[] = [
   {
+    label: "Identitet",
+    children: [
+      { label: "2:a-bollsspel", to: "/identitet/andra-boll" },
+      { label: "Duellspel", to: "/identitet/duellspel" },
+      { label: "Djupledslöpningar och felvända löpningar", to: "/identitet/djupled-felvant" },
+      { label: "Värdigt kroppsspråk", to: "/identitet/kroppssprak" },
+    ],
+  },
+  {
     label: "Anfall",
     to: "/anfall",
     children: [
@@ -88,10 +97,10 @@ const navItems: NavItem[] = [
   { kind: "link", to: "/spelide", label: "Spelidé" },
   {
     kind: "dropdown",
-    label: "Skeden",
+    label: "Spelet",
     groups: skedenGroups,
     variant: "wide",
-    activePathPrefixes: ["/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+    activePathPrefixes: ["/identitet", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
   },
   {
     kind: "dropdown",
