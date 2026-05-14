@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Download, Eraser, Image as ImageIcon, Link as LinkIcon, Loader2, Map, Maximize2, Pencil, Upload, Video, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -299,6 +300,8 @@ function InteractiveMapEditor({ title, onUseImage }: { title: string; onUseImage
 }
 
 export default function MediaSlot({ matchId, slotKey, title, description, captionPlaceholder, className, compact = false }: Props) {
+  const { matchId: globalMatchId } = useGlobalMediaMatch();
+  const effectiveMatchId = matchId ?? globalMatchId;
   const [mode, setMode] = useState<Mode>("image");
   const [source, setSource] = useState<Source>("url");
   const [url, setUrl] = useState("");
@@ -314,7 +317,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
 
   useEffect(() => {
     setLoading(true);
-    if (!matchId) {
+    if (!effectiveMatchId) {
       setLoading(false);
       return;
     }
@@ -324,7 +327,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
       const { data } = await supabase
         .from("media_items")
         .select("*")
-        .eq("match_id", matchId)
+        .eq("match_id", effectiveMatchId)
         .eq("slot_key", slotKey)
         .maybeSingle();
 
@@ -342,7 +345,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
     return () => {
       cancelled = true;
     };
-  }, [matchId, slotKey]);
+  }, [effectiveMatchId, slotKey]);
 
   useEffect(() => {
     let cancelled = false;
@@ -368,12 +371,12 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
   }, [localObjectUrl]);
 
   async function persist(patch: { media_type?: Mode; source_kind?: Source; url?: string | null; storage_path?: string | null; caption?: string | null }) {
-    if (!matchId) return;
+    if (!effectiveMatchId) return;
     await supabase
       .from("media_items")
       .upsert(
         {
-          match_id: matchId,
+          match_id: effectiveMatchId,
           slot_key: slotKey,
           media_type: patch.media_type ?? mode,
           source_kind: patch.source_kind ?? source,
@@ -386,7 +389,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
   }
 
   async function handleUpload(file: File) {
-    if (!matchId) {
+    if (!effectiveMatchId) {
       if (localObjectUrl) URL.revokeObjectURL(localObjectUrl);
       setMode(file.type.startsWith("video/") ? "video" : "image");
       setSource("upload");
@@ -396,7 +399,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
 
     setUploading(true);
     const ext = file.name.split(".").pop() || "bin";
-    const path = `${matchId}/${slotKey}-${Date.now()}.${ext}`;
+    const path = `${effectiveMatchId}/${slotKey}-${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from("match-media").upload(path, file, { upsert: true });
 
     if (!error) {

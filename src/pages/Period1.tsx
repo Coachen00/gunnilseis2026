@@ -77,7 +77,7 @@ const Period1 = () => {
           <CalendarDays className="h-3.5 w-3.5" />
           Period 1 · {PERIOD_1.dateRange}
         </p>
-        <h1 className="max-w-4xl text-4xl font-black leading-[1.05] tracking-normal text-foreground md:text-5xl">
+        <h1 className="max-w-4xl text-4xl font-black leading-[1.02] tracking-[-0.035em] text-foreground md:text-5xl lg:text-6xl">
           Diagonalt spel från korridor till korridor
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground/85 md:text-lg">

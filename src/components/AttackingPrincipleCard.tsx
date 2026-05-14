@@ -1,5 +1,6 @@
 import type { AttackingPrinciple } from "@/data/attackingPrinciples";
 import { findIdentity } from "@/data/identity";
+import MediaSlot from "@/components/match/MediaSlot";
 
 interface Props {
   principle: AttackingPrinciple;
@@ -11,14 +12,14 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
     className="scroll-mt-24 bg-card/85 backdrop-blur-sm rounded-xl border border-border overflow-hidden"
   >
     <header className="flex items-start gap-4 p-5 md:p-6 border-b border-border">
-      <div className="flex-shrink-0 w-11 h-11 rounded-lg bg-accent/12 text-accent font-serif text-lg flex items-center justify-center">
+      <div className="flex-shrink-0 w-11 h-11 rounded-sm border border-accent/40 bg-accent/10 text-accent font-mono font-bold text-sm flex items-center justify-center tabular">
         {String(p.order).padStart(2, "0")}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.28em] text-accent mb-2">
+        <div className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent mb-2">
           Anfallsprincip {p.order} · {p.headline}
         </div>
-        <h3 className="text-xl md:text-2xl text-foreground leading-snug">
+        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-snug">
           {p.oneLiner}
         </h3>
         {p.coachrop && p.coachrop.length > 0 && (
@@ -95,6 +96,27 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
               {p.ovning.beskrivning}
             </p>
           </div>
+        </div>
+      </section>
+
+      <section className="md:col-span-2 border-t border-border pt-4">
+        <div className="mb-3 flex items-baseline justify-between gap-3">
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+            Bilder & filmer
+          </h4>
+          <span className="text-[10px] text-muted-foreground">Matchklipp och bildsekvenser</span>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {["Matchklipp", "Bildsekvens", "Inte godkänt"].map((label, index) => (
+            <MediaSlot
+              key={`${p.slug}-${index}`}
+              matchId={undefined}
+              slotKey={`spelmodell:anfall:${p.slug}:media:${index}`}
+              title={label}
+              description={`${p.headline} - ${label}`}
+              compact
+            />
+          ))}
         </div>
       </section>
 

@@ -17,9 +17,9 @@ interface KPIBoxProps {
 
 const KPIBox = ({ kpis, title = "KPIs", className }: KPIBoxProps) => {
   return (
-    <div className={cn("bg-card rounded-xl border border-border/80 shadow-[0_1px_3px_hsl(215_35%_18%_/_0.04),0_4px_14px_-4px_hsl(215_35%_18%_/_0.06)] overflow-hidden", className)}>
-      <div className="px-5 py-3.5 bg-accent/12 border-b border-accent/25">
-        <h4 className="text-xs font-sans font-semibold uppercase tracking-[0.22em] text-foreground">{title}</h4>
+    <div className={cn("bg-card rounded-sm border border-border overflow-hidden shadow-[0_1px_0_0_hsl(var(--border)),0_4px_14px_-8px_hsl(215_70%_12%/0.08)]", className)}>
+      <div className="px-5 py-3.5 bg-primary text-primary-foreground">
+        <h4 className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent">{title}</h4>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
