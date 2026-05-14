@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Shield,
@@ -529,95 +529,119 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
   const Icon = BLOCK_ICON[block.id] ?? Shield;
   const eyebrow = BLOCK_EYEBROW[block.id] ?? "";
   return (
-    <section id={block.id} className="scroll-mt-24 border-t border-white/8 py-20 md:py-28">
-      <div className="container">
-        {/* Header */}
-        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-5 flex items-center gap-4">
-              <div className={["flex h-14 w-14 items-center justify-center border-2", TONE_BG[block.accent]].join(" ")}>
-                <Icon className={["h-6 w-6", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2} />
-              </div>
-              <div>
-                <p className="font-mono text-[11px] font-bold uppercase tracking-[0.28em] text-white/50">
-                  Block {num}
-                  {eyebrow && <span> · {eyebrow}</span>}
+    <AccordionItem
+      value={block.id}
+      id={block.id}
+      className="scroll-mt-24 border-b border-white/8 border-t-0"
+    >
+      <AccordionTrigger
+        data-testid={`block-trigger-${block.id}`}
+        className="container w-full px-0 py-10 hover:no-underline md:py-12 [&[data-state=open]>div>div:last-child>svg]:rotate-180"
+      >
+        <div className="flex w-full flex-col gap-4 text-left md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-4 md:gap-5">
+            <div
+              className={[
+                "flex h-14 w-14 flex-shrink-0 items-center justify-center border-2 md:h-16 md:w-16",
+                TONE_BG[block.accent],
+              ].join(" ")}
+            >
+              <Icon className={["h-6 w-6 md:h-7 md:w-7", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2} />
+            </div>
+            <div className="min-w-0">
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.28em] text-white/50">
+                Block {num}
+                {eyebrow && <span> · {eyebrow}</span>}
+              </p>
+              <h2 className="mt-1 text-3xl font-black uppercase tracking-tight text-white md:text-5xl lg:text-6xl">
+                {block.title}
+              </h2>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 self-end md:self-center">
+            <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-white/45 transition-colors group-hover:text-white/80">
+              Öppna
+            </span>
+            <ArrowDown className="h-5 w-5 text-white/50 transition-transform" strokeWidth={2.2} />
+          </div>
+        </div>
+      </AccordionTrigger>
+
+      <AccordionContent className="overflow-hidden">
+        <div className="container pb-16 pt-2 md:pb-20">
+          <p className="mb-10 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
+            {block.kidExplanation}
+          </p>
+
+          {/* Spelarinstruktion + Planvy */}
+          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+            <div className="border border-white/12 bg-white/[0.025] p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-white/60">
+                  Spelarinstruktion
                 </p>
-                <h2 className="mt-1 text-4xl font-black uppercase tracking-tight text-white md:text-5xl lg:text-6xl">
-                  {block.title}
-                </h2>
+              </div>
+              <p className="text-base font-bold leading-snug text-white/90">{block.playerInstruction}</p>
+            </div>
+
+            <div className="overflow-hidden border border-white/12 bg-[#06120d]">
+              <div className="flex items-center justify-between border-b border-white/12 bg-white/[0.04] px-4 py-2.5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-white/55">
+                  Taktisk planvy
+                </p>
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
+                  Block {num}
+                </p>
+              </div>
+              <BlockVisual id={block.id} />
+            </div>
+          </div>
+
+          {/* Media-placeholder */}
+          <div className="mb-8">
+            <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
+          </div>
+
+          {/* Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <DoColumn variant="do" title="Gör så här" items={block.doList} />
+            <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
+            <DoColumn variant="remember" title="Kom ihåg" items={[block.remember]} />
+          </div>
+
+          {/* Triggers — bara för försvarsspel */}
+          {block.id === "forsvarsspel" && (
+            <div className="mt-10">
+              <TriggersBand />
+            </div>
+          )}
+
+          {/* Principer — alltid synliga som card-grid när blocket är öppet */}
+          {block.principles.length > 0 && (
+            <div className="mt-10 border border-white/12 bg-white/[0.025] p-6">
+              <div className="mb-5 flex items-center gap-3">
+                <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
+                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-white/70">
+                  Principer · {block.principles.length}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                {block.principles.map((p) => (
+                  <PrincipleMediaSlot
+                    key={p.id}
+                    blockId={block.id}
+                    principleId={p.id}
+                    principleLabel={p.label}
+                    oneLiner={p.oneLiner}
+                  />
+                ))}
               </div>
             </div>
-            <p className="max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">{block.kidExplanation}</p>
-          </div>
+          )}
         </div>
-
-        {/* Spelarinstruktion + Planvy */}
-        <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-          <div className="border border-white/12 bg-white/[0.025] p-6">
-            <div className="mb-4 flex items-center gap-2">
-              <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-white/60">Spelarinstruktion</p>
-            </div>
-            <p className="text-base font-bold leading-snug text-white/90">{block.playerInstruction}</p>
-          </div>
-
-          <div className="overflow-hidden border border-white/12 bg-[#06120d]">
-            <div className="flex items-center justify-between border-b border-white/12 bg-white/[0.04] px-4 py-2.5">
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Taktisk planvy</p>
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">Block {num}</p>
-            </div>
-            <BlockVisual id={block.id} />
-          </div>
-        </div>
-
-        {/* Media-placeholder */}
-        <div className="mb-8">
-          <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
-        </div>
-
-        {/* Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          <DoColumn variant="do" title="Gör så här" items={block.doList} />
-          <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
-          <DoColumn variant="remember" title="Kom ihåg" items={[block.remember]} />
-        </div>
-
-        {/* Principer — accordion med autosparande media-/text-slot per princip */}
-        {block.principles.length > 0 && (
-          <div className="mt-10 border border-white/12 bg-white/[0.025]">
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value={`principer-${block.id}`} className="border-0">
-                <AccordionTrigger
-                  data-testid={`principles-trigger-${block.id}`}
-                  className="px-6 py-5 hover:no-underline"
-                >
-                  <div className="flex items-center gap-3">
-                    <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
-                    <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-white/70">
-                      Principer · {block.principles.length}
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="border-t border-white/8 px-6 pb-6 pt-4">
-                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                    {block.principles.map((p) => (
-                      <PrincipleMediaSlot
-                        key={p.id}
-                        blockId={block.id}
-                        principleId={p.id}
-                        principleLabel={p.label}
-                        oneLiner={p.oneLiner}
-                      />
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        )}
-      </div>
-    </section>
+      </AccordionContent>
+    </AccordionItem>
   );
 }
 
@@ -843,18 +867,50 @@ function TriggersBand() {
    PAGE
    ========================================================================= */
 
-const MajSpelmodell = () => (
+const BLOCK_IDS = new Set(MAJ_2026_BLOCKS.map((b) => b.id));
+
+function useHashControlledAccordion() {
+  const [open, setOpen] = useState<string[]>([]);
+
+  useEffect(() => {
+    const focusFromHash = () => {
+      const hash = window.location.hash.replace(/^#/, "");
+      if (!hash || !BLOCK_IDS.has(hash)) return;
+      setOpen((prev) => (prev.includes(hash) ? prev : [...prev, hash]));
+      // Scrolla efter att Radix har öppnat och innehållet renderats.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+    };
+    focusFromHash();
+    window.addEventListener("hashchange", focusFromHash);
+    return () => window.removeEventListener("hashchange", focusFromHash);
+  }, []);
+
+  return [open, setOpen] as const;
+}
+
+const MajSpelmodell = () => {
+  const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
+
+  return (
   <div className="relative -mt-px bg-[#06120d] text-white">
     <Hero />
     <EffektlogikStrip />
     <SpelarenSnabbversion />
 
-    {MAJ_2026_BLOCKS.map((block, i) => (
-      <div key={block.id}>
-        <BlockSection block={block} num={String(i + 1).padStart(2, "0")} />
-        {block.id === "forsvarsspel" && <TriggersBand />}
-      </div>
-    ))}
+    <Accordion
+      type="multiple"
+      value={openBlocks}
+      onValueChange={setOpenBlocks}
+      className="border-t border-white/8"
+    >
+      {MAJ_2026_BLOCKS.map((block, i) => (
+        <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
+      ))}
+    </Accordion>
 
     {/* Closing strip */}
     <section className="border-t border-white/8 bg-[#0a1f15] py-16">
@@ -886,6 +942,7 @@ const MajSpelmodell = () => (
       </div>
     </section>
   </div>
-);
+  );
+};
 
 export default MajSpelmodell;
