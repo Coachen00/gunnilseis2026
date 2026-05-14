@@ -25,6 +25,7 @@ export function useMatch(status: "upcoming" | "played") {
       .from("matches")
       .select("*")
       .eq("status", status)
+      .neq("opponent", "Spelmodell media")
       .order("match_date", { ascending: status === "upcoming", nullsFirst: false })
       .limit(1)
       .maybeSingle();

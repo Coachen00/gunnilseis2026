@@ -1,16 +1,157 @@
-import { Link, useParams, Navigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
+import { useEffect } from "react";
+import { Link, Navigate, useLocation, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight, Check, ImagePlus, Loader2, X } from "lucide-react";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
+import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
 import PageHero from "@/components/PageHero";
 import MediaSlot from "@/components/match/MediaSlot";
+import { cn } from "@/lib/utils";
+
+type IdentityMediaGroup = {
+  id: string;
+  title: string;
+  description: string;
+  slots: string[];
+};
+
+const IDENTITY_MEDIA_GROUPS: IdentityMediaGroup[] = [
+  {
+    id: "andrabollsspel",
+    title: "2a bollsspel",
+    description: "Reaktion, position och mod när nästa boll blir matchens viktigaste boll.",
+    slots: ["2a bollsspel 1", "2a bollsspel 2", "2a bollsspel 3"],
+  },
+  {
+    id: "duellspel",
+    title: "Duellspel",
+    description: "Närkontakt, första steg och kropp mot boll utan att tappa kontroll.",
+    slots: ["Duellspel 1", "Duellspel 2", "Duellspel 3"],
+  },
+  {
+    id: "djupledsspel",
+    title: "Djupledsspel",
+    description: "Djupledslöpningar och felvända löpningar som hjälper laget framåt och hemåt.",
+    slots: ["Djupledsspel 1", "Djupledsspel 2", "Djupledsspel 3"],
+  },
+  {
+    id: "vardigt-kroppssprak",
+    title: "Värdigt kroppsspråk",
+    description: "Hur vi bär oss själva efter misstag, beslut, dueller och matchens svåra stunder.",
+    slots: ["Värdigt kroppsspråk 1", "Värdigt kroppsspråk 2", "Värdigt kroppsspråk 3"],
+  },
+];
 
 const Identitet = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
-  const item = slug ? identity.find((i) => i.slug === slug) : undefined;
+  const { slug } = useParams<{ slug?: string }>();
 
-  if (!item) return <Navigate to="/" replace />;
+  if (slug) return <IdentityDetail slug={slug} />;
+  return <IdentityOverview />;
+};
+
+const IdentityOverview = () => {
+  const location = useLocation();
+  const { matchId, loading, error } = useGlobalMediaMatch();
+
+  useEffect(() => {
+    if (!location.hash) return;
+    const id = decodeURIComponent(location.hash.slice(1));
+    window.requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ block: "start" });
+    });
+  }, [location.hash]);
+
+  return (
+    <>
+      <PageHero
+        eyebrow="Spelet · Identitet"
+        title="Identitet"
+        description="Fyra beteenden som ska synas i träning, match och analys."
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-2 rounded-md border border-border bg-card/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
+            {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImagePlus className="h-3.5 w-3.5 text-accent" />}
+            {loading ? "Kopplar media" : error ? "Media offline" : "Media autosparas"}
+          </span>
+        </div>
+      </PageHero>
+
+      <div className="container pb-24">
+        <nav className="mb-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Identitetsområden">
+          {IDENTITY_MEDIA_GROUPS.map((group, index) => (
+            <a
+              key={group.id}
+              href={`#${group.id}`}
+              className="group rounded-lg border border-border bg-card/80 p-4 transition hover:border-accent/50 hover:bg-card"
+            >
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="mt-2 block text-lg font-black tracking-tight text-foreground group-hover:text-accent">
+                {group.title}
+              </span>
+            </a>
+          ))}
+        </nav>
+
+        <div className="space-y-16">
+          {IDENTITY_MEDIA_GROUPS.map((group, groupIndex) => (
+            <section key={group.id} id={group.id} className="scroll-mt-24">
+              <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                <div className="max-w-3xl">
+                  <div className="mb-4 flex items-center gap-3">
+                    <span className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent/10 font-mono text-xs font-black text-accent">
+                      {String(groupIndex + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">
+                      Identitet
+                    </span>
+                  </div>
+                  <h2 className="text-4xl leading-tight text-foreground md:text-5xl">
+                    {group.title}
+                  </h2>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-foreground/70">
+                    {group.description}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid gap-4 xl:grid-cols-3">
+                {group.slots.map((slotTitle, slotIndex) => (
+                  <article
+                    key={slotTitle}
+                    className={cn(
+                      "rounded-xl border border-border bg-card/85 p-4 shadow-sm",
+                      "transition hover:border-accent/45 hover:shadow-md hover:shadow-primary/5"
+                    )}
+                  >
+                    <h3 className="mb-4 text-2xl leading-tight text-foreground">
+                      {slotTitle}
+                    </h3>
+                    <MediaSlot
+                      matchId={matchId}
+                      slotKey={`identitet:${group.id}:${slotIndex + 1}`}
+                      title="Bild eller film"
+                      description={slotTitle}
+                      captionPlaceholder="Skriv bildförklaring här..."
+                    />
+                  </article>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+const IdentityDetail = ({ slug }: { slug: string }) => {
+  const { data: identity } = useContent<IdentityItem[]>("identity", IDENTITY);
+  const { matchId } = useGlobalMediaMatch();
+  const item = identity.find((i) => i.slug === slug);
+
+  if (!item) return <Navigate to="/identitet" replace />;
 
   const index = identity.findIndex((i) => i.slug === item.slug);
   const prev = identity[(index - 1 + identity.length) % identity.length];
@@ -25,35 +166,34 @@ const Identitet = () => {
       />
       <div className="container pb-24">
         <Link
-          to="/"
-          className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors mb-10"
+          to="/identitet"
+          className="mb-10 inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="h-4 w-4" />
           Tillbaka till identitet
         </Link>
 
         <div className="max-w-3xl space-y-10">
           <div className="border-l-2 border-accent/60 pl-6">
-            <p className="text-lg md:text-xl text-foreground/90 leading-relaxed">{item.oneLiner}</p>
+            <p className="text-lg leading-relaxed text-foreground/90 md:text-xl">{item.oneLiner}</p>
           </div>
 
           <section>
-            <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-4">Så gör vi det</h2>
+            <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-accent">
+              Så gör vi det
+            </h2>
             <ul className="space-y-3">
               {item.practice.map((p, i) => (
-                <li
-                  key={i}
-                  className="bg-card/85 backdrop-blur-sm border border-border rounded-lg p-4"
-                >
+                <li key={p} className="rounded-lg border border-border bg-card/85 p-4 backdrop-blur-sm">
                   <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/15 text-accent text-xs font-black flex items-center justify-center mt-0.5">
+                    <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-black text-accent">
                       {i + 1}
                     </span>
-                    <span className="text-sm md:text-base text-foreground/90 leading-relaxed">{p}</span>
+                    <span className="text-sm leading-relaxed text-foreground/90 md:text-base">{p}</span>
                   </div>
                   <div className="mt-4 pl-9">
                     <MediaSlot
-                      matchId={undefined}
+                      matchId={matchId}
                       slotKey={`identitet:${item.slug}:practice:${i}`}
                       title={`Exempel ${i + 1}`}
                       description={`${item.title} - ${p}`}
@@ -65,15 +205,15 @@ const Identitet = () => {
             </ul>
           </section>
 
-          <section className="grid md:grid-cols-2 gap-4">
-            <div className="bg-card/85 backdrop-blur-sm border border-border rounded-lg p-5">
-              <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
-                <Check className="w-4 h-4" /> Godkänt
+          <section className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-border bg-card/85 p-5 backdrop-blur-sm">
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+                <Check className="h-4 w-4" /> Godkänt
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">{item.gVillkor}</p>
+              <p className="text-sm leading-relaxed text-foreground/85">{item.gVillkor}</p>
               <div className="mt-4">
                 <MediaSlot
-                  matchId={undefined}
+                  matchId={matchId}
                   slotKey={`identitet:${item.slug}:godkant`}
                   title="Godkänt beteende"
                   description={item.gVillkor}
@@ -81,14 +221,14 @@ const Identitet = () => {
                 />
               </div>
             </div>
-            <div className="bg-card/85 backdrop-blur-sm border border-destructive/30 rounded-lg p-5">
-              <div className="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-[0.2em] text-destructive">
-                <X className="w-4 h-4" /> Inte godkänt
+            <div className="rounded-lg border border-destructive/30 bg-card/85 p-5 backdrop-blur-sm">
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-destructive">
+                <X className="h-4 w-4" /> Inte godkänt
               </div>
-              <p className="text-sm text-foreground/85 leading-relaxed">{item.igVillkor}</p>
+              <p className="text-sm leading-relaxed text-foreground/85">{item.igVillkor}</p>
               <div className="mt-4">
                 <MediaSlot
-                  matchId={undefined}
+                  matchId={matchId}
                   slotKey={`identitet:${item.slug}:inte-godkant`}
                   title="Inte godkänt"
                   description={item.igVillkor}
@@ -101,17 +241,17 @@ const Identitet = () => {
           <nav className="flex items-center justify-between border-t border-border pt-8">
             <Link
               to={`/identitet/${prev.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="h-4 w-4" />
               {prev.title}
             </Link>
             <Link
               to={`/identitet/${next.slug}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent/80"
             >
               {next.title}
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </nav>
         </div>

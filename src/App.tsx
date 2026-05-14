@@ -96,6 +96,7 @@ const App = () => (
           <Route path="/match/matcher" element={<Protected><Matcher /></Protected>} />
           <Route path="/truppen" element={<Protected><Truppen /></Protected>} />
           <Route path="/roller" element={<Protected><Roller /></Protected>} />
+          <Route path="/identitet" element={<Protected><Identitet /></Protected>} />
           <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
