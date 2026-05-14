@@ -16,6 +16,16 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+      },
+      spacing: {
+        "section-sm": "4rem",
+        section: "6rem",
+        "section-lg": "9rem",
+      },
+      maxWidth: {
+        prose: "65ch",
+        readable: "1180px",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -80,11 +90,13 @@ export default {
           defense: "hsl(var(--zone-defense))",
         },
         gunnilse: {
-          navy: "hsl(212 85% 24%)",
-          shield: "hsl(231 45% 35%)",
-          gold: "hsl(47 84% 57%)",
-          red: "hsl(356 75% 49%)",
-          warm: "hsl(47 60% 92%)",
+          navy: "hsl(215 45% 22%)",
+          shield: "hsl(231 25% 42%)",
+          gold: "hsl(42 70% 48%)",
+          red: "hsl(356 55% 48%)",
+          warm: "hsl(40 30% 97%)",
+          paper: "hsl(40 22% 99%)",
+          sand: "hsl(40 18% 92%)",
         },
       },
       borderRadius: {

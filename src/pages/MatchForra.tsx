@@ -70,7 +70,7 @@ const MatchForra = () => {
               <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
                 Resultat
               </div>
-              <div className="font-black text-lg">
+              <div className="font-serif text-2xl text-foreground">
                 {m.meta.ourScore}–{m.meta.theirScore}
               </div>
             </div>
@@ -120,7 +120,7 @@ const MatchForra = () => {
               <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
                 {b.badge}
               </span>
-              <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+              <h2 className="text-3xl md:text-4xl mt-3 leading-tight">
                 {b.title}
               </h2>
             </div>

@@ -4,7 +4,7 @@ import type { Reference } from "@/data/period1";
 const ReferenceCard = ({ reference }: { reference: Reference }) => (
   <article className="rounded-xl border border-border bg-card/35 p-5">
     <header className="mb-3 flex items-baseline justify-between gap-3 border-b border-border pb-3">
-      <h3 className="flex items-center gap-2 text-lg font-black tracking-normal text-foreground">
+      <h3 className="flex items-center gap-2 text-xl text-foreground">
         <Sparkles className="h-4 w-4 text-accent" strokeWidth={1.75} />
         {reference.team}
       </h3>

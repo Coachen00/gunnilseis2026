@@ -67,7 +67,7 @@ const Bullets = ({
 const SessionCard = ({ session }: { session: Session }) => (
   <article className="rounded-xl border border-border bg-card/35 p-5">
     <header className="mb-4 flex flex-wrap items-baseline justify-between gap-2 border-b border-border pb-3">
-      <h3 className="text-lg font-black tracking-normal text-foreground">{session.title}</h3>
+      <h3 className="text-xl text-foreground">{session.title}</h3>
       <span className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">
         <Compass className="h-3.5 w-3.5" />
         {session.principle}

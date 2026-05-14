@@ -70,7 +70,7 @@ export default function ContentEditor<T>({
     <div className="rounded-xl border border-border bg-card p-5">
       <div className="flex items-start justify-between gap-3 mb-3">
         <div>
-          <h3 className="text-base font-black text-foreground">{label}</h3>
+          <h3 className="text-lg text-foreground">{label}</h3>
           {description && (
             <p className="text-xs text-muted-foreground mt-1">{description}</p>
           )}

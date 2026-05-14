@@ -7,7 +7,7 @@ const StaticMatchHeader = () => (
         <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-accent mb-1">
           Veckans match
         </p>
-        <h2 className="text-2xl md:text-3xl font-black">
+        <h2 className="text-3xl md:text-4xl leading-tight">
           {MATCH_META.opponent}
         </h2>
       </div>

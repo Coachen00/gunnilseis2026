@@ -159,7 +159,7 @@ const MatchRowContent = ({
               <ArrowUpRight className="h-3 w-3" />
             )}
           </span>
-          <p className="truncate text-base font-black tracking-tight text-foreground">
+          <p className="truncate text-base font-semibold tracking-tight text-foreground">
             {match.homeAway === "home" ? "Gunnilse — " : ""}
             {match.opponent}
             {match.homeAway === "away" ? " — Gunnilse" : ""}

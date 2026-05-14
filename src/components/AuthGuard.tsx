@@ -80,7 +80,7 @@ const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: Aut
           <div className="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-4">
             <Clock className="w-8 h-8 text-amber-500" />
           </div>
-          <h2 className="text-xl font-black text-foreground mb-2">Väntar på godkännande</h2>
+          <h2 className="text-2xl text-foreground mb-3">Väntar på godkännande</h2>
           <p className="text-sm text-muted-foreground mb-6">
             Din förfrågan har skickats. Du får tillgång så fort en administratör godkänner ditt konto.
           </p>

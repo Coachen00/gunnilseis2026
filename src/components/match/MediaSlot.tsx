@@ -8,6 +8,7 @@ interface Props {
   slotKey: string;
   title: string;
   description?: string;
+  captionPlaceholder?: string;
   className?: string;
   compact?: boolean;
 }
@@ -297,10 +298,11 @@ function InteractiveMapEditor({ title, onUseImage }: { title: string; onUseImage
   );
 }
 
-export default function MediaSlot({ matchId, slotKey, title, description, className, compact = false }: Props) {
+export default function MediaSlot({ matchId, slotKey, title, description, captionPlaceholder, className, compact = false }: Props) {
   const [mode, setMode] = useState<Mode>("image");
   const [source, setSource] = useState<Source>("url");
   const [url, setUrl] = useState("");
+  const [caption, setCaption] = useState("");
   const [storagePath, setStoragePath] = useState<string | null>(null);
   const [signedUrl, setSignedUrl] = useState<string | null>(null);
   const [localObjectUrl, setLocalObjectUrl] = useState<string | null>(null);
@@ -311,6 +313,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    setLoading(true);
     if (!matchId) {
       setLoading(false);
       return;
@@ -330,6 +333,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
         setMode((data.media_type as Mode) ?? "image");
         setSource((data.source_kind as Source) ?? "url");
         setUrl(data.url ?? "");
+        setCaption(data.caption ?? "");
         setStoragePath(data.storage_path ?? null);
       }
       setLoading(false);
@@ -363,7 +367,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
     };
   }, [localObjectUrl]);
 
-  async function persist(patch: { media_type?: Mode; source_kind?: Source; url?: string | null; storage_path?: string | null }) {
+  async function persist(patch: { media_type?: Mode; source_kind?: Source; url?: string | null; storage_path?: string | null; caption?: string | null }) {
     if (!matchId) return;
     await supabase
       .from("media_items")
@@ -375,6 +379,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
           source_kind: patch.source_kind ?? source,
           url: patch.url !== undefined ? patch.url : url || null,
           storage_path: patch.storage_path !== undefined ? patch.storage_path : storagePath,
+          caption: patch.caption !== undefined ? patch.caption : caption || null,
         },
         { onConflict: "match_id,slot_key" }
       );
@@ -533,6 +538,22 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
     </div>
   );
 
+  const captionControl = (
+    <label className="block">
+      <span className="mb-1.5 block text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+        Bildförklaring
+      </span>
+      <textarea
+        value={caption}
+        onChange={(e) => setCaption(e.target.value)}
+        onBlur={() => persist({ caption: caption || null })}
+        placeholder={captionPlaceholder ?? "Skriv kort vad bilden eller filmen visar..."}
+        rows={compact ? 2 : 3}
+        className="min-h-[72px] w-full resize-y rounded-md border border-border bg-background/70 px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+      />
+    </label>
+  );
+
   const emptyState = (
     <button
       type="button"
@@ -622,7 +643,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
             <ModeIcon className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <h4 className={cn("truncate font-black leading-tight text-foreground", compact ? "text-xs" : "text-sm")}>
+            <h4 className={cn("truncate font-semibold leading-tight text-foreground", compact ? "text-xs" : "text-sm")}>
               {title}
             </h4>
             <div className="mt-1 flex flex-wrap gap-1.5">
@@ -655,6 +676,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
 
       <div className={cn("space-y-3", compact ? "px-3 pb-3" : "p-4")}>
         {!compact && inputControls}
+        {!compact && captionControl}
         {preview}
       </div>
 
@@ -680,7 +702,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
                   <ModeIcon className="h-5 w-5" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-xl font-black leading-tight text-foreground">{title}</h3>
+                  <h3 className="text-2xl leading-snug text-foreground">{title}</h3>
                   {description && <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>}
                 </div>
               </div>
@@ -695,6 +717,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, classN
               ) : (
                 <div className="mb-4">{inputControls}</div>
               )}
+              <div className="mb-4">{captionControl}</div>
               <div className="rounded-lg border border-border bg-background/50 p-2">{preview}</div>
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                 Accepterar PNG, JPEG/JPG, WebP, GIF, HEIC/HEIF samt MP4, MOV, WebM, AVI, MKV och MPEG.

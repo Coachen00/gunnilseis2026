@@ -58,7 +58,7 @@ const CurrentStateSection = () => (
   <section id="nulage" className="scroll-mt-24 pt-10">
     <div className="mb-10 max-w-3xl">
       <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Nuläge</p>
-      <h1 className="text-4xl font-black leading-tight tracking-normal text-foreground md:text-6xl">
+      <h1 className="text-4xl md:text-6xl leading-[1.05] text-foreground">
         En enkel spelidé i fyra skeden.
       </h1>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -90,7 +90,7 @@ const PhaseRow = ({ phase }: { phase: MacroPhase }) => {
         <p className="hidden font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground md:block">
           {phase.num}
         </p>
-        <h2 className="mt-1 text-xl font-black leading-tight tracking-normal text-foreground">{phase.label}</h2>
+        <h2 className="mt-1 text-xl leading-tight text-foreground">{phase.label}</h2>
         <p className="mt-2 text-sm font-semibold leading-relaxed text-muted-foreground">{phase.oneLiner}</p>
       </div>
       <div className="flex flex-wrap gap-2">

@@ -18,7 +18,7 @@ const WeekCard = ({ week, anchorBase = "/period/1#vecka" }: { week: Week; anchor
           {week.dateRange}
         </span>
       </div>
-      <h3 className="text-lg font-black leading-tight tracking-normal text-foreground">{week.theme}</h3>
+      <h3 className="text-xl leading-snug text-foreground">{week.theme}</h3>
       <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{week.learningGoal}</p>
 
       <ul className="mt-3 space-y-1 text-xs text-muted-foreground">

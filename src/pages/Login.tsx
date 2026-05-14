@@ -103,7 +103,7 @@ const Login = () => {
       <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
         <Card className="w-full max-w-md card-gradient border-border">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-black text-foreground">📩 Förfrågan skickad</CardTitle>
+            <CardTitle className="text-3xl text-foreground">Förfrågan skickad</CardTitle>
             <CardDescription className="text-muted-foreground">
               Din förfrågan för <strong>{username}</strong> är registrerad.
               En administratör behöver godkänna kontot innan du kan logga in.
@@ -131,7 +131,7 @@ const Login = () => {
     <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
       <Card className="w-full max-w-md card-gradient border-border">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-black text-foreground">
+          <CardTitle className="text-3xl text-foreground">
             {isSignUp ? "Begär tillgång" : "Logga in"}
           </CardTitle>
           <CardDescription className="text-muted-foreground">

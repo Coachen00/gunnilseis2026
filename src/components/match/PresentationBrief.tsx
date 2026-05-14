@@ -109,7 +109,7 @@ export default function PresentationBrief() {
             <Sparkles className="h-3.5 w-3.5" />
             Presentationsbrief
           </div>
-          <h2 className="text-2xl font-black tracking-tight">10-15 slides på matchspråk</h2>
+          <h2 className="text-3xl md:text-4xl leading-tight">10-15 slides på matchspråk</h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Teknisk brief för en stark, bilddriven presentation från veckans matchplan.
           </p>
@@ -163,8 +163,8 @@ function SlideCard({ slide }: { slide: SlideSpec }) {
             {slide.no}
           </span>
           <div className="min-w-0">
-            <h3 className="text-sm font-black uppercase tracking-wide">{slide.title}</h3>
-            <p className="mt-1 text-lg font-black tracking-tight">{slide.words}</p>
+            <h3 className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-foreground">{slide.title}</h3>
+            <p className="mt-1.5 font-serif text-xl text-foreground">{slide.words}</p>
           </div>
         </div>
         <InfoLine Icon={Image} label="Bild" text={slide.visual} />

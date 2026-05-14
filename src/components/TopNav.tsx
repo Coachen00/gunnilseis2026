@@ -14,11 +14,22 @@ type NavItem = SimpleItem | DropdownItem;
 const skedenGroups: NavGroup[] = [
   {
     label: "Identitet",
+    to: "/identitet",
     children: [
-      { label: "2:a-bollsspel", to: "/identitet/andra-boll" },
-      { label: "Duellspel", to: "/identitet/duellspel" },
-      { label: "Djupledslöpningar och felvända löpningar", to: "/identitet/djupled-felvant" },
-      { label: "Värdigt kroppsspråk", to: "/identitet/kroppssprak" },
+      { label: "2a bollsspel", to: "/identitet#andrabollsspel" },
+      { label: "Duellspel", to: "/identitet#duellspel" },
+      { label: "Djupledsspel", to: "/identitet#djupledsspel" },
+      { label: "Värdigt kroppsspråk", to: "/identitet#vardigt-kroppssprak" },
+    ],
+  },
+  {
+    label: "Roller",
+    to: "/roller",
+    children: [
+      { label: "Roller & positioner", to: "/roller#roller-positioner" },
+      { label: "Målvakten", to: "/roller#malvakt" },
+      { label: "Matchtrupp", to: "/roller#matchtrupp" },
+      { label: "Kvalitetskontroll", to: "/roller#quality-control" },
     ],
   },
   {
@@ -100,7 +111,7 @@ const navItems: NavItem[] = [
     label: "Spelet",
     groups: skedenGroups,
     variant: "wide",
-    activePathPrefixes: ["/identitet", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+    activePathPrefixes: ["/identitet", "/roller", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
   },
   {
     kind: "dropdown",
@@ -130,7 +141,7 @@ const TopNav = () => {
 
   useEffect(() => {
     setOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     let mounted = true;
@@ -179,23 +190,23 @@ const TopNav = () => {
       className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300",
         scrolled
-          ? "bg-background/85 backdrop-blur-xl border-b border-border"
-          : "bg-background/50 backdrop-blur-md border-b border-transparent"
+          ? "bg-background/90 backdrop-blur-xl border-b border-border/70 shadow-[0_1px_0_0_hsl(var(--border)/0.5)]"
+          : "bg-background/60 backdrop-blur-md border-b border-transparent"
       )}
     >
       <div className="container flex items-center justify-between gap-4 h-16">
         {/* Brand */}
         <Link
           to="/"
-          className="flex items-center gap-2.5 group flex-shrink-0"
+          className="flex items-center gap-2.5 group flex-shrink-0 transition-opacity hover:opacity-80"
           aria-label="Gunnilse IS — Hem"
         >
-          <div className="w-8 h-8 rounded-md bg-card border border-border flex items-center justify-center text-accent font-mono font-black text-sm">
+          <div className="w-8 h-8 rounded-md bg-card border border-border/80 flex items-center justify-center text-accent font-serif text-base leading-none">
             G
           </div>
-          <span className="font-extrabold tracking-tight text-foreground hidden sm:inline">
+          <span className="font-serif text-lg tracking-tight text-foreground hidden sm:inline">
             Gunnilse IS
-            <span className="text-accent ml-1">2026</span>
+            <span className="text-accent/90 ml-1.5 font-sans text-xs uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </span>
         </Link>
 

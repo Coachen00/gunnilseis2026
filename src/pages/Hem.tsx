@@ -1,7 +1,19 @@
 import { Link } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, LogIn, Shield, UserPlus } from "lucide-react";
 
 const Hem = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  const fadeUp = (delay = 0) =>
+    prefersReducedMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 16 },
+          animate: { opacity: 1, y: 0 },
+          transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1], delay },
+        };
+
   return (
     <section className="relative min-h-[88vh] overflow-hidden">
       <video
@@ -10,72 +22,79 @@ const Hem = () => {
         loop
         playsInline
         poster="/hero-poster.jpg"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover opacity-25"
         aria-hidden="true"
       >
         <source src="/hero.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/92 via-background/82 to-background" />
+      {/* Light paper veil over video — keeps brand mood, lifts contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/92 via-background/96 to-background" />
 
-      <div className="container relative flex min-h-[88vh] flex-col justify-center py-20">
+      <div className="container relative flex min-h-[88vh] flex-col justify-center py-section-lg">
         <div className="max-w-3xl">
-          <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.28em] text-gunnilse-gold">
+          <motion.div
+            {...fadeUp(0)}
+            className="mb-9 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-accent"
+          >
             <Shield className="h-5 w-5" strokeWidth={1.5} />
             Gunnilse IS · Angereds lag
-          </div>
+          </motion.div>
 
-          <h1 className="text-4xl font-black leading-[1.05] tracking-normal text-foreground md:text-5xl lg:text-6xl">
-            Gunnilse IS är inte bara en fotbollsförening.
-          </h1>
+          <motion.h1
+            {...fadeUp(0.08)}
+            className="text-[2.75rem] sm:text-5xl md:text-7xl lg:text-[5.25rem] leading-[1.02] text-foreground"
+          >
+            Gunnilse IS är inte bara
+            <br className="hidden md:block" />
+            <span className="italic text-foreground/90"> en fotbollsförening.</span>
+          </motion.h1>
 
-          <div className="mt-8 space-y-5 text-base leading-relaxed text-foreground/90 md:text-lg">
+          <motion.div
+            {...fadeUp(0.18)}
+            className="mt-10 space-y-5 max-w-prose text-lg md:text-xl leading-relaxed text-foreground/80"
+          >
             <p>
-              Gunnilse IS är områdets lag. En förening född 1950, byggd av människor med
-              fotbollen som gemensam kraft och med Angered som hemmaplan.
+              Områdets lag sedan 1950. 1997 stod klubben trea i Allsvenska-kvalet — kraften finns redan här.
             </p>
-            <p>
-              Klubben har redan visat vad som är möjligt: herrlaget hade sin starkaste period
-              under 1990-talet, vann division 2 1989, spelade i division 1 1990–2000 och
-              nådde Superettan år 2000. 1997 var Allsvenskan nära när Gunnilse slutade trea —
-              fortfarande en av klubbens största historiska meriter.
+            <p className="text-foreground/70">
+              Angered är en stad i staden. Hjällbo, Hammarkullen, Gårdsten, Lövgärdet, Rannebergen, Gunnilse.
             </p>
-            <p className="font-semibold text-foreground">
-              Det gör Gunnilse speciellt. Vi behöver inte uppfinna en dröm från ingenting.
-              Vi ska väcka en kraft som redan har funnits.
-            </p>
-            <p>
-              Angered är dessutom inte ett litet upptagningsområde. Området planerades en
-              gång för över 100 000 invånare och bär fortfarande känslan av en egen stad i
-              staden: Hjällbo, Hammarkullen, Gårdsten, Lövgärdet, Rannebergen och Gunnilse
-              med omnejd. Här finns barn, ungdomar, familjer, ledare, förebilder och
-              framtida spelare.
-            </p>
-            <p className="font-semibold text-foreground">
-              Vår uppgift är tydlig: Gunnilse IS ska bli den naturliga samlingspunkten för
-              Angereds fotboll. En förening som bygger stolthet, disciplin, utveckling och
-              gemenskap. Ett lag som området känner igen sig i. Ett lag som visar att
-              Angered inte bara har potential.{" "}
-              <span className="text-accent">Angered har kraft.</span>
-            </p>
-          </div>
+          </motion.div>
 
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <motion.p
+            {...fadeUp(0.28)}
+            className="mt-8 max-w-prose font-serif text-2xl md:text-3xl leading-snug text-foreground"
+          >
+            Vi väcker en förening som <span className="italic text-accent/90">redan är stor</span>.
+          </motion.p>
+
+          <motion.p
+            {...fadeUp(0.34)}
+            className="mt-3 text-sm font-semibold uppercase tracking-[0.24em] text-accent"
+          >
+            Angered har kraft.
+          </motion.p>
+
+          <motion.div
+            {...fadeUp(0.42)}
+            className="mt-12 flex flex-col gap-3 sm:flex-row"
+          >
             <Link
               to="/login"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-accent px-5 text-sm font-black text-accent-foreground transition hover:bg-accent/90"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:shadow-[0_4px_14px_-4px_hsl(215_35%_18%_/_0.25)]"
             >
               <LogIn className="h-4 w-4" />
               Logga in
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
             </Link>
             <Link
               to="/login?mode=signup"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md border border-border bg-background/45 px-5 text-sm font-bold text-foreground transition hover:border-accent/45"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-border bg-card/60 px-6 text-sm font-semibold text-foreground transition-all duration-300 hover:border-accent/50 hover:bg-card"
             >
               <UserPlus className="h-4 w-4" />
               Begär tillgång
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

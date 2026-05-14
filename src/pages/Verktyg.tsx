@@ -53,7 +53,7 @@ const Verktyg = () => (
             <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent">
               <Icon className="h-4 w-4" strokeWidth={1.75} />
             </span>
-            <h2 className="text-lg font-black tracking-normal text-foreground">{label}</h2>
+            <h2 className="text-xl text-foreground">{label}</h2>
             <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
             <ArrowRight className="hidden h-4 w-4 text-accent transition group-hover:translate-x-1 md:block" />
           </Link>

@@ -47,7 +47,7 @@ const Truppen = () => {
                     <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black tracking-wider text-accent">
                       {labels.short}
                     </span>
-                    <h2 className="text-lg font-black tracking-tight text-foreground">{labels.long}</h2>
+                    <h2 className="text-xl text-foreground">{labels.long}</h2>
                   </div>
                   <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
                     {list.length} spelare
@@ -97,7 +97,7 @@ const Truppen = () => {
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
                 Ledarstab
               </span>
-              <h2 className="text-lg font-black tracking-tight text-foreground">Tränare & ledning</h2>
+              <h2 className="text-xl text-foreground">Tränare & ledning</h2>
             </div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
               {staff.length} personer
