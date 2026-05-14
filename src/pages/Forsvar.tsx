@@ -5,7 +5,7 @@ import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
 import SectionReveal from "@/components/SectionReveal";
 import { PHASE_CUES } from "@/data/phaseCues";
-import MediaSlot from "@/components/match/MediaSlot";
+import MediaSlotGroup from "@/components/match/MediaSlotGroup";
 
 const Forsvar = () => (
   <>
@@ -35,22 +35,28 @@ const Forsvar = () => (
       <SectionReveal as="section">
       <section id="hogt" className="scroll-mt-24">
         <SectionHeader badge="01 · Högt" title="Högt försvar" subtitle="Press hög upp i plan — trigger på deras vänsterback." />
-        <div className="mb-6 grid gap-3 md:grid-cols-3">
-          <MediaSlot slotKey="spelmodell:forsvar:hogt:press" title="Press" description="Högt försvar - press" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:hogt:styrning" title="Styrning" description="Högt försvar - styr pressen" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:hogt:andraboll" title="Andraboll" description="Högt försvar - andrabollar" compact />
-        </div>
+        <MediaSlotGroup
+          className="mb-6"
+          slots={[
+            { slotKey: "spelmodell:forsvar:hogt:press", title: "Press", description: "Högt försvar - press" },
+            { slotKey: "spelmodell:forsvar:hogt:styrning", title: "Styrning", description: "Högt försvar - styr pressen" },
+            { slotKey: "spelmodell:forsvar:hogt:andraboll", title: "Andraboll", description: "Högt försvar - andrabollar" },
+          ]}
+        />
         <ForsvarsspelSection />
       </section>
       </SectionReveal>
       <SectionReveal as="section">
       <section id="medel" className="scroll-mt-24">
         <SectionHeader badge="02 · Medel" title="Medelhögt försvar" subtitle="Block runt mittlinjen — stäng inre korridorer, tvinga utåt." />
-        <div className="mb-4 grid gap-3 md:grid-cols-3">
-          <MediaSlot slotKey="spelmodell:forsvar:medel:block" title="Block" description="Medelhögt försvar - block" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:medel:korridor" title="Korridor" description="Medelhögt försvar - stäng inre korridor" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:medel:trigger" title="Trigger" description="Medelhögt försvar - press-trigger" compact />
-        </div>
+        <MediaSlotGroup
+          className="mb-6"
+          slots={[
+            { slotKey: "spelmodell:forsvar:medel:block", title: "Block", description: "Medelhögt försvar - block" },
+            { slotKey: "spelmodell:forsvar:medel:korridor", title: "Korridor", description: "Medelhögt försvar - stäng inre korridor" },
+            { slotKey: "spelmodell:forsvar:medel:trigger", title: "Trigger", description: "Medelhögt försvar - press-trigger" },
+          ]}
+        />
         <div className="bg-card rounded-sm p-6 border border-border text-sm text-foreground/85 leading-relaxed">
           Block runt mittlinjen. Vi styr pressen åt en sida via överflyttning och centrering, stänger inre korridorer och tvingar bollen utåt. Triggers: passning bakåt, tung mottagning, eller motståndaren riktad mot egen kort sida.
         </div>
@@ -59,11 +65,14 @@ const Forsvar = () => (
       <SectionReveal as="section">
       <section id="lagt" className="scroll-mt-24">
         <SectionHeader badge="03 · Lågt" title="Lågt försvar" subtitle="Lågt block nära egen box — kompakthet, andraboll och kontringsskydd." />
-        <div className="mb-4 grid gap-3 md:grid-cols-3">
-          <MediaSlot slotKey="spelmodell:forsvar:lagt:box" title="Box" description="Lågt försvar - box" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:lagt:markering" title="Markering" description="Lågt försvar - markering" compact />
-          <MediaSlot slotKey="spelmodell:forsvar:lagt:kontringsskydd" title="Kontringsskydd" description="Lågt försvar - kontringsskydd" compact />
-        </div>
+        <MediaSlotGroup
+          className="mb-6"
+          slots={[
+            { slotKey: "spelmodell:forsvar:lagt:box", title: "Box", description: "Lågt försvar - box" },
+            { slotKey: "spelmodell:forsvar:lagt:markering", title: "Markering", description: "Lågt försvar - markering" },
+            { slotKey: "spelmodell:forsvar:lagt:kontringsskydd", title: "Kontringsskydd", description: "Lågt försvar - kontringsskydd" },
+          ]}
+        />
         <div className="bg-card rounded-sm p-6 border border-border text-sm text-foreground/85 leading-relaxed">
           Lågt block nära egen box. Korrekt positionering, tät markering på spelare i gyllene zonen, blockera avslutsytor. Trigger för att pressa upp igen: bollen bakåt till deras backlinje + vår 9:a närmast bollen.
         </div>

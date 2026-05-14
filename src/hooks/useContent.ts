@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 /**
@@ -9,12 +9,20 @@ import { supabase } from "@/integrations/supabase/client";
  *
  * Exempel:
  *   const { data: identity } = useContent("identity", IDENTITY);
+ *
+ * OBS om `fallback`: den läses via ref så att inline-arrays (t.ex. `useContent("x", [])`)
+ * inte trigger:ar inf-loop. `reload`-identiteten är stabil på `key` ensam.
  */
 export function useContent<T>(key: string, fallback: T) {
   const [data, setData] = useState<T>(fallback);
   const [loading, setLoading] = useState(true);
   const [source, setSource] = useState<"fallback" | "remote">("fallback");
   const [error, setError] = useState<Error | null>(null);
+
+  // Stable ref för fallback — annars triggar inline-allokering (e.g. `useContent("x", [])`)
+  // ny reload-callback varje render → useEffect kör om → inf loop.
+  const fallbackRef = useRef(fallback);
+  fallbackRef.current = fallback;
 
   const reload = useCallback(async () => {
     setLoading(true);
@@ -30,23 +38,23 @@ export function useContent<T>(key: string, fallback: T) {
       if (err) {
         // Tabellen saknas (migration inte körd) eller annat fel — håll fallback.
         setError(new Error(err.message));
-        setData(fallback);
+        setData(fallbackRef.current);
         setSource("fallback");
       } else if (row?.data) {
         setData(row.data as T);
         setSource("remote");
       } else {
-        setData(fallback);
+        setData(fallbackRef.current);
         setSource("fallback");
       }
     } catch (e) {
       setError(e instanceof Error ? e : new Error(String(e)));
-      setData(fallback);
+      setData(fallbackRef.current);
       setSource("fallback");
     } finally {
       setLoading(false);
     }
-  }, [key, fallback]);
+  }, [key]);
 
   useEffect(() => {
     reload();

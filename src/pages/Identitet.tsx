@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Link, Navigate, useLocation, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, Loader2, X } from "lucide-react";
 import { IDENTITY, type IdentityItem } from "@/data/identity";
 import { useContent } from "@/hooks/useContent";
 import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
+import { useScrollToHash } from "@/hooks/useScrollToHash";
 import PageHero from "@/components/PageHero";
 import MediaSlot from "@/components/match/MediaSlot";
 import { cn } from "@/lib/utils";
@@ -50,16 +50,8 @@ const Identitet = () => {
 };
 
 const IdentityOverview = () => {
-  const location = useLocation();
   const { matchId, loading, error } = useGlobalMediaMatch();
-
-  useEffect(() => {
-    if (!location.hash) return;
-    const id = decodeURIComponent(location.hash.slice(1));
-    window.requestAnimationFrame(() => {
-      document.getElementById(id)?.scrollIntoView({ block: "start" });
-    });
-  }, [location.hash]);
+  useScrollToHash();
 
   return (
     <>
