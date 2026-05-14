@@ -13,6 +13,7 @@ import SpelytorDiagram from "@/components/SpelytorDiagram";
 import KorridorerDiagram from "@/components/KorridorerDiagram";
 import GoldenZoneDiagram from "@/components/GoldenZoneDiagram";
 import GIGTemplate from "@/components/GIGTemplate";
+import PrincipleCard from "@/components/PrincipleCard";
 import MissingInputPlaceholder from "@/components/MissingInputPlaceholder";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import MatchSquad from "@/components/MatchSquad";
@@ -234,7 +235,6 @@ export const ForsvarsspelSection = () => (
   </section>
 );
 
-import PrincipleCard from "@/components/PrincipleCard";
 const PrincipleCardWrap = ({ n, title, description }: { n: number; title: string; description: string }) => (
   <PrincipleCard number={n} title={title} description={description} variant="defense" />
 );

@@ -31,19 +31,16 @@ const Roller = () => (
         />
         <div className="grid gap-4 md:grid-cols-3">
           <MediaSlot
-            matchId={undefined}
             slotKey="spelmodell:roller:mittfalt:ansvar"
             title="Mittfält - ansvar"
             captionPlaceholder="Beskriv ansvar, avstånd eller beslut i sekvensen..."
           />
           <MediaSlot
-            matchId={undefined}
             slotKey="spelmodell:roller:mohammed"
             title="Rollsekvens"
             captionPlaceholder="Beskriv rollen och vad spelaren gör..."
           />
           <MediaSlot
-            matchId={undefined}
             slotKey="spelmodell:roller:bildsekvens"
             title="Bildsekvens"
             captionPlaceholder="Beskriv vad bilden förklarar..."
