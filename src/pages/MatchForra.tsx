@@ -42,7 +42,7 @@ const MatchForra = () => {
         description={m.summary}
       />
 
-      <div className="container pb-24 space-y-12">
+      <div className="container pb-section space-y-12">
         {/* Match-meta + summering */}
         <section className="bg-card/85 rounded-lg p-6 border border-border">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
@@ -83,7 +83,7 @@ const MatchForra = () => {
             <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
               Trupp · matchen
             </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+            <h2 className="text-2xl md:text-3xl mt-2 leading-tight">
               Vilka spelade
             </h2>
           </div>
@@ -145,7 +145,7 @@ const MatchForra = () => {
             <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
               Lärdom
             </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-2 leading-tight">
+            <h2 className="text-2xl md:text-3xl mt-2 leading-tight">
               Det här tar vi med till nästa match
             </h2>
           </div>

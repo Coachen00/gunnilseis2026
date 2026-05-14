@@ -15,7 +15,7 @@ const MatchKommande = () => (
       description="Borta · Kareby Hed · 19:00. Femte raka utan förlust (4V 1O, 11/15) — vi vill hem med tre poäng till."
     />
 
-    <div className="container pb-24 space-y-6">
+    <div className="container pb-section space-y-6">
       <section className="rounded-xl border border-accent/40 bg-accent/[0.04] p-5 md:p-6">
         <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent mb-3">
           Inför Kareby · 10 min genomgång

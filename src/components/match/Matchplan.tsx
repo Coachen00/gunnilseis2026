@@ -18,7 +18,7 @@ export default function Matchplan() {
           <p className="text-[10px] font-mono uppercase tracking-[0.28em] text-accent">
             Matchplan
           </p>
-          <h2 className="text-2xl font-black tracking-tight">
+          <h2 className="text-2xl tracking-tight">
             Så spelar vi mot {MATCH_META.opponent}
           </h2>
         </div>
@@ -42,7 +42,7 @@ export default function Matchplan() {
               <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-accent">
                 {sec.eyebrow}
               </div>
-              <h3 className="text-xl font-black tracking-tight">{sec.title}</h3>
+              <h3 className="text-xl tracking-tight">{sec.title}</h3>
             </div>
           </div>
 

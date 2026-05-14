@@ -31,7 +31,7 @@ const Forsvar = () => (
         </div>
       </SectionReveal>
     </div>
-    <div className="container pb-24 space-y-24">
+    <div className="container pb-section space-y-24">
       <SectionReveal as="section">
       <section id="hogt" className="scroll-mt-24">
         <SectionHeader badge="01 · Högt" title="Högt försvar" subtitle="Press hög upp i plan — trigger på deras vänsterback." />

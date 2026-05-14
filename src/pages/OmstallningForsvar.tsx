@@ -17,7 +17,7 @@ const OmstallningForsvar = () => (
       <CuesBlock set={PHASE_CUES["omstallning-forsvar"]} />
       <PrincipleBlock phase="omstallning-forsvar" showSource />
     </div>
-    <div className="container pb-24 space-y-24">
+    <div className="container pb-section space-y-24">
       <section id="direkt" className="scroll-mt-24">
         <SectionHeader badge="01 · Direkt" title="Direkt motpress" subtitle="De första 5 sekunderna — press med central spelare, minska tid och ytor." />
         <div className="mb-6 grid gap-3 md:grid-cols-3">
