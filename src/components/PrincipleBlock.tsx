@@ -90,7 +90,6 @@ const PrincipleItem = ({
                 ].map((area, mediaIndex) => (
                   <MediaSlot
                     key={`${phase}-${index}-${mediaIndex}-${area}`}
-                    matchId={undefined}
                     slotKey={`spelmodell:${phase}:princip:${index}:media:${mediaIndex}`}
                     title={area}
                     description={`${PHASES[phase].label} - ${area}`}

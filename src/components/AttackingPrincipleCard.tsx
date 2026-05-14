@@ -110,7 +110,6 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
           {["Matchklipp", "Bildsekvens", "Inte godkänt"].map((label, index) => (
             <MediaSlot
               key={`${p.slug}-${index}`}
-              matchId={undefined}
               slotKey={`spelmodell:anfall:${p.slug}:media:${index}`}
               title={label}
               description={`${p.headline} - ${label}`}

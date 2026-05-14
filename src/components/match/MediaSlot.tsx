@@ -5,7 +5,11 @@ import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
 import { cn } from "@/lib/utils";
 
 interface Props {
-  matchId: string | undefined;
+  /**
+   * Match-ID som mediaslotten är knuten till. Lämna utelämnat för att
+   * fallbacka till det globala media-arkivet (`useGlobalMediaMatch`).
+   */
+  matchId?: string;
   slotKey: string;
   title: string;
   description?: string;

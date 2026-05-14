@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * Architectural light background:
@@ -9,20 +9,24 @@ import { useEffect, useState } from "react";
  * - No particles, no mesh, no grain. Architectural, not editorial.
  *
  * Pointer-events-none. Sits behind content. Respects prefers-reduced-motion.
+ *
+ * Perf: parallax-rälsen styrs via DOM-ref + direkt style-mutation, inte React state —
+ * undviker re-render av hela komponenten på varje scroll-frame.
  */
 const AnimatedBackground = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const railRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        if (railRef.current) {
+          railRef.current.style.transform = `translate3d(0, ${window.scrollY * -0.12}px, 0)`;
+        }
+        ticking = false;
+      });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -41,11 +45,9 @@ const AnimatedBackground = () => {
 
       {/* Vertical accent rail — left edge, parallax */}
       <div
+        ref={railRef}
         className="absolute top-0 bottom-0 left-0 w-[2px] bg-accent/80"
-        style={{
-          transform: `translate3d(0, ${scrollY * -0.12}px, 0)`,
-          willChange: "transform",
-        }}
+        style={{ willChange: "transform" }}
       />
 
       {/* Very subtle top accent wash */}
