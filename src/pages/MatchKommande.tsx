@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 import StaticMatchHeader from "@/components/match/StaticMatchHeader";
 import Matchplan from "@/components/match/Matchplan";
 import Formation from "@/components/match/Formation";
@@ -16,7 +17,7 @@ const MatchKommande = () => (
     />
 
     <div className="container pb-section space-y-6">
-      <section className="rounded-xl border border-accent/40 bg-accent/[0.04] p-5 md:p-6">
+      <SectionReveal as="section" className="rounded-xl border border-accent/40 bg-accent/[0.04] p-5 md:p-6">
         <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent mb-3">
           Inför Kareby · 10 min genomgång
         </div>
@@ -58,11 +59,13 @@ const MatchKommande = () => (
             </span>
           </li>
         </ol>
-      </section>
+      </SectionReveal>
 
-      <StaticMatchHeader />
+      <SectionReveal>
+        <StaticMatchHeader />
+      </SectionReveal>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
+      <SectionReveal className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_320px] items-start">
         {/* Huvudkolumn — matchplanen */}
         <div>
           <Matchplan />
@@ -124,8 +127,9 @@ const MatchKommande = () => (
             </nav>
           </div>
         </aside>
-      </div>
+      </SectionReveal>
 
+      <SectionReveal>
       <details className="rounded-lg border border-border bg-card">
         <summary className="cursor-pointer px-5 py-4 text-sm font-black uppercase tracking-wide text-foreground">
           Ledarpanel
@@ -136,6 +140,7 @@ const MatchKommande = () => (
           <PresentationBrief />
         </div>
       </details>
+      </SectionReveal>
     </div>
    </>
   );

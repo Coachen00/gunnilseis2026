@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 
 const tools = [
   {
@@ -42,7 +43,7 @@ const Verktyg = () => (
       title="Tränarverktyg"
       description="Välj det du behöver inför träning eller match."
     />
-    <section className="container pb-section">
+    <SectionReveal as="section" className="container pb-section">
       <div className="divide-y divide-border border-y border-border">
         {tools.map(({ to, label, desc, icon: Icon }) => (
           <Link
@@ -59,7 +60,7 @@ const Verktyg = () => (
           </Link>
         ))}
       </div>
-    </section>
+    </SectionReveal>
   </>
 );
 

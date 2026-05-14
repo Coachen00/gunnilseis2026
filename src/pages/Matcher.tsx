@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import SectionReveal from "@/components/SectionReveal";
 import { useSeasonMatches } from "@/hooks/useSeasonMatches";
 import { groupByMonth, MONTH_LABELS, nextMatch, type SeasonMatch } from "@/data/season";
 import { ExternalLink, Loader2, MapPin, ArrowDownRight, ArrowUpRight } from "lucide-react";
@@ -41,7 +42,7 @@ const Matcher = () => {
             const [year, monthIdx] = key.split("-").map(Number);
             const label = `${MONTH_LABELS[monthIdx - 1]} ${year}`;
             return (
-              <section key={key}>
+              <SectionReveal key={key} as="section">
                 <h2 className="mb-4 flex items-baseline gap-3">
                   <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
                     {String(monthIdx).padStart(2, "0")}
@@ -58,7 +59,7 @@ const Matcher = () => {
                     />
                   ))}
                 </ul>
-              </section>
+              </SectionReveal>
             );
           })}
         </div>

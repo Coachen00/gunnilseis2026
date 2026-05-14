@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap');
+/* Fonts laddas via <link rel="stylesheet"> i index.html för att undvika render-blocking
+   CSS @import. Behåll inte @import här — det skulle ladda fonts två gånger. */
+
 
 @tailwind base;
 @tailwind components;
