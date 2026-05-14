@@ -1,31 +1,9 @@
 import PageHero from "@/components/PageHero";
 import { FORRA_MATCH } from "@/data/forraMatch";
+import { formatMatchDate } from "@/lib/dateUtils";
 
 const homeAwayLabel = (m: typeof FORRA_MATCH.meta) =>
   m.homeAway === "home" ? "Hemma" : "Borta";
-
-const dateLabel = (iso: string) => {
-  const d = new Date(iso);
-  const days = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
-  const months = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "maj",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "okt",
-    "nov",
-    "dec",
-  ];
-  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} · ${d
-    .getHours()
-    .toString()
-    .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-};
 
 const Placeholder = ({ children }: { children: React.ReactNode }) => (
   <p className="text-sm italic text-muted-foreground">{children}</p>
@@ -50,7 +28,7 @@ const MatchForra = () => {
               <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">
                 Datum
               </div>
-              <div className="font-semibold">{dateLabel(m.meta.date)}</div>
+              <div className="font-semibold">{formatMatchDate(m.meta.date)}</div>
             </div>
             <div>
               <div className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground mb-1">

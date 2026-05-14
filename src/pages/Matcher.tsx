@@ -3,8 +3,7 @@ import { useSeasonMatches } from "@/hooks/useSeasonMatches";
 import { groupByMonth, MONTH_LABELS, nextMatch, type SeasonMatch } from "@/data/season";
 import { ExternalLink, Loader2, MapPin, ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const SHORT_DAY = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
+import { SHORT_DAY } from "@/lib/dateUtils";
 
 const Matcher = () => {
   const { matches, loading, usingFallback } = useSeasonMatches();
