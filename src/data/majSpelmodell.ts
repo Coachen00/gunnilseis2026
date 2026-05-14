@@ -7,6 +7,12 @@ export interface PlayerQuickAction {
   actions: string[];
 }
 
+export interface PrincipleDef {
+  id: string;
+  label: string;
+  oneLiner: string;
+}
+
 export interface MajBlock {
   id: string;
   number: string;
@@ -21,6 +27,7 @@ export interface MajBlock {
   illustrationCaption: string;
   remember: string;
   accent: BlockColor;
+  principles: PrincipleDef[];
 }
 
 export const MAJ_2026_HERO = {
@@ -132,6 +139,11 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Mittblock som tvingar ut spelet på sidan, bollsida markerad.",
     remember: "Skydda mitten. Pressa på trigger. Aldrig ensam.",
     accent: "red",
+    principles: [
+      { id: "hogt", label: "Högt försvar", oneLiner: "Pressa högt — vinn boll på motståndarens planhalva." },
+      { id: "medel", label: "Medelhögt försvar", oneLiner: "Kompakt mittblock — stäng mitten, tvinga ut spelet." },
+      { id: "lagt", label: "Lågt försvar", oneLiner: "Skydda boxen — kompakt kedja, kontringshot framåt." },
+    ],
   },
   {
     id: "overgang-anfall",
@@ -159,6 +171,10 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Diagonala löpningar mot assistytan när bollen vinns på mittplan.",
     remember: "Titta framåt. Spela framåt. Löp diagonalt.",
     accent: "blue",
+    principles: [
+      { id: "kontring", label: "Kontring", oneLiner: "Utnyttja motståndarens oordning — spela direkt mot mål." },
+      { id: "speluppbyggnad", label: "Starta speluppbyggnad", oneLiner: "Säkra bollen, bygg lugnt om — vi kontrar inte alltid." },
+    ],
   },
   {
     id: "anfallsspel",
@@ -187,6 +203,13 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Spelytor markerade: halvytor, korridorer, assistyta, box.",
     remember: "Kontringsskydd. In, ut, ut till sida. Fyll boxen.",
     accent: "yellow",
+    principles: [
+      { id: "skydda-mot-kontring", label: "Skydda mot kontring", oneLiner: "Restförsvar bakom bollen — alltid." },
+      { id: "spela-in", label: "Spela in bollen", oneLiner: "Locka in motståndaren först — vänd sen ut spelet." },
+      { id: "spela-ut", label: "Spela ut bollen", oneLiner: "Bryt pressen via tredje man — sök fri spelare i halvyta." },
+      { id: "ta-med-framat", label: "Ta med den framåt", oneLiner: "Driv eller passa upp till assistytan." },
+      { id: "fyll-pa-box", label: "Fyll på i och runt box", oneLiner: "Minst fyra spelare i boxen när inlägget kommer." },
+    ],
   },
   {
     id: "overgang-forsvar",
@@ -214,6 +237,10 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Närmaste man pressar, två stänger passning, kedja retirerar.",
     remember: "Pressa direkt. Stäng passning. Vinn tillbaka.",
     accent: "red",
+    principles: [
+      { id: "direkt", label: "Direkt motpress", oneLiner: "Närmaste man pressar bollen inom 1 sekund." },
+      { id: "kontroll", label: "Tillbaka till kontroll", oneLiner: "Bromsa och retirera kompakt om återerövring inte sker." },
+    ],
   },
   {
     id: "identitet",
@@ -241,6 +268,12 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Fyra ikoner kopplade till de fyra identitetsbeteendena.",
     remember: "Dueller. Andrabollar. Djupled. Värdigt kroppsspråk.",
     accent: "yellow",
+    principles: [
+      { id: "duellspel", label: "Duellspel", oneLiner: "Vinn varje 50/50 — kropp först, boll sen." },
+      { id: "andrabollsspel", label: "2:a bollsspel", oneLiner: "Var närmast när bollen släpps — läs studsen innan den händer." },
+      { id: "djupledslopningar", label: "Djupledslöpningar", oneLiner: "Spring bakom backlinjen — du får bollen eller öppnar ytan." },
+      { id: "vardigt-kroppssprak", label: "Värdigt kroppsspråk", oneLiner: "Peppa, inte gnälla — i medgång och motgång." },
+    ],
   },
   {
     id: "fasta-situationer",
@@ -268,5 +301,11 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     illustrationCaption: "Numrerade positioner och löpvägar på en hörna.",
     remember: "Din plats. Din löpning. Ditt ansvar.",
     accent: "green",
+    principles: [
+      { id: "hornor", label: "Hörnor", oneLiner: "Offensiv: mönstret. Defensiv: zon eller markering enligt matchblad." },
+      { id: "inlaggsfrisparkar", label: "Inläggsfrisparkar", oneLiner: "Position + löpväg klar innan domaren blåser." },
+      { id: "inkast", label: "Inkast", oneLiner: "Snabba kombinationer — undvik förutsägbara kast." },
+      { id: "avspark", label: "Avspark", oneLiner: "Vi äger andrabollen — direkt press när motståndaren startar." },
+    ],
   },
 ];

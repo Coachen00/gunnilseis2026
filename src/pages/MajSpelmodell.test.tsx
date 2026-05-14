@@ -53,4 +53,25 @@ describe("MajSpelmodell page", () => {
     expect(goHere.length).toBe(MAJ_2026_BLOCKS.length);
     expect(dontGoHere.length).toBe(MAJ_2026_BLOCKS.length);
   });
+
+  it("varje block har en princip-accordion-trigger med korrekt antal", () => {
+    renderPage();
+    for (const block of MAJ_2026_BLOCKS) {
+      const trigger = screen.getByTestId(`principles-trigger-${block.id}`);
+      expect(trigger).toHaveTextContent(new RegExp(`Principer · ${block.principles.length}`));
+      // Collapsed by default — slot-komponenter renderas inte än
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    }
+  });
+
+  it("alla block har minst en princip definierad", () => {
+    for (const block of MAJ_2026_BLOCKS) {
+      expect(block.principles.length).toBeGreaterThanOrEqual(1);
+      for (const p of block.principles) {
+        expect(p.id).toMatch(/^[a-z0-9-]+$/);
+        expect(p.label.length).toBeGreaterThan(0);
+        expect(p.oneLiner.length).toBeGreaterThan(0);
+      }
+    }
+  });
 });

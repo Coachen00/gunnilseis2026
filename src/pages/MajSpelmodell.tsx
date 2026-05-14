@@ -22,6 +22,7 @@ import {
   Activity,
   Wrench,
   Sparkles,
+  Layers,
 } from "lucide-react";
 import {
   MAJ_2026_BLOCKS,
@@ -32,6 +33,8 @@ import {
   type BlockColor,
   type MajBlock,
 } from "@/data/majSpelmodell";
+import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 /* =========================================================================
    COLOR TOKENS — dark control-room palette
@@ -579,6 +582,40 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
           <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
           <DoColumn variant="remember" title="Kom ihåg" items={[block.remember]} />
         </div>
+
+        {/* Principer — accordion med autosparande media-/text-slot per princip */}
+        {block.principles.length > 0 && (
+          <div className="mt-10 border border-white/12 bg-white/[0.025]">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value={`principer-${block.id}`} className="border-0">
+                <AccordionTrigger
+                  data-testid={`principles-trigger-${block.id}`}
+                  className="px-6 py-5 hover:no-underline"
+                >
+                  <div className="flex items-center gap-3">
+                    <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
+                    <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-white/70">
+                      Principer · {block.principles.length}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="border-t border-white/8 px-6 pb-6 pt-4">
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                    {block.principles.map((p) => (
+                      <PrincipleMediaSlot
+                        key={p.id}
+                        blockId={block.id}
+                        principleId={p.id}
+                        principleLabel={p.label}
+                        oneLiner={p.oneLiner}
+                      />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        )}
       </div>
     </section>
   );
