@@ -37,33 +37,33 @@ import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 /* =========================================================================
-   COLOR TOKENS — dark control-room palette
+   COLOR TOKENS — light palette (matchar sajtens default-tema)
    ========================================================================= */
 
 type Tone = BlockColor;
 
 const TONE_BG: Record<Tone, string> = {
-  yellow: "bg-[#f5c242]/12 border-[#f5c242]/55",
-  red: "bg-[#cf3a3a]/14 border-[#cf3a3a]/55",
-  blue: "bg-[#3a6fc6]/14 border-[#3a6fc6]/55",
-  green: "bg-[#1d6b48]/14 border-[#5ec98a]/55",
-  white: "bg-white/8 border-white/22",
+  yellow: "bg-amber-50 border-amber-400/70",
+  red: "bg-rose-50 border-rose-300/80",
+  blue: "bg-sky-50 border-sky-300/80",
+  green: "bg-emerald-50 border-emerald-300/80",
+  white: "bg-muted border-border",
 };
 
 const TONE_DOT: Record<Tone, string> = {
-  yellow: "bg-[#f5c242]",
-  red: "bg-[#cf3a3a]",
-  blue: "bg-[#3a6fc6]",
-  green: "bg-[#5ec98a]",
-  white: "bg-white",
+  yellow: "bg-amber-500",
+  red: "bg-rose-500",
+  blue: "bg-sky-600",
+  green: "bg-emerald-600",
+  white: "bg-foreground",
 };
 
 const TONE_TEXT: Record<Tone, string> = {
-  yellow: "text-[#f5c242]",
-  red: "text-[#ff7a7a]",
-  blue: "text-[#9cc1ff]",
-  green: "text-[#7adfa3]",
-  white: "text-white",
+  yellow: "text-amber-700",
+  red: "text-rose-700",
+  blue: "text-sky-700",
+  green: "text-emerald-700",
+  white: "text-foreground",
 };
 
 const BLOCK_ICON: Record<string, typeof Shield> = {
@@ -93,13 +93,13 @@ function MediaSlot({ label = "Lägg in film eller bild här", description }: { l
     <div
       role="img"
       aria-label={label}
-      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-white/22 bg-white/[0.03] px-4 text-center"
+      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-border bg-card px-4 text-center"
     >
-      <div className="flex items-center gap-3 text-white/55">
+      <div className="flex items-center gap-3 text-foreground/55">
         <Film className="h-5 w-5" strokeWidth={1.6} />
         <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em]">{label}</span>
       </div>
-      {description && <p className="text-xs text-white/45">{description}</p>}
+      {description && <p className="text-xs text-foreground/45">{description}</p>}
     </div>
   );
 }
@@ -115,40 +115,45 @@ function DoColumn({
 }) {
   const styles = {
     do: {
-      border: "border-[#5ec98a]/45",
-      bg: "bg-[#1d6b48]/12",
+      border: "border-emerald-300",
+      bg: "bg-emerald-50",
       Icon: Check,
-      iconClass: "text-[#5ec98a]",
-      dotBg: "bg-[#5ec98a]",
+      iconClass: "text-emerald-700",
+      dotBg: "bg-emerald-600",
+      titleClass: "text-emerald-800",
     },
     dont: {
-      border: "border-[#cf3a3a]/45",
-      bg: "bg-[#cf3a3a]/10",
+      border: "border-rose-300",
+      bg: "bg-rose-50",
       Icon: X,
-      iconClass: "text-[#ff7a7a]",
-      dotBg: "bg-[#ff7a7a]",
+      iconClass: "text-rose-700",
+      dotBg: "bg-rose-500",
+      titleClass: "text-rose-800",
     },
     remember: {
-      border: "border-[#f5c242]/45",
-      bg: "bg-[#f5c242]/8",
+      border: "border-amber-300",
+      bg: "bg-amber-50",
       Icon: AlertTriangle,
-      iconClass: "text-[#f5c242]",
-      dotBg: "bg-[#f5c242]",
+      iconClass: "text-amber-700",
+      dotBg: "bg-amber-500",
+      titleClass: "text-amber-800",
     },
   }[variant];
 
   const Icon = styles.Icon;
 
   return (
-    <div className={["border p-5", styles.border, styles.bg].join(" ")}>
+    <div className={["rounded-md border p-5", styles.border, styles.bg].join(" ")}>
       <div className="mb-3 flex items-center gap-2.5">
         <Icon className={["h-4 w-4", styles.iconClass].join(" ")} strokeWidth={2.4} />
-        <p className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-white">{title}</p>
+        <p className={["font-mono text-[11px] font-black uppercase tracking-[0.22em]", styles.titleClass].join(" ")}>
+          {title}
+        </p>
       </div>
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-white/80">
-            <span className={["mt-1.5 inline-block h-1 w-1 flex-shrink-0", styles.dotBg].join(" ")} />
+          <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+            <span className={["mt-1.5 inline-block h-1 w-1 flex-shrink-0 rounded-full", styles.dotBg].join(" ")} />
             <span>{item}</span>
           </li>
         ))}
@@ -449,7 +454,7 @@ function IdentitetGrid() {
         return (
           <div
             key={c.title}
-            className="relative overflow-hidden border border-white/12 bg-[#0a1f15] p-6"
+            className="relative overflow-hidden border border-border bg-muted/40 p-6"
             style={{ boxShadow: `inset 0 -4px 0 0 ${c.color}` }}
           >
             <div
@@ -458,8 +463,8 @@ function IdentitetGrid() {
             >
               <Icon className="h-6 w-6" strokeWidth={2} />
             </div>
-            <h3 className="mb-2 text-2xl font-black uppercase tracking-tight text-white">{c.title}</h3>
-            <p className="text-sm leading-relaxed text-white/75">{c.desc}</p>
+            <h3 className="mb-2 text-2xl font-black uppercase tracking-tight text-foreground">{c.title}</h3>
+            <p className="text-sm leading-relaxed text-foreground/75">{c.desc}</p>
           </div>
         );
       })}
@@ -484,15 +489,15 @@ function FastaGrid() {
         return (
           <div
             key={f.title}
-            className="border border-dashed border-white/22 bg-white/[0.02] p-5 transition-colors hover:border-[#5ec98a]/50 hover:bg-[#1d6b48]/8"
+            className="border border-dashed border-border bg-card/60 p-5 transition-colors hover:border-emerald-400 hover:bg-emerald-50"
           >
             <div className="mb-3 flex items-center gap-3">
-              <Icon className="h-5 w-5 text-[#5ec98a]" strokeWidth={1.8} />
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-[#7adfa3]">{f.hint}</p>
+              <Icon className="h-5 w-5 text-emerald-700" strokeWidth={1.8} />
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">{f.hint}</p>
             </div>
-            <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-white">{f.title}</h3>
+            <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-foreground">{f.title}</h3>
             <div className="border-t border-dashed border-white/15 pt-3">
-              <p className="text-xs italic text-white/45">Tomt fält — fyll med uppställning, löpningar, ansvar.</p>
+              <p className="text-xs italic text-foreground/45">Tomt fält — fyll med uppställning, löpningar, ansvar.</p>
             </div>
           </div>
         );
@@ -532,65 +537,76 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
     <AccordionItem
       value={block.id}
       id={block.id}
-      className="scroll-mt-24 border-b border-white/8 border-t-0"
+      className="scroll-mt-24 border-t border-border bg-background data-[state=open]:bg-muted/30"
     >
       <AccordionTrigger
         data-testid={`block-trigger-${block.id}`}
-        className="container w-full px-0 py-10 hover:no-underline md:py-12 [&[data-state=open]>div>div:last-child>svg]:rotate-180"
+        className="container w-full px-4 py-4 hover:no-underline hover:bg-muted/40 md:py-5 [&[data-state=open]>div>div:last-child>svg]:rotate-180"
       >
-        <div className="flex w-full flex-col gap-4 text-left md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-4 md:gap-5">
+        <div className="flex w-full items-center justify-between gap-4 text-left">
+          <div className="flex min-w-0 items-center gap-3 md:gap-4">
+            <span
+              className={[
+                "font-mono text-[11px] font-black tabular-nums",
+                TONE_TEXT[block.accent],
+              ].join(" ")}
+            >
+              {num}
+            </span>
             <div
               className={[
-                "flex h-14 w-14 flex-shrink-0 items-center justify-center border-2 md:h-16 md:w-16",
+                "flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md border",
                 TONE_BG[block.accent],
               ].join(" ")}
             >
-              <Icon className={["h-6 w-6 md:h-7 md:w-7", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2} />
+              <Icon className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
             </div>
             <div className="min-w-0">
-              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.28em] text-white/50">
-                Block {num}
-                {eyebrow && <span> · {eyebrow}</span>}
-              </p>
-              <h2 className="mt-1 text-3xl font-black uppercase tracking-tight text-white md:text-5xl lg:text-6xl">
+              <h2 className="truncate text-base font-bold leading-tight tracking-tight text-foreground md:text-lg">
                 {block.title}
               </h2>
+              {eyebrow && (
+                <p className="mt-0.5 truncate text-xs leading-snug text-muted-foreground">
+                  {eyebrow}
+                </p>
+              )}
             </div>
           </div>
-          <div className="flex items-center gap-3 self-end md:self-center">
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-white/45 transition-colors group-hover:text-white/80">
-              Öppna
-            </span>
-            <ArrowDown className="h-5 w-5 text-white/50 transition-transform" strokeWidth={2.2} />
+          <div className="flex flex-shrink-0 items-center gap-2 text-muted-foreground">
+            {block.principles.length > 0 && (
+              <span className="hidden font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:inline">
+                {block.principles.length} principer
+              </span>
+            )}
+            <ArrowDown className="h-4 w-4 transition-transform" strokeWidth={2.2} />
           </div>
         </div>
       </AccordionTrigger>
 
       <AccordionContent className="overflow-hidden">
         <div className="container pb-16 pt-2 md:pb-20">
-          <p className="mb-10 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
+          <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
             {block.kidExplanation}
           </p>
 
           {/* Spelarinstruktion + Planvy */}
           <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-            <div className="border border-white/12 bg-white/[0.025] p-6">
+            <div className="border border-border bg-card p-6">
               <div className="mb-4 flex items-center gap-2">
                 <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-white/60">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-foreground/60">
                   Spelarinstruktion
                 </p>
               </div>
-              <p className="text-base font-bold leading-snug text-white/90">{block.playerInstruction}</p>
+              <p className="text-base font-bold leading-snug text-foreground/90">{block.playerInstruction}</p>
             </div>
 
-            <div className="overflow-hidden border border-white/12 bg-[#06120d]">
-              <div className="flex items-center justify-between border-b border-white/12 bg-white/[0.04] px-4 py-2.5">
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-white/55">
+            <div className="overflow-hidden border border-border bg-background">
+              <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
                   Taktisk planvy
                 </p>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-white/35">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/35">
                   Block {num}
                 </p>
               </div>
@@ -619,10 +635,10 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
 
           {/* Principer — alltid synliga som card-grid när blocket är öppet */}
           {block.principles.length > 0 && (
-            <div className="mt-10 border border-white/12 bg-white/[0.025] p-6">
+            <div className="mt-10 border border-border bg-card p-6">
               <div className="mb-5 flex items-center gap-3">
                 <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
-                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-white/70">
+                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-foreground/70">
                   Principer · {block.principles.length}
                 </p>
               </div>
@@ -651,40 +667,40 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-white/8 pt-20 pb-16 md:pt-28 md:pb-24">
+    <section className="relative overflow-hidden border-b border-border pt-20 pb-16 md:pt-28 md:pb-24">
       <div
         aria-hidden="true"
         className="absolute inset-0 opacity-30"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)",
+            "linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px)",
           backgroundSize: "64px 64px",
         }}
       />
       <div
         aria-hidden="true"
         className="absolute inset-x-0 bottom-0 h-1/2"
-        style={{ backgroundImage: "linear-gradient(180deg, transparent 0%, rgba(20,61,42,0.42) 100%)" }}
+        style={{ backgroundImage: "linear-gradient(180deg, transparent 0%, hsl(var(--muted) / 0.8) 100%)" }}
       />
 
       <div className="container relative">
-        <div className="mb-6 inline-flex items-center gap-3 border border-[#f5c242]/60 bg-black/30 px-3 py-2">
-          <span className="h-[2px] w-8 bg-[#f5c242]" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-[#f5c242]">
+        <div className="mb-6 inline-flex items-center gap-3 border border-amber-400 bg-card px-3 py-2">
+          <span className="h-[2px] w-8 bg-amber-500" aria-hidden="true" />
+          <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">
             {MAJ_2026_HERO.eyebrow} · Spelmodell
           </span>
         </div>
 
-        <h1 className="max-w-5xl text-[2.5rem] font-black uppercase leading-[0.92] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+        <h1 className="max-w-5xl text-[2.5rem] font-black uppercase leading-[0.92] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]">
           {MAJ_2026_HERO.title}
         </h1>
 
-        <p className="mt-8 max-w-3xl text-base leading-relaxed text-white/78 md:text-lg">
-          Vi <span className="font-bold text-[#ff7a7a]">försvarar tillsammans</span>, ställer om{" "}
-          <span className="font-bold text-[#f5c242]">framåt</span>, attackerar{" "}
-          <span className="font-bold text-[#9cc1ff]">assistytan</span>,{" "}
-          <span className="font-bold text-[#ff7a7a]">återerövrar direkt</span> och visar{" "}
-          <span className="font-bold text-[#f5c242]">identitet</span> i varje sekund. Sex block. Inga ursäkter.
+        <p className="mt-8 max-w-3xl text-base leading-relaxed text-foreground/78 md:text-lg">
+          Vi <span className="font-bold text-rose-700">försvarar tillsammans</span>, ställer om{" "}
+          <span className="font-bold text-amber-700">framåt</span>, attackerar{" "}
+          <span className="font-bold text-sky-700">assistytan</span>,{" "}
+          <span className="font-bold text-rose-700">återerövrar direkt</span> och visar{" "}
+          <span className="font-bold text-amber-700">identitet</span> i varje sekund. Sex block. Inga ursäkter.
         </p>
 
         {/* Nav cards — anchor links matching the test by name */}
@@ -697,7 +713,7 @@ function Hero() {
               <a
                 key={card.id}
                 href={`#${card.id}`}
-                className="group relative flex flex-col gap-3 border border-white/12 bg-white/[0.02] p-4 transition-all hover:-translate-y-0.5 hover:border-[#f5c242]/60 hover:bg-white/[0.05]"
+                className="group relative flex flex-col gap-3 border border-border bg-card/60 p-4 transition-all hover:-translate-y-0.5 hover:border-amber-500 hover:bg-white/[0.05]"
               >
                 <div className="flex items-center justify-between">
                   <span className={["font-mono text-[11px] font-black tracking-[0.16em]", TONE_TEXT[accent]].join(" ")}>
@@ -705,8 +721,8 @@ function Hero() {
                   </span>
                   <Icon className={["h-4 w-4", TONE_TEXT[accent]].join(" ")} strokeWidth={2} />
                 </div>
-                <p className="text-sm font-black uppercase leading-tight tracking-tight text-white">{card.label}</p>
-                <ArrowDown className="h-4 w-4 text-white/30 transition-transform group-hover:translate-y-0.5 group-hover:text-[#f5c242]" strokeWidth={2} />
+                <p className="text-sm font-black uppercase leading-tight tracking-tight text-foreground">{card.label}</p>
+                <ArrowDown className="h-4 w-4 text-foreground/30 transition-transform group-hover:translate-y-0.5 group-hover:text-amber-600" strokeWidth={2} />
               </a>
             );
           })}
@@ -729,13 +745,13 @@ const EFFEKT_ICONS = {
 
 function EffektlogikStrip() {
   return (
-    <section id="effektlogik" className="scroll-mt-24 border-b border-white/8 py-16 md:py-20">
+    <section id="effektlogik" className="scroll-mt-24 border-b border-border py-16 md:py-20">
       <div className="container">
         <div className="mb-10 flex items-center gap-3">
-          <span className="h-[2px] w-10 bg-[#f5c242]" aria-hidden="true" />
-          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-[#f5c242]">Effektlogik</p>
+          <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Effektlogik</p>
         </div>
-        <h2 className="mb-12 max-w-3xl text-3xl font-black uppercase tracking-tight text-white md:text-4xl">
+        <h2 className="mb-12 max-w-3xl text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
           Från vad vi har — till vad vi blir.
         </h2>
 
@@ -744,15 +760,15 @@ function EffektlogikStrip() {
             const Icon = EFFEKT_ICONS[block.label];
             return (
               <div key={block.label} className="contents">
-                <div className="border border-white/12 bg-white/[0.03] p-5">
-                  <div className="mb-3 flex items-center gap-2 text-[#f5c242]">
+                <div className="border border-border bg-card p-5">
+                  <div className="mb-3 flex items-center gap-2 text-amber-700">
                     <Icon className="h-4 w-4" strokeWidth={1.8} />
-                    <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-[#f5c242]">{block.label}</h3>
+                    <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-amber-700">{block.label}</h3>
                   </div>
-                  <ul className="space-y-1.5 text-xs leading-relaxed text-white/70">
+                  <ul className="space-y-1.5 text-xs leading-relaxed text-foreground/70">
                     {block.items.map((item) => (
                       <li key={item} className="flex items-start gap-2">
-                        <span className="mt-1.5 inline-block h-1 w-1 flex-shrink-0 bg-[#f5c242]" />
+                        <span className="mt-1.5 inline-block h-1 w-1 flex-shrink-0 bg-amber-500" />
                         <span>{item}</span>
                       </li>
                     ))}
@@ -760,7 +776,7 @@ function EffektlogikStrip() {
                 </div>
                 {i < MAJ_2026_EFFECT_LOGIC.length - 1 && (
                   <div className="hidden items-center justify-center md:flex" aria-hidden="true">
-                    <ArrowRight className="h-6 w-6 text-[#f5c242]/70" strokeWidth={2.2} />
+                    <ArrowRight className="h-6 w-6 text-amber-700/70" strokeWidth={2.2} />
                   </div>
                 )}
               </div>
@@ -780,17 +796,17 @@ const SNABB_TONES: Tone[] = ["red", "yellow", "blue", "red", "yellow", "green"];
 
 function SpelarenSnabbversion() {
   return (
-    <section id="snabbversion" className="scroll-mt-24 border-b border-white/8 bg-[#0a1f15] py-16 md:py-20">
+    <section id="snabbversion" className="scroll-mt-24 border-b border-border bg-muted/40 py-16 md:py-20">
       <div className="container">
         <div className="mb-8 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="mb-3 flex items-center gap-3">
-              <span className="h-[2px] w-10 bg-[#f5c242]" aria-hidden="true" />
-              <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-[#f5c242]">Spelarens snabbversion</p>
+              <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+              <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Spelarens snabbversion</p>
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tight text-white md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-foreground md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-white/65">
+          <p className="max-w-md text-sm leading-relaxed text-foreground/65">
             Sex skeden. Tre–fyra ord per kommando. Det här är det enda du behöver komma ihåg i 90 minuter.
           </p>
         </div>
@@ -799,9 +815,9 @@ function SpelarenSnabbversion() {
           {MAJ_2026_QUICK_ACTIONS.map((qa, i) => {
             const tone = SNABB_TONES[i] ?? "white";
             return (
-              <div key={qa.scenario} className="border border-white/12 bg-[#06120d] p-5 transition-colors hover:border-[#f5c242]/40">
+              <div key={qa.scenario} className="border border-border bg-background p-5 transition-colors hover:border-[#f5c242]/40">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="text-lg font-black uppercase tracking-tight text-white">{qa.scenario}</h3>
+                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground">{qa.scenario}</h3>
                   <span className={["inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em]", TONE_BG[tone], TONE_TEXT[tone]].join(" ")}>
                     <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[tone]].join(" ")} />
                     Skede
@@ -811,7 +827,7 @@ function SpelarenSnabbversion() {
                   {qa.actions.map((p) => (
                     <li key={p} className="flex items-start gap-2.5">
                       <span className={["mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0", TONE_DOT[tone]].join(" ")} />
-                      <span className="text-sm leading-relaxed text-white/85">{p}</span>
+                      <span className="text-sm leading-relaxed text-foreground/85">{p}</span>
                     </li>
                   ))}
                 </ul>
@@ -838,19 +854,19 @@ const TRIGGERS = [
 
 function TriggersBand() {
   return (
-    <section className="border-b border-white/8 py-8">
+    <section className="border-b border-border py-8">
       <div className="container">
-        <div className="border border-[#cf3a3a]/40 bg-[#cf3a3a]/8 p-5">
+        <div className="border border-rose-300 bg-rose-50 p-5">
           <div className="mb-4 flex items-center gap-3">
-            <Flame className="h-4 w-4 text-[#ff7a7a]" strokeWidth={2.2} />
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-[#ff7a7a]">
+            <Flame className="h-4 w-4 text-rose-700" strokeWidth={2.2} />
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-rose-700">
               Triggers — pressa när du ser detta
             </p>
           </div>
           <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {TRIGGERS.map((t, i) => (
-              <li key={t} className="flex items-start gap-3 text-sm text-white/85">
-                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center border border-[#cf3a3a]/55 bg-[#cf3a3a]/14 font-mono text-[10px] font-black text-[#ff7a7a]">
+              <li key={t} className="flex items-start gap-3 text-sm text-foreground/85">
+                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center border border-rose-300 bg-rose-100 font-mono text-[10px] font-black text-rose-700">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span>{t}</span>
@@ -896,7 +912,7 @@ const MajSpelmodell = () => {
   const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
 
   return (
-  <div className="relative -mt-px bg-[#06120d] text-white">
+  <div className="relative -mt-px bg-background text-foreground">
     <Hero />
     <EffektlogikStrip />
     <SpelarenSnabbversion />
@@ -905,7 +921,7 @@ const MajSpelmodell = () => {
       type="multiple"
       value={openBlocks}
       onValueChange={setOpenBlocks}
-      className="border-t border-white/8"
+      className="border-t border-border"
     >
       {MAJ_2026_BLOCKS.map((block, i) => (
         <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
@@ -913,26 +929,26 @@ const MajSpelmodell = () => {
     </Accordion>
 
     {/* Closing strip */}
-    <section className="border-t border-white/8 bg-[#0a1f15] py-16">
+    <section className="border-t border-border bg-muted/40 py-16">
       <div className="container">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-[#f5c242]">Slut</p>
-            <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-white md:text-3xl">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Slut</p>
+            <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
               Sex block. En idé. Ett lag.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">
             <a
               href="#forsvarsspel"
-              className="inline-flex items-center gap-2 border border-[#f5c242] bg-[#f5c242] px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-[#06120d] transition-colors hover:bg-[#f5c242]/85"
+              className="inline-flex items-center gap-2 rounded-md border border-amber-500 bg-amber-500 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:bg-amber-400"
             >
               <ArrowDown className="h-4 w-4" strokeWidth={2.4} />
               Tillbaka till block 01
             </a>
             <Link
               to="/period/1"
-              className="inline-flex items-center gap-2 border border-white/22 bg-white/5 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-white transition-colors hover:border-[#f5c242] hover:text-[#f5c242]"
+              className="inline-flex items-center gap-2 border border-border bg-card px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#f5c242] hover:text-amber-600"
             >
               Träna det
               <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
