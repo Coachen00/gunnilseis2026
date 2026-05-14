@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 const Hem = lazy(() => import("./pages/Hem"));
 const Period1 = lazy(() => import("./pages/Period1"));
 const Spelide = lazy(() => import("./pages/Spelide"));
+const MajSpelmodell = lazy(() => import("./pages/MajSpelmodell"));
 const Forsvar = lazy(() => import("./pages/Forsvar"));
 const Anfall = lazy(() => import("./pages/Anfall"));
 const Fasta = lazy(() => import("./pages/Fasta"));
@@ -82,6 +83,7 @@ const App = () => (
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
           <Route path="/" element={<Public><Hem /></Public>} />
           <Route path="/period/1" element={<Protected><Period1 /></Protected>} />
+          <Route path="/maj-2026" element={<Protected><MajSpelmodell /></Protected>} />
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected><Anfall /></Protected>} />

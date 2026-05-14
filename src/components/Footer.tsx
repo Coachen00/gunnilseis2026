@@ -29,13 +29,13 @@ const Footer = () => {
           </p>
           {user && (
             <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">
-              Spelidé · Träning · Match
+              Så spelar vi · Träning · Match
             </p>
           )}
         </div>
         {user && (
           <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
-            <Link to="/spelide" className="hover:text-foreground transition-colors duration-200">Spelidé</Link>
+            <Link to="/maj-2026" className="hover:text-foreground transition-colors duration-200">Så spelar vi</Link>
             <Link to="/verktyg" className="hover:text-foreground transition-colors duration-200">Verktyg</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

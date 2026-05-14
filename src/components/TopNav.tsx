@@ -104,8 +104,7 @@ const matchGroups: NavGroup[] = [
 
 const navItems: NavItem[] = [
   { kind: "link", to: "/", label: "Hem" },
-  { kind: "link", to: "/spelide#nulage", label: "Nuläge" },
-  { kind: "link", to: "/spelide", label: "Spelidé" },
+  { kind: "link", to: "/maj-2026", label: "Maj 2026" },
   {
     kind: "dropdown",
     label: "Spelet",
