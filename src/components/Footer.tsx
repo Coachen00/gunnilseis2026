@@ -24,8 +24,8 @@ const Footer = () => {
     <footer className="border-t border-border/70 py-12 mt-section bg-card/40">
       <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <div>
-          <p className="font-serif text-base text-foreground">
-            Gunnilse IS <span className="text-accent/90 font-sans text-xs uppercase tracking-[0.2em] font-semibold ml-1 align-middle">2026</span>
+          <p className="font-bold text-sm tracking-tight text-foreground">
+            Gunnilse IS <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </p>
           {user && (
             <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">

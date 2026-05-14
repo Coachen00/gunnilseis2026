@@ -25,7 +25,7 @@ const PhaseFlow = () => (
               <span className="block font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">
                 Skede {index + 1}
               </span>
-              <span className="mt-1 block font-serif text-xl leading-tight text-foreground">
+              <span className="mt-1 block text-xl font-bold tracking-tight text-foreground">
                 {phase.label}
               </span>
             </span>

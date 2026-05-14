@@ -201,12 +201,12 @@ const TopNav = () => {
           className="flex items-center gap-2.5 group flex-shrink-0 transition-opacity hover:opacity-80"
           aria-label="Gunnilse IS — Hem"
         >
-          <div className="w-8 h-8 rounded-md bg-card border border-border/80 flex items-center justify-center text-accent font-serif text-base leading-none">
+          <div className="w-8 h-8 rounded-sm bg-primary text-primary-foreground border border-primary flex items-center justify-center font-mono font-bold text-sm leading-none">
             G
           </div>
-          <span className="font-serif text-lg tracking-tight text-foreground hidden sm:inline">
+          <span className="font-bold text-base tracking-tight text-foreground hidden sm:inline">
             Gunnilse IS
-            <span className="text-accent/90 ml-1.5 font-sans text-xs uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </span>
         </Link>
 

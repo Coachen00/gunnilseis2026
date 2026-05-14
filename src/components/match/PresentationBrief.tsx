@@ -163,8 +163,8 @@ function SlideCard({ slide }: { slide: SlideSpec }) {
             {slide.no}
           </span>
           <div className="min-w-0">
-            <h3 className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-foreground">{slide.title}</h3>
-            <p className="mt-1.5 font-serif text-xl text-foreground">{slide.words}</p>
+            <h3 className="text-xs font-mono font-semibold uppercase tracking-[0.18em] text-foreground">{slide.title}</h3>
+            <p className="mt-1.5 text-lg font-bold tracking-tight text-foreground">{slide.words}</p>
           </div>
         </div>
         <InfoLine Icon={Image} label="Bild" text={slide.visual} />

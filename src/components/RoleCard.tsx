@@ -10,26 +10,26 @@ interface RoleCardProps {
 const RoleCard = ({ line, players, description, variant = "midfield" }: RoleCardProps) => {
   return (
     <div className={cn(
-      "bg-card rounded-xl p-6 border transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_6px_18px_-6px_hsl(215_35%_18%_/_0.10)]",
+      "bg-card rounded-sm p-6 border transition-all duration-200 hover:-translate-y-px hover:shadow-[0_10px_28px_-12px_hsl(215_70%_12%/0.22)]",
       variant === "attack"
-        ? "border-zone-attack/25 hover:border-zone-attack/45"
+        ? "border-zone-attack/35 hover:border-zone-attack/70"
         : variant === "defense"
-        ? "border-zone-defense/25 hover:border-zone-defense/45"
-        : "border-zone-midfield/25 hover:border-zone-midfield/45"
+        ? "border-zone-defense/35 hover:border-zone-defense/70"
+        : "border-zone-midfield/35 hover:border-zone-midfield/70"
     )}>
       <div className="flex items-center gap-3 mb-4">
         <div className={cn(
-          "w-12 h-12 rounded-xl flex items-center justify-center font-serif text-2xl",
+          "w-12 h-12 rounded-sm flex items-center justify-center font-mono font-bold text-xl tabular border",
           variant === "attack"
-            ? "bg-zone-attack/15 text-zone-attack"
+            ? "bg-zone-attack/10 text-zone-attack border-zone-attack/30"
             : variant === "defense"
-            ? "bg-zone-defense/15 text-zone-defense"
-            : "bg-zone-midfield/15 text-zone-midfield"
+            ? "bg-zone-defense/10 text-zone-defense border-zone-defense/30"
+            : "bg-zone-midfield/10 text-zone-midfield border-zone-midfield/30"
         )}>
           {line}
         </div>
         <div>
-          <p className="text-sm font-semibold text-foreground">{players}</p>
+          <p className="text-sm font-bold tracking-tight text-foreground">{players}</p>
           <p className={cn(
             "text-xs font-medium",
             variant === "attack" 

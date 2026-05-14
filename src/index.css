@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,0..100&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,62 +6,65 @@
 
 @layer base {
   :root {
-    /* Editorial Light — warm paper + mild navy */
-    --background: 40 30% 97%;
-    --foreground: 215 35% 18%;
+    /* Architectural Light — clean white + deep navy + saturated gold */
+    --background: 210 25% 99%;
+    --foreground: 215 70% 12%;
 
-    --card: 40 22% 99%;
-    --card-foreground: 215 35% 18%;
-    --surface-hover: 40 28% 94%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 70% 12%;
+    --surface-hover: 210 22% 96%;
 
-    --popover: 40 22% 99%;
-    --popover-foreground: 215 35% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 70% 12%;
 
-    --primary: 215 35% 18%;
-    --primary-foreground: 40 30% 97%;
+    --primary: 215 70% 16%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 18% 92%;
-    --secondary-foreground: 215 35% 18%;
+    --secondary: 210 22% 94%;
+    --secondary-foreground: 215 70% 16%;
 
-    --muted: 40 15% 90%;
-    --muted-foreground: 215 15% 42%;
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 18% 38%;
 
-    --accent: 42 70% 48%;
-    --accent-foreground: 40 30% 97%;
+    --accent: 42 90% 48%;
+    --accent-foreground: 215 70% 12%;
 
-    --destructive: 358 60% 48%;
-    --destructive-foreground: 40 30% 97%;
+    --destructive: 358 72% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 40 15% 86%;
-    --input: 40 15% 86%;
-    --ring: 42 70% 48%;
+    --border: 210 22% 90%;
+    --input: 210 22% 90%;
+    --ring: 42 90% 48%;
 
-    --radius: 0.625rem;
+    --radius: 0.25rem;
 
-    /* Custom tokens — Gunnilse identity dampened for light bg */
-    --pitch: 145 25% 55%;
-    --pitch-lines: 145 20% 75%;
-    --pitch-dark: 145 30% 40%;
+    /* Custom tokens — Gunnilse identity, saturated for sport */
+    --pitch: 145 50% 32%;
+    --pitch-lines: 145 30% 70%;
+    --pitch-dark: 145 60% 22%;
 
-    --swedish-blue: 215 50% 38%;
-    --swedish-yellow: 42 70% 48%;
+    --swedish-blue: 215 70% 38%;
+    --swedish-yellow: 42 90% 48%;
 
-    --zone-attack: 145 30% 50%;
-    --zone-midfield: 42 65% 55%;
-    --zone-defense: 358 55% 55%;
+    --zone-attack: 145 50% 38%;
+    --zone-midfield: 42 85% 48%;
+    --zone-defense: 358 65% 48%;
 
-    --gradient-pitch: linear-gradient(180deg, hsl(145 25% 60%) 0%, hsl(145 20% 50%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(40 22% 99%) 0%, hsl(40 20% 96%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(40 30% 97%) 0%, hsl(40 25% 94%) 100%);
+    --gradient-pitch: linear-gradient(180deg, hsl(145 50% 36%) 0%, hsl(145 55% 26%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 22% 98%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 25% 98%) 100%);
 
-    --sidebar-background: 40 22% 96%;
-    --sidebar-foreground: 215 35% 18%;
-    --sidebar-primary: 215 35% 18%;
-    --sidebar-primary-foreground: 40 30% 97%;
-    --sidebar-accent: 40 18% 92%;
-    --sidebar-accent-foreground: 215 35% 18%;
-    --sidebar-border: 40 15% 86%;
-    --sidebar-ring: 42 70% 48%;
+    --sidebar-background: 210 22% 97%;
+    --sidebar-foreground: 215 70% 16%;
+    --sidebar-primary: 215 70% 16%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 22% 92%;
+    --sidebar-accent-foreground: 215 70% 16%;
+    --sidebar-border: 210 22% 88%;
+    --sidebar-ring: 42 90% 48%;
+
+    /* Architectural grid hint */
+    --grid-line: 215 25% 92%;
   }
 }
 
@@ -73,51 +76,45 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
-    letter-spacing: -0.005em;
+    font-size: 16px;
+    line-height: 1.55;
+    letter-spacing: -0.01em;
+    font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Editorial typography hierarchy */
+  /* Architectural typography — Inter tight, heavy weights, no serif */
   h1 {
-    @apply font-serif tracking-tight;
-    font-weight: 300;
-    font-variation-settings: "opsz" 144, "SOFT" 50;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    @apply font-sans;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
   }
   h2 {
-    @apply font-serif tracking-tight;
-    font-weight: 400;
-    font-variation-settings: "opsz" 96, "SOFT" 30;
-    letter-spacing: -0.015em;
-    line-height: 1.15;
+    @apply font-sans;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
   }
   h3 {
-    @apply font-serif tracking-tight;
-    font-weight: 500;
-    font-variation-settings: "opsz" 48;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
+    @apply font-sans;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+    line-height: 1.2;
   }
   h4 {
     @apply font-sans;
     font-weight: 600;
-    letter-spacing: -0.005em;
-    line-height: 1.35;
+    letter-spacing: -0.012em;
+    line-height: 1.3;
   }
   h5, h6 {
-    @apply font-sans uppercase;
+    @apply font-mono uppercase;
     font-weight: 600;
-    letter-spacing: 0.16em;
-    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    font-size: 0.7rem;
     line-height: 1.4;
-  }
-
-  p {
-    max-width: 65ch;
   }
 }
 
@@ -134,62 +131,75 @@
     background: var(--gradient-hero);
   }
 
-  /* Light theme: subtle elevation, no glow */
+  /* Sharp elevation, no glow */
   .glow-primary {
-    box-shadow: 0 1px 3px hsl(215 35% 18% / 0.06), 0 8px 24px -12px hsl(215 35% 18% / 0.08);
+    box-shadow:
+      0 1px 0 0 hsl(var(--border)),
+      0 1px 3px hsl(215 70% 12% / 0.06),
+      0 12px 28px -16px hsl(215 70% 12% / 0.18);
   }
 
   .glow-accent {
-    box-shadow: 0 1px 3px hsl(42 70% 48% / 0.10), 0 8px 24px -12px hsl(42 70% 48% / 0.16);
+    box-shadow:
+      0 1px 0 0 hsl(var(--accent) / 0.3),
+      0 1px 3px hsl(42 90% 48% / 0.18),
+      0 12px 28px -16px hsl(42 90% 48% / 0.32);
   }
 
   .text-gradient-primary {
-    background: linear-gradient(135deg, hsl(215 45% 22%) 0%, hsl(145 30% 38%) 100%);
+    background: linear-gradient(135deg, hsl(215 70% 16%) 0%, hsl(215 70% 28%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-accent {
-    background: linear-gradient(135deg, hsl(42 70% 42%) 0%, hsl(38 75% 55%) 100%);
+    background: linear-gradient(135deg, hsl(42 90% 42%) 0%, hsl(42 95% 56%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .card-hover {
-    @apply transition-all duration-300 ease-out;
+    @apply transition-all duration-200 ease-out;
   }
   .card-hover:hover {
-    @apply -translate-y-0.5;
-    box-shadow: 0 4px 14px -4px hsl(215 35% 18% / 0.08), 0 2px 6px -2px hsl(215 35% 18% / 0.04);
-    border-color: hsl(var(--accent) / 0.32);
+    @apply -translate-y-px;
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.4),
+      0 1px 0 0 hsl(var(--accent) / 0.15),
+      0 8px 24px -10px hsl(215 70% 12% / 0.14);
   }
 
-  /* Section rhythm utilities */
+  /* Section rhythm */
   .section-pad {
     @apply py-16 md:py-24;
   }
   .section-pad-lg {
-    @apply py-20 md:py-36;
+    @apply py-20 md:py-32;
   }
 
-  /* Editorial divider — thin gold rule */
+  /* Architectural divider */
   .section-rule {
-    width: 64px;
-    height: 1px;
+    width: 48px;
+    height: 2px;
     background: hsl(var(--accent));
-    opacity: 0.6;
+  }
+
+  /* Tabular numbers utility */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
   }
 }
 
 @layer utilities {
   .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 0.5s ease-out forwards;
   }
 
   .animate-slide-up {
-    animation: slideUp 0.7s ease-out forwards;
+    animation: slideUp 0.6s ease-out forwards;
   }
 
   .animate-pulse-soft {
@@ -197,30 +207,36 @@
   }
 
   .animate-float {
-    animation: floatParticle 22s ease-in-out infinite;
+    animation: floatParticle 24s ease-in-out infinite;
     will-change: transform, opacity;
   }
 
   .animate-mesh-shift {
-    animation: meshShift 26s ease-in-out infinite alternate;
-    will-change: background-position, transform;
+    animation: meshShift 32s ease-in-out infinite alternate;
+    will-change: background-position;
   }
 
   .animate-fade-in-up {
-    animation: fadeInUp 0.9s ease-out forwards;
+    animation: fadeInUp 0.7s ease-out forwards;
   }
 
   .animate-bounce-slow {
     animation: bounceSlow 2.6s ease-in-out infinite;
   }
 
+  /* Architectural grid background */
+  .bg-architectural-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--grid-line) / 0.7) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--grid-line) / 0.7) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
   .bg-mesh-gradient {
     background-image:
-      radial-gradient(at 18% 22%, hsl(var(--accent) / 0.10) 0px, transparent 55%),
-      radial-gradient(at 82% 18%, hsl(var(--primary) / 0.06) 0px, transparent 55%),
-      radial-gradient(at 72% 78%, hsl(var(--pitch) / 0.10) 0px, transparent 55%),
-      radial-gradient(at 22% 82%, hsl(var(--accent) / 0.06) 0px, transparent 55%);
-    background-size: 180% 180%;
+      radial-gradient(at 15% 18%, hsl(var(--accent) / 0.06) 0px, transparent 50%),
+      radial-gradient(at 85% 14%, hsl(var(--primary) / 0.05) 0px, transparent 50%);
+    background-size: 200% 200%;
     background-position: 0% 0%;
   }
 }
@@ -231,42 +247,33 @@
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulseSoft {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.75; }
+  50% { opacity: 0.78; }
 }
 
 @keyframes floatParticle {
-  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.25; }
-  25% { transform: translate(20px, -28px) scale(1.08); opacity: 0.45; }
-  50% { transform: translate(-14px, -50px) scale(0.94); opacity: 0.35; }
-  75% { transform: translate(26px, -22px) scale(1.04); opacity: 0.4; }
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  50% { transform: translate(12px, -28px); opacity: 0.35; }
 }
 
 @keyframes meshShift {
   0%   { background-position: 0% 0%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 50% 100%; }
+  100% { background-position: 100% 100%; }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes bounceSlow {
   0%, 100% { transform: translateY(0); opacity: 0.7; }
-  50%      { transform: translateY(6px); opacity: 1; }
+  50%      { transform: translateY(4px); opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
