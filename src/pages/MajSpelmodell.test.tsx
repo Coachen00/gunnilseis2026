@@ -46,22 +46,17 @@ describe("MajSpelmodell page", () => {
     expect(screen.getByRole("heading", { name: /detta ska du göra på planen/i })).toBeInTheDocument();
   });
 
-  it("varje block visar både Gör så här och Gör inte så här", () => {
+  it("varje block är en kollapsad accordion-trigger by default — inget block-innehåll syns på initial render", () => {
     renderPage();
-    const goHere = screen.getAllByText(/^gör så här$/i);
-    const dontGoHere = screen.getAllByText(/^gör inte så här$/i);
-    expect(goHere.length).toBe(MAJ_2026_BLOCKS.length);
-    expect(dontGoHere.length).toBe(MAJ_2026_BLOCKS.length);
-  });
-
-  it("varje block har en princip-accordion-trigger med korrekt antal", () => {
-    renderPage();
+    // Triggers finns för alla 6 block
     for (const block of MAJ_2026_BLOCKS) {
-      const trigger = screen.getByTestId(`principles-trigger-${block.id}`);
-      expect(trigger).toHaveTextContent(new RegExp(`Principer · ${block.principles.length}`));
-      // Collapsed by default — slot-komponenter renderas inte än
+      const trigger = screen.getByTestId(`block-trigger-${block.id}`);
       expect(trigger.getAttribute("aria-expanded")).toBe("false");
+      expect(trigger).toHaveTextContent(new RegExp(block.title, "i"));
     }
+    // Gör så här / Gör inte så här ska INTE finnas — det ligger i collapsed AccordionContent
+    expect(screen.queryByText(/^gör så här$/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^gör inte så här$/i)).not.toBeInTheDocument();
   });
 
   it("alla block har minst en princip definierad", () => {
