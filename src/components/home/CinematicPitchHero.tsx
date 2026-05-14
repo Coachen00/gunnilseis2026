@@ -95,7 +95,7 @@ function TacticalCallout({ beat, progress, reduced }: { beat: StoryBeat; progres
 
   return (
     <motion.aside
-      style={reduced ? undefined : { opacity, y, scale }}
+      style={reduced ? { opacity: beat.number === "01" ? 1 : 0 } : { opacity, y, scale }}
       className={[
         "pointer-events-none absolute z-20 w-[min(20rem,calc(100vw-2rem))] border px-4 py-3 shadow-[0_18px_70px_hsl(215_70%_8%/0.28)] backdrop-blur-xl",
         "bottom-[18vh] sm:bottom-[20vh]",
@@ -184,7 +184,7 @@ function PitchScene({ progress, reduced }: { progress: MotionValue<number>; redu
       </motion.g>
 
       <motion.g
-        style={reduced ? undefined : { opacity: routeOpacity, pathLength: routeLength }}
+        style={reduced ? undefined : { opacity: routeOpacity }}
         fill="none"
         stroke="url(#goldRoute)"
         strokeLinecap="round"
@@ -192,9 +192,22 @@ function PitchScene({ progress, reduced }: { progress: MotionValue<number>; redu
         strokeWidth="12"
         filter="url(#pitchGlow)"
       >
-        <motion.path d="M 500 840 C 560 730 610 640 710 560 C 790 480 800 420 780 350" />
-        <motion.path d="M 500 840 C 435 800 372 730 300 690" strokeWidth="8" opacity="0.8" />
-        <motion.path d="M 500 840 C 525 740 515 610 500 360" strokeWidth="8" opacity="0.75" />
+        <motion.path
+          d="M 500 840 C 560 730 610 640 710 560 C 790 480 800 420 780 350"
+          style={reduced ? undefined : { pathLength: routeLength }}
+        />
+        <motion.path
+          d="M 500 840 C 435 800 372 730 300 690"
+          strokeWidth="8"
+          opacity="0.8"
+          style={reduced ? undefined : { pathLength: routeLength }}
+        />
+        <motion.path
+          d="M 500 840 C 525 740 515 610 500 360"
+          strokeWidth="8"
+          opacity="0.75"
+          style={reduced ? undefined : { pathLength: routeLength }}
+        />
       </motion.g>
 
       <g>
@@ -318,13 +331,13 @@ const CinematicPitchHero = () => {
               <br />
               i varje detalj.
             </h1>
-            <p className="mt-7 max-w-2xl text-base leading-relaxed text-white/76 md:text-lg">
+            <p className="mt-7 max-w-[21rem] text-sm leading-relaxed text-white/76 sm:max-w-2xl sm:text-base md:text-lg">
               En levande plan där identitet, roller och aktioner växer fram när vi går från helhet till spelare.
             </p>
             <div className="pointer-events-auto mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 to="/login"
-                className="group inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-accent px-7 text-sm font-black text-[#07120d] transition hover:bg-accent/90"
+                className="group inline-flex h-12 w-full items-center justify-center gap-2 rounded-sm bg-accent px-7 text-sm font-black text-[#07120d] transition hover:bg-accent/90 sm:w-auto"
               >
                 <LogIn className="h-4 w-4" strokeWidth={2.25} />
                 Logga in
@@ -332,7 +345,7 @@ const CinematicPitchHero = () => {
               </Link>
               <Link
                 to="/login?mode=signup"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-sm border border-white/26 bg-white/8 px-7 text-sm font-bold text-white backdrop-blur-md transition hover:border-accent hover:text-accent"
+                className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-sm border border-white/26 bg-white/8 px-7 text-sm font-bold text-white backdrop-blur-md transition hover:border-accent hover:text-accent sm:w-auto"
               >
                 <UserPlus className="h-4 w-4" strokeWidth={2.25} />
                 Begär tillgång
@@ -346,7 +359,7 @@ const CinematicPitchHero = () => {
         ))}
 
         <motion.div
-          style={reduced ? undefined : { opacity: playerViewOpacity }}
+          style={reduced ? { opacity: 0 } : { opacity: playerViewOpacity }}
           className="pointer-events-none absolute inset-x-0 bottom-8 z-20 px-4"
         >
           <div className="mx-auto max-w-5xl border-t border-white/18 pt-5">
