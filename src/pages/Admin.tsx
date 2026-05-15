@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowLeft, Check, X, Loader2, Shield, FileText } from "lucide-react";
+import { ArrowLeft, Check, X, Loader2, Shield, FileText, Video } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ContentEditor from "@/components/admin/ContentEditor";
+import MediaLibraryManager from "@/components/media/MediaLibraryManager";
 import { IDENTITY } from "@/data/identity";
 
 interface Profile {
@@ -171,6 +172,28 @@ const Admin = () => {
               fallback={IDENTITY}
             />
           </div>
+        </div>
+
+        <div className="mt-12">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Video className="w-4 h-4 text-muted-foreground" />
+              <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+                Mediabibliotek
+              </h2>
+            </div>
+            <Link
+              to="/media-bibliotek"
+              className="inline-flex h-8 items-center rounded-sm border border-border bg-card px-3 text-xs font-bold uppercase tracking-wider text-foreground transition hover:border-accent"
+            >
+              Öppna full vy
+            </Link>
+          </div>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Snabbtillgång till mediabiblioteket — lägg in klipp, redigera eller växla synlighet.
+            Den fulla vyn på <code className="rounded bg-muted px-1.5 py-0.5 text-xs">/media-bibliotek</code> har samma data.
+          </p>
+          <MediaLibraryManager />
         </div>
       </div>
     </div>

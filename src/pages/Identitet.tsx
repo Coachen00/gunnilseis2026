@@ -7,6 +7,7 @@ import { useScrollToHash } from "@/hooks/useScrollToHash";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import MediaSlot from "@/components/match/MediaSlot";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 import { cn } from "@/lib/utils";
 
 type IdentityMediaGroup = {
@@ -133,6 +134,16 @@ const IdentityOverview = () => {
             </SectionReveal>
           ))}
         </div>
+
+        <SectionReveal as="section" className="mt-section">
+          <MediaLibraryGrid
+            category="identitet"
+            limit={6}
+            eyebrow="Identitet · Filmer"
+            heading="Identitet i sekvenser"
+            subtitle="Klipp där beteendena syns — godkända exempel och förbättringsområden."
+          />
+        </SectionReveal>
       </div>
     </>
   );

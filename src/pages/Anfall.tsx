@@ -3,6 +3,7 @@ import CuesBlock from "@/components/CuesBlock";
 import AttackingPrincipleCard from "@/components/AttackingPrincipleCard";
 import SectionReveal from "@/components/SectionReveal";
 import StaggerList from "@/components/StaggerList";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 import { PHASE_CUES } from "@/data/phaseCues";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { MATCH_META } from "@/data/matchplan";
@@ -90,6 +91,18 @@ const Anfall = () => (
           <AttackingPrincipleCard key={p.slug} principle={p} />
         ))}
       </StaggerList>
+    </div>
+
+    <div className="container pb-section">
+      <SectionReveal>
+        <MediaLibraryGrid
+          category="anfall"
+          limit={6}
+          eyebrow="Anfall · Filmer"
+          heading="Klipp som visar principerna"
+          subtitle="Sekvenser från träning och match som visar hur principerna ser ut i verkligheten."
+        />
+      </SectionReveal>
     </div>
   </>
 );
