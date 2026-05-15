@@ -16,7 +16,7 @@ export interface PrincipleDef {
 /**
  * Statisk media-tile renderad på /maj-2026. Komplement till den
  * Supabase-backade `PrincipleMediaSlot` (som är admin-editerbar).
- * `src` är relativ från sajtens root — `public/` serveras på `/`.
+ * `src` är relativ från sajtens root — `public/` serveras på `/` — eller en extern URL.
  */
 export type MediaKind = "video" | "image";
 
@@ -334,6 +334,12 @@ const M = (file: string, label: string, kind: MediaKind = "video"): MediaAsset =
   kind,
 });
 
+const U = (url: string, label: string, kind: MediaKind = "video"): MediaAsset => ({
+  src: url,
+  label,
+  kind,
+});
+
 export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[]>> = {
   forsvarsspel: {
     medel: [
@@ -346,7 +352,7 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
   },
   "overgang-anfall": {
     kontring: [
-      M("2a-bollsspel-2-start-om-anfall-hogt.mp4", "2:a bollsspel — start om anfall högt"),
+      U("https://youtu.be/v9GPU-jxFF4", "2:a bollsspel — start om anfall högt"),
     ],
   },
   anfallsspel: {
@@ -373,9 +379,9 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       M("for-anf-vedad-duell-och-passning-mellan-linjer.mp4", "Vedad — duell och passning mellan linjer"),
     ],
     andrabollsspel: [
-      M("2a-bollsspel-1.mp4", "2:a bollsspel — exempel 1"),
+      U("https://youtu.be/uESC24-VDLQ", "2:a bollsspel — exempel 1"),
       M("forsv-2a-bollsspel.mp4", "Försvar — 2:a bollsspel"),
-      M("2a-bollsspel-ej-lyckat.mp4", "2:a bollsspel — ej lyckat"),
+      U("https://youtu.be/2YAQ5wXf_2M", "2:a bollsspel — ej lyckat"),
       M("2a-bollsspel-misslyckat.png", "2:a bollsspel — misslyckat", "image"),
     ],
     "vardigt-kroppssprak": [

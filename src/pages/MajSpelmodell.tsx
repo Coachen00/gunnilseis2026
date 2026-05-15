@@ -133,8 +133,21 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
 
 function DeferredVideo({ item }: { item: MediaAsset }) {
   const [active, setActive] = useState(false);
+  const embedUrl = videoEmbedUrl(item.src);
 
   if (active) {
+    if (embedUrl) {
+      return (
+        <iframe
+          src={embedUrl}
+          title={item.label}
+          className="aspect-video w-full bg-black"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      );
+    }
+
     return (
       <video
         src={item.src}
@@ -163,6 +176,16 @@ function DeferredVideo({ item }: { item: MediaAsset }) {
       </span>
     </button>
   );
+}
+
+function videoEmbedUrl(url: string): string | null {
+  const youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (youtube) return `https://www.youtube.com/embed/${youtube[1]}`;
+
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+
+  return null;
 }
 
 function getBlockMedia(blockId: string): MediaAsset[] {
