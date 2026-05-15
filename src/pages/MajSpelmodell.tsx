@@ -18,6 +18,7 @@ import {
   Box,
   CornerDownLeft,
   Film,
+  Play,
   AlertTriangle,
   Activity,
   Wrench,
@@ -29,9 +30,12 @@ import {
   MAJ_2026_EFFECT_LOGIC,
   MAJ_2026_HERO,
   MAJ_2026_NAV_CARDS,
+  MAJ_2026_OVRIGT_MEDIA,
+  MAJ_2026_PRINCIPLE_MEDIA,
   MAJ_2026_QUICK_ACTIONS,
   type BlockColor,
   type MajBlock,
+  type MediaAsset,
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -87,6 +91,102 @@ const BLOCK_EYEBROW: Record<string, string> = {
 /* =========================================================================
    SHARED COMPONENTS
    ========================================================================= */
+
+function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 3 }) {
+  if (items.length === 0) return null;
+  const cols = columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+  return (
+    <div className={`grid grid-cols-1 gap-3 ${cols}`}>
+      {items.map((item) => (
+        <figure
+          key={item.src}
+          className="overflow-hidden rounded-md border border-border bg-background"
+        >
+          <div className="bg-black">
+            {item.kind === "video" ? (
+              <DeferredVideo item={item} />
+            ) : (
+              <img
+                src={item.src}
+                alt={item.label}
+                loading="lazy"
+                className="max-h-72 w-full bg-black object-contain"
+              />
+            )}
+          </div>
+          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-foreground/85">
+            {item.label}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function DeferredVideo({ item }: { item: MediaAsset }) {
+  const [active, setActive] = useState(false);
+
+  if (active) {
+    return (
+      <video
+        src={item.src}
+        controls
+        autoPlay
+        preload="metadata"
+        playsInline
+        className="aspect-video w-full bg-black"
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setActive(true)}
+      className="group relative flex aspect-video w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,hsl(var(--muted))_0%,#050505_78%)] text-left"
+      aria-label={`Spela film: ${item.label}`}
+    >
+      <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,194,66,0.16),transparent_42%,rgba(58,111,198,0.16))]" />
+      <span className="relative flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/65 text-white shadow-lg transition-transform group-hover:scale-105">
+        <Play className="ml-0.5 h-6 w-6 fill-current" strokeWidth={1.8} />
+      </span>
+      <span className="absolute bottom-3 left-3 right-3 rounded bg-black/65 px-2 py-1 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-white/85">
+        Spela film
+      </span>
+    </button>
+  );
+}
+
+function getBlockMedia(blockId: string): MediaAsset[] {
+  const principleGroups = Object.values(MAJ_2026_PRINCIPLE_MEDIA[blockId] ?? {});
+  const unique = new Map<string, MediaAsset>();
+  for (const items of principleGroups) {
+    for (const item of items) {
+      if (!unique.has(item.src)) unique.set(item.src, item);
+    }
+  }
+  return Array.from(unique.values());
+}
+
+function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mb-8 border border-border bg-card p-4 md:p-5">
+      <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
+        <div className="flex items-center gap-2">
+          <Film className="h-4 w-4 text-amber-700" strokeWidth={2.1} />
+          <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">
+            Matchklipp i blocket
+          </h3>
+        </div>
+        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          {items.length} filer
+        </p>
+      </div>
+      <MediaGrid items={items} columns={items.length >= 3 ? 3 : 2} />
+    </div>
+  );
+}
 
 function MediaSlot({ label = "Lägg in film eller bild här", description }: { label?: string; description?: string }) {
   return (
@@ -533,6 +633,7 @@ function BlockVisual({ id }: { id: string }) {
 function BlockSection({ block, num }: { block: MajBlock; num: string }) {
   const Icon = BLOCK_ICON[block.id] ?? Shield;
   const eyebrow = BLOCK_EYEBROW[block.id] ?? "";
+  const blockMedia = getBlockMedia(block.id);
   return (
     <AccordionItem
       value={block.id}
@@ -616,6 +717,7 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
 
           {/* Media-placeholder */}
           <div className="mb-8">
+            <BlockMediaOverview items={blockMedia} />
             <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
           </div>
 
@@ -671,6 +773,20 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="border-t border-border bg-background px-4 pb-5 pt-4 md:px-5">
+                      {(() => {
+                        const staticItems = MAJ_2026_PRINCIPLE_MEDIA[block.id]?.[p.id] ?? [];
+                        return staticItems.length > 0 ? (
+                          <div className="mb-5 space-y-3">
+                            <div className="flex items-center gap-2">
+                              <Film className="h-3.5 w-3.5 text-foreground/55" strokeWidth={2} />
+                              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
+                                Filmer & bilder · {staticItems.length}
+                              </p>
+                            </div>
+                            <MediaGrid items={staticItems} />
+                          </div>
+                        ) : null;
+                      })()}
                       <PrincipleMediaSlot
                         blockId={block.id}
                         principleId={p.id}
@@ -956,6 +1072,27 @@ const MajSpelmodell = () => {
         <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
       ))}
     </Accordion>
+
+    {/* Övrigt — filmer/bilder utan koppling till specifik princip */}
+    {MAJ_2026_OVRIGT_MEDIA.length > 0 && (
+      <section id="ovrigt" className="scroll-mt-24 border-t border-border bg-muted/30 py-16 md:py-20">
+        <div className="container">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+            <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+              Övrigt
+            </p>
+          </div>
+          <h2 className="mb-4 max-w-3xl text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+            Filmer & bilder utan princip-koppling
+          </h2>
+          <p className="mb-10 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+            Material som inte hör till ett specifikt block eller en specifik princip — hero-takes, identifierande klipp och referensbilder. Sortera senare vid behov.
+          </p>
+          <MediaGrid items={MAJ_2026_OVRIGT_MEDIA} columns={3} />
+        </div>
+      </section>
+    )}
 
     {/* Closing strip */}
     <section className="border-t border-border bg-muted/40 py-16">
