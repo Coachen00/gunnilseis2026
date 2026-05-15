@@ -355,6 +355,12 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       U("https://youtu.be/v9GPU-jxFF4", "2:a bollsspel — start om anfall högt"),
     ],
   },
+  "overgang-forsvar": {
+    direkt: [
+      U("https://youtu.be/NBdI1FkHtiI", "Direkt bollåtererövring"),
+      U("https://youtu.be/ehAbno5VYdM", "Direkt bollåtererövring — leder till mål"),
+    ],
+  },
   anfallsspel: {
     "skydda-mot-kontring": [
       M("anf-skydd-fem-korridorer.mp4", "Anfall — skydd + fem korridorer"),
@@ -382,6 +388,7 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       U("https://youtu.be/uESC24-VDLQ", "2:a bollsspel — exempel 1"),
       M("forsv-2a-bollsspel.mp4", "Försvar — 2:a bollsspel"),
       U("https://youtu.be/2YAQ5wXf_2M", "2:a bollsspel — ej lyckat"),
+      U("https://youtu.be/PSP_YpetKYc", "2:a bollsspel — var beredd på lång boll"),
       M("2a-bollsspel-misslyckat.png", "2:a bollsspel — misslyckat", "image"),
     ],
     "vardigt-kroppssprak": [

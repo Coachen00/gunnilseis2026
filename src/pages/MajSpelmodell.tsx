@@ -101,11 +101,12 @@ const BLOCK_EYEBROW: Record<string, string> = {
    ========================================================================= */
 
 function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 3 }) {
-  if (items.length === 0) return null;
+  const uniqueItems = uniqueMediaItems(items);
+  if (uniqueItems.length === 0) return null;
   const cols = columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
   return (
     <div className={`grid grid-cols-1 gap-3 ${cols}`}>
-      {items.map((item) => (
+      {uniqueItems.map((item) => (
         <figure
           key={item.src}
           className="overflow-hidden rounded-md border border-border bg-background"
@@ -131,23 +132,43 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
   );
 }
 
+function uniqueMediaItems(items: MediaAsset[]) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const key = mediaIdentityKey(item.src);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function mediaIdentityKey(src: string) {
+  const youtube = src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (youtube) return `youtube:${youtube[1]}`;
+  const vimeo = src.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `vimeo:${vimeo[1]}`;
+  return src.split("?")[0];
+}
+
 function DeferredVideo({ item }: { item: MediaAsset }) {
   const [active, setActive] = useState(false);
   const embedUrl = videoEmbedUrl(item.src);
 
-  if (active) {
-    if (embedUrl) {
-      return (
-        <iframe
-          src={embedUrl}
-          title={item.label}
-          className="aspect-video w-full bg-black"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      );
-    }
+  if (embedUrl) {
+    return (
+      <iframe
+        src={embedUrl}
+        title={item.label}
+        className="aspect-video w-full bg-black"
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
 
+  if (active) {
     return (
       <video
         src={item.src}
@@ -180,10 +201,18 @@ function DeferredVideo({ item }: { item: MediaAsset }) {
 
 function videoEmbedUrl(url: string): string | null {
   const youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
-  if (youtube) return `https://www.youtube.com/embed/${youtube[1]}`;
+  if (youtube) {
+    const params = new URLSearchParams({
+      rel: "0",
+      modestbranding: "1",
+      playsinline: "1",
+      iv_load_policy: "3",
+    });
+    return `https://www.youtube-nocookie.com/embed/${youtube[1]}?${params.toString()}`;
+  }
 
   const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
-  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}?dnt=1`;
 
   return null;
 }
