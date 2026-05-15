@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SEASON_MATCHES, type SeasonMatch } from "@/data/season";
+import { MATCH_META } from "@/data/matchplan";
+
+const STATIC_WEEKLY_MATCH = SEASON_MATCHES.find((match) => match.opponent === MATCH_META.opponent);
+const STALE_UPCOMING_NAMES = ["kareby", "lerum"];
 
 export function useSeasonMatches() {
   const [matches, setMatches] = useState<SeasonMatch[]>(SEASON_MATCHES);
@@ -22,7 +26,7 @@ export function useSeasonMatches() {
         return;
       }
 
-      setMatches(
+      setMatches(ensureWeeklyMatch(
         data
           .filter((row) => row.match_date && row.opponent)
           .filter((row) => !(row.manual_override && !row.external_id))
@@ -37,7 +41,7 @@ export function useSeasonMatches() {
             theirScore: row.their_score ?? undefined,
             sourceUrl: toSvenskalagUrl(row.external_id),
           }))
-      );
+      ));
       setUsingFallback(false);
       setLoading(false);
     })();
@@ -47,6 +51,26 @@ export function useSeasonMatches() {
   }, []);
 
   return { matches, loading, usingFallback };
+}
+
+export function ensureWeeklyMatch(matches: SeasonMatch[], now = new Date()): SeasonMatch[] {
+  if (!STATIC_WEEKLY_MATCH) return matches;
+
+  const withoutStaleUpcoming = matches.filter((match) => {
+    const isFuture = new Date(match.date).getTime() >= now.getTime();
+    const isStaleOpponent = STALE_UPCOMING_NAMES.some((name) =>
+      match.opponent.toLowerCase().includes(name)
+    );
+    return !(isFuture && isStaleOpponent);
+  });
+
+  const hasWeeklyMatch = withoutStaleUpcoming.some((match) =>
+    match.id === STATIC_WEEKLY_MATCH.id ||
+    match.opponent.toLowerCase() === STATIC_WEEKLY_MATCH.opponent.toLowerCase()
+  );
+
+  return (hasWeeklyMatch ? withoutStaleUpcoming : [...withoutStaleUpcoming, STATIC_WEEKLY_MATCH])
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
 function toSvenskalagUrl(externalId: string | null): string | undefined {

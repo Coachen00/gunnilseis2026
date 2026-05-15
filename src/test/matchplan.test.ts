@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CALLED_SQUAD, MATCH_META, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
+import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
 /**
  * Sanity tests för matchplanen.
@@ -61,5 +62,24 @@ describe("matchplan", () => {
     const anfall = COHERENCE.find((s) => s.id === "anfall");
     expect(anfall).toBeTruthy();
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
+  });
+
+  it("gammal kommande Kareby-rad kan inte ersätta Björkö som veckans match", () => {
+    const matches = ensureWeeklyMatch(
+      [
+        {
+          id: "stale-kareby",
+          date: "2026-05-16T12:00:00+02:00",
+          opponent: "Kareby IS",
+          homeAway: "away",
+          competition: "Division 4A Herr",
+          venue: "Kareby Hed",
+        },
+      ],
+      new Date("2026-05-15T12:00:00+02:00")
+    );
+
+    expect(matches.some((match) => match.opponent === "Kareby IS")).toBe(false);
+    expect(matches[0].opponent).toBe("IFK Björkö");
   });
 });
