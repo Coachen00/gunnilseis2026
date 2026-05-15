@@ -313,7 +313,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
               <input
                 type="text"
                 value={textTitle}
-                onChange={(e) => setTextTitle(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setTextTitle(next);
+                  persist({ text_title: next || null });
+                }}
                 onBlur={() => persist({ text_title: textTitle || null })}
                 placeholder="Rubrik på kortet"
                 disabled={disabled}
@@ -321,7 +325,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
               />
               <textarea
                 value={textBody}
-                onChange={(e) => setTextBody(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setTextBody(next);
+                  persist({ text_body: next || null });
+                }}
                 onBlur={() => persist({ text_body: textBody || null })}
                 placeholder="Kort beskrivning eller 1–3 punkter — vad ska spelaren göra?"
                 rows={3}
@@ -333,7 +341,19 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
             <input
               type="url"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setUrl(next);
+                persist({ url: next || null });
+              }}
+              onPaste={(e) => {
+                const pasted = e.clipboardData.getData("text").trim();
+                if (pasted) {
+                  e.preventDefault();
+                  setUrl(pasted);
+                  persist({ url: pasted });
+                }
+              }}
               onBlur={() => persist({ url: url || null })}
               placeholder={mediaType === "video" ? "YouTube-/Vimeo-länk eller filmens URL" : "Bild-URL"}
               disabled={disabled}
@@ -366,7 +386,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
           {mediaType !== "text" && (
             <textarea
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setCaption(next);
+                persist({ caption: next || null });
+              }}
               onBlur={() => persist({ caption: caption || null })}
               placeholder="Kort beskrivning (valfri)"
               rows={2}
