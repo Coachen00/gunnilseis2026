@@ -26,6 +26,8 @@ interface Props {
   oneLiner: string;
   /** Disabled = read-only; visa data men dölj save/upload-knappar. */
   disabled?: boolean;
+  /** Hidden header = label/oneLiner renderas av en wrapper (t.ex. accordion-trigger). */
+  hideHeader?: boolean;
 }
 
 const IMAGE_ACCEPT = "image/png,image/jpeg,image/jpg,image/webp,image/gif";
@@ -37,7 +39,7 @@ function youtubeEmbed(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
-const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, disabled = false }: Props) => {
+const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, disabled = false, hideHeader = false }: Props) => {
   const [mediaType, setMediaType] = useState<MediaType>("video");
   const [sourceKind, setSourceKind] = useState<SourceKind>("url");
   const [url, setUrl] = useState("");
@@ -202,19 +204,27 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     </button>
   );
 
+  const TypeButtons = (
+    <div className="inline-flex flex-shrink-0 rounded-md border border-border bg-background/50 p-0.5">
+      {typeButton("video", Video, "Film")}
+      {typeButton("image", ImageIcon, "Bild")}
+      {typeButton("text", FileText, "Kort")}
+    </div>
+  );
+
   return (
-    <div className="rounded-lg border border-border bg-background/50 p-4">
-      <div className="mb-3 flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h4 className="text-base font-bold leading-snug text-foreground">{principleLabel}</h4>
-          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{oneLiner}</p>
+    <div className={cn(!hideHeader && "rounded-lg border border-border bg-background/50 p-4", hideHeader && "p-0")}>
+      {hideHeader ? (
+        <div className="mb-3 flex justify-end">{TypeButtons}</div>
+      ) : (
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h4 className="text-base font-bold leading-snug text-foreground">{principleLabel}</h4>
+            <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{oneLiner}</p>
+          </div>
+          {TypeButtons}
         </div>
-        <div className="inline-flex flex-shrink-0 rounded-md border border-border bg-background/50 p-0.5">
-          {typeButton("video", Video, "Film")}
-          {typeButton("image", ImageIcon, "Bild")}
-          {typeButton("text", FileText, "Kort")}
-        </div>
-      </div>
+      )}
 
       {loading ? (
         <div className="h-20 animate-pulse rounded-md bg-muted/30" />

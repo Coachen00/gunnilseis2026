@@ -633,26 +633,55 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             </div>
           )}
 
-          {/* Principer — alltid synliga som card-grid när blocket är öppet */}
+          {/* Principer — nested rullgardiner, en per princip */}
           {block.principles.length > 0 && (
-            <div className="mt-10 border border-border bg-card p-6">
-              <div className="mb-5 flex items-center gap-3">
+            <div className="mt-10">
+              <div className="mb-3 flex items-center gap-3 px-1">
                 <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
-                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-foreground/70">
+                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
                   Principer · {block.principles.length}
                 </p>
               </div>
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <Accordion type="multiple" className="overflow-hidden rounded-md border border-border bg-card">
                 {block.principles.map((p) => (
-                  <PrincipleMediaSlot
+                  <AccordionItem
                     key={p.id}
-                    blockId={block.id}
-                    principleId={p.id}
-                    principleLabel={p.label}
-                    oneLiner={p.oneLiner}
-                  />
+                    value={`${block.id}-${p.id}`}
+                    className="border-b border-border last:border-b-0"
+                  >
+                    <AccordionTrigger
+                      data-testid={`principle-trigger-${block.id}-${p.id}`}
+                      className="px-4 py-3 hover:no-underline hover:bg-muted/40 md:px-5 md:py-3.5"
+                    >
+                      <div className="flex w-full items-center gap-3 text-left">
+                        <span
+                          className={[
+                            "h-1.5 w-1.5 flex-shrink-0 rounded-full",
+                            TONE_DOT[block.accent],
+                          ].join(" ")}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-bold leading-tight text-foreground">
+                            {p.label}
+                          </p>
+                          <p className="mt-0.5 truncate text-xs leading-snug text-muted-foreground">
+                            {p.oneLiner}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="border-t border-border bg-background px-4 pb-5 pt-4 md:px-5">
+                      <PrincipleMediaSlot
+                        blockId={block.id}
+                        principleId={p.id}
+                        principleLabel={p.label}
+                        oneLiner={p.oneLiner}
+                        hideHeader
+                      />
+                    </AccordionContent>
+                  </AccordionItem>
                 ))}
-              </div>
+              </Accordion>
             </div>
           )}
         </div>
