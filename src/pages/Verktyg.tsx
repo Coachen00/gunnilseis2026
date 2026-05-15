@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
+import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target, Video } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 
 const tools = [
+  {
+    to: "/media-bibliotek",
+    label: "Mediabibliotek",
+    desc: "Ladda upp klipp, koppla till spelmodellen, växla synlighet för spelare.",
+    icon: Video,
+  },
   {
     to: "/spelmodell-labb",
     label: "Spelmodell-labb",

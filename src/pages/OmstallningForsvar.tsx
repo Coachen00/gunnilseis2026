@@ -3,8 +3,10 @@ import SectionHeader from "@/components/SectionHeader";
 import { OmstallningForsvarSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
+import SectionReveal from "@/components/SectionReveal";
 import { PHASE_CUES } from "@/data/phaseCues";
 import MediaSlotGroup from "@/components/match/MediaSlotGroup";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 
 const OmstallningForsvar = () => (
   <>
@@ -46,6 +48,18 @@ const OmstallningForsvar = () => (
           </p>
         </div>
       </section>
+    </div>
+
+    <div className="container pb-section">
+      <SectionReveal>
+        <MediaLibraryGrid
+          category="omstallning-forsvar"
+          limit={6}
+          eyebrow="Omställning till försvar · Filmer"
+          heading="Klipp från motpressen"
+          subtitle="Hur vi reagerar i de första sekunderna efter bollförlust."
+        />
+      </SectionReveal>
     </div>
   </>
 );

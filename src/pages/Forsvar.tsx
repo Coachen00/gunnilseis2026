@@ -6,6 +6,7 @@ import CuesBlock from "@/components/CuesBlock";
 import SectionReveal from "@/components/SectionReveal";
 import { PHASE_CUES } from "@/data/phaseCues";
 import MediaSlotGroup from "@/components/match/MediaSlotGroup";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 
 const Forsvar = () => (
   <>
@@ -77,6 +78,18 @@ const Forsvar = () => (
           Lågt block nära egen box. Korrekt positionering, tät markering på spelare i gyllene zonen, blockera avslutsytor. Trigger för att pressa upp igen: bollen bakåt till deras backlinje + vår 9:a närmast bollen.
         </div>
       </section>
+      </SectionReveal>
+    </div>
+
+    <div className="container pb-section">
+      <SectionReveal>
+        <MediaLibraryGrid
+          category="forsvar"
+          limit={6}
+          eyebrow="Försvar · Filmer"
+          heading="Klipp från försvarsspelet"
+          subtitle="Press, block och kontringsskydd i autentiska sekvenser från träning och match."
+        />
       </SectionReveal>
     </div>
   </>

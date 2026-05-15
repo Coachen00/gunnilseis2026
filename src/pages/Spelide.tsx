@@ -5,6 +5,7 @@ import SectionHeader from "@/components/SectionHeader";
 import CurrentStateSection from "@/components/CurrentStateSection";
 import SectionReveal from "@/components/SectionReveal";
 import StaggerList from "@/components/StaggerList";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 
 const Spelide = () => (
@@ -73,6 +74,16 @@ const Spelide = () => (
       </SectionReveal>
       <SectionReveal>
         <IdentitetSection />
+      </SectionReveal>
+
+      <SectionReveal>
+        <MediaLibraryGrid
+          category="identitet"
+          limit={3}
+          eyebrow="Identitet · Senaste klippen"
+          heading="Beteendena i levande sekvenser"
+          subtitle="Korta klipp där 2:a bollsspel, duell, djupledsspel eller kroppsspråk syns tydligt."
+        />
       </SectionReveal>
     </div>
   </>

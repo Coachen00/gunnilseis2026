@@ -3,8 +3,10 @@ import SectionHeader from "@/components/SectionHeader";
 import { OmstallningAnfallSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 import CuesBlock from "@/components/CuesBlock";
+import SectionReveal from "@/components/SectionReveal";
 import { PHASE_CUES } from "@/data/phaseCues";
 import MediaSlotGroup from "@/components/match/MediaSlotGroup";
+import MediaLibraryGrid from "@/components/media/MediaLibraryGrid";
 
 const OmstallningAnfall = () => (
   <>
@@ -46,6 +48,18 @@ const OmstallningAnfall = () => (
           </p>
         </div>
       </section>
+    </div>
+
+    <div className="container pb-section">
+      <SectionReveal>
+        <MediaLibraryGrid
+          category="omstallning-anfall"
+          limit={6}
+          eyebrow="Omställning till anfall · Filmer"
+          heading="Klipp från omställningsmomenten"
+          subtitle="De första sekunderna efter bollvinst — sekvenser som visar hur vi utnyttjar obalans."
+        />
+      </SectionReveal>
     </div>
   </>
 );
