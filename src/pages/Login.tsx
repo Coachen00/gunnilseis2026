@@ -8,6 +8,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
+const SHARED_LOGIN_EMAIL = "gunnilse2026@gunnilse.se";
+const LEGACY_SHARED_LOGIN_EMAIL = "lerum20260424@gunnilse.local";
+
+const normalizeLogin = (value: string) => value.trim().toLowerCase();
+
+const isSharedLogin = (value: string) => {
+  const normalized = normalizeLogin(value);
+  return normalized === "gunnilse2026" || normalized === SHARED_LOGIN_EMAIL;
+};
+
+const toSupabaseEmail = (value: string) => {
+  const normalized = normalizeLogin(value);
+
+  if (isSharedLogin(normalized)) {
+    return SHARED_LOGIN_EMAIL;
+  }
+
+  return normalized.includes("@")
+    ? normalized
+    : `${normalized}@gunnilse.local`;
+};
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -43,9 +65,7 @@ const Login = () => {
     setIsLoading(true);
 
     // Map username -> email behind the scenes (Supabase requires email).
-    const email = username.includes("@")
-      ? username.trim()
-      : `${username.trim().toLowerCase()}@gunnilse.local`;
+    const email = toSupabaseEmail(username);
 
     try {
       if (isSignUp) {
@@ -79,7 +99,19 @@ const Login = () => {
           password,
         });
 
-        if (error) throw error;
+        if (error) {
+          // Temporary bridge while the live Supabase project still has the old internal account.
+          if (isSharedLogin(username)) {
+            const fallback = await supabase.auth.signInWithPassword({
+              email: LEGACY_SHARED_LOGIN_EMAIL,
+              password,
+            });
+
+            if (fallback.error) throw fallback.error;
+          } else {
+            throw error;
+          }
+        }
 
         toast({
           title: "Inloggad!",
@@ -148,7 +180,7 @@ const Login = () => {
                 id="username"
                 type="text"
                 autoComplete="username"
-                placeholder="t.ex. Lerum20260424"
+                placeholder="t.ex. gunnilse2026@gunnilse.se"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
