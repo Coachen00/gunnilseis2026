@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AlertTriangle, FileText, HardDrive, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
+import { FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   clearLocalSlot,
@@ -51,7 +51,10 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  // Diagnostic-fel loggas till console; ingen UI-banner — admin ser ändå inget hen ska agera på.
+  const setErrorMsg = (msg: string | null) => {
+    if (msg) console.warn(`[PrincipleMediaSlot] ${blockId}/${principleId}: ${msg}`);
+  };
   const fileInput = useRef<HTMLInputElement>(null);
 
   // Cleanup blob-URL när komponenten unmountas eller URL:en byts
@@ -270,30 +273,6 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
             <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{oneLiner}</p>
           </div>
           {TypeButtons}
-        </div>
-      )}
-
-      {/* Lokal lagring-banner */}
-      <div
-        className="mb-3 flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-xs leading-relaxed text-amber-800"
-        title="Tills server-databasen är aktiverad sparas allt på denna enhet."
-      >
-        <HardDrive className="mt-0.5 h-3.5 w-3.5 flex-shrink-0" strokeWidth={2.2} />
-        <span>
-          <strong className="font-bold">Lokal lagring</strong> · Sparas i denna webbläsare på denna dator.
-          Synkas inte mellan enheter än.
-        </span>
-      </div>
-
-      {errorMsg && (
-        <div
-          role="alert"
-          className="mb-3 flex items-start gap-2.5 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2.5 text-xs leading-relaxed text-destructive"
-        >
-          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0" strokeWidth={2.2} />
-          <span>
-            <strong className="font-bold">Spara misslyckades.</strong> {errorMsg}
-          </span>
         </div>
       )}
 

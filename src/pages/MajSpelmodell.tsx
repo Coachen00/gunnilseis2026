@@ -39,6 +39,14 @@ import {
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+
+/** Renderar bara children om inloggad användare är admin. Tyst annars. */
+const AdminOnly = ({ children }: { children: React.ReactNode }) => {
+  const { isAdmin, loading } = useIsAdmin();
+  if (loading || !isAdmin) return null;
+  return <>{children}</>;
+};
 
 /* =========================================================================
    COLOR TOKENS — light palette (matchar sajtens default-tema)
@@ -787,13 +795,15 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
                           </div>
                         ) : null;
                       })()}
-                      <PrincipleMediaSlot
-                        blockId={block.id}
-                        principleId={p.id}
-                        principleLabel={p.label}
-                        oneLiner={p.oneLiner}
-                        hideHeader
-                      />
+                      <AdminOnly>
+                        <PrincipleMediaSlot
+                          blockId={block.id}
+                          principleId={p.id}
+                          principleLabel={p.label}
+                          oneLiner={p.oneLiner}
+                          hideHeader
+                        />
+                      </AdminOnly>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
