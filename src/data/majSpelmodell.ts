@@ -397,8 +397,4 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
   },
 };
 
-export const MAJ_2026_OVRIGT_MEDIA: MediaAsset[] = [
-  M("cinematic-drone-shot.mp4", "Cinematic drone shot"),
-  M("mohammed.mp4", "Mohammed"),
-  M("skarmbild-2026-05-14.png", "Skärmbild 2026-05-14", "image"),
-];
+export const MAJ_2026_OVRIGT_MEDIA: MediaAsset[] = [];
