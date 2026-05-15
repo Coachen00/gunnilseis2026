@@ -1,7 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
+import { AlertTriangle, FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+
+type SupabaseErr = { message?: string; code?: string; statusCode?: string | number; status?: number; name?: string } | null | undefined;
+
+/** Returnerar en användarvänlig svensk beskrivning för vanliga Supabase-fel. */
+function describeError(err: SupabaseErr, fallback: string): string {
+  if (!err) return fallback;
+  const msg = (err.message ?? "").toLowerCase();
+  const code = String(err.code ?? "");
+  if (code === "42P01" || (msg.includes("relation") && msg.includes("does not exist"))) {
+    return "Databastabellen principle_media finns inte. Migrationen `supabase/migrations/20260514120000_principle_media.sql` måste köras mot live-Supabase.";
+  }
+  if (code === "42501" || msg.includes("row-level security") || msg.includes("permission denied")) {
+    return "Du har inte rätt att skriva här. Be admin godkänna ditt konto (is_approved_user).";
+  }
+  if (msg.includes("jwt") || msg.includes("invalid token") || err.status === 401) {
+    return "Du är inte inloggad — logga in på nytt och försök igen.";
+  }
+  if (msg.includes("bucket") && msg.includes("not found")) {
+    return "Storage-bucketen 'match-media' saknas i Supabase. Skapa den först.";
+  }
+  if (msg.includes("payload too large") || err.statusCode === 413) {
+    return "Filen är för stor för bucketen. Komprimera eller höj bucket-limiten.";
+  }
+  return err.message ?? fallback;
+}
 
 type MediaType = "video" | "image" | "text";
 type SourceKind = "url" | "upload" | "text";
@@ -51,6 +76,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   // Load existing row
@@ -59,7 +85,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     setLoading(true);
     (async () => {
       // @ts-expect-error principle_media saknas i auto-genererade typer
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("principle_media")
         .select("*")
         .eq("block_id", blockId)
@@ -67,15 +93,20 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
         .maybeSingle();
 
       if (cancelled) return;
-      const row = data as Row | null;
-      if (row) {
-        setMediaType(row.media_type);
-        setSourceKind(row.source_kind);
-        setUrl(row.url ?? "");
-        setStoragePath(row.storage_path);
-        setTextTitle(row.text_title ?? "");
-        setTextBody(row.text_body ?? "");
-        setCaption(row.caption ?? "");
+      if (error) {
+        console.error(`[PrincipleMediaSlot] load failed for ${blockId}/${principleId}:`, error);
+        setErrorMsg(describeError(error, "Kunde inte ladda sparad data."));
+      } else {
+        const row = data as Row | null;
+        if (row) {
+          setMediaType(row.media_type);
+          setSourceKind(row.source_kind);
+          setUrl(row.url ?? "");
+          setStoragePath(row.storage_path);
+          setTextTitle(row.text_title ?? "");
+          setTextBody(row.text_body ?? "");
+          setCaption(row.caption ?? "");
+        }
       }
       setLoading(false);
     })();
@@ -92,8 +123,15 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
       return;
     }
     (async () => {
-      const { data } = await supabase.storage.from(BUCKET).createSignedUrl(storagePath, 60 * 60);
-      if (!cancelled) setSignedUrl(data?.signedUrl ?? null);
+      const { data, error } = await supabase.storage.from(BUCKET).createSignedUrl(storagePath, 60 * 60);
+      if (cancelled) return;
+      if (error) {
+        console.error(`[PrincipleMediaSlot] signed URL failed for ${storagePath}:`, error);
+        setErrorMsg(describeError(error, "Kunde inte hämta visnings-URL för uppladdad fil."));
+        setSignedUrl(null);
+      } else {
+        setSignedUrl(data?.signedUrl ?? null);
+      }
     })();
     return () => {
       cancelled = true;
@@ -122,25 +160,39 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     const { error } = await supabase
       .from("principle_media")
       .upsert(payload, { onConflict: "block_id,principle_id" });
-    if (!error) flashSaved();
+    if (error) {
+      console.error(`[PrincipleMediaSlot] persist failed for ${blockId}/${principleId}:`, error);
+      setErrorMsg(describeError(error, "Kunde inte spara ändringen."));
+    } else {
+      setErrorMsg(null);
+      flashSaved();
+    }
   }
 
   async function handleUpload(file: File) {
     if (disabled) return;
     setUploading(true);
+    setErrorMsg(null);
     const ext = file.name.split(".").pop() || "bin";
     const path = `principles/${blockId}/${principleId}-${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from(BUCKET).upload(path, file, { upsert: true });
-    if (!error) {
-      if (storagePath && storagePath !== path) {
-        await supabase.storage.from(BUCKET).remove([storagePath]);
-      }
-      setStoragePath(path);
-      setSourceKind("upload");
-      const nextType: MediaType = file.type.startsWith("video/") ? "video" : "image";
-      setMediaType(nextType);
-      await persist({ source_kind: "upload", storage_path: path, url: null, media_type: nextType });
+    if (error) {
+      console.error(`[PrincipleMediaSlot] upload failed for ${path}:`, error);
+      setErrorMsg(describeError(error, "Uppladdningen misslyckades."));
+      setUploading(false);
+      return;
     }
+    if (storagePath && storagePath !== path) {
+      const { error: removeError } = await supabase.storage.from(BUCKET).remove([storagePath]);
+      if (removeError) {
+        console.warn(`[PrincipleMediaSlot] could not remove old file ${storagePath}:`, removeError);
+      }
+    }
+    setStoragePath(path);
+    setSourceKind("upload");
+    const nextType: MediaType = file.type.startsWith("video/") ? "video" : "image";
+    setMediaType(nextType);
+    await persist({ source_kind: "upload", storage_path: path, url: null, media_type: nextType });
     setUploading(false);
   }
 
@@ -223,6 +275,18 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
             <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{oneLiner}</p>
           </div>
           {TypeButtons}
+        </div>
+      )}
+
+      {errorMsg && (
+        <div
+          role="alert"
+          className="mb-3 flex items-start gap-2.5 rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2.5 text-xs leading-relaxed text-destructive"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0" strokeWidth={2.2} />
+          <span>
+            <strong className="font-bold">Spara misslyckades.</strong> {errorMsg}
+          </span>
         </div>
       )}
 
