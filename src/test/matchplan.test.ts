@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MATCH_META, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
+import { CALLED_SQUAD, MATCH_META, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 
 /**
@@ -14,10 +14,10 @@ import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Kareby + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Kareby IS");
-    expect(MATCH_META.kickoff).toMatch(/19:00/);
-    expect(MATCH_META.venue).toBeTruthy();
+  it("MATCH_META har IFK Björkö + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("IFK Björkö");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toContain("Division 4A");
   });
 
@@ -33,12 +33,20 @@ describe("matchplan", () => {
     expect(new Set(ids).size).toBe(11);
   });
 
+  it("kallad trupp har 11 startspelare och 5 avbytare", () => {
+    expect(CALLED_SQUAD.starting).toHaveLength(11);
+    expect(CALLED_SQUAD.bench).toHaveLength(5);
+    expect(CALLED_SQUAD.starting).toContain("Ali");
+    expect(CALLED_SQUAD.bench).toContain("Galvan");
+  });
+
   it("COHERENCE har förväntade sektioner i ordning", () => {
     const ids = COHERENCE.map((s) => s.id);
     expect(ids).toEqual([
       "forutsattningar",
+      "kallad-trupp",
       "forra-match",
-      "kareby",
+      "bjorko",
       "identitet",
       "anfall",
       "forsvar",

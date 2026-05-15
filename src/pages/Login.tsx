@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 const SHARED_LOGIN_EMAIL = "gunnilse2026@gunnilse.se";
-const LEGACY_SHARED_LOGIN_EMAIL = "lerum20260424@gunnilse.local";
 
 const normalizeLogin = (value: string) => value.trim().toLowerCase();
 

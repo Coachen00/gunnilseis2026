@@ -1,7 +1,7 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad inför Kareby (fre 8 maj 19:00, borta · Kareby Hed).
- * Förra match: KF Velebit (lör 2 maj, hemma · 1–0). Reflektioner i `forraMatch.ts`.
+ * Senast uppdaterad inför IFK Björkö (hemma · Hjällbovallen 2 Konstgräs · 13:00).
+ * Förra match: Kareby IS (borta · 1–1).
  */
 
 export type MatchMeta = {
@@ -35,33 +35,50 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Kareby IS",
-  venue: "Kareby Hed",
-  home: false,
-  kickoff: "Fre 8 maj · 19:00",
-  competition: "Borta · Division 4A Herr",
+  opponent: "IFK Björkö",
+  venue: "Hjällbovallen 2 Konstgräs",
+  home: true,
+  kickoff: "Lör 16 maj · 13:00",
+  competition: "Hemma · Division 4A Herr",
   weather: "",
   absent: [],
 };
 
+export const CALLED_SQUAD = {
+  starting: [
+    "Ali",
+    "Pascal",
+    "Rinor",
+    "Sabarr",
+    "Vedad",
+    "Ahmed",
+    "Ado",
+    "Hosam",
+    "Ihab",
+    "Kamal",
+    "Haris",
+  ],
+  bench: ["Daniel", "Rayan", "Galvan", "Idriss", "Aldin"],
+} as const;
+
 export const FOCUS: string[] = [
-  "Princip 1 — Skydda mot kontring först. Balans bakom bollen alltid.",
-  "Princip 2/3 — Spela in i halvyta. När det är trångt: vänd och spela in på nya sidan.",
-  "Princip 5 — Fyll på minst 4 av oss i/runt boxen vid varje inlägg.",
+  "Starta matchen som hemmalag: högt fokus, korta avstånd och tydlig röst direkt.",
+  "Försvara tillsammans: skydda mitten, lås bollsida och vinn andrabollen.",
+  "När vi vinner bollen: titta framåt, hitta Haris eller spelvänd via Hosam/Ihab/Kamal.",
 ];
 
 export const FORMATION: FormationSlot[] = [
-  { id: "gk", n: 1, name: "1", label: "MV", x: 50, y: 8 },
-  { id: "lb", n: 2, name: "2", label: "VB", x: 14, y: 28 },
-  { id: "lcb", n: 3, name: "3", label: "VMB", x: 36, y: 23 },
-  { id: "rcb", n: 4, name: "4", label: "HMB", x: 64, y: 23 },
-  { id: "rb", n: 5, name: "5", label: "HB", x: 86, y: 28 },
-  { id: "ldm", n: 6, name: "6", label: "DM", x: 38, y: 48 },
-  { id: "rdm", n: 8, name: "8", label: "DM", x: 62, y: 48 },
-  { id: "am", n: 10, name: "10", label: "AM", x: 50, y: 63 },
-  { id: "lw", n: 11, name: "11", label: "VY", x: 16, y: 82 },
-  { id: "st", n: 9, name: "9", label: "FW", x: 50, y: 86 },
-  { id: "rw", n: 7, name: "7", label: "HY", x: 84, y: 82 },
+  { id: "gk", n: 1, name: "Ali", label: "MV", x: 50, y: 8 },
+  { id: "lb", n: 2, name: "Pascal", label: "VB", x: 14, y: 28 },
+  { id: "lcb", n: 3, name: "Rinor", label: "VMB", x: 36, y: 23 },
+  { id: "rcb", n: 4, name: "Sabarr", label: "HMB", x: 64, y: 23 },
+  { id: "rb", n: 5, name: "Vedad", label: "HB", x: 86, y: 28 },
+  { id: "ldm", n: 6, name: "Ahmed", label: "DM", x: 38, y: 48 },
+  { id: "rdm", n: 8, name: "Ado", label: "DM", x: 62, y: 48 },
+  { id: "lam", n: 10, name: "Hosam", label: "V10", x: 24, y: 66 },
+  { id: "cam", n: 11, name: "Ihab", label: "10", x: 50, y: 68 },
+  { id: "ram", n: 7, name: "Kamal", label: "H10", x: 76, y: 66 },
+  { id: "st", n: 9, name: "Haris", label: "FW", x: 50, y: 86 },
 ];
 
 export const COHERENCE: CoherenceSection[] = [
@@ -71,50 +88,62 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Kareby IS borta · Kareby Hed · fre 8 maj 19:00.",
-      "Genomgång + uppvärmning på plats. Avresa enligt kallelse.",
-      "Formation: 4-2-1-3.",
+      "IFK Björkö hemma · Hjällbovallen 2 Konstgräs · lördag 16 maj 13:00.",
+      "Genomgång + uppvärmning på plats. Samling enligt kallelse.",
+      "Startelva enligt kallad uppställning: 4-2-3-1.",
+    ],
+  },
+  {
+    id: "kallad-trupp",
+    num: "02",
+    title: "Kallad trupp",
+    eyebrow: "Spelare",
+    principles: ["Startelva", "Avbytare"],
+    bullets: [
+      "Start: Ali · Pascal, Rinor, Sabarr, Vedad · Ahmed, Ado · Hosam, Ihab, Kamal · Haris.",
+      "Avbytare: Daniel, Rayan, Galvan, Idriss, Aldin.",
+      "Alla vet sin första uppgift innan uppvärmningen börjar.",
     ],
   },
   {
     id: "forra-match",
-    num: "02",
-    title: "Förra match — Velebit 1–0",
-    eyebrow: "Vad vi tar med till Kareby",
+    num: "03",
+    title: "Förra match — Kareby 1–1",
+    eyebrow: "Vad vi tar med till Björkö",
     principles: ["Box-fyllnad", "Spelvändning", "Defensiv balans"],
     bullets: [
-      "Vinst 1–0 hemma 2 maj — femte raka utan förlust (4V 1O, 11/15 möjliga).",
-      "Detaljerade reflektioner: se /match/forra (fylls i av tränaren).",
-      "Veckans tre fokuspunkter inför Kareby ligger i sidospalten — princip 1, 2/3 och 5.",
+      "Kareby borta slutade 1–1 — vi är fortsatt obesegrade i seriespelet.",
+      "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
+      "Veckans tre fokuspunkter inför Björkö ligger i sidospalten.",
     ],
   },
   {
-    id: "kareby",
-    num: "03",
-    title: "Vad vi vet om Kareby",
+    id: "bjorko",
+    num: "04",
+    title: "Vad vi vet om Björkö",
     eyebrow: "Motståndaren",
     bullets: [
-      "Borta på Kareby Hed — räkna med kortare och tightare plan: kortare avstånd mellan oss, mer en-touch i mottagningen.",
-      "Hemmalag fredag kväll — räkna med tidig och hög press första 15 min. Princip 1 (skydda kontring) blir extra viktig från start.",
+      "Vi spelar hemma — vi sätter tonen med energi, dueller och andrabollar.",
+      "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys (fylls i av tränarstaben).",
     ],
-    note: "Kareby-specifika anpassningar (formation, hot, var vi pressar) ligger på /motstandaranalys.",
+    note: "Björkö-specifika anpassningar (formation, hot, var vi pressar) ligger på /motstandaranalys.",
   },
   {
     id: "identitet",
-    num: "04",
+    num: "05",
     title: "Identitet",
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Borta = duellerna avgör första 20 min. Vi får inte hamna på efterkälken.",
+      "Hemma = vi äger första 20 minuterna med kropp, röst och löpningar.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
-      "Yttrar och 9:a löper i djupled vid varje bollvinst — alltid.",
+      "Haris hotar djupet. Trean bakom fyller på och är redo för andrabollen.",
     ],
   },
   {
     id: "anfall",
-    num: "05",
+    num: "06",
     title: "Anfall — fem principer",
     eyebrow: "I ordning",
     principles: ["Skydda kontring", "Spela in", "Spela ut", "Framåt", "Box"],
@@ -128,19 +157,19 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "forsvar",
-    num: "06",
+    num: "07",
     title: "Försvar",
     eyebrow: "Samla → lås → vinn",
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Kareby).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Björkö).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
   {
     id: "omst-forsvar",
-    num: "07",
+    num: "08",
     title: "Omställning försvar",
     eyebrow: "Direkt eller indirekt",
     principles: ["Direkt", "Indirekt"],
@@ -152,7 +181,7 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "omst-anfall",
-    num: "08",
+    num: "09",
     title: "Omställning anfall",
     eyebrow: "Ut ur gröten",
     principles: ["Diagonal utgång", "Djupled", "Box"],
@@ -164,7 +193,7 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "fasta",
-    num: "09",
+    num: "10",
     title: "Fasta",
     eyebrow: "Kort ansvar",
     principles: ["Haris/Gelo", "Hybrid", "Andraboll"],
@@ -176,7 +205,7 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "roller",
-    num: "10",
+    num: "11",
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
@@ -184,7 +213,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Haris / Gelo"],
       ["Inläggsfrispark", "Haris / Gelo"],
       ["Målchansfrispark", "Bestäm själva"],
-      ["Matchstart", "19:00"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen"],
     ],
   },
 ];

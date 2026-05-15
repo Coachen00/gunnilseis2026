@@ -30,11 +30,23 @@ export function useMatch(status: "upcoming" | "played") {
       .limit(1)
       .maybeSingle();
     const row = (data as MatchRow | null) ?? null;
-    if (status === "upcoming" && row && row.opponent.toLowerCase().includes("lerum")) {
+    const shouldUseStaticUpcoming =
+      status === "upcoming" &&
+      (!row ||
+        (row.match_date ? new Date(row.match_date).getTime() < Date.now() : false) ||
+        ["lerum", "kareby"].some((name) => row.opponent.toLowerCase().includes(name)));
+
+    if (shouldUseStaticUpcoming) {
       setMatch({
-        ...row,
+        ...(row ?? {
+          id: "static-upcoming",
+          status: "upcoming" as const,
+          our_score: null,
+          their_score: null,
+          manual_override: true,
+        }),
         opponent: MATCH_META.opponent,
-        match_date: "2026-05-02T13:00:00+02:00",
+        match_date: "2026-05-16T13:00:00+02:00",
         home_away: MATCH_META.home ? "home" : "away",
         competition: MATCH_META.competition,
         venue: MATCH_META.venue,

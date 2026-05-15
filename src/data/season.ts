@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-05-07 (efter Velebit + inför Kareby).
+ * Senast uppdaterad: 2026-05-15 (inför IFK Björkö).
  */
 
 export type SeasonMatch = {
@@ -82,6 +82,15 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     competition: "Division 4A Herr",
     venue: "Kareby Hed",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901098/kareby-is",
+  },
+  {
+    id: "2026-05-16-ifk-bjorko",
+    date: "2026-05-16T13:00:00+02:00",
+    opponent: "IFK Björkö",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 2 Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901099/ifk-bjorko",
   },
 ];
 

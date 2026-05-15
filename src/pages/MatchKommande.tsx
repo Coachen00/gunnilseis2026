@@ -6,28 +6,28 @@ import Formation from "@/components/match/Formation";
 import PresentationBrief from "@/components/match/PresentationBrief";
 import MatchdayCommandPanel from "@/components/match/MatchdayCommandPanel";
 import HalftimeAdjustmentPanel from "@/components/match/HalftimeAdjustmentPanel";
-import { COHERENCE, FOCUS } from "@/data/matchplan";
+import { CALLED_SQUAD, COHERENCE, FOCUS, MATCH_META } from "@/data/matchplan";
 
 const MatchKommande = () => (
   <>
     <PageHero
       eyebrow="Match · Veckans"
-      title="Kareby — fre 8 maj"
-      description="Borta · Kareby Hed · 19:00. Femte raka utan förlust (4V 1O, 11/15) — vi vill hem med tre poäng till."
+      title={`${MATCH_META.opponent} — hemma`}
+      description={`${MATCH_META.venue} · ${MATCH_META.kickoff}. Kallad trupp och startelva är uppdaterad.`}
     />
 
     <div className="container pb-section space-y-6">
       <SectionReveal as="section" className="rounded-xl border border-accent/40 bg-accent/[0.04] p-5 md:p-6">
         <div className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent mb-3">
-          Inför Kareby · 10 min genomgång
+          Inför {MATCH_META.opponent} · 10 min genomgång
         </div>
         <ol className="space-y-2 text-sm md:text-base text-foreground/90">
           <li className="flex items-start gap-3">
             <span className="font-mono font-black text-accent">01</span>
             <span>
-              Läs förra matchen kort —{" "}
+              Läs senaste reflektionen kort —{" "}
               <a href="/match/forra" className="underline hover:text-accent">
-                Velebit 1–0
+                /match/forra
               </a>
               . Vad tar vi med, vad tar vi tag i.
             </span>
@@ -45,7 +45,7 @@ const MatchKommande = () => (
           <li className="flex items-start gap-3">
             <span className="font-mono font-black text-accent">03</span>
             <span>
-              Tre fokuspunkter i sidospalten — det är vad vi gör annorlunda denna vecka.
+              Tre fokuspunkter i sidospalten — det är vad vi trycker på från start.
             </span>
           </li>
           <li className="flex items-start gap-3">
@@ -78,7 +78,7 @@ const MatchKommande = () => (
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                 Start-11
               </span>
-              <span className="text-sm font-extrabold">4-2-1-3</span>
+              <span className="text-sm font-extrabold">4-2-3-1</span>
             </div>
             <div className="p-4">
               <Formation height={340} />
@@ -104,6 +104,41 @@ const MatchKommande = () => (
                   <p className="text-sm font-semibold leading-relaxed">{f}</p>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border bg-card">
+            <div className="flex items-baseline gap-3 border-b border-border px-4 py-3">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                Kallade
+              </span>
+              <span className="text-sm font-extrabold">{CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length} spelare</span>
+            </div>
+            <div className="space-y-4 p-4">
+              <div>
+                <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                  Startelva
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {CALLED_SQUAD.starting.map((name) => (
+                    <span key={name} className="rounded-full border border-accent/35 bg-accent/10 px-2.5 py-1 text-xs font-bold text-foreground">
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                  Avbytare
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {CALLED_SQUAD.bench.map((name) => (
+                    <span key={name} className="rounded-full border border-border bg-muted/50 px-2.5 py-1 text-xs font-semibold text-foreground/85">
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
