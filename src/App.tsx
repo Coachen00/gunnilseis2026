@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import AuthGuard from "./components/AuthGuard";
 import Layout from "./components/Layout";
+import { RouteMeta } from "./components/RouteMeta";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -77,6 +78,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteMeta />
         <Routes>
           <Route path="/login" element={<Login />} />
 

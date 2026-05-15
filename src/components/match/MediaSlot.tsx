@@ -602,17 +602,27 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
             source === "url" && finalSrc && youtubeEmbed(finalSrc) ? (
               <iframe
                 src={youtubeEmbed(finalSrc)!}
+                title={title}
+                loading="lazy"
                 className="w-full aspect-video"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
             ) : (
-              <video src={finalSrc!} controls className="w-full aspect-video bg-black" />
+              <video
+                src={finalSrc!}
+                controls
+                preload="metadata"
+                playsInline
+                className="w-full aspect-video bg-black"
+              />
             )
           ) : (
             <img
               src={finalSrc!}
               alt={title}
+              loading="lazy"
+              decoding="async"
               className={cn("w-full object-cover", compact ? "h-24" : "max-h-72")}
               onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
             />

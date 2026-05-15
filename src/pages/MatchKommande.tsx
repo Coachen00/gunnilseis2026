@@ -78,7 +78,7 @@ const MatchKommande = () => (
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                 Start-11
               </span>
-              <span className="text-sm font-extrabold">4-2-1-3</span>
+              <span className="text-sm font-bold">4-2-1-3</span>
             </div>
             <div className="p-4">
               <Formation height={340} />
@@ -90,7 +90,7 @@ const MatchKommande = () => (
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
                 03 fokus
               </span>
-              <span className="text-sm font-extrabold">Veckans fokuspunkter</span>
+              <span className="text-sm font-bold">Veckans fokuspunkter</span>
             </div>
             <div className="space-y-2.5 p-4">
               {FOCUS.map((f, i) => (

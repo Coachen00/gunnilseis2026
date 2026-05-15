@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import goldenZoneImg from "@/assets/golden-zone-diagram.png";
+import goldenZoneImg from "@/assets/golden-zone-diagram.webp";
 
 interface GoldenZoneDiagramProps {
   className?: string;
@@ -13,9 +13,11 @@ const GoldenZoneDiagram = ({ className }: GoldenZoneDiagramProps) => {
       </h4>
       
       <div className="relative w-full max-w-md mx-auto overflow-hidden rounded-xl border border-border">
-        <img 
-          src={goldenZoneImg} 
-          alt="Gyllene zonen och assistytor" 
+        <img
+          src={goldenZoneImg}
+          alt="Gyllene zonen och assistytor"
+          loading="lazy"
+          decoding="async"
           className="w-full h-auto"
         />
       </div>
