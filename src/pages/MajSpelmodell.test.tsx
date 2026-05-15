@@ -1,15 +1,16 @@
-import { cleanup, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { cleanup, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import MajSpelmodell from "./MajSpelmodell";
 import { MAJ_2026_BLOCKS, MAJ_2026_HERO, MAJ_2026_NAV_CARDS } from "@/data/majSpelmodell";
+import { renderWithProviders } from "@/test/test-utils";
+
+vi.mock("@/integrations/supabase/client", async () => {
+  const m = await import("@/test/mocks/supabase");
+  return m.createSupabaseMock();
+});
 
 const renderPage = () =>
-  render(
-    <MemoryRouter initialEntries={["/maj-2026"]}>
-      <MajSpelmodell />
-    </MemoryRouter>
-  );
+  renderWithProviders(<MajSpelmodell />, { routerProps: { initialEntries: ["/maj-2026"] } });
 
 describe("MajSpelmodell page", () => {
   afterEach(cleanup);
@@ -22,8 +23,9 @@ describe("MajSpelmodell page", () => {
   it("renderar alla sex navkort som ankarlänkar", () => {
     renderPage();
     for (const card of MAJ_2026_NAV_CARDS) {
-      const link = screen.getByRole("link", { name: new RegExp(card.label, "i") });
-      expect(link).toHaveAttribute("href", `#${card.id}`);
+      const links = screen.getAllByRole("link", { name: new RegExp(card.label, "i") });
+      const matching = links.filter((l) => l.getAttribute("href") === `#${card.id}`);
+      expect(matching.length).toBeGreaterThan(0);
     }
   });
 
@@ -48,15 +50,22 @@ describe("MajSpelmodell page", () => {
 
   it("varje block är en kollapsad accordion-trigger by default — inget block-innehåll syns på initial render", () => {
     renderPage();
-    // Triggers finns för alla 6 block
     for (const block of MAJ_2026_BLOCKS) {
       const trigger = screen.getByTestId(`block-trigger-${block.id}`);
       expect(trigger.getAttribute("aria-expanded")).toBe("false");
       expect(trigger).toHaveTextContent(new RegExp(block.title, "i"));
     }
-    // Gör så här / Gör inte så här ska INTE finnas — det ligger i collapsed AccordionContent
     expect(screen.queryByText(/^gör så här$/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/^gör inte så här$/i)).not.toBeInTheDocument();
+  });
+
+  it("BlockFilterBar finns och innehåller alla sex blocknavn", () => {
+    renderPage();
+    const filter = screen.getByLabelText(/filter — hoppa till block/i);
+    for (const block of MAJ_2026_BLOCKS) {
+      const inside = filter.querySelectorAll(`a[href="#${block.id}"]`);
+      expect(inside.length).toBeGreaterThan(0);
+    }
   });
 
   it("alla block har minst en princip definierad", () => {

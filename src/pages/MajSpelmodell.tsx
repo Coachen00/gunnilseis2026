@@ -34,7 +34,11 @@ import {
   type MajBlock,
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
+import BlockMediaGrid from "@/components/maj2026/BlockMediaGrid";
+import BlockFilterBar from "@/components/maj2026/BlockFilterBar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useSession } from "@/hooks/useSession";
+import { useProfile } from "@/hooks/useProfile";
 
 /* =========================================================================
    COLOR TOKENS — light palette (matchar sajtens default-tema)
@@ -88,18 +92,24 @@ const BLOCK_EYEBROW: Record<string, string> = {
    SHARED COMPONENTS
    ========================================================================= */
 
-function MediaSlot({ label = "Lägg in film eller bild här", description }: { label?: string; description?: string }) {
+function BlockHeroMedia({
+  label = "Ingen film upplagd ännu",
+  description,
+}: {
+  label?: string;
+  description?: string;
+}) {
+  // Block-level placeholder. Visas över BlockMediaGrid som en sammanfattning av
+  // hela blockets film-status. Spelarens första intryck — tydlig tom-text.
   return (
     <div
-      role="img"
+      role="status"
       aria-label={label}
-      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-border bg-card px-4 text-center"
+      className="flex w-full flex-col items-center justify-center gap-3 rounded-md border border-dashed border-border bg-muted/30 px-4 py-10 text-center"
     >
-      <div className="flex items-center gap-3 text-foreground/55">
-        <Film className="h-5 w-5" strokeWidth={1.6} />
-        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em]">{label}</span>
-      </div>
-      {description && <p className="text-xs text-foreground/45">{description}</p>}
+      <Film className="h-6 w-6 text-foreground/35" strokeWidth={1.5} aria-hidden="true" />
+      <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-foreground/65">{label}</span>
+      {description && <p className="max-w-md text-xs leading-snug text-foreground/45">{description}</p>}
     </div>
   );
 }
@@ -530,7 +540,7 @@ function BlockVisual({ id }: { id: string }) {
    BLOCK SECTION
    ========================================================================= */
 
-function BlockSection({ block, num }: { block: MajBlock; num: string }) {
+function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; canEdit: boolean }) {
   const Icon = BLOCK_ICON[block.id] ?? Shield;
   const eyebrow = BLOCK_EYEBROW[block.id] ?? "";
   return (
@@ -585,14 +595,14 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
 
       <AccordionContent className="overflow-hidden">
         <div className="container pb-16 pt-2 md:pb-20">
-          <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
-            {block.kidExplanation}
-          </p>
-
-          {/* Spelarinstruktion + Planvy */}
-          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-            <div className="border border-border bg-card p-6">
-              <div className="mb-4 flex items-center gap-2">
+          {/* 1. Kort förklaring + spelarinstruktion (stuckna högst upp så
+                 spelaren får principen direkt). */}
+          <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+            <p className="text-base leading-relaxed text-foreground/80 md:text-lg">
+              {block.kidExplanation}
+            </p>
+            <div className="border border-border bg-card p-5">
+              <div className="mb-3 flex items-center gap-2">
                 <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
                 <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-foreground/60">
                   Spelarinstruktion
@@ -600,7 +610,29 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
               </div>
               <p className="text-base font-bold leading-snug text-foreground/90">{block.playerInstruction}</p>
             </div>
+          </div>
 
+          {/* 2. FILMER — central, synlig direkt. Inga nested accordions.
+                 Spelaren ser videos eller "Ingen film upplagd ännu". */}
+          {block.principles.length > 0 && (
+            <section className="mb-10" aria-label={`Filmer för ${block.title}`}>
+              <div className="mb-3 flex items-center justify-between gap-3 px-1">
+                <div className="flex items-center gap-3">
+                  <Film className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} aria-hidden="true" />
+                  <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
+                    Filmer · {block.principles.length} principer
+                  </p>
+                </div>
+                <p className="hidden text-xs text-muted-foreground sm:inline">
+                  Tomma fält fylls av tränaren
+                </p>
+              </div>
+              <BlockMediaGrid blockId={block.id} principles={block.principles} accent={block.accent} />
+            </section>
+          )}
+
+          {/* 3. Taktisk planvy + tom-state för blockets samlade film */}
+          <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
             <div className="overflow-hidden border border-border bg-background">
               <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
                 <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
@@ -612,14 +644,10 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
               </div>
               <BlockVisual id={block.id} />
             </div>
+            <BlockHeroMedia label={block.mediaTitle} description={block.mediaDescription} />
           </div>
 
-          {/* Media-placeholder */}
-          <div className="mb-8">
-            <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
-          </div>
-
-          {/* Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
+          {/* 4. Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <DoColumn variant="do" title="Gör så här" items={block.doList} />
             <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
@@ -633,13 +661,13 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             </div>
           )}
 
-          {/* Principer — nested rullgardiner, en per princip */}
-          {block.principles.length > 0 && (
+          {/* 5. EDITOR — endast för godkända användare. Per-princip uppladdning. */}
+          {canEdit && block.principles.length > 0 && (
             <div className="mt-10">
               <div className="mb-3 flex items-center gap-3 px-1">
                 <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
                 <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
-                  Principer · {block.principles.length}
+                  Redigera filmer · {block.principles.length} principer
                 </p>
               </div>
               <Accordion type="multiple" className="overflow-hidden rounded-md border border-border bg-card">
@@ -939,12 +967,15 @@ function useHashControlledAccordion() {
 
 const MajSpelmodell = () => {
   const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
+  const { data: session } = useSession();
+  const { data: profile } = useProfile();
+  const canEdit = Boolean(session) && profile?.approved === true;
 
   return (
   <div className="relative -mt-px bg-background text-foreground">
     <Hero />
-    <EffektlogikStrip />
     <SpelarenSnabbversion />
+    <BlockFilterBar />
 
     <Accordion
       type="multiple"
@@ -953,9 +984,16 @@ const MajSpelmodell = () => {
       className="border-t border-border"
     >
       {MAJ_2026_BLOCKS.map((block, i) => (
-        <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
+        <BlockSection
+          key={block.id}
+          block={block}
+          num={String(i + 1).padStart(2, "0")}
+          canEdit={canEdit}
+        />
       ))}
     </Accordion>
+
+    <EffektlogikStrip />
 
     {/* Closing strip */}
     <section className="border-t border-border bg-muted/40 py-16">
