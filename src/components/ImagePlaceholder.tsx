@@ -40,6 +40,8 @@ const ImagePlaceholder = ({ title, description, className, compact = false, src,
           <img
             src={src}
             alt={alt ?? title}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.015]"
           />
           <div className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md bg-background/75 text-muted-foreground backdrop-blur-sm transition group-hover:text-accent">
@@ -66,7 +68,7 @@ const ImagePlaceholder = ({ title, description, className, compact = false, src,
             >
               <X className="h-4 w-4" />
             </button>
-            <img src={src} alt={alt ?? title} className="block max-h-[82vh] w-full object-contain bg-background" />
+            <img src={src} alt={alt ?? title} decoding="async" className="block max-h-[82vh] w-full object-contain bg-background" />
           </div>
         </div>
       )}

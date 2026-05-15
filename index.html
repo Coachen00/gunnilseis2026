@@ -6,18 +6,36 @@
     <meta name="theme-color" content="#0b121a" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
 
-    <!-- Inter + JetBrains Mono via Google Fonts — preconnect undviker render-blocking
-         (CSS @import seriellt DNS+TLS+download → preconnect parallelliserar). -->
+    <!-- Inter + JetBrains Mono via Google Fonts.
+         Strategi: preconnect + non-blocking preload→stylesheet swap så fonts
+         inte håller upp first paint. display=swap gör att text visas direkt
+         med systemfont och swappas in när Inter laddat. Endast använda weights:
+         Inter 400/500/600/700/900 (800 hade två träffar och kan rendreras som 700).
+         JetBrains Mono 500/600 (caps/badges). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;600&display=swap"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;600&display=swap"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;600&display=swap"
+      />
+    </noscript>
 
     <title>Gunnilse IS · Spelmodell 2026</title>
     <meta name="description" content="Gunnilse IS spelmodell 2026 — vår identitet på planen, de fyra skedena, fasta situationer, roller och matchplaner." />
     <meta name="author" content="Gunnilse IS" />
+    <link rel="canonical" href="https://spelmodellen.se/" />
 
     <meta property="og:title" content="Gunnilse IS · Spelmodell 2026" />
     <meta property="og:description" content="Så här bygger vi. Så här gör vi mål. Så här försvarar vi. En tydlig idé per skede — samma ord från målvakten till anfallaren." />
@@ -37,6 +55,45 @@
     <meta name="twitter:description" content="Så här bygger vi. Så här gör vi mål. Så här försvarar vi." />
     <meta name="twitter:image" content="https://spelmodellen.se/og-image.png" />
     <meta name="twitter:image:alt" content="Gunnilse IS — Spelmodell 2026. Vår identitet på planen." />
+
+    <!-- Structured data: SportsTeam + Organization. JSON-LD rendreras alltid i HTML
+         så Googlebot ser den även när JS-paketet inte hunnit ladda. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SportsTeam",
+          "@id": "https://spelmodellen.se/#team",
+          "name": "Gunnilse IS",
+          "sport": "Soccer",
+          "url": "https://spelmodellen.se/",
+          "logo": "https://spelmodellen.se/og-image.png",
+          "image": "https://spelmodellen.se/og-image.png",
+          "location": {
+            "@type": "Place",
+            "name": "Gunnilse, Göteborg",
+            "address": { "@type": "PostalAddress", "addressLocality": "Göteborg", "addressCountry": "SE" }
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://spelmodellen.se/#org",
+          "name": "Gunnilse IS",
+          "url": "https://spelmodellen.se/",
+          "logo": "https://spelmodellen.se/og-image.png"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://spelmodellen.se/#site",
+          "url": "https://spelmodellen.se/",
+          "name": "Gunnilse IS · Spelmodell 2026",
+          "inLanguage": "sv-SE",
+          "publisher": { "@id": "https://spelmodellen.se/#org" }
+        }
+      ]
+    }
+    </script>
   </head>
 
   <body>

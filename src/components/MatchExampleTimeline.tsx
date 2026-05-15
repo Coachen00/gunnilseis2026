@@ -59,7 +59,7 @@ const MatchExampleTimeline = () => {
           </div>
 
           {urls[i].trim() ? (
-            <img src={urls[i]} alt={step.label} className="w-full h-24 object-cover rounded-lg border border-border mt-2" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            <img src={urls[i]} alt={step.label} loading="lazy" decoding="async" className="w-full h-24 object-cover rounded-lg border border-border mt-2" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           ) : (
             <div className="w-full h-20 rounded-lg bg-muted/30 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center gap-1 mt-2">
               <Image className="w-4 h-4 text-muted-foreground/40" />
