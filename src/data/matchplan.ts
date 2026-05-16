@@ -44,6 +44,84 @@ export const MATCH_META: MatchMeta = {
   absent: [],
 };
 
+/* Matchdagsschema — visas i hero och i praktisk-info-block. */
+export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
+  { time: "11:30", label: "Samling", note: "Mental start före uppvärmning" },
+  { time: "11:45 – 12:00", label: "Genomgång" },
+  { time: "12:15 – 12:45", label: "Aktivering" },
+  { time: "12:45 – 12:55", label: "Ner" },
+  { time: "12:55", label: "Upp + sista löpningar" },
+  { time: "13:00", label: "Avspark" },
+];
+
+/* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
+export type PlanCard = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  bullets: string[];
+  accent: "red" | "blue" | "amber" | "green";
+};
+
+export const MATCH_PLAN_SHORT: PlanCard[] = [
+  {
+    id: "forsvar",
+    eyebrow: "Utan boll",
+    title: "Så försvarar vi",
+    accent: "red",
+    bullets: [
+      "Stäng mitten först — låt dem aldrig spela mellan två av oss.",
+      "YB på YB. Lås bollsida och stoppa spelvändning.",
+      "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
+    ],
+  },
+  {
+    id: "anfall",
+    eyebrow: "Med boll",
+    title: "Så anfaller vi",
+    accent: "blue",
+    bullets: [
+      "Skydda kontring — 6:an står, MB håller avstånd.",
+      "Spela in centralt → ut → ta med framåt.",
+      "Fyll boxen vid inlägg: 9 straffp, motsatt ytter bortre, 8 första, 10 cutback.",
+    ],
+  },
+  {
+    id: "omstallning",
+    eyebrow: "I sekunden",
+    title: "Så ställer vi om",
+    accent: "amber",
+    bullets: [
+      "Bollvinst: första tanken framåt — diagonal eller djup.",
+      "Bolltapp: närmaste pressar inom 1 sekund — jakten startar direkt.",
+      "Forwarden är vår första försvarare.",
+    ],
+  },
+  {
+    id: "fasta",
+    eyebrow: "Stillastående",
+    title: "Fasta situationer",
+    accent: "green",
+    bullets: [
+      "Anfall: hörnor + inläggsfrispark läggs av Haris eller Gelo.",
+      "Försvar: hybrid (zon + 2 man) + andraboll.",
+      "Inkast djupt = tryck + direkt återerövring.",
+    ],
+  },
+];
+
+/* Praktisk info — visas längst ner på Veckans match. */
+export const PRACTICAL_INFO = {
+  kit: "Hemma matchställ — rött överst, svarta byxor.",
+  responsibilities: [
+    ["Kapten", "Ado"],
+    ["Hörnor", "Haris / Gelo"],
+    ["Inläggsfrispark", "Haris / Gelo"],
+    ["Målchansfrispark", "Bestäm själva"],
+  ] as const,
+  gatheringNote: "Var på plats senast 11:30. Mental start före uppvärmning.",
+} as const;
+
 export const CALLED_SQUAD = {
   starting: [
     "Ali",
