@@ -198,31 +198,70 @@
             transform-origin: center center;
         }
 
-        .tactic-board-page #pitch {
+        .tactic-board-page .tactics-board {
             width: 1100px;
-            height: 700px;
-            background: repeating-linear-gradient(to right, var(--pitch-green), var(--pitch-green) 110px, var(--pitch-stripe) 110px, var(--pitch-stripe) 220px);
-            border: 4px solid white;
+            aspect-ratio: 16 / 9;
             position: relative;
-            overflow: visible;
+            overflow: hidden;
+            background: #6f9b52;
+            border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .tactic-board-page #pitch::before {
-            content: "";
+        .tactic-board-page .tactics-backdrop,
+        .tactic-board-page #tactics-backdrop-root {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 400px;
-            background-image: none;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.15;
+            inset: 0;
             pointer-events: none;
+        }
+
+        .tactic-board-page .tactics-backdrop {
+            margin: 0;
+            overflow: hidden;
             z-index: 0;
+        }
+
+        .tactic-board-page .tactics-backdrop__image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: var(--tactics-backdrop-position, 50% 50%);
+            display: block;
+            user-select: none;
+        }
+
+        .tactic-board-page .tactics-backdrop__tone {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 34%),
+                radial-gradient(circle at 52% 46%, rgba(255, 255, 255, 0.07), transparent 58%);
+            mix-blend-mode: soft-light;
+            pointer-events: none;
+        }
+
+        .tactic-board-page #pitch {
+            position: absolute;
+            left: 8%;
+            top: 14%;
+            width: 84%;
+            height: 72%;
+            background: transparent;
+            border: 0;
+            overflow: visible;
+            box-shadow: none;
+            outline: none;
+            touch-action: none;
+            z-index: 2;
+        }
+
+        .tactic-board-page #pitch:focus-visible {
+            outline: 2px solid rgba(255, 235, 59, 0.9);
+            outline-offset: 6px;
+        }
+
+        .tactic-board-page #pitch::before {
+            content: none;
         }
 
         .tactic-board-page .line {
@@ -232,11 +271,11 @@
         }
 
         .tactic-board-page .goal {
-            width: 45px;
-            height: 140px;
+            width: 4.0909%;
+            height: 20%;
             position: absolute;
             border: 4px solid #fff;
-            top: 280px;
+            top: 40%;
             background-color: rgba(255, 255, 255, 0.15);
             background-image:
                 linear-gradient(45deg, rgba(255, 255, 255, 0.6) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.6) 75%, rgba(255, 255, 255, 0.6)),
@@ -247,46 +286,46 @@
         }
 
         .tactic-board-page .goal-l {
-            left: -49px;
+            left: -4.4545%;
             border-right: none;
             border-radius: 8px 0 0 8px;
         }
 
         .tactic-board-page .goal-r {
-            right: -49px;
+            right: -4.4545%;
             border-left: none;
             border-radius: 0 8px 8px 0;
         }
 
         .tactic-board-page .penalty-box-l {
-            width: 165px;
-            height: 400px;
+            width: 15%;
+            height: 57.1429%;
             left: 0;
-            top: 150px;
+            top: 21.4286%;
             border-left: none;
         }
 
         .tactic-board-page .penalty-box-r {
-            width: 165px;
-            height: 400px;
+            width: 15%;
+            height: 57.1429%;
             right: 0;
-            top: 150px;
+            top: 21.4286%;
             border-right: none;
         }
 
         .tactic-board-page .goal-box-l {
-            width: 55px;
-            height: 180px;
+            width: 5%;
+            height: 25.7143%;
             left: 0;
-            top: 260px;
+            top: 37.1429%;
             border-left: none;
         }
 
         .tactic-board-page .goal-box-r {
-            width: 55px;
-            height: 180px;
+            width: 5%;
+            height: 25.7143%;
             right: 0;
-            top: 260px;
+            top: 37.1429%;
             border-right: none;
         }
 
@@ -298,20 +337,20 @@
         }
 
         .tactic-board-page .center-circle {
-            width: 180px;
-            height: 180px;
+            width: 16.3636%;
+            height: 25.7143%;
             border-radius: 50%;
-            left: 460px;
-            top: 260px;
+            left: 41.8182%;
+            top: 37.1429%;
         }
 
         .tactic-board-page .center-spot {
-            width: 6px;
-            height: 6px;
+            width: 0.5455%;
+            height: 0.8571%;
             background: white;
             border-radius: 50%;
-            left: 547px;
-            top: 347px;
+            left: 49.7273%;
+            top: 49.5714%;
             position: absolute;
         }
 
@@ -324,6 +363,12 @@
             pointer-events: none;
             z-index: 5;
             overflow: hidden;
+        }
+
+        .tactic-board-page .layer svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         .tactic-board-page .zone {
@@ -481,6 +526,7 @@
             cursor: grab;
             z-index: 100;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+            transform: translate(-50%, -50%);
             transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
@@ -490,6 +536,8 @@
             border-radius: 50%;
             border: 2px solid black;
             font-size: clamp(12px, calc(var(--player-size) * 0.38), 18px);
+            outline: 1px solid rgba(255, 255, 255, 0.34);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.18));
         }
 
         .tactic-board-page .piece.linking {
@@ -507,6 +555,8 @@
             white-space: nowrap;
             pointer-events: auto;
             cursor: text;
+            line-height: 1.25;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
         }
 
         .tactic-board-page .home {
@@ -553,6 +603,8 @@
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 50;
             pointer-events: none;
         }
@@ -750,11 +802,144 @@
 .tactic-board-page .menu-container {
     position: sticky;
     top: 56px;
-    align-items: stretch;
+    align-items: center;
     border-bottom: 1px solid hsl(220 14% 18%);
     background: rgba(9, 13, 15, 0.94);
     backdrop-filter: blur(18px);
     box-shadow: 0 16px 35px rgba(0, 0, 0, 0.34);
+    padding: 8px 14px;
+}
+
+.tactic-board-page .toolbar-accordion {
+    position: relative;
+    z-index: 320;
+    display: flex;
+    width: min(100%, 1600px);
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tactic-board-page .toolbar-panel {
+    position: relative;
+}
+
+.tactic-board-page .toolbar-panel summary {
+    list-style: none;
+    display: inline-flex;
+    height: 34px;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 7px;
+    background: hsl(220 16% 16%);
+    color: rgba(255, 255, 255, 0.94);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0 12px;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.tactic-board-page .toolbar-panel summary::-webkit-details-marker {
+    display: none;
+}
+
+.tactic-board-page .toolbar-panel summary::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    margin-top: -4px;
+    transform: rotate(45deg);
+    transition: transform 0.18s ease, margin 0.18s ease;
+}
+
+.tactic-board-page .toolbar-panel[open] summary {
+    border-color: hsl(145 70% 52%);
+    background: hsl(145 50% 18%);
+    color: hsl(145 80% 76%);
+}
+
+.tactic-board-page .toolbar-panel[open] summary::after {
+    margin-top: 4px;
+    transform: rotate(-135deg);
+}
+
+.tactic-board-page .toolbar-content {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 420;
+    display: flex;
+    min-width: min(520px, calc(100vw - 36px));
+    max-height: 68vh;
+    overflow: auto;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background: rgba(8, 14, 16, 0.98);
+    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.5);
+}
+
+.tactic-board-page .toolbar-content-sm {
+    min-width: min(420px, calc(100vw - 36px));
+}
+
+.tactic-board-page .toolbar-content-md {
+    min-width: min(560px, calc(100vw - 36px));
+}
+
+.tactic-board-page .toolbar-content-wide {
+    min-width: min(920px, calc(100vw - 36px));
+}
+
+.tactic-board-page .toolbar-panel:nth-last-child(-n + 2) .toolbar-content {
+    right: 0;
+    left: auto;
+}
+
+.tactic-board-page .toolbar-section {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.tactic-board-page .toolbar-section-row,
+.tactic-board-page .toolbar-content-wide {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tactic-board-page .toolbar-section h4 {
+    margin: 0;
+    color: hsl(145 70% 62%);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.tactic-board-page .toolbar-content .slider-group span,
+.tactic-board-page .toolbar-content .timeline-hint {
+    font-size: 12px;
+}
+
+.tactic-board-page .timeline-strip {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
 .tactic-board-page .menu-row {
@@ -816,9 +1001,10 @@
     background: transparent;
 }
 
-.tactic-board-page #pitch {
-    border-color: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.48);
+.tactic-board-page .tactics-board {
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 24px 60px rgba(0, 0, 0, 0.48);
 }
 
 .tactic-board-page button,
@@ -896,7 +1082,10 @@
 }
 
 .tactic-board-page .piece {
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.56);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.16),
+        0 0 14px rgba(255, 235, 59, 0.14),
+        0 6px 14px rgba(0, 0, 0, 0.56);
 }
 
 .tactic-board-page .piece .name {
@@ -919,6 +1108,23 @@
     .tactic-board-page #capture-wrapper {
         width: 100%;
         justify-content: flex-start;
+    }
+
+    .tactic-board-page .toolbar-panel,
+    .tactic-board-page .toolbar-panel summary {
+        width: 100%;
+    }
+
+    .tactic-board-page .toolbar-panel summary {
+        justify-content: space-between;
+    }
+
+    .tactic-board-page .toolbar-content,
+    .tactic-board-page .toolbar-panel:nth-last-child(-n + 2) .toolbar-content {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        margin-top: 8px;
     }
 }
     

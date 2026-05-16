@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, ClipboardList, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
+import TacticsBitmapBackdrop from "@/components/tactics/TacticsBitmapBackdrop";
 import boardMarkup from "./tactic-board-markup.html?raw";
 import boardScript from "./tactic-board-script.js?raw";
 import "./tactic-board.css";
@@ -48,8 +50,15 @@ const Taktiktavla = () => {
 
     let mounted = true;
     const script = document.createElement("script");
+    let backdropRoot: Root | null = null;
 
     boardRoot.innerHTML = boardMarkup;
+    const backdropMount = boardRoot.querySelector("#tactics-backdrop-root");
+
+    if (backdropMount) {
+      backdropRoot = createRoot(backdropMount);
+      backdropRoot.render(<TacticsBitmapBackdrop scene="training_pitch" />);
+    }
 
     loadHtml2Canvas()
       .catch(() => {
@@ -66,6 +75,9 @@ const Taktiktavla = () => {
       window.__cleanupTacticBoard?.();
       delete window.__cleanupTacticBoard;
       script.remove();
+      const rootToUnmount = backdropRoot;
+      backdropRoot = null;
+      queueMicrotask(() => rootToUnmount?.unmount());
       boardRoot.innerHTML = "";
     };
   }, []);
