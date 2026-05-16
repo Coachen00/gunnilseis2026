@@ -22,6 +22,7 @@ const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
+const UnderProcess = lazy(() => import("./pages/UnderProcess"));
 const SpelmodellLab = lazy(() => import("./pages/SpelmodellLab"));
 const OmstallningForsvar = lazy(() => import("./pages/OmstallningForsvar"));
 const OmstallningAnfall = lazy(() => import("./pages/OmstallningAnfall"));
@@ -102,6 +103,7 @@ const App = () => (
           <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
+          <Route path="/under-process" element={<Protected><UnderProcess /></Protected>} />
 
           {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
           <Route path="/traningsplan" element={<PrintRoute><TrainingPlan /></PrintRoute>} />

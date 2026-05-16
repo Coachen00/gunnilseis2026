@@ -122,6 +122,7 @@ const navItems: NavItem[] = [
   { kind: "link", to: "/truppen", label: "Trupp" },
   { kind: "link", to: "/roller", label: "Roller" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
+  { kind: "link", to: "/under-process", label: "Under process" },
 ];
 
 const TopNav = () => {
