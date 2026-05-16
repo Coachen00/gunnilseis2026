@@ -376,8 +376,8 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
     "ta-med-framat": [
       M("assistytan-2-vs-1.png", "Assistytan — 2 vs 1", "image"),
       M("anf-djupled.mp4", "Anfall — djupled"),
-      M("galvan-1-ej-assist.mp4", "Galvan 1 — ej assist"),
-      M("galvan-2-ej-assistyta.mp4", "Galvan 2 — ej assistyta"),
+      M("galvan-1-ej-assist.mp4", "Vi följer inte idén om assistytan — 1"),
+      M("galvan-2-ej-assistyta.mp4", "Vi följer inte idén om assistytan — 2"),
     ],
   },
   identitet: {
