@@ -1,7 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad inför IFK Björkö (hemma · Hjällbovallen 2 Konstgräs · 13:00).
- * Förra match: Kareby IS (borta · 1–1).
+ * Senast uppdaterad 2026-05-17 inför Ytterby IS
+ * (borta · Ytterns IP 1 Konstgräs · tisdag 19 maj 20:15).
+ * Förra match: IFK Björkö (hemma · 2026-05-16).
  */
 
 export type MatchMeta = {
@@ -35,23 +36,23 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "IFK Björkö",
-  venue: "Hjällbovallen 2 Konstgräs",
-  home: true,
-  kickoff: "Lör 16 maj · 13:00",
-  competition: "Hemma · Division 4A Herr",
+  opponent: "Ytterby IS",
+  venue: "Ytterns IP 1 Konstgräs",
+  home: false,
+  kickoff: "Tis 19 maj · 20:15",
+  competition: "Borta · Division 4A Herr",
   weather: "",
   absent: [],
 };
 
 /* Matchdagsschema — visas i hero och i praktisk-info-block. */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: "11:30", label: "Samling", note: "Mental start före uppvärmning" },
-  { time: "11:45 – 12:00", label: "Genomgång" },
-  { time: "12:15 – 12:45", label: "Aktivering" },
-  { time: "12:45 – 12:55", label: "Ner" },
-  { time: "12:55", label: "Upp + sista löpningar" },
-  { time: "13:00", label: "Avspark" },
+  { time: "Enligt kallelse", label: "Samling", note: "Bekräftas av ledarstaben" },
+  { time: "Före avresa/uppvärmning", label: "Genomgång" },
+  { time: "19:35 – 20:05", label: "Aktivering" },
+  { time: "20:05 – 20:12", label: "Ner + sista instruktion" },
+  { time: "20:12", label: "Upp + sista löpningar" },
+  { time: "20:15", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -70,7 +71,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Stäng mitten först — låt dem aldrig spela mellan två av oss.",
+      "Stäng mitten först — särskilt borta när de vill spela igång rytmen.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -94,7 +95,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     bullets: [
       "Bollvinst: första tanken framåt — diagonal eller djup.",
       "Bolltapp: närmaste pressar inom 1 sekund — jakten startar direkt.",
-      "Forwarden är vår första försvarare.",
+      "Forwarden styr första pressen så resten kan flytta efter.",
     ],
   },
   {
@@ -103,7 +104,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Fasta situationer",
     accent: "green",
     bullets: [
-      "Anfall: hörnor + inläggsfrispark läggs av Haris eller Gelo.",
+      "Anfall: ansvar och variant bekräftas på genomgången.",
       "Försvar: hybrid (zon + 2 man) + andraboll.",
       "Inkast djupt = tryck + direkt återerövring.",
     ],
@@ -112,52 +113,28 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
-  kit: "Hemma matchställ — rött överst, svarta byxor.",
+  kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
   responsibilities: [
-    ["Kapten", "Ado"],
-    ["Hörnor", "Haris / Gelo"],
-    ["Inläggsfrispark", "Haris / Gelo"],
-    ["Målchansfrispark", "Bestäm själva"],
+    ["Kapten", "Bekräftas i kallelse"],
+    ["Hörnor", "Bekräftas på genomgång"],
+    ["Inläggsfrispark", "Bekräftas på genomgång"],
+    ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
-  gatheringNote: "Var på plats senast 11:30. Mental start före uppvärmning.",
+  gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
 export const CALLED_SQUAD = {
-  starting: [
-    "Ali",
-    "Pascal",
-    "Rinor",
-    "Sabarr",
-    "Vedad",
-    "Ahmed",
-    "Ado",
-    "Hosam",
-    "Ihab",
-    "Kamal",
-    "Haris",
-  ],
-  bench: ["Daniel", "Rayan", "Galvan", "Idriss", "Aldin"],
+  starting: [],
+  bench: [],
 } as const;
 
 export const FOCUS: string[] = [
-  "Starta matchen som hemmalag: högt fokus, korta avstånd och tydlig röst direkt.",
-  "Försvara tillsammans: skydda mitten, lås bollsida och vinn andrabollen.",
-  "När vi vinner bollen: titta framåt, hitta Haris eller spelvänd via Hosam/Ihab/Kamal.",
+  "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
+  "Skydda mitten och tvinga spelet utåt — låt inte Ytterby hitta rättvänd spelare mellan våra lagdelar.",
+  "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
-export const FORMATION: FormationSlot[] = [
-  { id: "gk", n: 1, name: "Ali", label: "MV", x: 50, y: 8 },
-  { id: "lb", n: 2, name: "Pascal", label: "VB", x: 14, y: 28 },
-  { id: "lcb", n: 3, name: "Rinor", label: "VMB", x: 36, y: 23 },
-  { id: "rcb", n: 4, name: "Sabarr", label: "HMB", x: 64, y: 23 },
-  { id: "rb", n: 5, name: "Vedad", label: "HB", x: 86, y: 28 },
-  { id: "ldm", n: 6, name: "Ahmed", label: "DM", x: 38, y: 48 },
-  { id: "rdm", n: 8, name: "Ado", label: "DM", x: 62, y: 48 },
-  { id: "lam", n: 10, name: "Hosam", label: "V10", x: 24, y: 66 },
-  { id: "cam", n: 11, name: "Ihab", label: "10", x: 50, y: 68 },
-  { id: "ram", n: 7, name: "Kamal", label: "H10", x: 76, y: 66 },
-  { id: "st", n: 9, name: "Haris", label: "FW", x: 50, y: 86 },
-];
+export const FORMATION: FormationSlot[] = [];
 
 export const COHERENCE: CoherenceSection[] = [
   {
@@ -166,9 +143,9 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "IFK Björkö hemma · Hjällbovallen 2 Konstgräs · lördag 16 maj 13:00.",
-      "Genomgång + uppvärmning på plats. Samling enligt kallelse.",
-      "Startelva enligt kallad uppställning: 4-2-3-1.",
+      "Ytterby IS borta · Ytterns IP 1 Konstgräs · tisdag 19 maj 20:15.",
+      "Samling, avresa och genomgång bekräftas i kallelsen.",
+      "Startelva och roller läggs in när kallelsen är satt.",
     ],
   },
   {
@@ -176,36 +153,37 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Startelva", "Avbytare"],
+    principles: ["Kommer", "Startelva", "Avbytare"],
     bullets: [
-      "Start: Ali · Pascal, Rinor, Sabarr, Vedad · Ahmed, Ado · Hosam, Ihab, Kamal · Haris.",
-      "Avbytare: Daniel, Rayan, Galvan, Idriss, Aldin.",
-      "Alla vet sin första uppgift innan uppvärmningen börjar.",
+      "Kallad trupp för Ytterby är inte inlagd än.",
+      "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
+      "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — Kareby 1–1",
-    eyebrow: "Vad vi tar med till Björkö",
-    principles: ["Box-fyllnad", "Spelvändning", "Defensiv balans"],
+    title: "Förra match — IFK Björkö",
+    eyebrow: "Vad vi tar med till Ytterby",
+    principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Kareby borta slutade 1–1 — vi är fortsatt obesegrade i seriespelet.",
-      "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Veckans tre fokuspunkter inför Björkö ligger i sidospalten.",
+      "Vi spelade IFK Björkö hemma lördag 16 maj.",
+      "Resultat och detaljerade reflektioner fylls i av tränaren på /match/forra.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Ytterby borta.",
     ],
   },
   {
-    id: "bjorko",
+    id: "ytterby",
     num: "04",
-    title: "Vad vi vet om Björkö",
+    title: "Vad vi vet om Ytterby",
     eyebrow: "Motståndaren",
     bullets: [
-      "Vi spelar hemma — vi sätter tonen med energi, dueller och andrabollar.",
+      "Nästa match är borta på Ytterns IP 1 Konstgräs.",
+      "Vi mötte Ytterby hemma 2 april och vann 3–1.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
-      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys (fylls i av tränarstaben).",
+      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Björkö-specifika anpassningar (formation, hot, var vi pressar) ligger på /motstandaranalys.",
+    note: "Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -214,9 +192,9 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Hemma = vi äger första 20 minuterna med kropp, röst och löpningar.",
+      "Borta = vi tar med oss egen rytm, egen röst och egen intensitet.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
-      "Haris hotar djupet. Trean bakom fyller på och är redo för andrabollen.",
+      "Nästa aktion är viktigare än förra situationen.",
     ],
   },
   {
@@ -241,7 +219,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Björkö).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Ytterby).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -287,12 +265,12 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Ado"],
-      ["Hörnor", "Haris / Gelo"],
-      ["Inläggsfrispark", "Haris / Gelo"],
-      ["Målchansfrispark", "Bestäm själva"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen"],
+      ["Kapten", "Bekräftas i kallelse"],
+      ["Hörnor", "Bekräftas på genomgång"],
+      ["Inläggsfrispark", "Bekräftas på genomgång"],
+      ["Målchansfrispark", "Bekräftas på genomgång"],
+      ["Matchstart", "20:15"],
+      ["Bortaplan", "Ytterns IP"],
     ],
   },
 ];

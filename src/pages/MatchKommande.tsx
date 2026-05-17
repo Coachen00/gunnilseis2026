@@ -40,6 +40,9 @@ const ACCENT: Record<PlanCard["accent"], { bar: string; text: string; bg: string
    ================================================================= */
 
 function MatchInfoCard() {
+  const gathering = MATCH_SCHEDULE[0];
+  const totalPlayers = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
+
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card">
       <div className="border-b border-border bg-gradient-to-br from-amber-50 to-card px-6 py-5 md:px-8 md:py-6">
@@ -68,8 +71,13 @@ function MatchInfoCard() {
       <dl className="grid grid-cols-2 gap-px bg-border md:grid-cols-4">
         <Cell icon={<Calendar className="h-4 w-4" />} label="Avspark" value={MATCH_META.kickoff} />
         <Cell icon={<MapPin className="h-4 w-4" />} label="Plats" value={MATCH_META.venue} />
-        <Cell icon={<Clock className="h-4 w-4" />} label="Samling" value="11:30" sub="Mental start" />
-        <Cell icon={<Users className="h-4 w-4" />} label="Trupp" value={`${CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length} spelare`} sub={`${CALLED_SQUAD.starting.length} start + ${CALLED_SQUAD.bench.length} avbytare`} />
+        <Cell icon={<Clock className="h-4 w-4" />} label="Samling" value={gathering?.time ?? "Enligt kallelse"} sub={gathering?.note ?? "Bekräftas av ledarstaben"} />
+        <Cell
+          icon={<Users className="h-4 w-4" />}
+          label="Trupp"
+          value={totalPlayers > 0 ? `${totalPlayers} spelare` : "Inte satt"}
+          sub={totalPlayers > 0 ? `${CALLED_SQUAD.starting.length} start + ${CALLED_SQUAD.bench.length} avbytare` : "Kallelse kommer"}
+        />
       </dl>
     </article>
   );
@@ -89,6 +97,9 @@ function Cell({ icon, label, value, sub }: { icon: React.ReactNode; label: strin
 }
 
 function KalladTrupp() {
+  const totalPlayers = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
+  const hasStartingLineup = CALLED_SQUAD.starting.length === 11;
+
   return (
     <article className="rounded-2xl border border-border bg-card p-5 md:p-7">
       <header className="mb-5 flex items-end justify-between gap-3">
@@ -97,12 +108,24 @@ function KalladTrupp() {
             02 · Kallad trupp
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
-            16 spelare · 4-2-3-1
+            {totalPlayers > 0 ? `${totalPlayers} spelare · 4-2-3-1` : "Kallelse kommer"}
           </h2>
         </div>
       </header>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-8">
+      {!hasStartingLineup && (
+        <div className="rounded-xl border border-dashed border-amber-500/60 bg-amber-50 px-5 py-4">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
+            Inte inlagd än
+          </p>
+          <p className="mt-1 text-sm font-bold leading-relaxed text-foreground">
+            Startelva, avbytare och fasta ansvar fylls i när Ytterby-kallelsen är satt.
+          </p>
+        </div>
+      )}
+
+      {hasStartingLineup && (
+      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-8">
         {/* Startelva + formation */}
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-3">
@@ -158,6 +181,7 @@ function KalladTrupp() {
           </div>
         </div>
       </div>
+      )}
     </article>
   );
 }

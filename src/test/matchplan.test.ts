@@ -11,14 +11,14 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  * - att MATCH_META är ifylld med riktig motståndare/avspark
  * - att FOCUS har 1-5 punkter
  * - att COHERENCE har förväntade sektions-id (matchar genvägar i sidofältet)
- * - att FORMATION har exakt 11 spelare
+ * - att FORMATION/kallad trupp inte råkar visa föregående match när kallelsen saknas
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har IFK Björkö + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("IFK Björkö");
-    expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toContain("Hjällbovallen");
+  it("MATCH_META har Ytterby IS + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("Ytterby IS");
+    expect(MATCH_META.kickoff).toMatch(/20:15/);
+    expect(MATCH_META.venue).toContain("Ytterns IP");
     expect(MATCH_META.competition).toContain("Division 4A");
   });
 
@@ -28,17 +28,15 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION har 11 spelare med unika id", () => {
-    expect(FORMATION).toHaveLength(11);
+  it("FORMATION är tom tills Ytterby-kallelsen är satt", () => {
+    expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
-    expect(new Set(ids).size).toBe(11);
+    expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp har 11 startspelare och 5 avbytare", () => {
-    expect(CALLED_SQUAD.starting).toHaveLength(11);
-    expect(CALLED_SQUAD.bench).toHaveLength(5);
-    expect(CALLED_SQUAD.starting).toContain("Ali");
-    expect(CALLED_SQUAD.bench).toContain("Galvan");
+  it("kallad trupp är inte återanvänd från Björkö-matchen", () => {
+    expect(CALLED_SQUAD.starting).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -47,7 +45,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "bjorko",
+      "ytterby",
       "identitet",
       "anfall",
       "forsvar",
@@ -64,22 +62,22 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("gammal kommande Kareby-rad kan inte ersätta Björkö som veckans match", () => {
+  it("gammal kommande Björkö-rad kan inte ersätta Ytterby som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
-          id: "stale-kareby",
-          date: "2026-05-16T12:00:00+02:00",
-          opponent: "Kareby IS",
-          homeAway: "away",
+          id: "stale-bjorko",
+          date: "2026-05-19T12:00:00+02:00",
+          opponent: "IFK Björkö",
+          homeAway: "home",
           competition: "Division 4A Herr",
-          venue: "Kareby Hed",
+          venue: "Hjällbovallen 1 Gräs",
         },
       ],
-      new Date("2026-05-15T12:00:00+02:00")
+      new Date("2026-05-17T12:00:00+02:00")
     );
 
-    expect(matches.some((match) => match.opponent === "Kareby IS")).toBe(false);
-    expect(matches[0].opponent).toBe("IFK Björkö");
+    expect(matches.some((match) => match.opponent === "IFK Björkö")).toBe(false);
+    expect(matches[0].opponent).toBe("Ytterby IS");
   });
 });

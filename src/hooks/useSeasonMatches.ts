@@ -4,7 +4,7 @@ import { SEASON_MATCHES, type SeasonMatch } from "@/data/season";
 import { MATCH_META } from "@/data/matchplan";
 
 const STATIC_WEEKLY_MATCH = SEASON_MATCHES.find((match) => match.opponent === MATCH_META.opponent);
-const STALE_UPCOMING_NAMES = ["kareby", "lerum"];
+const STALE_UPCOMING_NAMES = ["kareby", "lerum", "björkö", "bjorko"];
 
 export function useSeasonMatches() {
   const [matches, setMatches] = useState<SeasonMatch[]>(SEASON_MATCHES);

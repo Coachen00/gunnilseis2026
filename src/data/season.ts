@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-05-15 (inför IFK Björkö).
+ * Senast uppdaterad: 2026-05-17 (inför Ytterby IS).
  */
 
 export type SeasonMatch = {
@@ -89,8 +89,44 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "IFK Björkö",
     homeAway: "home",
     competition: "Division 4A Herr",
-    venue: "Hjällbovallen 2 Konstgräs",
+    venue: "Hjällbovallen 1 Gräs",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901099/ifk-bjorko",
+  },
+  {
+    id: "2026-05-19-ytterby",
+    date: "2026-05-19T20:15:00+02:00",
+    opponent: "Ytterby IS",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Ytterns IP 1 Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/matcher?seasonYear=2026",
+  },
+  {
+    id: "2026-05-22-vardar-makedonija",
+    date: "2026-05-22T19:15:00+02:00",
+    opponent: "IF Vardar/Makedonija",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Generatorsplan",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/matcher?seasonYear=2026",
+  },
+  {
+    id: "2026-05-27-lerum",
+    date: "2026-05-27T19:00:00+02:00",
+    opponent: "Lerums IS",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/matcher?seasonYear=2026",
+  },
+  {
+    id: "2026-05-30-hjuvik",
+    date: "2026-05-30T13:00:00+02:00",
+    opponent: "Hjuviks AIK",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/matcher?seasonYear=2026",
   },
 ];
 

@@ -34,7 +34,7 @@ export function useMatch(status: "upcoming" | "played") {
       status === "upcoming" &&
       (!row ||
         (row.match_date ? new Date(row.match_date).getTime() < Date.now() : false) ||
-        ["lerum", "kareby"].some((name) => row.opponent.toLowerCase().includes(name)));
+        ["lerum", "kareby", "björkö", "bjorko"].some((name) => row.opponent.toLowerCase().includes(name)));
 
     if (shouldUseStaticUpcoming) {
       setMatch({
@@ -46,7 +46,7 @@ export function useMatch(status: "upcoming" | "played") {
           manual_override: true,
         }),
         opponent: MATCH_META.opponent,
-        match_date: "2026-05-16T13:00:00+02:00",
+        match_date: "2026-05-19T20:15:00+02:00",
         home_away: MATCH_META.home ? "home" : "away",
         competition: MATCH_META.competition,
         venue: MATCH_META.venue,

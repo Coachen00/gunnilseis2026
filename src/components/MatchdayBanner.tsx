@@ -88,7 +88,7 @@ export default function MatchdayBanner() {
   if (pre) {
     state = "pre";
     title = "Matchdag";
-    detail = `Avspark om ${formatCountdown(diff)} — IFK Björkö ${MATCH_META.home ? "hemma" : "borta"}`;
+    detail = `Avspark om ${formatCountdown(diff)} — ${MATCH_META.opponent} ${MATCH_META.home ? "hemma" : "borta"}`;
     cta = { to: "/match/kommande", label: "Veckans match" };
   } else if (inProgress) {
     state = "live";
