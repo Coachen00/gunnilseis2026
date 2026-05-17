@@ -1127,4 +1127,453 @@
         margin-top: 8px;
     }
 }
+
+/* =================================================================
+   NY VERTIKAL KONTROLLPANEL — RULLGARDINER STAPLADE
+   Anvandaren har explicit krav: dropdowns ska VARA KVAR och vara
+   vertikalt FALLANDE, inte lateralt utbredda.
+   ================================================================= */
+.tactic-board-page .tactic-board-shell {
+    display: grid;
+    grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+    gap: 18px;
+    width: 100%;
+    max-width: 1640px;
+    margin: 0 auto;
+    padding: 18px;
+    box-sizing: border-box;
+    align-items: start;
+}
+
+.tactic-board-page .tactic-control-panel {
+    position: sticky;
+    top: 70px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, hsl(200 16% 9%), hsl(210 18% 7%));
+    border: 1px solid hsl(220 14% 18%);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(220 14% 28%) transparent;
+}
+
+.tactic-board-page .tactic-control-panel::-webkit-scrollbar {
+    width: 8px;
+}
+.tactic-board-page .tactic-control-panel::-webkit-scrollbar-thumb {
+    background: hsl(220 14% 28%);
+    border-radius: 4px;
+}
+.tactic-board-page .tactic-control-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tactic-board-page .tactic-control-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 4px 12px;
+}
+
+.tactic-board-page .tactic-control-eyebrow {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: hsl(145 70% 56%);
+    margin-bottom: 4px;
+}
+
+.tactic-board-page .tactic-control-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: rgba(255, 255, 255, 0.96);
+}
+
+.tactic-board-page .tactic-panel-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    /* Vertikalt fallande, INTE lateralt - anvandarens explicita krav */
+}
+
+.tactic-board-page .tactic-panel {
+    position: relative;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.tactic-board-page .tactic-panel:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+}
+
+.tactic-board-page .tactic-panel[open] {
+    border-color: hsl(145 70% 32%);
+    background: linear-gradient(180deg, rgba(46, 125, 50, 0.10), rgba(255, 255, 255, 0.02));
+}
+
+.tactic-board-page .tactic-panel summary {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 28px 1fr 18px;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.tactic-board-page .tactic-panel summary::-webkit-details-marker {
+    display: none;
+}
+
+.tactic-board-page .tactic-panel-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 900;
+    color: hsl(145 70% 56%);
+    letter-spacing: 0.04em;
+}
+
+.tactic-board-page .tactic-panel[open] .tactic-panel-num {
+    color: hsl(145 80% 72%);
+}
+
+.tactic-board-page .tactic-panel-title {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.92);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tactic-board-page .tactic-panel-caret {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+    transform: rotate(45deg);
+    margin-top: -3px;
+    justify-self: end;
+    transition: transform 0.2s ease, margin 0.2s ease, border-color 0.2s ease;
+}
+
+.tactic-board-page .tactic-panel[open] .tactic-panel-caret {
+    transform: rotate(-135deg);
+    margin-top: 3px;
+    border-color: hsl(145 80% 72%);
+}
+
+.tactic-board-page .tactic-panel-body {
+    /* Inline-content - INTE absolute-positionerad popover. Hela poangen
+       med vertikal fallande layout ar att body trycker ner nasta panel. */
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 14px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tactic-board-page .tactic-panel-hint {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tactic-board-page .tactic-panel-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+}
+
+.tactic-board-page .tactic-section-title {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: hsl(145 70% 60%);
+}
+
+.tactic-board-page .tactic-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tactic-board-page .tactic-field-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.tactic-board-page .tactic-field-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tactic-board-page .tactic-field-color {
+    flex: 1 1 80px;
+    min-width: 0;
+}
+
+.tactic-board-page .tactic-field-color input[type="color"] {
+    width: 100%;
+    min-height: 36px;
+    padding: 2px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tactic-board-page .tactic-select {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tactic-board-page .tactic-select:focus {
+    outline: 2px solid hsl(145 70% 52%);
+    outline-offset: 1px;
+}
+
+.tactic-board-page .tactic-panel .quick-actions.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+.tactic-board-page .tactic-panel .quick-actions.stacked button {
+    width: 100%;
+    padding: 9px 12px;
+    text-align: center;
+}
+
+.tactic-board-page .tactic-panel .btn-primary { background: #2e7d32; }
+.tactic-board-page .tactic-panel .btn-warn { background: #d32f2f; }
+.tactic-board-page .tactic-panel .btn-play { background: #4caf50; font-weight: 700; }
+.tactic-board-page .tactic-panel .btn-link { background: #8e24aa; }
+.tactic-board-page .tactic-panel .btn-ball { background: white; color: black; font-weight: 700; }
+.tactic-board-page .tactic-panel .btn-cone { background: #ff9800; color: black; font-weight: 700; }
+.tactic-board-page .tactic-panel .opt-erase { background: #ff5252; color: white; font-weight: 700; }
+
+.tactic-board-page .tactic-panel .layer-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+}
+
+.tactic-board-page .tactic-panel .layer-option:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tactic-board-page .tactic-panel .layer-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: hsl(145 70% 52%);
+    cursor: pointer;
+}
+
+.tactic-board-page .tactic-panel .checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.88);
+    cursor: pointer;
+}
+
+.tactic-board-page .tactic-panel .slider-group {
+    display: grid;
+    grid-template-columns: 90px 1fr 50px;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.tactic-board-page .tactic-panel .slider-group input[type="range"] {
+    width: 100%;
+}
+
+.tactic-board-page .tactic-panel .slider-value {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: right;
+}
+
+.tactic-board-page .tactic-panel .player-inputs-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.tactic-board-page .tactic-panel .player-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+.tactic-board-page .tactic-panel .formation-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.tactic-board-page .tactic-panel .formation-group:last-child {
+    margin-bottom: 0;
+}
+
+.tactic-board-page .tactic-panel .formation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    max-width: none;
+}
+
+.tactic-board-page .tactic-panel .timeline-strip {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+}
+
+.tactic-board-page .tactic-panel .tool-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.tactic-board-page .tactic-panel .tool-panel.hidden {
+    display: none;
+}
+
+/* === Main / capture-area === */
+.tactic-board-page .tactic-board-main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.tactic-board-page .tactic-board-main #capture-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 1280px;
+}
+
+/* === KONTRAST-POLERING (utan tung overlay) === */
+.tactic-board-page .piece .name {
+    /* Label-pill bakom spelarnamn - hogkontrast oavsett bakgrund */
+    background: rgba(8, 12, 14, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    padding: 1px 5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+}
+
+.tactic-board-page .piece {
+    /* Diskret glow runt markorer for att de ska sticka ut pa alla scener */
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 0 12px rgba(255, 235, 59, 0.16),
+        0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+    .tactic-board-page .tactic-board-shell {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .tactic-board-page .tactic-control-panel {
+        position: static;
+        max-height: none;
+        order: 1;
+    }
+
+    .tactic-board-page .tactic-board-main {
+        order: 2;
+    }
+
+    .tactic-board-page .tactic-panel .formation-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .tactic-board-page .tactic-panel .player-inputs-stack {
+        max-height: 320px;
+    }
+}
+
+@media (max-width: 640px) {
+    .tactic-board-page .tactic-board-shell {
+        padding: 8px;
+    }
+
+    .tactic-board-page .tactic-control-panel {
+        padding: 10px;
+    }
+
+    .tactic-board-page .tactic-panel summary {
+        padding: 12px 12px;
+        grid-template-columns: 24px 1fr 16px;
+    }
+
+    .tactic-board-page .tactic-panel-title {
+        font-size: 12px;
+    }
+
+    .tactic-board-page .tactic-panel-body {
+        padding: 10px 12px 14px;
+    }
+}
     
