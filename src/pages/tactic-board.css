@@ -199,7 +199,10 @@
         }
 
         .tactic-board-page .tactics-board {
-            width: 1100px;
+            /* Stort overview — använder all tillgänglig bredd inom panel-utrymmet,
+               upp till 1500px. Aspect 16:9 behålls. */
+            width: 100%;
+            max-width: 1500px;
             aspect-ratio: 16 / 9;
             position: relative;
             overflow: hidden;
@@ -1505,7 +1508,216 @@
 .tactic-board-page .tactic-board-main #capture-wrapper {
     flex: 1 1 auto;
     width: 100%;
-    max-width: 1280px;
+    max-width: 1500px;
+}
+
+/* =================================================================
+   BÄNK-STRIPS — visuella zoner ovan/under planen där bänkade
+   spelar-pluppar tydligt syns utanför pitch-linjerna.
+   ================================================================= */
+.tactic-board-page .tactics-board .bench-strip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 1; /* över backdrop, under pitch (z-index:2) */
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.tactic-board-page .tactics-board .bench-strip-top {
+    top: 0;
+    height: 14%; /* matchar #pitch top:14% */
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.20));
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+    justify-content: flex-end;
+}
+
+.tactic-board-page .tactics-board .bench-strip-bottom {
+    bottom: 0;
+    height: 14%; /* matchar resterande: 100 - (14+72) = 14 */
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.20));
+    border-top: 1px dashed rgba(255, 255, 255, 0.25);
+    justify-content: flex-end;
+}
+
+.tactic-board-page .tactics-board .bench-label {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.tactic-board-page .tactics-board .bench-label-home {
+    color: #ff6b6b;
+}
+
+.tactic-board-page .tactics-board .bench-label-away {
+    color: #64b5f6;
+}
+
+/* =================================================================
+   PLAN-LINJER — kontrastsäkrade per scen.
+   Default = vit (täcker mörka scener). Ljusa scener får mörk färg
+   så linjerna alltid syns.
+   ================================================================= */
+
+/* Whiteboard + neutral_analysis (ljusa bakgrunder) → mörka linjer */
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .line,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .line {
+    border-color: rgba(40, 30, 15, 0.7);
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .mid-line,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .mid-line {
+    border-left-color: rgba(40, 30, 15, 0.7);
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .center-spot,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .center-spot {
+    background: rgba(40, 30, 15, 0.8);
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .goal,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .goal {
+    border-color: rgba(40, 30, 15, 0.85);
+    background-color: rgba(40, 30, 15, 0.08);
+    background-image:
+        linear-gradient(45deg, rgba(40, 30, 15, 0.4) 25%, transparent 25%, transparent 75%, rgba(40, 30, 15, 0.4) 75%, rgba(40, 30, 15, 0.4)),
+        linear-gradient(-45deg, rgba(40, 30, 15, 0.4) 25%, transparent 25%, transparent 75%, rgba(40, 30, 15, 0.4) 75%, rgba(40, 30, 15, 0.4));
+}
+
+/* Match overview (ljus broadcast-grön) → vitare linjer + lite tjockare */
+.tactic-board-page .tactics-board[data-scene="match_overview"] .line {
+    border-width: 2.5px;
+    border-color: rgba(255, 255, 255, 0.98);
+}
+.tactic-board-page .tactics-board[data-scene="match_overview"] .mid-line {
+    border-left-width: 2.5px;
+    border-left-color: rgba(255, 255, 255, 0.98);
+}
+
+/* Coachboard — krit-ton, lite mjukare än ren vit */
+.tactic-board-page .tactics-board[data-scene="coachboard"] .line {
+    border-color: rgba(240, 232, 218, 0.85);
+    border-style: solid;
+}
+.tactic-board-page .tactics-board[data-scene="coachboard"] .mid-line {
+    border-left-color: rgba(240, 232, 218, 0.85);
+}
+
+/* Bänk-labels per scen — dölj på ljusa scener där de blir bullriga */
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .bench-strip,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .bench-strip {
+    background: linear-gradient(180deg, rgba(40, 30, 15, 0.12), rgba(40, 30, 15, 0.04));
+    border-color: rgba(40, 30, 15, 0.25);
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .bench-label,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .bench-label {
+    background: rgba(255, 248, 220, 0.85);
+    border-color: rgba(40, 30, 15, 0.2);
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .bench-label-home,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .bench-label-home {
+    color: #b91c1c;
+}
+.tactic-board-page .tactics-board[data-scene="whiteboard"] .bench-label-away,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] .bench-label-away {
+    color: #1e3a8a;
+}
+
+/* =================================================================
+   TIMELINE — utökad: större thumbnails + tydlig saved-state +
+   numrerade frames + delay-slider.
+   ================================================================= */
+.tactic-board-page .tactic-panel .timeline-explainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.tactic-board-page .tactic-panel .timeline-explainer-step {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+}
+.tactic-board-page .tactic-panel .timeline-step-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: hsl(145 70% 32%);
+    color: white;
+    font-weight: 900;
+    font-size: 11px;
+    display: grid;
+    place-items: center;
+}
+.tactic-board-page .tactic-panel .timeline-step-text {
+    font-size: 10.5px;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 600;
+}
+.tactic-board-page .tactic-panel .timeline-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-height: none;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.32);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.tactic-board-page .tactic-panel .timeline-strip .frame-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    height: auto;
+    min-height: 36px;
+    border-radius: 8px;
+    border: 1px dashed rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.025);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+}
+.tactic-board-page .tactic-panel .timeline-strip .frame-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.92);
+}
+.tactic-board-page .tactic-panel .timeline-strip .frame-btn.saved {
+    border-style: solid;
+    border-color: #4caf50;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(46, 125, 50, 0.4));
+    color: white;
+}
+.tactic-board-page .tactic-panel .timeline-strip .frame-btn.saved::after {
+    content: '●';
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    font-size: 10px;
+    color: #a5e3a7;
+}
+.tactic-board-page .tactic-panel .timeline-strip .frame-btn.active {
+    border-color: #ff9800;
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.4), rgba(245, 124, 0, 0.5));
+    color: #1a1108;
+    box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.25);
 }
 
 /* === KONTRAST-POLERING (utan tung overlay) === */

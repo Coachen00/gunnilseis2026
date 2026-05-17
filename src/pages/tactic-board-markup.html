@@ -7,17 +7,17 @@
 
         <div class="tactic-panel-stack" role="list">
 
-            <!-- 01 — Bakgrund / tavla -->
-            <details class="tactic-panel" id="panel-scene" open>
+            <!-- 01 — PLAN: bakgrund + vy + zoom + zoner/lager -->
+            <details class="tactic-panel" id="panel-plan" open>
                 <summary>
                     <span class="tactic-panel-num">01</span>
-                    <span class="tactic-panel-title">Bakgrund / tavla</span>
+                    <span class="tactic-panel-title">Plan &amp; vy</span>
                     <span class="tactic-panel-caret" aria-hidden="true"></span>
                 </summary>
                 <div class="tactic-panel-body">
-                    <p class="tactic-panel-hint">V&auml;lj m&aring;lad milj&ouml; bakom taktiktavlan. P&aring;verkar enbart bakgrunden &mdash; taktiska verktyg ligger orubbliga ovanp&aring;.</p>
+                    <p class="tactic-panel-hint">V&auml;lj bakgrund, vy och vad du vill se p&aring; planen.</p>
                     <label class="tactic-field">
-                        <span class="tactic-field-label">M&aring;lad scen</span>
+                        <span class="tactic-field-label">Bakgrund / tavla</span>
                         <select id="sceneSelect" class="tactic-select">
                             <option value="training_pitch">Tr&auml;ningsplan</option>
                             <option value="whiteboard">Taktisk whiteboard</option>
@@ -27,38 +27,70 @@
                             <option value="neutral_analysis">Neutral analysyta</option>
                         </select>
                     </label>
+                    <label class="tactic-field">
+                        <span class="tactic-field-label">Vy / zon</span>
+                        <select id="zoomSelect" onchange="setZoom()" class="tactic-select">
+                            <option value="full">Helplan</option>
+                            <option value="third-l">V&auml;nster tredjedel</option>
+                            <option value="third-c">Mittzon</option>
+                            <option value="third-r">H&ouml;ger tredjedel</option>
+                            <option value="box-l">V&auml;nster straffomr&aring;de</option>
+                            <option value="box-r">H&ouml;ger straffomr&aring;de</option>
+                            <option value="mid-high">Central h&ouml;g</option>
+                            <option value="mid-low">Central l&aring;g</option>
+                            <option value="corner-tl">H&ouml;rna v&auml;nster uppe</option>
+                            <option value="corner-bl">H&ouml;rna v&auml;nster nere</option>
+                            <option value="corner-tr">H&ouml;rna h&ouml;ger uppe</option>
+                            <option value="corner-br">H&ouml;rna h&ouml;ger nere</option>
+                        </select>
+                    </label>
+                    <div class="slider-group">
+                        <span>Zoom</span>
+                        <input type="range" id="zoomLevel" min="100" max="240" step="5" value="100" oninput="setZoom()">
+                        <span id="zoomLevelValue" class="slider-value">100%</span>
+                    </div>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Visa p&aring; planen</span>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; Assistyta</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner straffomr&aring;de</label>
+                    </div>
                 </div>
             </details>
 
-            <!-- 02 — Formationer -->
-            <details class="tactic-panel" id="panel-formations">
+            <!-- 02 — LAG: formationer + in/ut + objekt + spelarlista -->
+            <details class="tactic-panel" id="panel-team">
                 <summary>
                     <span class="tactic-panel-num">02</span>
-                    <span class="tactic-panel-title">Formationer</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <div class="formation-group">
-                        <span class="group-label home">R&ouml;tt</span>
-                        <div id="homeFormationButtons" class="formation-grid"></div>
-                    </div>
-                    <div class="formation-group">
-                        <span class="group-label away">Bl&aring;tt</span>
-                        <div id="awayFormationButtons" class="formation-grid"></div>
-                    </div>
-                </div>
-            </details>
-
-            <!-- 03 — Spelare (objekt + lista) -->
-            <details class="tactic-panel" id="panel-squad">
-                <summary>
-                    <span class="tactic-panel-num">03</span>
-                    <span class="tactic-panel-title">Spelare</span>
+                    <span class="tactic-panel-title">Lag &amp; spelare</span>
                     <span class="tactic-panel-caret" aria-hidden="true"></span>
                 </summary>
                 <div class="tactic-panel-body">
                     <div class="tactic-panel-section">
-                        <span class="tactic-section-title">Objekt</span>
+                        <span class="tactic-section-title">Ta in / ta ut</span>
+                        <div class="quick-actions stacked">
+                            <button type="button" onclick="setTeamAvailability('home', true)">Ta in r&ouml;tt</button>
+                            <button type="button" onclick="setTeamAvailability('home', false)">Ta av r&ouml;tt</button>
+                            <button type="button" onclick="setTeamAvailability('away', true)">Ta in bl&aring;tt</button>
+                            <button type="button" onclick="setTeamAvailability('away', false)">Ta av bl&aring;tt</button>
+                            <button type="button" onclick="clearPlayers()" class="btn-warn">B&auml;nka alla</button>
+                        </div>
+                    </div>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Formationer</span>
+                        <div class="formation-group">
+                            <span class="group-label home">R&ouml;tt</span>
+                            <div id="homeFormationButtons" class="formation-grid"></div>
+                        </div>
+                        <div class="formation-group">
+                            <span class="group-label away">Bl&aring;tt</span>
+                            <div id="awayFormationButtons" class="formation-grid"></div>
+                        </div>
+                    </div>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">L&auml;gg till objekt</span>
                         <div class="quick-actions">
                             <button type="button" onclick="addBall()" class="btn-ball">&#9917; Boll</button>
                             <button type="button" onclick="addCone()" class="btn-cone">+ Kon</button>
@@ -71,35 +103,16 @@
                 </div>
             </details>
 
-            <!-- 04 — Ta in / ta ut spelare -->
-            <details class="tactic-panel" id="panel-inout">
-                <summary>
-                    <span class="tactic-panel-num">04</span>
-                    <span class="tactic-panel-title">Ta in / ta ut</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <p class="tactic-panel-hint">Snabbkommandon f&ouml;r att m&ouml;blera laget p&aring; planen.</p>
-                    <div class="quick-actions stacked">
-                        <button type="button" onclick="setTeamAvailability('home', true)">Ta in r&ouml;tt</button>
-                        <button type="button" onclick="setTeamAvailability('home', false)">Ta av r&ouml;tt</button>
-                        <button type="button" onclick="setTeamAvailability('away', true)">Ta in bl&aring;tt</button>
-                        <button type="button" onclick="setTeamAvailability('away', false)">Ta av bl&aring;tt</button>
-                        <button type="button" onclick="clearPlayers()" class="btn-warn">B&auml;nka alla</button>
-                    </div>
-                </div>
-            </details>
-
-            <!-- 05 — Ritverktyg -->
+            <!-- 03 — RITA: rita-l&auml;ge + f&auml;rger + pilar + l&auml;nka -->
             <details class="tactic-panel" id="panel-draw">
                 <summary>
-                    <span class="tactic-panel-num">05</span>
-                    <span class="tactic-panel-title">Ritverktyg</span>
+                    <span class="tactic-panel-num">03</span>
+                    <span class="tactic-panel-title">Rita &amp; pilar</span>
                     <span class="tactic-panel-caret" aria-hidden="true"></span>
                 </summary>
                 <div class="tactic-panel-body">
                     <label class="tactic-field">
-                        <span class="tactic-field-label">L&auml;ge</span>
+                        <span class="tactic-field-label">Vad du ritar</span>
                         <select id="drawMode" onchange="updateToolOptionsVisibility()" class="tactic-select">
                             <option value="free">Frihand</option>
                             <option value="line">Rak linje</option>
@@ -123,19 +136,18 @@
                             <input type="color" id="fillColor" value="#1976d2" title="Fyllnadsf&auml;rg">
                         </label>
                     </div>
-                    <div class="tactic-field-row">
+                    <div class="tactic-field-row" style="gap: 16px;">
+                        <label class="checkbox-container"><input type="checkbox" id="drawArrow"> Pilspets</label>
                         <label class="checkbox-container"><input type="checkbox" id="fillShape"> Fyll form</label>
                     </div>
                     <div id="curveControls" class="tool-panel">
-                        <div class="tactic-field-row">
-                            <label class="tactic-field">
-                                <span class="tactic-field-label">B&ouml;j</span>
-                                <select id="curveDirection" class="compact-select">
-                                    <option value="left">V&auml;nster</option>
-                                    <option value="right">H&ouml;ger</option>
-                                </select>
-                            </label>
-                        </div>
+                        <label class="tactic-field">
+                            <span class="tactic-field-label">B&ouml;j-riktning</span>
+                            <select id="curveDirection" class="compact-select tactic-select">
+                                <option value="left">V&auml;nster</option>
+                                <option value="right">H&ouml;ger</option>
+                            </select>
+                        </label>
                         <div class="slider-group">
                             <span>Vinkel</span>
                             <input type="range" id="curveAngle" min="-90" max="90" step="5" value="0" oninput="updateToolSettingsLabels()">
@@ -162,103 +174,63 @@
                         <button type="button" id="drawBtn" onclick="toggleDrawing()" class="btn-primary">Aktivera ritverktyg</button>
                         <button type="button" onclick="clearCanvas()">Rensa ritverk</button>
                     </div>
-                </div>
-            </details>
-
-            <!-- 06 — Pilar och passningar -->
-            <details class="tactic-panel" id="panel-arrows">
-                <summary>
-                    <span class="tactic-panel-num">06</span>
-                    <span class="tactic-panel-title">Pilar &amp; passningar</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <p class="tactic-panel-hint">Pil-l&auml;get g&auml;ller p&aring; n&auml;sta ritning. L&auml;nka spelare f&ouml;r att skapa passningslinjer.</p>
-                    <label class="checkbox-container"><input type="checkbox" id="drawArrow"> Lägg pil p&aring; n&auml;sta ritning</label>
-                    <div class="quick-actions stacked">
-                        <button type="button" id="linkBtn" onclick="toggleLinkMode()" class="btn-link">L&auml;nka spelare P&Aring;/AV</button>
-                        <button type="button" onclick="clearLinks()">Rensa l&auml;nkar</button>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Passningslinjer</span>
+                        <p class="tactic-panel-hint">L&auml;nka tv&aring; spelare = passningslinje mellan dem som f&ouml;ljer n&auml;r de flyttas.</p>
+                        <div class="quick-actions stacked">
+                            <button type="button" id="linkBtn" onclick="toggleLinkMode()" class="btn-link">L&auml;nka spelare P&Aring;/AV</button>
+                            <button type="button" onclick="clearLinks()">Rensa l&auml;nkar</button>
+                        </div>
                     </div>
                 </div>
             </details>
 
-            <!-- 07 — Zoner och korridorer -->
-            <details class="tactic-panel" id="panel-zones">
-                <summary>
-                    <span class="tactic-panel-num">07</span>
-                    <span class="tactic-panel-title">Zoner &amp; korridorer</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; Assistyta</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner Straffomr&aring;de</label>
-                </div>
-            </details>
-
-            <!-- 08 — Sekvenser / timeline -->
+            <!-- 04 — SEKVENS &amp; TIMELINE: spara delar av spelet som frames, spela upp -->
             <details class="tactic-panel" id="panel-timeline">
                 <summary>
-                    <span class="tactic-panel-num">08</span>
-                    <span class="tactic-panel-title">Sekvenser &amp; timeline</span>
+                    <span class="tactic-panel-num">04</span>
+                    <span class="tactic-panel-title">Sekvens &amp; film</span>
                     <span class="tactic-panel-caret" aria-hidden="true"></span>
                 </summary>
                 <div class="tactic-panel-body">
-                    <p class="timeline-hint">Klicka p&aring; ruta = ladda. Shift+klicka = spara nuvarande l&auml;ge.</p>
-                    <div id="timeline" class="timeline-strip"></div>
-                    <div class="quick-actions stacked">
-                        <button type="button" onclick="playMovie()" class="btn-play">&#9654; Spela upp</button>
-                        <button type="button" onclick="clearTimeline()" class="btn-warn">Rensa film</button>
+                    <div class="timeline-explainer">
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">1</span>
+                            <span class="timeline-step-text">Flytta spelare till f&ouml;rsta l&auml;get</span>
+                        </span>
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">2</span>
+                            <span class="timeline-step-text">Shift+klick p&aring; en ruta = spara</span>
+                        </span>
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">3</span>
+                            <span class="timeline-step-text">Tryck Spela upp</span>
+                        </span>
                     </div>
-                </div>
-            </details>
-
-            <!-- 09 — Export / screenshot -->
-            <details class="tactic-panel" id="panel-export">
-                <summary>
-                    <span class="tactic-panel-num">09</span>
-                    <span class="tactic-panel-title">Export &amp; screenshot</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <p class="tactic-panel-hint">Spara nuvarande tavla som bild. Inkluderar bakgrund + alla taktiska lager.</p>
-                    <div class="quick-actions stacked">
-                        <button type="button" onclick="takeScreenshot()" class="btn-primary">Spara bild</button>
-                    </div>
-                </div>
-            </details>
-
-            <!-- 10 — Inställningar (vy, zoom, storlek) -->
-            <details class="tactic-panel" id="panel-settings">
-                <summary>
-                    <span class="tactic-panel-num">10</span>
-                    <span class="tactic-panel-title">Vy &amp; inst&auml;llningar</span>
-                    <span class="tactic-panel-caret" aria-hidden="true"></span>
-                </summary>
-                <div class="tactic-panel-body">
-                    <label class="tactic-field">
-                        <span class="tactic-field-label">Vy</span>
-                        <select id="zoomSelect" onchange="setZoom()" class="tactic-select">
-                            <option value="full">Helplan</option>
-                            <option value="third-l">V&auml;nster tredjedel</option>
-                            <option value="third-c">Mittzon</option>
-                            <option value="third-r">H&ouml;ger tredjedel</option>
-                            <option value="box-l">V&auml;nster straffomr&aring;de</option>
-                            <option value="box-r">H&ouml;ger straffomr&aring;de</option>
-                            <option value="mid-high">Central h&ouml;g</option>
-                            <option value="mid-low">Central l&aring;g</option>
-                            <option value="corner-tl">H&ouml;rna v&auml;nster uppe</option>
-                            <option value="corner-bl">H&ouml;rna v&auml;nster nere</option>
-                            <option value="corner-tr">H&ouml;rna h&ouml;ger uppe</option>
-                            <option value="corner-br">H&ouml;rna h&ouml;ger nere</option>
-                        </select>
-                    </label>
+                    <div id="timeline" class="timeline-strip" aria-label="Tidslinje med 10 frames"></div>
                     <div class="slider-group">
-                        <span>Zoom</span>
-                        <input type="range" id="zoomLevel" min="100" max="240" step="5" value="100" oninput="setZoom()">
-                        <span id="zoomLevelValue" class="slider-value">100%</span>
+                        <span>Tid per ruta</span>
+                        <input type="range" id="frameDelay" min="500" max="4000" step="250" value="1500">
+                        <span id="frameDelayValue" class="slider-value">1.5s</span>
+                    </div>
+                    <div class="quick-actions stacked">
+                        <button type="button" onclick="playMovie()" class="btn-play">&#9654; Spela upp filmen</button>
+                        <button type="button" onclick="clearTimeline()" class="btn-warn">Rensa alla rutor</button>
+                    </div>
+                </div>
+            </details>
+
+            <!-- 05 — SPARA: screenshot + spelarstorlek -->
+            <details class="tactic-panel" id="panel-save">
+                <summary>
+                    <span class="tactic-panel-num">05</span>
+                    <span class="tactic-panel-title">Spara &amp; finjustera</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <p class="tactic-panel-hint">Spara en bild av nuvarande tavla med alla lager.</p>
+                    <div class="quick-actions stacked">
+                        <button type="button" onclick="takeScreenshot()" class="btn-primary">Spara som bild</button>
                     </div>
                     <div class="slider-group">
                         <span>Spelar-storlek</span>
@@ -275,6 +247,13 @@
             <div id="capture-area">
                 <div class="tactics-board" data-scene="training_pitch">
                     <div id="tactics-backdrop-root"></div>
+                    <!-- B&Auml;NK-STRIPS: visuella zoner d&auml;r b&auml;nkade pieces sitter klart utanf&ouml;r planen -->
+                    <div class="bench-strip bench-strip-top" aria-hidden="true">
+                        <span class="bench-label bench-label-home">B&Auml;NK &middot; R&Ouml;TT</span>
+                    </div>
+                    <div class="bench-strip bench-strip-bottom" aria-hidden="true">
+                        <span class="bench-label bench-label-away">B&Auml;NK &middot; BL&Aring;TT</span>
+                    </div>
                     <div id="pitch" class="tactics-interaction-layer" tabindex="0" aria-label="Interaktiv taktiktavla">
                         <canvas id="canvas" width="1000" height="1000"></canvas>
                         <canvas id="attachedCanvas" width="1000" height="1000"></canvas>
