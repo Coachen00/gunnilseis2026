@@ -256,6 +256,24 @@ function PitchSceneAuto({ reduced }: { reduced: boolean }) {
           <filter id="ballBlur" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" />
           </filter>
+          {/* Glow runt pilar (spelvändning) */}
+          <filter id="arrowGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          {/* Pilspetsar för spelvändning-pilarna */}
+          <marker id="arrowHeadGold" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 12 6 L 0 12 L 3 6 z" fill="#fbbf24" />
+          </marker>
+          <marker id="arrowHeadCream" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 12 6 L 0 12 L 3 6 z" fill="#fde68a" />
+          </marker>
+          <marker id="arrowHeadAmber" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+            <path d="M 0 0 L 12 6 L 0 12 L 3 6 z" fill="#fcd34d" />
+          </marker>
         </defs>
 
         {/* Plan-bakgrund + subtila ränder för djup */}
@@ -295,13 +313,138 @@ function PitchSceneAuto({ reduced }: { reduced: boolean }) {
           <motion.rect x="910" y="230" width="60" height="180" rx="2" pathLength="1" {...animateProps(2.0, 0.5)} />
         </g>
 
-        {/* Korridor-streck (gula taktiska linjer) — drar in efter planen finns */}
-        <g fill="none" stroke="rgba(251,191,36,0.55)" strokeWidth="2" strokeDasharray="8 12" strokeLinecap="round">
-          <motion.line x1="30" y1="180" x2="970" y2="180" pathLength="1" {...animateProps(2.4, 0.6)} />
-          <motion.line x1="30" y1="460" x2="970" y2="460" pathLength="1" {...animateProps(2.5, 0.6)} />
-          <motion.line x1="280" y1="30" x2="280" y2="610" pathLength="1" {...animateProps(2.6, 0.6)} />
-          <motion.line x1="720" y1="30" x2="720" y2="610" pathLength="1" {...animateProps(2.7, 0.6)} />
-        </g>
+        {/* === KORRIDORER — 5 horisontella band, fade in i sekvens === */}
+        {/* Ordning: Ytter (top) → Inner (top) → Central → Inner (bot) → Ytter (bot)
+            Bandsen får sub-fyllning + en streckad delarlinje längs nedre kanten,
+            plus en label-pill i vänstra hörnet av varje band. */}
+        {[
+          { y0: 30,  y1: 150, label: "Ytterkorridor",    central: false },
+          { y0: 150, y1: 260, label: "Innerkorridor",    central: false },
+          { y0: 260, y1: 380, label: "Central korridor", central: true  },
+          { y0: 380, y1: 490, label: "Innerkorridor",    central: false },
+          { y0: 490, y1: 610, label: "Ytterkorridor",    central: false },
+        ].map((band, i) => {
+          const baseDelay = 2.3 + i * 0.16;
+          const labelY = band.y0 + 22;
+          const isLast = i === 4;
+          return (
+            <g key={`corr-${i}`}>
+              {/* Subtle fill — central korridor är något varmare */}
+              <motion.rect
+                x="30" y={band.y0} width="940" height={band.y1 - band.y0}
+                fill={band.central ? "rgba(251,191,36,0.07)" : "rgba(251,191,36,0.03)"}
+                initial={reduced ? undefined : { opacity: 0 }}
+                animate={reduced ? undefined : { opacity: 1 }}
+                transition={{ duration: 0.5, delay: baseDelay, ease: "easeOut" }}
+              />
+              {/* Delar-linje längs nedre kanten (om inte sista) */}
+              {!isLast && (
+                <motion.line
+                  x1="30" y1={band.y1} x2="970" y2={band.y1}
+                  stroke={band.central ? "rgba(251,191,36,0.65)" : "rgba(251,191,36,0.42)"}
+                  strokeWidth={band.central ? "2" : "1.5"}
+                  strokeDasharray="8 10" strokeLinecap="round"
+                  pathLength="1"
+                  initial={reduced ? undefined : { pathLength: 0, opacity: 0 }}
+                  animate={reduced ? undefined : { pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 0.7, delay: baseDelay + 0.1, ease: "easeOut" }}
+                />
+              )}
+              {/* Label-pill — slide in från vänster */}
+              <motion.g
+                initial={reduced ? undefined : { opacity: 0, x: -14 }}
+                animate={reduced ? undefined : { opacity: 1, x: 0 }}
+                transition={{ duration: 0.45, delay: baseDelay + 0.25, ease: "easeOut" }}
+              >
+                <rect
+                  x="44" y={labelY - 10} width={band.central ? 134 : 112} height="18" rx="9"
+                  fill="#0a0e1a" stroke={band.central ? "rgba(251,191,36,0.7)" : "rgba(251,191,36,0.45)"}
+                  strokeWidth="1"
+                />
+                <text
+                  x={band.central ? 111 : 100}
+                  y={labelY + 3}
+                  textAnchor="middle"
+                  fontFamily="Inter, system-ui, sans-serif"
+                  fontSize={band.central ? "10.5" : "9.5"}
+                  fontWeight="900"
+                  letterSpacing="1.6"
+                  fill={band.central ? "#fbbf24" : "#fde68a"}
+                  style={{ textTransform: "uppercase" }}
+                >
+                  {band.label.toUpperCase()}
+                </text>
+              </motion.g>
+            </g>
+          );
+        })}
+
+        {/* === SPELVÄNDNING — pilar som ritas in efter bollen ===
+            Tre pilar visualiserar klassisk spelvändning:
+              1) Höger ytter spelar bollen bakåt till djup mittfält
+              2) Mittfältet vänder spelet diagonalt över till motsatt sida
+              3) Genomspel framåt till anfallsytan vid bortre stolpen
+            Pilarna ritas med stroke-dasharray (path-length animation).
+            Loopar med 4s paus så känslan håller sig levande utan att
+            distrahera när man scrollar. */}
+        {!reduced && [
+          {
+            d: "M 800 200 Q 660 290 410 410",
+            delay: 4.6,
+            color: "#fbbf24",
+            width: 4.5,
+            marker: "arrowHeadGold",
+          },
+          {
+            d: "M 410 410 Q 560 320 720 290",
+            delay: 5.2,
+            color: "#fde68a",
+            width: 4,
+            marker: "arrowHeadCream",
+          },
+          {
+            d: "M 720 290 Q 820 250 880 220",
+            delay: 5.8,
+            color: "#fcd34d",
+            width: 3.5,
+            marker: "arrowHeadAmber",
+          },
+        ].map((arrow, i) => (
+          <motion.path
+            key={`spv-${i}`}
+            d={arrow.d}
+            fill="none"
+            stroke={arrow.color}
+            strokeWidth={arrow.width}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter="url(#arrowGlow)"
+            markerEnd={`url(#${arrow.marker})`}
+            pathLength="1"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{
+              pathLength: [0, 1, 1, 0],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 4.5,
+              delay: arrow.delay,
+              times: [0, 0.18, 0.78, 1],
+              repeat: Infinity,
+              repeatDelay: 1.2,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {/* Reduced motion: visa spelvändning som statisk slut-state */}
+        {reduced && (
+          <g fill="none" stroke="#fbbf24" strokeWidth="3" strokeLinecap="round" opacity="0.6">
+            <path d="M 800 200 Q 660 290 410 410" markerEnd="url(#arrowHeadGold)" />
+            <path d="M 410 410 Q 560 320 720 290" markerEnd="url(#arrowHeadCream)" stroke="#fde68a" />
+            <path d="M 720 290 Q 820 250 880 220" markerEnd="url(#arrowHeadAmber)" stroke="#fcd34d" />
+          </g>
+        )}
 
         {/* Bollens path (osynlig — bara för att markera vägen) */}
         <motion.path
