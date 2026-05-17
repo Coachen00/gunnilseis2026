@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CALLED_SQUAD, MATCH_META, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
+import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
@@ -20,6 +20,11 @@ describe("matchplan", () => {
     expect(MATCH_META.kickoff).toMatch(/19:15/);
     expect(MATCH_META.venue).toContain("Generatorsplan");
     expect(MATCH_META.competition).toContain("Division 4A");
+  });
+
+  it("veckans match har redigerbar presentationslänk", () => {
+    expect(MATCH_PRESENTATION_URL).toContain("claude.ai/design/p/");
+    expect(MATCH_PRESENTATION_URL).toContain("Matchgenomg");
   });
 
   it("FOCUS har 1-5 punkter, var och en är icke-tom", () => {
