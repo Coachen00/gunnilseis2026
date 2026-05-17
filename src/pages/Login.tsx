@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldCheck, PlayCircle, Film, CalendarClock } from "lucide-react";
 import { getLoginEmailCandidates, toSupabaseEmail } from "@/lib/sharedLogin";
 import { getSharedAccessUser, isSharedAccessCredential, setSharedAccessActive } from "@/lib/sharedAccess";
 
@@ -155,13 +155,17 @@ const Login = () => {
     <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
       <Card className="w-full max-w-md card-gradient border-border">
         <CardHeader className="text-center">
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-accent">
+            <ShieldCheck className="h-3 w-3" strokeWidth={2.4} />
+            Gunnilse IS · 2026
+          </div>
           <CardTitle className="text-3xl text-foreground">
-            {isSignUp ? "Begär tillgång" : "Logga in"}
+            {isSignUp ? "Begär tillgång" : "Välkommen tillbaka"}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {isSignUp 
-              ? "Ange e-post och lösenord. En admin godkänner din förfrågan." 
-              : "Logga in för att komma åt spelidén"}
+            {isSignUp
+              ? "Skicka en förfrågan så godkänner en ledare den. Du får mejl när du kan logga in."
+              : "Logga in för att se matchplan, träningar och filmbibliotek."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -172,7 +176,7 @@ const Login = () => {
                 id="username"
                 type="text"
                 autoComplete="username"
-                placeholder="t.ex. Gunnilse@gunnilse.se"
+                placeholder="t.ex. förnamn@gunnilse.se"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -205,14 +209,38 @@ const Login = () => {
               )}
             </Button>
           </form>
+
+          {/* Inne efter login — visa vad användaren kommer åt */}
+          {isSignUp && (
+            <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
+              <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+                Du får tillgång till
+              </p>
+              <ul className="space-y-2 text-sm text-foreground/90">
+                <li className="flex items-center gap-2">
+                  <PlayCircle className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  Hela spelmodellen — sex spelfaser, identitet och fasta situationer
+                </li>
+                <li className="flex items-center gap-2">
+                  <CalendarClock className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  Veckans match — trupp, matchplan och fokuspunkter
+                </li>
+                <li className="flex items-center gap-2">
+                  <Film className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  Filmbibliotek — klipp sorterade efter spelfas
+                </li>
+              </ul>
+            </div>
+          )}
+
           <div className="mt-4 text-center">
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
               className="text-sm text-primary hover:underline"
             >
-              {isSignUp 
-                ? "Har du redan ett konto? Logga in" 
+              {isSignUp
+                ? "Har du redan ett konto? Logga in"
                 : "Ingen tillgång? Begär åtkomst"}
             </button>
           </div>
