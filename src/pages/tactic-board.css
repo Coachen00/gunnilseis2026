@@ -192,10 +192,15 @@
 
         .tactic-board-page #capture-area {
             position: relative;
-            padding: 40px 60px;
+            padding: 28px 28px;
             background: #121212;
             transition: transform 0.5s ease-in-out;
             transform-origin: center center;
+            /* Fix: utan explicit width förlorar .tactics-board { width: 100% }
+               sin width-kedja och kollapsar till 0. */
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .tactic-board-page .tactics-board {
@@ -1508,7 +1513,19 @@
 .tactic-board-page .tactic-board-main #capture-wrapper {
     flex: 1 1 auto;
     width: 100%;
-    max-width: 1500px;
+    max-width: 1560px;
+    /* +60 över .tactics-board max — rymmer #capture-area padding 28+28 */
+    box-sizing: border-box;
+}
+
+.tactic-board-page .tactic-board-main #capture-area {
+    /* Override för nya layouten — explicit width så .tactics-board { 100% } resolverar.
+       Container är begränsad av wrapper max-width 1560 och centerad. */
+    width: 100%;
+    max-width: 1560px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 24px;
 }
 
 /* =================================================================
