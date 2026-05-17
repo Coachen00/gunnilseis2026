@@ -22,8 +22,13 @@ describe("MajSpelmodell page", () => {
   it("renderar alla sex navkort som ankarlänkar", () => {
     renderPage();
     for (const card of MAJ_2026_NAV_CARDS) {
-      const link = screen.getByRole("link", { name: new RegExp(card.label, "i") });
-      expect(link).toHaveAttribute("href", `#${card.id}`);
+      // FilmLibrary lägger till parallella länkar med samma label-text
+      // (snabb-nav chips för #film-<id>). Vi accepterar att flera matchar
+      // och kollar att MINST en pekar på block-ankaret #<id>.
+      const links = screen.getAllByRole("link", { name: new RegExp(card.label, "i") });
+      expect(links.length).toBeGreaterThan(0);
+      const blockAnchor = links.find((link) => link.getAttribute("href") === `#${card.id}`);
+      expect(blockAnchor).toBeDefined();
     }
   });
 

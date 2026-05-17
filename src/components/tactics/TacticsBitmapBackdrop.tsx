@@ -3,14 +3,45 @@ import {
   getTacticsBoardAsset,
   type TacticsBoardScene,
 } from "@/data/tacticsBoardAssets";
+import {
+  CoachboardScene,
+  MatchOverviewScene,
+  NeutralAnalysisScene,
+  NightPitchScene,
+  TrainingPitchPaintedScene,
+  WhiteboardScene,
+} from "@/components/tactics/PaintedScenes";
 
 type TacticsBitmapBackdropProps = {
   scene: TacticsBoardScene;
 };
 
+/**
+ * Mappar svg-scener till sin React-komponent. Bitmap-scener
+ * (currently bara training_pitch) hanteras via <img>-vägen nedan.
+ */
+const SVG_SCENES: Partial<Record<TacticsBoardScene, React.FC<{ className?: string; style?: CSSProperties }>>> = {
+  whiteboard: WhiteboardScene,
+  night_pitch: NightPitchScene,
+  match_overview: MatchOverviewScene,
+  coachboard: CoachboardScene,
+  neutral_analysis: NeutralAnalysisScene,
+  // training_pitch finns både som bitmap (default) och svg-fallback.
+  // SVG-versionen kan användas via `_svg_training_pitch` om så önskas i framtiden.
+};
+
 const TacticsBitmapBackdrop = ({ scene }: TacticsBitmapBackdropProps) => {
   const asset = getTacticsBoardAsset(scene);
-  const [source, setSource] = useState(asset.src);
+  const [bitmapSource, setBitmapSource] = useState(asset.src ?? "");
+  const SvgScene = SVG_SCENES[scene];
+
+  // Wrapper-fig är alltid `pointer-events: none` (sätt också via CSS),
+  // så backdrop aldrig fångar klick från taktikytan.
+  const wrapperStyle: CSSProperties = {
+    "--tactics-backdrop-position": asset.objectPosition,
+    backgroundColor: asset.fallback,
+    pointerEvents: "none",
+  } as CSSProperties;
 
   return (
     <figure
@@ -18,23 +49,30 @@ const TacticsBitmapBackdrop = ({ scene }: TacticsBitmapBackdropProps) => {
       aria-hidden="true"
       data-board-bounds={`${asset.boardBounds.x},${asset.boardBounds.y},${asset.boardBounds.width},${asset.boardBounds.height}`}
       data-scene={scene}
-      style={
-        {
-          "--tactics-backdrop-position": asset.objectPosition,
-          backgroundColor: asset.fallback,
-          pointerEvents: "none",
-        } as CSSProperties
-      }
+      data-scene-kind={asset.kind}
+      style={wrapperStyle}
     >
-      <img
-        className="tactics-backdrop__image"
-        src={source}
-        alt=""
-        draggable={false}
-        onError={() => {
-          if (source !== asset.fallbackSrc) setSource(asset.fallbackSrc);
-        }}
-      />
+      {asset.kind === "bitmap" && asset.src && (
+        <img
+          className="tactics-backdrop__image"
+          src={bitmapSource || asset.src}
+          alt=""
+          draggable={false}
+          onError={() => {
+            if (asset.fallbackSrc && bitmapSource !== asset.fallbackSrc) {
+              setBitmapSource(asset.fallbackSrc);
+            }
+          }}
+        />
+      )}
+      {asset.kind === "svg" && SvgScene && (
+        <SvgScene
+          className="tactics-backdrop__image tactics-backdrop__svg"
+          style={{ width: "100%", height: "100%", display: "block" }}
+        />
+      )}
+      {/* Soft-light tone over the entire scene — håller scenen visuellt enhetlig.
+          Lätt nog att taktiken alltid är lättast att läsa. */}
       <span className="tactics-backdrop__tone" />
     </figure>
   );

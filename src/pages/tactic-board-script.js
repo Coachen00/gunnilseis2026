@@ -210,12 +210,15 @@
     }
 
     function initToolbarPanels() {
-        document.querySelectorAll('.toolbar-panel').forEach((panel) => {
+        // Stöder både legacy .toolbar-panel och nya .tactic-panel (vertikal).
+        // Med ny vertikal layout vill vi tillåta flera öppna samtidigt — varje
+        // panel är dess egen rullgardin. Men vi behåller toggle-eventet ifall
+        // någon vill bygga på framöver.
+        const selector = '.tactic-panel, .toolbar-panel';
+        document.querySelectorAll(selector).forEach((panel) => {
             panel.addEventListener('toggle', () => {
-                if (!panel.open) return;
-                document.querySelectorAll('.toolbar-panel').forEach((otherPanel) => {
-                    if (otherPanel !== panel) otherPanel.open = false;
-                });
+                /* No-op idag: rullgardinerna är oberoende av varandra så
+                   tränaren kan se flera samtidigt utan att tappa kontexten. */
             });
         });
     }
