@@ -15,7 +15,8 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
-import { ArrowRight, LogIn, ShieldCheck, UserPlus } from "lucide-react";
+import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
+import { useAuthSession } from "@/hooks/useAuthSession";
 
 type Principle = {
   id: string;
@@ -61,6 +62,10 @@ const BALL_PATH =
 export default function MagicalPitchHero() {
   const containerRef = useRef<HTMLElement>(null);
   const reduced = Boolean(useReducedMotion());
+  const { isAuthed, loading: authLoading } = useAuthSession();
+  // Visa inloggad-CTA-set bara när vi vet säkert. Annars showar vi
+  // gäst-CTAs (säkrare default — ingen läcker session-info).
+  const authed = !authLoading && isAuthed;
 
   // Mjuk parallax — endast när användaren scrollar förbi intro.
   const { scrollYProgress } = useScroll({
@@ -138,34 +143,57 @@ export default function MagicalPitchHero() {
                 spelfaser, ett lag och en idé — så spelar vi fotboll i Gunnilse IS.
               </motion.p>
 
-              {/* CTAs */}
+              {/* CTAs — auth-aware: logged-in får action-länkar, ej-inloggad får login/signup */}
               <motion.div
                 initial={reduced ? undefined : { opacity: 0, y: 14 }}
                 animate={reduced ? undefined : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.95 }}
-                className="mt-9 flex flex-col gap-3 sm:flex-row"
+                className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
               >
                 <Link
                   to="/maj-2026"
                   className="group inline-flex h-12 items-center justify-center gap-2 bg-amber-400 px-7 text-sm font-black uppercase tracking-[0.12em] text-[#1a1108] transition hover:bg-amber-300"
                 >
+                  <PlayCircle className="h-4 w-4" strokeWidth={2.3} />
                   Så spelar vi
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.4} />
                 </Link>
-                <Link
-                  to="/login"
-                  className="inline-flex h-12 items-center justify-center gap-2 border border-amber-300/30 bg-amber-300/5 px-7 text-sm font-bold uppercase tracking-[0.12em] text-amber-100 backdrop-blur-sm transition hover:border-amber-300/70 hover:text-amber-300"
-                >
-                  <LogIn className="h-4 w-4" strokeWidth={2.3} />
-                  Logga in
-                </Link>
-                <Link
-                  to="/login?mode=signup"
-                  className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/70 transition hover:text-amber-200"
-                >
-                  <UserPlus className="h-3.5 w-3.5" strokeWidth={2.3} />
-                  Begär tillgång
-                </Link>
+
+                {authed ? (
+                  <>
+                    <Link
+                      to="/match/kommande"
+                      className="inline-flex h-12 items-center justify-center gap-2 border border-amber-300/30 bg-amber-300/5 px-6 text-sm font-bold uppercase tracking-[0.12em] text-amber-100 backdrop-blur-sm transition hover:border-amber-300/70 hover:text-amber-300"
+                    >
+                      <CalendarClock className="h-4 w-4" strokeWidth={2.3} />
+                      Veckans match
+                    </Link>
+                    <Link
+                      to="/maj-2026#filmbibliotek"
+                      className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/80 transition hover:text-amber-200"
+                    >
+                      <Film className="h-3.5 w-3.5" strokeWidth={2.3} />
+                      Filmbibliotek
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="inline-flex h-12 items-center justify-center gap-2 border border-amber-300/30 bg-amber-300/5 px-7 text-sm font-bold uppercase tracking-[0.12em] text-amber-100 backdrop-blur-sm transition hover:border-amber-300/70 hover:text-amber-300"
+                    >
+                      <LogIn className="h-4 w-4" strokeWidth={2.3} />
+                      Logga in
+                    </Link>
+                    <Link
+                      to="/login?mode=signup"
+                      className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/70 transition hover:text-amber-200"
+                    >
+                      <UserPlus className="h-3.5 w-3.5" strokeWidth={2.3} />
+                      Begär tillgång
+                    </Link>
+                  </>
+                )}
               </motion.div>
 
               {/* Liten footer-rad med spelfaserna som textchips */}
