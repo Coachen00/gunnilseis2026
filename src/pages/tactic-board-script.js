@@ -28,7 +28,8 @@
 
     const totalFrames = 10;
     const defaultPlayerSize = 34;
-    const frameDelayMs = 1500;
+    // Mutable: ändras via #frameDelay-slidern i Sekvens-panelen.
+    let frameDelayMs = 1500;
     const movableLineThresholdPx = 76;
     const legacyBoard = { width: 1100, height: 700 };
     const logicalBoard = { width: 100, height: 100 };
@@ -196,6 +197,7 @@
         updateToolSettingsLabels();
         updateToolOptionsVisibility();
         syncLayerCheckboxes();
+        initFrameDelaySlider();
         setZoom();
         updateAllToggleButtons();
         if ('ResizeObserver' in window) {
@@ -221,6 +223,19 @@
                    tränaren kan se flera samtidigt utan att tappa kontexten. */
             });
         });
+    }
+
+    function initFrameDelaySlider() {
+        const slider = document.getElementById('frameDelay');
+        const valueLabel = document.getElementById('frameDelayValue');
+        if (!slider) return;
+        const sync = () => {
+            const ms = Number(slider.value);
+            if (Number.isFinite(ms)) frameDelayMs = ms;
+            if (valueLabel) valueLabel.textContent = (frameDelayMs / 1000).toFixed(1) + 's';
+        };
+        slider.addEventListener('input', sync);
+        sync();
     }
 
     function buildSidebar() {
