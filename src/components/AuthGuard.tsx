@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Clock } from "lucide-react";
 import { useSession } from "@/hooks/useSession";
 import { useProfile } from "@/hooks/useProfile";
+import { getSharedAccessUser, subscribeSharedAccess } from "@/lib/sharedAccess";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -15,23 +16,35 @@ interface AuthGuardProps {
  * AuthGuard — kontrollerar att vi har en session och (frivilligt) en godkänd
  * profile innan vi visar `children`.
  *
- * Backas av useSession + useProfile (TanStack Query) så att flera AuthGuard
- * på samma sida delar cache och inte slår mot Supabase upprepade gånger.
+ * Två access-vägar:
+ *   1. Supabase-session (via useSession/useProfile, TanStack Query-backat).
+ *   2. Delad inlogg (sharedAccess) — lokal flagga som motsvarar
+ *      "team-wide" inlogg. Behövs så att hela truppen kan dela ett konto.
  */
 const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: AuthGuardProps) => {
   const { data: session, isLoading: sessionLoading } = useSession();
   const { data: profile, isLoading: profileLoading } = useProfile();
+  const [sharedAccess, setSharedAccess] = useState(() => Boolean(getSharedAccessUser()));
   const navigate = useNavigate();
 
-  // Hänvisa till login så fort vi vet att sessionen saknas.
+  // Synka shared access via storage-event + custom event.
+  useEffect(() => {
+    const refresh = () => setSharedAccess(Boolean(getSharedAccessUser()));
+    refresh();
+    const unsubscribe = subscribeSharedAccess(refresh);
+    return () => unsubscribe();
+  }, []);
+
+  // Hänvisa till login så fort vi vet att sessionen saknas OCH ingen shared access.
   useEffect(() => {
     if (sessionLoading) return;
+    if (sharedAccess) return;
     if (!session && requireAuth) {
       navigate("/login");
     }
-  }, [session, sessionLoading, requireAuth, navigate]);
+  }, [session, sessionLoading, requireAuth, navigate, sharedAccess]);
 
-  const checkingApproval = requireApproval && Boolean(session) && profileLoading;
+  const checkingApproval = requireApproval && Boolean(session) && profileLoading && !sharedAccess;
 
   if (sessionLoading || checkingApproval) {
     return (
@@ -45,6 +58,8 @@ const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: Aut
       </div>
     );
   }
+
+  if (sharedAccess) return <>{children}</>;
 
   if (!session) return requireAuth ? null : <>{children}</>;
 

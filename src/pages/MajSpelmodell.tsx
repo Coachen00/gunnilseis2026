@@ -18,6 +18,7 @@ import {
   Box,
   CornerDownLeft,
   Film,
+  Play,
   AlertTriangle,
   Activity,
   Wrench,
@@ -29,16 +30,24 @@ import {
   MAJ_2026_EFFECT_LOGIC,
   MAJ_2026_HERO,
   MAJ_2026_NAV_CARDS,
+  MAJ_2026_OVRIGT_MEDIA,
+  MAJ_2026_PRINCIPLE_MEDIA,
   MAJ_2026_QUICK_ACTIONS,
   type BlockColor,
   type MajBlock,
+  type MediaAsset,
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
-import BlockMediaGrid from "@/components/maj2026/BlockMediaGrid";
-import BlockFilterBar from "@/components/maj2026/BlockFilterBar";
+import FilmLibrary from "@/components/maj/FilmLibrary";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useSession } from "@/hooks/useSession";
-import { useProfile } from "@/hooks/useProfile";
+import { useIsAdmin } from "@/hooks/useIsAdmin";
+
+/** Renderar bara children om inloggad användare är admin. Tyst annars. */
+const AdminOnly = ({ children }: { children: React.ReactNode }) => {
+  const { isAdmin, loading } = useIsAdmin();
+  if (loading || !isAdmin) return null;
+  return <>{children}</>;
+};
 
 /* =========================================================================
    COLOR TOKENS — light palette (matchar sajtens default-tema)
@@ -92,24 +101,166 @@ const BLOCK_EYEBROW: Record<string, string> = {
    SHARED COMPONENTS
    ========================================================================= */
 
-function BlockHeroMedia({
-  label = "Ingen film upplagd ännu",
-  description,
-}: {
-  label?: string;
-  description?: string;
-}) {
-  // Block-level placeholder. Visas över BlockMediaGrid som en sammanfattning av
-  // hela blockets film-status. Spelarens första intryck — tydlig tom-text.
+function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 3 }) {
+  const uniqueItems = uniqueMediaItems(items);
+  if (uniqueItems.length === 0) return null;
+  const cols = columns === 3 ? "md:grid-cols-3" : "md:grid-cols-2";
+  return (
+    <div className={`grid grid-cols-1 gap-3 ${cols}`}>
+      {uniqueItems.map((item) => (
+        <figure
+          key={item.src}
+          className="overflow-hidden rounded-md border border-border bg-background"
+        >
+          <div className="bg-black">
+            {item.kind === "video" ? (
+              <DeferredVideo item={item} />
+            ) : (
+              <img
+                src={item.src}
+                alt={item.label}
+                loading="lazy"
+                className="max-h-72 w-full bg-black object-contain"
+              />
+            )}
+          </div>
+          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-foreground/85">
+            {item.label}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+function uniqueMediaItems(items: MediaAsset[]) {
+  const seen = new Set<string>();
+  return items.filter((item) => {
+    const key = mediaIdentityKey(item.src);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function mediaIdentityKey(src: string) {
+  const youtube = src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (youtube) return `youtube:${youtube[1]}`;
+  const vimeo = src.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `vimeo:${vimeo[1]}`;
+  return src.split("?")[0];
+}
+
+function DeferredVideo({ item }: { item: MediaAsset }) {
+  const [active, setActive] = useState(false);
+  const embedUrl = videoEmbedUrl(item.src);
+
+  if (embedUrl) {
+    return (
+      <iframe
+        src={embedUrl}
+        title={item.label}
+        className="aspect-video w-full bg-black"
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    );
+  }
+
+  if (active) {
+    return (
+      <video
+        src={item.src}
+        controls
+        autoPlay
+        preload="metadata"
+        playsInline
+        className="aspect-video w-full bg-black"
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setActive(true)}
+      className="group relative flex aspect-video w-full items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_center,hsl(var(--muted))_0%,#050505_78%)] text-left"
+      aria-label={`Spela film: ${item.label}`}
+    >
+      <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,194,66,0.16),transparent_42%,rgba(58,111,198,0.16))]" />
+      <span className="relative flex h-14 w-14 items-center justify-center rounded-full border border-white/30 bg-black/65 text-white shadow-lg transition-transform group-hover:scale-105">
+        <Play className="ml-0.5 h-6 w-6 fill-current" strokeWidth={1.8} />
+      </span>
+      <span className="absolute bottom-3 left-3 right-3 rounded bg-black/65 px-2 py-1 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-white/85">
+        Spela film
+      </span>
+    </button>
+  );
+}
+
+function videoEmbedUrl(url: string): string | null {
+  const youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (youtube) {
+    const params = new URLSearchParams({
+      rel: "0",
+      modestbranding: "1",
+      playsinline: "1",
+      iv_load_policy: "3",
+    });
+    return `https://www.youtube-nocookie.com/embed/${youtube[1]}?${params.toString()}`;
+  }
+
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}?dnt=1`;
+
+  return null;
+}
+
+function getBlockMedia(blockId: string): MediaAsset[] {
+  const principleGroups = Object.values(MAJ_2026_PRINCIPLE_MEDIA[blockId] ?? {});
+  const unique = new Map<string, MediaAsset>();
+  for (const items of principleGroups) {
+    for (const item of items) {
+      if (!unique.has(item.src)) unique.set(item.src, item);
+    }
+  }
+  return Array.from(unique.values());
+}
+
+function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
+  if (items.length === 0) return null;
+  return (
+    <div className="mb-8 border border-border bg-card p-4 md:p-5">
+      <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
+        <div className="flex items-center gap-2">
+          <Film className="h-4 w-4 text-amber-700" strokeWidth={2.1} />
+          <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">
+            Matchklipp i blocket
+          </h3>
+        </div>
+        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+          {items.length} filer
+        </p>
+      </div>
+      <MediaGrid items={items} columns={items.length >= 3 ? 3 : 2} />
+    </div>
+  );
+}
+
+function MediaSlot({ label = "Lägg in film eller bild här", description }: { label?: string; description?: string }) {
   return (
     <div
-      role="status"
+      role="img"
       aria-label={label}
-      className="flex w-full flex-col items-center justify-center gap-3 rounded-md border border-dashed border-border bg-muted/30 px-4 py-10 text-center"
+      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-border bg-card px-4 text-center"
     >
-      <Film className="h-6 w-6 text-foreground/35" strokeWidth={1.5} aria-hidden="true" />
-      <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-foreground/65">{label}</span>
-      {description && <p className="max-w-md text-xs leading-snug text-foreground/45">{description}</p>}
+      <div className="flex items-center gap-3 text-foreground/55">
+        <Film className="h-5 w-5" strokeWidth={1.6} />
+        <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em]">{label}</span>
+      </div>
+      {description && <p className="text-xs text-foreground/45">{description}</p>}
     </div>
   );
 }
@@ -540,9 +691,10 @@ function BlockVisual({ id }: { id: string }) {
    BLOCK SECTION
    ========================================================================= */
 
-function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; canEdit: boolean }) {
+function BlockSection({ block, num }: { block: MajBlock; num: string }) {
   const Icon = BLOCK_ICON[block.id] ?? Shield;
   const eyebrow = BLOCK_EYEBROW[block.id] ?? "";
+  const blockMedia = getBlockMedia(block.id);
   return (
     <AccordionItem
       value={block.id}
@@ -595,14 +747,14 @@ function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; c
 
       <AccordionContent className="overflow-hidden">
         <div className="container pb-16 pt-2 md:pb-20">
-          {/* 1. Kort förklaring + spelarinstruktion (stuckna högst upp så
-                 spelaren får principen direkt). */}
-          <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-            <p className="text-base leading-relaxed text-foreground/80 md:text-lg">
-              {block.kidExplanation}
-            </p>
-            <div className="border border-border bg-card p-5">
-              <div className="mb-3 flex items-center gap-2">
+          <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
+            {block.kidExplanation}
+          </p>
+
+          {/* Spelarinstruktion + Planvy */}
+          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+            <div className="border border-border bg-card p-6">
+              <div className="mb-4 flex items-center gap-2">
                 <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
                 <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-foreground/60">
                   Spelarinstruktion
@@ -610,29 +762,7 @@ function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; c
               </div>
               <p className="text-base font-bold leading-snug text-foreground/90">{block.playerInstruction}</p>
             </div>
-          </div>
 
-          {/* 2. FILMER — central, synlig direkt. Inga nested accordions.
-                 Spelaren ser videos eller "Ingen film upplagd ännu". */}
-          {block.principles.length > 0 && (
-            <section className="mb-10" aria-label={`Filmer för ${block.title}`}>
-              <div className="mb-3 flex items-center justify-between gap-3 px-1">
-                <div className="flex items-center gap-3">
-                  <Film className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} aria-hidden="true" />
-                  <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
-                    Filmer · {block.principles.length} principer
-                  </p>
-                </div>
-                <p className="hidden text-xs text-muted-foreground sm:inline">
-                  Tomma fält fylls av tränaren
-                </p>
-              </div>
-              <BlockMediaGrid blockId={block.id} principles={block.principles} accent={block.accent} />
-            </section>
-          )}
-
-          {/* 3. Taktisk planvy + tom-state för blockets samlade film */}
-          <div className="mb-10 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
             <div className="overflow-hidden border border-border bg-background">
               <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
                 <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
@@ -644,10 +774,15 @@ function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; c
               </div>
               <BlockVisual id={block.id} />
             </div>
-            <BlockHeroMedia label={block.mediaTitle} description={block.mediaDescription} />
           </div>
 
-          {/* 4. Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
+          {/* Media-placeholder */}
+          <div className="mb-8">
+            <BlockMediaOverview items={blockMedia} />
+            <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
+          </div>
+
+          {/* Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <DoColumn variant="do" title="Gör så här" items={block.doList} />
             <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
@@ -661,13 +796,13 @@ function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; c
             </div>
           )}
 
-          {/* 5. EDITOR — endast för godkända användare. Per-princip uppladdning. */}
-          {canEdit && block.principles.length > 0 && (
+          {/* Principer — nested rullgardiner, en per princip */}
+          {block.principles.length > 0 && (
             <div className="mt-10">
               <div className="mb-3 flex items-center gap-3 px-1">
                 <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
                 <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
-                  Redigera filmer · {block.principles.length} principer
+                  Principer · {block.principles.length}
                 </p>
               </div>
               <Accordion type="multiple" className="overflow-hidden rounded-md border border-border bg-card">
@@ -699,13 +834,29 @@ function BlockSection({ block, num, canEdit }: { block: MajBlock; num: string; c
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="border-t border-border bg-background px-4 pb-5 pt-4 md:px-5">
-                      <PrincipleMediaSlot
-                        blockId={block.id}
-                        principleId={p.id}
-                        principleLabel={p.label}
-                        oneLiner={p.oneLiner}
-                        hideHeader
-                      />
+                      {(() => {
+                        const staticItems = MAJ_2026_PRINCIPLE_MEDIA[block.id]?.[p.id] ?? [];
+                        return staticItems.length > 0 ? (
+                          <div className="mb-5 space-y-3">
+                            <div className="flex items-center gap-2">
+                              <Film className="h-3.5 w-3.5 text-foreground/55" strokeWidth={2} />
+                              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
+                                Filmer & bilder · {staticItems.length}
+                              </p>
+                            </div>
+                            <MediaGrid items={staticItems} />
+                          </div>
+                        ) : null;
+                      })()}
+                      <AdminOnly>
+                        <PrincipleMediaSlot
+                          blockId={block.id}
+                          principleId={p.id}
+                          principleLabel={p.label}
+                          oneLiner={p.oneLiner}
+                          hideHeader
+                        />
+                      </AdminOnly>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -967,15 +1118,14 @@ function useHashControlledAccordion() {
 
 const MajSpelmodell = () => {
   const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
-  const { data: session } = useSession();
-  const { data: profile } = useProfile();
-  const canEdit = Boolean(session) && profile?.approved === true;
 
   return (
   <div className="relative -mt-px bg-background text-foreground">
     <Hero />
+    <EffektlogikStrip />
     <SpelarenSnabbversion />
-    <BlockFilterBar />
+
+    <FilmLibrary />
 
     <Accordion
       type="multiple"
@@ -984,16 +1134,30 @@ const MajSpelmodell = () => {
       className="border-t border-border"
     >
       {MAJ_2026_BLOCKS.map((block, i) => (
-        <BlockSection
-          key={block.id}
-          block={block}
-          num={String(i + 1).padStart(2, "0")}
-          canEdit={canEdit}
-        />
+        <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
       ))}
     </Accordion>
 
-    <EffektlogikStrip />
+    {/* Övrigt — filmer/bilder utan koppling till specifik princip */}
+    {MAJ_2026_OVRIGT_MEDIA.length > 0 && (
+      <section id="ovrigt" className="scroll-mt-24 border-t border-border bg-muted/30 py-16 md:py-20">
+        <div className="container">
+          <div className="mb-3 flex items-center gap-3">
+            <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+            <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+              Övrigt
+            </p>
+          </div>
+          <h2 className="mb-4 max-w-3xl text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+            Filmer & bilder utan princip-koppling
+          </h2>
+          <p className="mb-10 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+            Material som inte hör till ett specifikt block eller en specifik princip — hero-takes, identifierande klipp och referensbilder. Sortera senare vid behov.
+          </p>
+          <MediaGrid items={MAJ_2026_OVRIGT_MEDIA} columns={3} />
+        </div>
+      </section>
+    )}
 
     {/* Closing strip */}
     <section className="border-t border-border bg-muted/40 py-16">

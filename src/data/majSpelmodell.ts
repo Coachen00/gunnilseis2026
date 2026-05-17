@@ -13,6 +13,19 @@ export interface PrincipleDef {
   oneLiner: string;
 }
 
+/**
+ * Statisk media-tile renderad på /maj-2026. Komplement till den
+ * Supabase-backade `PrincipleMediaSlot` (som är admin-editerbar).
+ * `src` är relativ från sajtens root — `public/` serveras på `/` — eller en extern URL.
+ */
+export type MediaKind = "video" | "image";
+
+export interface MediaAsset {
+  src: string;
+  label: string;
+  kind: MediaKind;
+}
+
 export interface MajBlock {
   id: string;
   number: string;
@@ -309,3 +322,79 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     ],
   },
 ];
+
+/* =========================================================================
+   MEDIA — filmer & bilder per princip
+   Källfiler i public/media/maj-2026/. Renderas ovanför admin-slotten.
+   ========================================================================= */
+
+const M = (file: string, label: string, kind: MediaKind = "video"): MediaAsset => ({
+  src: `/media/maj-2026/${file}`,
+  label,
+  kind,
+});
+
+const U = (url: string, label: string, kind: MediaKind = "video"): MediaAsset => ({
+  src: url,
+  label,
+  kind,
+});
+
+export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[]>> = {
+  forsvarsspel: {
+    medel: [
+      M("forsvar-tre-korridorer.mp4", "Försvar — tre korridorer"),
+      M("forsvar-trigger.mp4", "Försvar — trigger"),
+      M("def-mitt-ansvar.mp4", "Defensiv mitt — ansvar"),
+      M("forsvar-misslyckat.mp4", "Försvar — misslyckat"),
+      M("forsvar-avstand.png", "Försvar — avstånd", "image"),
+    ],
+  },
+  "overgang-anfall": {
+    kontring: [
+      U("https://youtu.be/v9GPU-jxFF4", "2:a bollsspel — start om anfall högt"),
+    ],
+  },
+  "overgang-forsvar": {
+    direkt: [
+      U("https://youtu.be/NBdI1FkHtiI", "Direkt bollåtererövring"),
+      U("https://youtu.be/ehAbno5VYdM", "Direkt bollåtererövring — leder till mål"),
+    ],
+  },
+  anfallsspel: {
+    "skydda-mot-kontring": [
+      M("anf-skydd-fem-korridorer.mp4", "Anfall — skydd + fem korridorer"),
+    ],
+    "spela-in": [
+      M("anf-passa-mellan-linjer-till-nasta-spelyta.mp4", "Anfall — passa mellan linjer till nästa spelyta"),
+      M("anf-mellan-tva-spelare-till-nasta-spelyta.mp4", "Anfall — mellan två spelare till nästa spelyta"),
+    ],
+    "spela-ut": [
+      M("anf-vandning-utnyttjar-inte-2-vs-1.mp4", "Anfall — vändning, utnyttjar inte 2 vs 1"),
+      M("anf-2-vs-1-ej-lyckat.png", "Anfall — 2 vs 1 ej lyckat", "image"),
+    ],
+    "ta-med-framat": [
+      M("assistytan-2-vs-1.png", "Assistytan — 2 vs 1", "image"),
+      M("anf-djupled.mp4", "Anfall — djupled"),
+      M("galvan-1-ej-assist.mp4", "Vi följer inte idén om assistytan — 1"),
+      M("galvan-2-ej-assistyta.mp4", "Vi följer inte idén om assistytan — 2"),
+    ],
+  },
+  identitet: {
+    duellspel: [
+      M("for-anf-vedad-duell-och-passning-mellan-linjer.mp4", "Vedad — duell och passning mellan linjer"),
+    ],
+    andrabollsspel: [
+      U("https://youtu.be/uESC24-VDLQ", "2:a bollsspel — exempel 1"),
+      M("forsv-2a-bollsspel.mp4", "Försvar — 2:a bollsspel"),
+      U("https://youtu.be/2YAQ5wXf_2M", "2:a bollsspel — ej lyckat"),
+      U("https://youtu.be/PSP_YpetKYc", "2:a bollsspel — var beredd på lång boll"),
+      M("2a-bollsspel-misslyckat.png", "2:a bollsspel — misslyckat", "image"),
+    ],
+    "vardigt-kroppssprak": [
+      M("identitet-vardigt-kroppssprak.mp4", "Identitet — värdigt kroppsspråk"),
+    ],
+  },
+};
+
+export const MAJ_2026_OVRIGT_MEDIA: MediaAsset[] = [];

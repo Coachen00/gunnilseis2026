@@ -28,8 +28,12 @@
 
     const totalFrames = 10;
     const defaultPlayerSize = 34;
-    const frameDelayMs = 1500;
+    // Mutable: ändras via #frameDelay-slidern i Sekvens-panelen.
+    let frameDelayMs = 1500;
     const movableLineThresholdPx = 76;
+    const legacyBoard = { width: 1100, height: 700 };
+    const logicalBoard = { width: 100, height: 100 };
+    const boardBounds = { x: 8, y: 14, width: 84, height: 72 };
     const formationOrder = ['4-4-2', '4-3-3', '4-2-3-1', '4-1-4-1', '4-3-1-2', '4-4-1-1', '3-5-2', '3-4-3', '3-4-2-1', '3-4-1-2', '5-3-2', '5-4-1'];
     const layerIds = ['layer-korridorer', 'layer-golden', 'layer-spelytor', 'layer-assistv', 'layer-straffzoner'];
     const zoomPresets = {
@@ -47,7 +51,7 @@
         'corner-br': { originX: 100, originY: 100 }
     };
 
-    const formations = {
+    const legacyFormations = {
         '4-4-2': [{x: 70, y: 350}, {x: 220, y: 90}, {x: 220, y: 240}, {x: 220, y: 460}, {x: 220, y: 610}, {x: 430, y: 90}, {x: 430, y: 240}, {x: 430, y: 460}, {x: 430, y: 610}, {x: 790, y: 260}, {x: 790, y: 440}],
         '4-3-3': [{x: 70, y: 350}, {x: 220, y: 90}, {x: 220, y: 240}, {x: 220, y: 460}, {x: 220, y: 610}, {x: 450, y: 180}, {x: 450, y: 350}, {x: 450, y: 520}, {x: 800, y: 110}, {x: 820, y: 350}, {x: 800, y: 590}],
         '4-2-3-1': [{x: 70, y: 350}, {x: 220, y: 90}, {x: 220, y: 240}, {x: 220, y: 460}, {x: 220, y: 610}, {x: 420, y: 250}, {x: 420, y: 450}, {x: 630, y: 110}, {x: 630, y: 350}, {x: 630, y: 590}, {x: 830, y: 350}],
@@ -61,6 +65,16 @@
         '5-3-2': [{x: 70, y: 350}, {x: 210, y: 70}, {x: 220, y: 190}, {x: 210, y: 350}, {x: 220, y: 510}, {x: 210, y: 630}, {x: 470, y: 220}, {x: 490, y: 350}, {x: 470, y: 480}, {x: 790, y: 260}, {x: 790, y: 440}],
         '5-4-1': [{x: 70, y: 350}, {x: 210, y: 70}, {x: 220, y: 190}, {x: 210, y: 350}, {x: 220, y: 510}, {x: 210, y: 630}, {x: 470, y: 90}, {x: 470, y: 240}, {x: 470, y: 460}, {x: 470, y: 610}, {x: 830, y: 350}]
     };
+
+    const formations = Object.fromEntries(
+        Object.entries(legacyFormations).map(([name, coords]) => [
+            name,
+            coords.map((coord) => ({
+                x: legacyXToLogical(coord.x),
+                y: legacyYToLogical(coord.y)
+            }))
+        ])
+    );
 
     let drawingActive = false;
     let isDrawing = false;
@@ -85,8 +99,96 @@
     let itemCounter = 1;
     let lastFormation = { home: '4-4-2', away: '4-4-2' };
     let benchMemory = { home: null, away: null };
+    let pitchResizeObserver = null;
+
+    function legacyXToLogical(value) {
+        return (Number(value) / legacyBoard.width) * logicalBoard.width;
+    }
+
+    function legacyYToLogical(value) {
+        return (Number(value) / legacyBoard.height) * logicalBoard.height;
+    }
+
+    function parsePositionValue(value) {
+        if (typeof value === 'number') return value;
+        if (typeof value !== 'string') return 0;
+        return parseFloat(value.replace('%', '').replace('px', '')) || 0;
+    }
+
+    function isLegacyPositionValue(value) {
+        if (typeof value === 'string' && value.trim().endsWith('px')) return true;
+        const numeric = parsePositionValue(value);
+        return Math.abs(numeric) > 130;
+    }
+
+    function normalizeLogicalX(value) {
+        const numeric = parsePositionValue(value);
+        return isLegacyPositionValue(value) ? legacyXToLogical(numeric) : numeric;
+    }
+
+    function normalizeLogicalY(value) {
+        const numeric = parsePositionValue(value);
+        return isLegacyPositionValue(value) ? legacyYToLogical(numeric) : numeric;
+    }
+
+    function getPitchRect() {
+        const rect = pitch.getBoundingClientRect();
+        return {
+            width: rect.width || legacyBoard.width,
+            height: rect.height || legacyBoard.height,
+            left: rect.left || 0,
+            top: rect.top || 0
+        };
+    }
+
+    function toLogicalX(px) {
+        return (px / Math.max(getPitchRect().width, 1)) * logicalBoard.width;
+    }
+
+    function toLogicalY(px) {
+        return (px / Math.max(getPitchRect().height, 1)) * logicalBoard.height;
+    }
+
+    function toLogicalDistance(px) {
+        return (toLogicalX(px) + toLogicalY(px)) / 2;
+    }
+
+    function syncCanvasToPitch(canvasElement, context) {
+        const rect = getPitchRect();
+        const dpr = window.devicePixelRatio || 1;
+        const nextWidth = Math.max(1, Math.round(rect.width * dpr));
+        const nextHeight = Math.max(1, Math.round(rect.height * dpr));
+
+        if (canvasElement.width !== nextWidth) canvasElement.width = nextWidth;
+        if (canvasElement.height !== nextHeight) canvasElement.height = nextHeight;
+        canvasElement.style.width = '100%';
+        canvasElement.style.height = '100%';
+        context.setTransform(nextWidth / logicalBoard.width, 0, 0, nextHeight / logicalBoard.height, 0, 0);
+    }
+
+    function syncCanvasesToPitch() {
+        syncCanvasToPitch(canvas, ctx);
+        syncCanvasToPitch(attachedCanvas, aCtx);
+        syncCanvasToPitch(tempCanvas, tCtx);
+    }
+
+    function clearLogicalCanvas(context, canvasElement) {
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.clearRect(0, 0, canvasElement.width, canvasElement.height);
+        syncCanvasToPitch(canvasElement, context);
+    }
+
+    function clearTempCanvas() {
+        clearLogicalCanvas(tCtx, tempCanvas);
+    }
+
+    function clampLogicalPosition(value) {
+        return Math.max(-18, Math.min(118, value));
+    }
 
     function init() {
+        syncCanvasesToPitch();
+        initToolbarPanels();
         buildSidebar();
         createInitialPieces();
         initTimeline();
@@ -95,9 +197,45 @@
         updateToolSettingsLabels();
         updateToolOptionsVisibility();
         syncLayerCheckboxes();
+        initFrameDelaySlider();
         setZoom();
         updateAllToggleButtons();
+        if ('ResizeObserver' in window) {
+            pitchResizeObserver = new ResizeObserver(() => {
+                syncCanvasesToPitch();
+                renderAllDrawings();
+                renderLinks();
+            });
+            pitchResizeObserver.observe(pitch);
+        }
         tacticBoardAnimationFrameId = requestAnimationFrame(renderDynamics);
+    }
+
+    function initToolbarPanels() {
+        // Stöder både legacy .toolbar-panel och nya .tactic-panel (vertikal).
+        // Med ny vertikal layout vill vi tillåta flera öppna samtidigt — varje
+        // panel är dess egen rullgardin. Men vi behåller toggle-eventet ifall
+        // någon vill bygga på framöver.
+        const selector = '.tactic-panel, .toolbar-panel';
+        document.querySelectorAll(selector).forEach((panel) => {
+            panel.addEventListener('toggle', () => {
+                /* No-op idag: rullgardinerna är oberoende av varandra så
+                   tränaren kan se flera samtidigt utan att tappa kontexten. */
+            });
+        });
+    }
+
+    function initFrameDelaySlider() {
+        const slider = document.getElementById('frameDelay');
+        const valueLabel = document.getElementById('frameDelayValue');
+        if (!slider) return;
+        const sync = () => {
+            const ms = Number(slider.value);
+            if (Number.isFinite(ms)) frameDelayMs = ms;
+            if (valueLabel) valueLabel.textContent = (frameDelayMs / 1000).toFixed(1) + 's';
+        };
+        slider.addEventListener('input', sync);
+        sync();
     }
 
     function buildSidebar() {
@@ -157,15 +295,16 @@
         return button;
     }
 
-    function createPiece(type, num, x, y, id) {
+    function createPiece(type, num, x, y, id, coordinateMode = 'legacy') {
         const piece = document.createElement('div');
         const isPlayer = type === 'home' || type === 'away';
         piece.className = `piece ${type}${isPlayer ? ' player-piece' : ''}`;
         piece.id = id;
         piece.dataset.kind = type;
         piece.dataset.num = num;
-        piece.style.left = `${x}px`;
-        piece.style.top = `${y}px`;
+        const logicalX = coordinateMode === 'logical' ? normalizeLogicalX(x) : legacyXToLogical(x);
+        const logicalY = coordinateMode === 'logical' ? normalizeLogicalY(y) : legacyYToLogical(y);
+        setPieceCenter(piece, logicalX, logicalY);
 
         if (isPlayer) {
             piece.innerHTML = `${num}<span class="name" onclick="event.stopPropagation(); changeName(this, '${id}')">Namn</span>`;
@@ -182,34 +321,39 @@
         const style = window.getComputedStyle(piece);
         const width = parseFloat(style.width) || piece.offsetWidth || defaultPlayerSize;
         const height = parseFloat(style.height) || piece.offsetHeight || defaultPlayerSize;
-        const left = parseFloat(piece.style.left) || 0;
-        const top = parseFloat(piece.style.top) || 0;
+        const centerX = normalizeLogicalX(piece.dataset.x || piece.style.left);
+        const centerY = normalizeLogicalY(piece.dataset.y || piece.style.top);
+        const widthLogical = toLogicalX(width);
+        const heightLogical = toLogicalY(height);
         return {
-            left,
-            top,
-            width,
-            height,
-            centerX: left + (width / 2),
-            centerY: top + (height / 2)
+            left: centerX - (widthLogical / 2),
+            top: centerY - (heightLogical / 2),
+            width: widthLogical,
+            height: heightLogical,
+            centerX,
+            centerY
         };
     }
 
     function setPieceCenter(piece, centerX, centerY) {
-        const box = getPieceMetrics(piece);
-        piece.style.left = `${centerX - (box.width / 2)}px`;
-        piece.style.top = `${centerY - (box.height / 2)}px`;
+        const nextX = clampLogicalPosition(Number(centerX));
+        const nextY = clampLogicalPosition(Number(centerY));
+        piece.dataset.x = `${nextX}`;
+        piece.dataset.y = `${nextY}`;
+        piece.style.left = `${nextX}%`;
+        piece.style.top = `${nextY}%`;
     }
 
     function isPieceBenched(piece) {
         const box = getPieceMetrics(piece);
-        return box.centerY < 0 || box.centerY > pitch.clientHeight;
+        return box.centerY < 0 || box.centerY > logicalBoard.height;
     }
 
     function getMousePos(event) {
         const rect = pitch.getBoundingClientRect();
         return {
-            x: (event.clientX - rect.left) / currentScale,
-            y: (event.clientY - rect.top) / currentScale
+            x: ((event.clientX - rect.left) / Math.max(rect.width, 1)) * logicalBoard.width,
+            y: ((event.clientY - rect.top) / Math.max(rect.height, 1)) * logicalBoard.height
         };
     }
 
@@ -250,12 +394,11 @@
         if (!piece) return;
         const onField = !isPieceBenched(piece);
         if (onField) {
-            piece.dataset.lastFieldLeft = piece.style.left;
-            piece.dataset.lastFieldTop = piece.style.top;
+            piece.dataset.lastFieldX = piece.dataset.x || piece.style.left;
+            piece.dataset.lastFieldY = piece.dataset.y || piece.style.top;
             movePieceToBench(piece, 'home', Number(id.split('-')[1]));
-        } else if (piece.dataset.lastFieldLeft && piece.dataset.lastFieldTop) {
-            piece.style.left = piece.dataset.lastFieldLeft;
-            piece.style.top = piece.dataset.lastFieldTop;
+        } else if (piece.dataset.lastFieldX && piece.dataset.lastFieldY) {
+            setPieceCenter(piece, normalizeLogicalX(piece.dataset.lastFieldX), normalizeLogicalY(piece.dataset.lastFieldY));
         } else {
             applyFormation('home', lastFormation.home);
             return;
@@ -264,15 +407,14 @@
     }
 
     function movePieceToBench(piece, team, index) {
-        const box = getPieceMetrics(piece);
-        const benchTop = -(box.height + 14);
-        const benchBottom = pitch.clientHeight + 14;
-        piece.style.left = `${40 + (index * (box.width + 10))}px`;
-        piece.style.top = `${team === 'home' ? benchTop : benchBottom}px`;
+        const benchTop = -7;
+        const benchBottom = 107;
+        setPieceCenter(piece, 4.5 + (index * 4.8), team === 'home' ? benchTop : benchBottom);
     }
 
     function serializePiecePosition(piece) {
-        return { id: piece.id, x: piece.style.left, y: piece.style.top };
+        const box = getPieceMetrics(piece);
+        return { id: piece.id, x: box.centerX, y: box.centerY };
     }
 
     function setTeamAvailability(team, shouldBeOnField) {
@@ -284,8 +426,7 @@
                 pieces.forEach((piece) => {
                     const saved = positionMap.get(piece.id);
                     if (saved) {
-                        piece.style.left = saved.x;
-                        piece.style.top = saved.y;
+                        setPieceCenter(piece, normalizeLogicalX(saved.x), normalizeLogicalY(saved.y));
                     }
                 });
             } else {
@@ -303,18 +444,16 @@
         setTeamAvailability('home', false);
         setTeamAvailability('away', false);
         document.querySelectorAll('.ball').forEach((ball, index) => {
-            const box = getPieceMetrics(ball);
-            ball.style.left = `${540 + (index * 30)}px`;
-            ball.style.top = `${-(box.height + 14)}px`;
+            setPieceCenter(ball, 49 + (index * 2.8), -7);
         });
     }
 
     function addBall() {
-        createPiece('ball', '', 540 + (Math.random() * 50), 340 + (Math.random() * 50), `ball-${itemCounter++}`);
+        createPiece('ball', '', 49 + (Math.random() * 4), 48 + (Math.random() * 5), `ball-${itemCounter++}`, 'logical');
     }
 
     function addCone() {
-        createPiece('cone', '', 450 + (Math.random() * 200), 20, `cone-${itemCounter++}`);
+        createPiece('cone', '', 41 + (Math.random() * 18), 3, `cone-${itemCounter++}`, 'logical');
     }
 
     function setPlayerSize(value) {
@@ -372,8 +511,8 @@
         players.forEach((piece, index) => {
             const coord = coords[index];
             if (!coord) return;
-            const centerX = team === 'home' ? coord.x : pitch.clientWidth - coord.x;
-            const centerY = team === 'home' ? coord.y : pitch.clientHeight - coord.y;
+            const centerX = team === 'home' ? coord.x : logicalBoard.width - coord.x;
+            const centerY = team === 'home' ? coord.y : logicalBoard.height - coord.y;
             setPieceCenter(piece, centerX, centerY);
         });
 
@@ -466,7 +605,7 @@
             startY = box.centerY;
             lastX = startX;
             lastY = startY;
-            tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+            clearTempCanvas();
             event.preventDefault();
             return;
         }
@@ -489,8 +628,8 @@
         activeItem.style.transition = 'none';
         const pos = getMousePos(event);
         const box = getPieceMetrics(activeItem);
-        dragOffsetX = pos.x - box.left;
-        dragOffsetY = pos.y - box.top;
+        dragOffsetX = pos.x - box.centerX;
+        dragOffsetY = pos.y - box.centerY;
         document.onmousemove = moveDrag;
         document.onmouseup = stopDrag;
     }
@@ -498,8 +637,7 @@
     function moveDrag(event) {
         if (!activeItem) return;
         const pos = getMousePos(event);
-        activeItem.style.left = `${pos.x - dragOffsetX}px`;
-        activeItem.style.top = `${pos.y - dragOffsetY}px`;
+        setPieceCenter(activeItem, pos.x - dragOffsetX, pos.y - dragOffsetY);
     }
 
     function stopDrag() {
@@ -545,7 +683,7 @@
         const sinAngle = Math.sin(curveAngle);
         const nx = (baseNx * cosAngle) - ((dx / distance) * sinAngle);
         const ny = (baseNy * cosAngle) - ((dy / distance) * sinAngle);
-        const offset = Math.min(260, distance * sharpnessFactor);
+        const offset = Math.min(toLogicalDistance(260), distance * sharpnessFactor);
         return {
             cx: ((x1 + x2) / 2) + (nx * offset),
             cy: ((y1 + y2) / 2) + (ny * offset)
@@ -560,15 +698,16 @@
         const uy = dy / length;
         const px = -uy;
         const py = ux;
-        const steps = Math.max(12, Math.round(length / 10));
-        const oscillations = Math.max(2, Math.round(length / 70));
+        const steps = Math.max(12, Math.round(length / Math.max(toLogicalDistance(10), 0.6)));
+        const oscillations = Math.max(2, Math.round(length / Math.max(toLogicalDistance(70), 2)));
         const points = [];
+        const waveOffset = toLogicalDistance(8);
 
         for (let i = 0; i <= steps; i++) {
             const t = i / steps;
             const baseX = x1 + (dx * t);
             const baseY = y1 + (dy * t);
-            const offset = Math.sin(t * Math.PI * oscillations * 2) * 8;
+            const offset = Math.sin(t * Math.PI * oscillations * 2) * waveOffset;
             points.push({
                 x: baseX + (px * offset),
                 y: baseY + (py * offset)
@@ -578,35 +717,39 @@
     }
 
     function drawArrowHead(context, x, y, angle, color) {
+        const arrowLength = toLogicalDistance(15);
+        const arrowWidth = toLogicalDistance(7);
         context.save();
         context.fillStyle = color;
         context.translate(x, y);
         context.rotate(angle);
         context.beginPath();
         context.moveTo(0, 0);
-        context.lineTo(-15, 7);
-        context.lineTo(-15, -7);
+        context.lineTo(-arrowLength, arrowWidth);
+        context.lineTo(-arrowLength, -arrowWidth);
         context.closePath();
         context.fill();
         context.restore();
     }
 
     function getTextMetrics(text, fontSize) {
+        const logicalFontSize = toLogicalY(fontSize);
         ctx.save();
-        ctx.font = `700 ${fontSize}px "Segoe UI", sans-serif`;
+        ctx.font = `700 ${logicalFontSize}px "Segoe UI", sans-serif`;
         const textWidth = ctx.measureText(text).width;
         ctx.restore();
         return {
             width: textWidth,
-            height: fontSize
+            height: logicalFontSize
         };
     }
 
     function drawTextLabel(context, x, y, text, color, fontSize) {
+        const logicalFontSize = toLogicalY(fontSize);
         context.save();
-        context.font = `700 ${fontSize}px "Segoe UI", sans-serif`;
+        context.font = `700 ${logicalFontSize}px "Segoe UI", sans-serif`;
         context.textBaseline = 'top';
-        context.lineWidth = Math.max(2, fontSize / 6);
+        context.lineWidth = Math.max(toLogicalDistance(2), logicalFontSize / 6);
         context.strokeStyle = 'rgba(0, 0, 0, 0.78)';
         context.fillStyle = color;
         context.strokeText(text, x, y);
@@ -618,10 +761,10 @@
         context.save();
         context.beginPath();
         context.strokeStyle = color;
-        context.lineWidth = 3;
+        context.lineWidth = toLogicalDistance(3);
         context.lineCap = 'round';
         context.lineJoin = 'round';
-        context.setLineDash((mode === 'dashed' || mode === 'curve-dashed') ? [12, 10] : []);
+        context.setLineDash((mode === 'dashed' || mode === 'curve-dashed') ? [toLogicalDistance(12), toLogicalDistance(10)] : []);
 
         let arrowAngle = null;
 
@@ -680,7 +823,7 @@
             context.lineTo(points[i].x, points[i].y);
         }
         context.strokeStyle = color;
-        context.lineWidth = 3;
+        context.lineWidth = toLogicalDistance(3);
         context.lineCap = 'round';
         context.lineJoin = 'round';
         context.setLineDash([]);
@@ -694,7 +837,7 @@
     }
 
     function drawFreehandPreview(color, fillColor, fill) {
-        tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        clearTempCanvas();
         drawFreehand(tCtx, currentFreehandPoints, color, fillColor, fill);
     }
 
@@ -728,7 +871,7 @@
         if (!drawing || drawing.attachedTo) return false;
         if (drawing.mode === 'text' || drawing.mode === 'rect' || drawing.mode === 'triangle') return true;
         if (drawing.mode === 'line' || drawing.mode === 'dashed' || drawing.mode === 'curve' || drawing.mode === 'curve-dashed' || drawing.mode === 'wave') {
-            return !!drawing.arrow || getDrawingLength(getDrawingGeometry(drawing)) >= movableLineThresholdPx;
+            return !!drawing.arrow || getDrawingLength(getDrawingGeometry(drawing)) >= toLogicalDistance(movableLineThresholdPx);
         }
         return false;
     }
@@ -736,7 +879,7 @@
     function drawingContainsPoint(drawing, point) {
         const geometry = getDrawingGeometry(drawing);
         if (!geometry) return false;
-        const radius = 12;
+        const radius = toLogicalDistance(12);
 
         if (drawing.mode === 'line' || drawing.mode === 'dashed') {
             return distancePointToSegment(point.x, point.y, geometry.x1, geometry.y1, geometry.x2, geometry.y2) <= radius;
@@ -765,7 +908,8 @@
             const right = Math.max(geometry.x1, geometry.x2);
             const top = Math.min(geometry.y1, geometry.y2);
             const bottom = Math.max(geometry.y1, geometry.y2);
-            return point.x >= left - 8 && point.x <= right + 8 && point.y >= top - 8 && point.y <= bottom + 8;
+            const margin = toLogicalDistance(8);
+            return point.x >= left - margin && point.x <= right + margin && point.y >= top - margin && point.y <= bottom + margin;
         }
 
         if (drawing.mode === 'triangle') {
@@ -779,11 +923,14 @@
 
         if (drawing.mode === 'text') {
             const metrics = getTextMetrics(drawing.text || 'Text', drawing.fontSize || 24);
+            const marginX = toLogicalX(8);
+            const marginTop = toLogicalY(6);
+            const marginBottom = toLogicalY(8);
             return (
-                point.x >= geometry.x1 - 8 &&
-                point.x <= geometry.x1 + metrics.width + 8 &&
-                point.y >= geometry.y1 - 6 &&
-                point.y <= geometry.y1 + metrics.height + 8
+                point.x >= geometry.x1 - marginX &&
+                point.x <= geometry.x1 + metrics.width + marginX &&
+                point.y >= geometry.y1 - marginTop &&
+                point.y <= geometry.y1 + metrics.height + marginBottom
             );
         }
 
@@ -838,8 +985,9 @@
     }
 
     function renderAllDrawings() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        aCtx.clearRect(0, 0, attachedCanvas.width, attachedCanvas.height);
+        syncCanvasesToPitch();
+        clearLogicalCanvas(ctx, canvas);
+        clearLogicalCanvas(aCtx, attachedCanvas);
 
         drawings.forEach((drawing) => {
             if (drawing.mode === 'free') {
@@ -874,7 +1022,7 @@
             if (!first || !second) return;
             const box1 = getPieceMetrics(first);
             const box2 = getPieceMetrics(second);
-            svgContent += `<line x1="${box1.centerX}" y1="${box1.centerY}" x2="${box2.centerX}" y2="${box2.centerY}" stroke="white" stroke-width="3" stroke-dasharray="5,5" />`;
+            svgContent += `<line x1="${box1.centerX}" y1="${box1.centerY}" x2="${box2.centerX}" y2="${box2.centerY}" stroke="white" stroke-width="${toLogicalDistance(3)}" stroke-dasharray="${toLogicalDistance(5)},${toLogicalDistance(5)}" />`;
         });
         svgLinks.innerHTML = svgContent;
     }
@@ -986,11 +1134,14 @@
 
         if (drawing.mode === 'text') {
             const metrics = getTextMetrics(drawing.text || 'Text', drawing.fontSize || 24);
+            const marginX = toLogicalX(8);
+            const marginTop = toLogicalY(6);
+            const marginBottom = toLogicalY(8);
             return eraserPoints.some((point) =>
-                point.x >= geometry.x1 - 8 &&
-                point.x <= geometry.x1 + metrics.width + 8 &&
-                point.y >= geometry.y1 - 6 &&
-                point.y <= geometry.y1 + metrics.height + 8
+                point.x >= geometry.x1 - marginX &&
+                point.x <= geometry.x1 + metrics.width + marginX &&
+                point.y >= geometry.y1 - marginTop &&
+                point.y <= geometry.y1 + metrics.height + marginBottom
             );
         }
 
@@ -999,7 +1150,7 @@
 
     function eraseDrawingsAlongPath(x1, y1, x2, y2) {
         const eraserPoints = getEraserCheckPoints(x1, y1, x2, y2);
-        const radius = 18;
+        const radius = toLogicalDistance(18);
         drawings = drawings.filter((drawing) => !drawingIntersectsEraser(drawing, eraserPoints, radius));
         renderAllDrawings();
     }
@@ -1008,12 +1159,13 @@
         return {
             pieces: Array.from(document.querySelectorAll('.piece')).map((piece) => {
                 const nameEl = piece.querySelector('.name');
+                const box = getPieceMetrics(piece);
                 return {
                     id: piece.id,
                     kind: piece.dataset.kind,
                     num: piece.dataset.num,
-                    x: piece.style.left,
-                    y: piece.style.top,
+                    x: box.centerX,
+                    y: box.centerY,
                     name: nameEl ? nameEl.innerText : ''
                 };
             }),
@@ -1044,12 +1196,13 @@
 
         pieceState.forEach((entry) => {
             let piece = document.getElementById(entry.id);
+            const centerX = normalizeLogicalX(entry.x);
+            const centerY = normalizeLogicalY(entry.y);
             if (!piece) {
-                piece = createPiece(entry.kind, entry.num, parseFloat(entry.x), parseFloat(entry.y), entry.id);
+                piece = createPiece(entry.kind, entry.num, centerX, centerY, entry.id, 'logical');
             }
 
-            piece.style.left = entry.x;
-            piece.style.top = entry.y;
+            setPieceCenter(piece, centerX, centerY);
 
             const nameEl = piece.querySelector('.name');
             if (nameEl) nameEl.innerText = entry.name || 'Namn';
@@ -1113,7 +1266,7 @@
         activeDrawingIndex = -1;
         activeDrawingStart = null;
         activeDrawingSnapshot = null;
-        tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        clearTempCanvas();
         renderAllDrawings();
     }
 
@@ -1190,7 +1343,7 @@
             return;
         }
 
-        tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        clearTempCanvas();
         let shapeStartX = startX;
         let shapeStartY = startY;
 
@@ -1226,7 +1379,7 @@
 
         if (mode === 'eraser') {
             drawingAttachedTo = null;
-            tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+            clearTempCanvas();
             return;
         }
 
@@ -1259,7 +1412,7 @@
                 }
             }
             drawingAttachedTo = null;
-            tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+            clearTempCanvas();
             return;
         }
 
@@ -1275,7 +1428,7 @@
                 });
             }
             currentFreehandPoints = [];
-            tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+            clearTempCanvas();
             return;
         }
 
@@ -1288,7 +1441,7 @@
                 text: textSettings.text,
                 fontSize: textSettings.fontSize
             });
-            tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+            clearTempCanvas();
             return;
         }
 
@@ -1304,7 +1457,7 @@
             arrow,
             ...curveSettings
         });
-        tCtx.clearRect(0, 0, tempCanvas.width, tempCanvas.height);
+        clearTempCanvas();
     });
 
     document.addEventListener('click', (event) => {
@@ -1321,6 +1474,11 @@
         if (tacticBoardAnimationFrameId !== null) {
             cancelAnimationFrame(tacticBoardAnimationFrameId);
             tacticBoardAnimationFrameId = null;
+        }
+
+        if (pitchResizeObserver) {
+            pitchResizeObserver.disconnect();
+            pitchResizeObserver = null;
         }
 
         tacticBoardListeners.forEach(({ target, type, listener, options }) => {
@@ -1348,6 +1506,8 @@
   window.setPieceCenter = setPieceCenter;
   window.isPieceBenched = isPieceBenched;
   window.getMousePos = getMousePos;
+  window.__TACTICS_BOARD_BOUNDS = boardBounds;
+  window.syncCanvasesToPitch = syncCanvasesToPitch;
   window.updateSidebarName = updateSidebarName;
   window.changeName = changeName;
   window.updatePlayerToggleButton = updatePlayerToggleButton;

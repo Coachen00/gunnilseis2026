@@ -1,7 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad inför Kareby (fre 8 maj 19:00, borta · Kareby Hed).
- * Förra match: KF Velebit (lör 2 maj, hemma · 1–0). Reflektioner i `forraMatch.ts`.
+ * Senast uppdaterad 2026-05-17 inför IF Vardar/Makedonija
+ * (borta · Generatorsplan · fredag 22 maj 19:15).
+ * Förra match: IFK Björkö (hemma · 2026-05-16).
  */
 
 export type MatchMeta = {
@@ -35,34 +36,105 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Kareby IS",
-  venue: "Kareby Hed",
+  opponent: "IF Vardar/Makedonija",
+  venue: "Generatorsplan",
   home: false,
-  kickoff: "Fre 8 maj · 19:00",
-  competition: "Borta · Division 4A Herr",
+  kickoff: "Fre 22 maj · 19:15",
+  competition: "Division 4A Herr",
   weather: "",
   absent: [],
 };
 
-export const FOCUS: string[] = [
-  "Princip 1 — Skydda mot kontring först. Balans bakom bollen alltid.",
-  "Princip 2/3 — Spela in i halvyta. När det är trångt: vänd och spela in på nya sidan.",
-  "Princip 5 — Fyll på minst 4 av oss i/runt boxen vid varje inlägg.",
+/* Matchdagsschema — visas i hero och i praktisk-info-block. */
+export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
+  { time: "17:45", label: "Samling", note: "Generatorsplan" },
+  { time: "Före avresa/uppvärmning", label: "Genomgång" },
+  { time: "18:35 – 19:05", label: "Aktivering" },
+  { time: "19:05 – 19:12", label: "Ner + sista instruktion" },
+  { time: "19:12", label: "Upp + sista löpningar" },
+  { time: "19:15", label: "Avspark" },
 ];
 
-export const FORMATION: FormationSlot[] = [
-  { id: "gk", n: 1, name: "1", label: "MV", x: 50, y: 8 },
-  { id: "lb", n: 2, name: "2", label: "VB", x: 14, y: 28 },
-  { id: "lcb", n: 3, name: "3", label: "VMB", x: 36, y: 23 },
-  { id: "rcb", n: 4, name: "4", label: "HMB", x: 64, y: 23 },
-  { id: "rb", n: 5, name: "5", label: "HB", x: 86, y: 28 },
-  { id: "ldm", n: 6, name: "6", label: "DM", x: 38, y: 48 },
-  { id: "rdm", n: 8, name: "8", label: "DM", x: 62, y: 48 },
-  { id: "am", n: 10, name: "10", label: "AM", x: 50, y: 63 },
-  { id: "lw", n: 11, name: "11", label: "VY", x: 16, y: 82 },
-  { id: "st", n: 9, name: "9", label: "FW", x: 50, y: 86 },
-  { id: "rw", n: 7, name: "7", label: "HY", x: 84, y: 82 },
+/* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
+export type PlanCard = {
+  id: string;
+  eyebrow: string;
+  title: string;
+  bullets: string[];
+  accent: "red" | "blue" | "amber" | "green";
+};
+
+export const MATCH_PLAN_SHORT: PlanCard[] = [
+  {
+    id: "forsvar",
+    eyebrow: "Utan boll",
+    title: "Så försvarar vi",
+    accent: "red",
+    bullets: [
+      "Stäng mitten först — särskilt borta när de vill spela igång rytmen.",
+      "YB på YB. Lås bollsida och stoppa spelvändning.",
+      "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
+    ],
+  },
+  {
+    id: "anfall",
+    eyebrow: "Med boll",
+    title: "Så anfaller vi",
+    accent: "blue",
+    bullets: [
+      "Skydda kontring — 6:an står, MB håller avstånd.",
+      "Spela in centralt → ut → ta med framåt.",
+      "Fyll boxen vid inlägg: 9 straffp, motsatt ytter bortre, 8 första, 10 cutback.",
+    ],
+  },
+  {
+    id: "omstallning",
+    eyebrow: "I sekunden",
+    title: "Så ställer vi om",
+    accent: "amber",
+    bullets: [
+      "Bollvinst: första tanken framåt — diagonal eller djup.",
+      "Bolltapp: närmaste pressar inom 1 sekund — jakten startar direkt.",
+      "Forwarden styr första pressen så resten kan flytta efter.",
+    ],
+  },
+  {
+    id: "fasta",
+    eyebrow: "Stillastående",
+    title: "Fasta situationer",
+    accent: "green",
+    bullets: [
+      "Anfall: ansvar och variant bekräftas på genomgången.",
+      "Försvar: hybrid (zon + 2 man) + andraboll.",
+      "Inkast djupt = tryck + direkt återerövring.",
+    ],
+  },
 ];
+
+/* Praktisk info — visas längst ner på Veckans match. */
+export const PRACTICAL_INFO = {
+  kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
+  responsibilities: [
+    ["Kapten", "Bekräftas i kallelse"],
+    ["Hörnor", "Bekräftas på genomgång"],
+    ["Inläggsfrispark", "Bekräftas på genomgång"],
+    ["Målchansfrispark", "Bekräftas på genomgång"],
+  ] as const,
+  gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
+} as const;
+
+export const CALLED_SQUAD = {
+  starting: [],
+  bench: [],
+} as const;
+
+export const FOCUS: string[] = [
+  "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
+  "Skydda mitten och tvinga spelet utåt — låt inte Vardar/Makedonija hitta rättvänd spelare mellan våra lagdelar.",
+  "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
+];
+
+export const FORMATION: FormationSlot[] = [];
 
 export const COHERENCE: CoherenceSection[] = [
   {
@@ -71,50 +143,63 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Kareby IS borta · Kareby Hed · fre 8 maj 19:00.",
-      "Genomgång + uppvärmning på plats. Avresa enligt kallelse.",
-      "Formation: 4-2-1-3.",
+      "IF Vardar/Makedonija borta · Generatorsplan · fredag 22 maj 19:15.",
+      "Samling 17:45. Genomgång och uppvärmning sker på plats.",
+      "Startelva och roller läggs in när kallelsen är satt.",
+    ],
+  },
+  {
+    id: "kallad-trupp",
+    num: "02",
+    title: "Kallad trupp",
+    eyebrow: "Spelare",
+    principles: ["Kommer", "Startelva", "Avbytare"],
+    bullets: [
+      "Kallad trupp för IF Vardar/Makedonija är inte inlagd än.",
+      "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
+      "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
   {
     id: "forra-match",
-    num: "02",
-    title: "Förra match — Velebit 1–0",
-    eyebrow: "Vad vi tar med till Kareby",
-    principles: ["Box-fyllnad", "Spelvändning", "Defensiv balans"],
+    num: "03",
+    title: "Förra match — IFK Björkö",
+    eyebrow: "Vad vi tar med till Vardar/Makedonija",
+    principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vinst 1–0 hemma 2 maj — femte raka utan förlust (4V 1O, 11/15 möjliga).",
-      "Detaljerade reflektioner: se /match/forra (fylls i av tränaren).",
-      "Veckans tre fokuspunkter inför Kareby ligger i sidospalten — princip 1, 2/3 och 5.",
+      "Vi spelade IFK Björkö hemma lördag 16 maj.",
+      "Resultat och detaljerade reflektioner fylls i av tränaren på /match/forra.",
+      "Nu flyttar vi fokus direkt till nästa prestation: IF Vardar/Makedonija borta.",
     ],
   },
   {
-    id: "kareby",
-    num: "03",
-    title: "Vad vi vet om Kareby",
+    id: "vardar-makedonija",
+    num: "04",
+    title: "Vad vi vet om Vardar/Makedonija",
     eyebrow: "Motståndaren",
     bullets: [
-      "Borta på Kareby Hed — räkna med kortare och tightare plan: kortare avstånd mellan oss, mer en-touch i mottagningen.",
-      "Hemmalag fredag kväll — räkna med tidig och hög press första 15 min. Princip 1 (skydda kontring) blir extra viktig från start.",
-      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys (fylls i av tränarstaben).",
+      "Nästa match är borta på Generatorsplan.",
+      "Vardar/Makedonija ligger på undre halvan men gör mål — vi behöver vara kompakta och vakna i första duellen.",
+      "Stäng mitten först. Låt dem inte spela mellan två av oss.",
+      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Kareby-specifika anpassningar (formation, hot, var vi pressar) ligger på /motstandaranalys.",
+    note: "Vardar/Makedonija-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
-    num: "04",
+    num: "05",
     title: "Identitet",
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Borta = duellerna avgör första 20 min. Vi får inte hamna på efterkälken.",
+      "Borta = vi tar med oss egen rytm, egen röst och egen intensitet.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
-      "Yttrar och 9:a löper i djupled vid varje bollvinst — alltid.",
+      "Nästa aktion är viktigare än förra situationen.",
     ],
   },
   {
     id: "anfall",
-    num: "05",
+    num: "06",
     title: "Anfall — fem principer",
     eyebrow: "I ordning",
     principles: ["Skydda kontring", "Spela in", "Spela ut", "Framåt", "Box"],
@@ -128,19 +213,19 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "forsvar",
-    num: "06",
+    num: "07",
     title: "Försvar",
     eyebrow: "Samla → lås → vinn",
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Kareby).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Vardar/Makedonija).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
   {
     id: "omst-forsvar",
-    num: "07",
+    num: "08",
     title: "Omställning försvar",
     eyebrow: "Direkt eller indirekt",
     principles: ["Direkt", "Indirekt"],
@@ -152,7 +237,7 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "omst-anfall",
-    num: "08",
+    num: "09",
     title: "Omställning anfall",
     eyebrow: "Ut ur gröten",
     principles: ["Diagonal utgång", "Djupled", "Box"],
@@ -164,7 +249,7 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "fasta",
-    num: "09",
+    num: "10",
     title: "Fasta",
     eyebrow: "Kort ansvar",
     principles: ["Haris/Gelo", "Hybrid", "Andraboll"],
@@ -176,15 +261,16 @@ export const COHERENCE: CoherenceSection[] = [
   },
   {
     id: "roller",
-    num: "10",
+    num: "11",
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Ado"],
-      ["Hörnor", "Haris / Gelo"],
-      ["Inläggsfrispark", "Haris / Gelo"],
-      ["Målchansfrispark", "Bestäm själva"],
-      ["Matchstart", "19:00"],
+      ["Kapten", "Bekräftas i kallelse"],
+      ["Hörnor", "Bekräftas på genomgång"],
+      ["Inläggsfrispark", "Bekräftas på genomgång"],
+      ["Målchansfrispark", "Bekräftas på genomgång"],
+      ["Matchstart", "19:15"],
+      ["Bortaplan", "Generatorsplan"],
     ],
   },
 ];

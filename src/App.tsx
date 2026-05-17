@@ -24,6 +24,7 @@ const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
+const UnderProcess = lazy(() => import("./pages/UnderProcess"));
 const SpelmodellLab = lazy(() => import("./pages/SpelmodellLab"));
 const OmstallningForsvar = lazy(() => import("./pages/OmstallningForsvar"));
 const OmstallningAnfall = lazy(() => import("./pages/OmstallningAnfall"));
@@ -101,7 +102,8 @@ const App = () => (
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
           <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
           <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
-          <Route path="/maj-2026" element={<Protected routeName="Maj 2026"><MajSpelmodell /></Protected>} />
+          {/* /maj-2026 är medvetet Public — spelarna ska kunna nå filmerna utan inlogg */}
+          <Route path="/maj-2026" element={<Public routeName="Maj 2026"><MajSpelmodell /></Public>} />
           <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
@@ -120,6 +122,7 @@ const App = () => (
           <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
+          <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
 
           {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
           <Route path="/traningsplan" element={<PrintRoute routeName="Träningsplan"><TrainingPlan /></PrintRoute>} />

@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { clearSharedAccess, getSharedAccessUser } from "@/lib/sharedAccess";
 
 interface LogoutButtonProps {
   className?: string;
@@ -14,9 +15,11 @@ const LogoutButton = ({ className }: LogoutButtonProps) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
+    const hadSharedAccess = Boolean(getSharedAccessUser());
     const { error } = await supabase.auth.signOut();
+    clearSharedAccess();
     
-    if (error) {
+    if (error && !hadSharedAccess) {
       toast({
         title: "Fel",
         description: "Kunde inte logga ut",

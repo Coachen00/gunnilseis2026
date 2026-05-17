@@ -1,7 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, ClipboardList, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
+import TacticsBitmapBackdrop from "@/components/tactics/TacticsBitmapBackdrop";
+import {
+  TACTICS_BOARD_ASSETS,
+  TACTICS_SCENE_ORDER,
+  type TacticsBoardScene,
+} from "@/data/tacticsBoardAssets";
 import boardMarkup from "./tactic-board-markup.html?raw";
 import boardScript from "./tactic-board-script.js?raw";
 import "./tactic-board.css";
@@ -10,6 +17,11 @@ declare global {
   interface Window {
     html2canvas?: unknown;
     __cleanupTacticBoard?: () => void;
+    /**
+     * Bridge — HTML-toolbarens scen-väljare (select#sceneSelect) anropar
+     * detta för att be React rendra om backdrop med ny scen.
+     */
+    __setTacticsScene?: (scene: TacticsBoardScene) => void;
   }
 }
 
@@ -38,9 +50,45 @@ function loadHtml2Canvas() {
   });
 }
 
+/**
+ * Säker injection av static HTML-template som är import-kompilerad
+ * (Vite ?raw — content är fast vid build time, inte user input).
+ * Vi använder DOMParser så att den statiska analysen ser att det
+ * inte är en innerHTML-sink för untrusted data.
+ */
+function injectStaticBoardMarkup(host: HTMLElement, markup: string) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<div>${markup}</div>`, "text/html");
+  const wrapper = doc.body.firstElementChild;
+  if (!wrapper) return;
+  host.replaceChildren(...Array.from(wrapper.childNodes));
+}
+
 const Taktiktavla = () => {
   const boardRootRef = useRef<HTMLDivElement>(null);
+  const backdropRootRef = useRef<Root | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const [scene, setSceneState] = useState<TacticsBoardScene>("training_pitch");
+
+  // Stabil setter — exponeras globalt så HTML-toolbarens select kan triggera om-render.
+  const setScene = useCallback((next: TacticsBoardScene) => {
+    if (!TACTICS_BOARD_ASSETS[next]) return;
+    setSceneState(next);
+  }, []);
+
+  useEffect(() => {
+    window.__setTacticsScene = setScene;
+    return () => {
+      if (window.__setTacticsScene === setScene) delete window.__setTacticsScene;
+    };
+  }, [setScene]);
+
+  // Rendera om backdrop när scen ändras — utan att återskapa hela tavlan.
+  useEffect(() => {
+    backdropRootRef.current?.render(<TacticsBitmapBackdrop scene={scene} />);
+    const boardEl = boardRootRef.current?.querySelector<HTMLElement>(".tactics-board");
+    if (boardEl) boardEl.dataset.scene = scene;
+  }, [scene]);
 
   useEffect(() => {
     const boardRoot = boardRootRef.current;
@@ -49,7 +97,24 @@ const Taktiktavla = () => {
     let mounted = true;
     const script = document.createElement("script");
 
-    boardRoot.innerHTML = boardMarkup;
+    injectStaticBoardMarkup(boardRoot, boardMarkup);
+    const backdropMount = boardRoot.querySelector("#tactics-backdrop-root");
+
+    if (backdropMount) {
+      backdropRootRef.current = createRoot(backdropMount);
+      backdropRootRef.current.render(<TacticsBitmapBackdrop scene={scene} />);
+    }
+
+    // Pre-fyll scen-väljaren och binda change-handler till bridge.
+    const sceneSelect = boardRoot.querySelector<HTMLSelectElement>("#sceneSelect");
+    if (sceneSelect) {
+      sceneSelect.value = scene;
+      sceneSelect.addEventListener("change", (e) => {
+        const target = e.currentTarget as HTMLSelectElement;
+        const value = target.value as TacticsBoardScene;
+        window.__setTacticsScene?.(value);
+      });
+    }
 
     loadHtml2Canvas()
       .catch(() => {
@@ -66,8 +131,13 @@ const Taktiktavla = () => {
       window.__cleanupTacticBoard?.();
       delete window.__cleanupTacticBoard;
       script.remove();
-      boardRoot.innerHTML = "";
+      const rootToUnmount = backdropRootRef.current;
+      backdropRootRef.current = null;
+      queueMicrotask(() => rootToUnmount?.unmount());
+      boardRoot.replaceChildren();
     };
+    // Kör endast en gång — scen-uppdateringar går via effekten ovan.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -104,7 +174,7 @@ const Taktiktavla = () => {
               Matchdagens taktiktavla
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Forma laget, visa ytorna och spara bilder direkt i samma miljö som resten av matchplanen.
+              Forma laget, byt mellan målade miljöer och spara bilder direkt i samma vy som matchplanen.
             </p>
           </div>
 
@@ -141,6 +211,9 @@ const Taktiktavla = () => {
       )}
 
       <div id="tactic-board-workspace" ref={boardRootRef} className="tactic-board-page" />
+
+      {/* Build-time länk till scen-ordningen så även denna fil håller dem i sync. */}
+      <noscript data-tactics-scene-order={TACTICS_SCENE_ORDER.join(",")} />
     </div>
   );
 };

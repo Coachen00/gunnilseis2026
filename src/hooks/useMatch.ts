@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { MATCH_META } from "@/data/matchplan";
 
+const STATIC_UPCOMING_DATE = "2026-05-22T19:15:00+02:00";
+
 export type MatchRow = {
   id: string;
   opponent: string;
@@ -30,11 +32,29 @@ export function useMatch(status: "upcoming" | "played") {
       .limit(1)
       .maybeSingle();
     const row = (data as MatchRow | null) ?? null;
-    if (status === "upcoming" && row && row.opponent.toLowerCase().includes("lerum")) {
+    const now = Date.now();
+    const staticUpcomingTime = new Date(STATIC_UPCOMING_DATE).getTime();
+    const rowDateTime = row?.match_date ? new Date(row.match_date).getTime() : null;
+    const rowIsStaticUpcoming =
+      row?.opponent.toLowerCase() === MATCH_META.opponent.toLowerCase();
+    const shouldUseStaticUpcoming =
+      status === "upcoming" &&
+      (!row ||
+        (rowDateTime !== null && rowDateTime < now) ||
+        (staticUpcomingTime >= now && !rowIsStaticUpcoming) ||
+        ["lerum", "kareby", "björkö", "bjorko"].some((name) => row.opponent.toLowerCase().includes(name)));
+
+    if (shouldUseStaticUpcoming) {
       setMatch({
-        ...row,
+        ...(row ?? {
+          id: "static-upcoming",
+          status: "upcoming" as const,
+          our_score: null,
+          their_score: null,
+          manual_override: true,
+        }),
         opponent: MATCH_META.opponent,
-        match_date: "2026-05-02T13:00:00+02:00",
+        match_date: STATIC_UPCOMING_DATE,
         home_away: MATCH_META.home ? "home" : "away",
         competition: MATCH_META.competition,
         venue: MATCH_META.venue,

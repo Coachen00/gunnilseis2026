@@ -1,258 +1,367 @@
-<div class="menu-container">
-    <div class="menu-row">
-        <div class="group">
-            <div class="quick-actions">
-                <button onclick="setTeamAvailability('home', true)">Ta In R&ouml;tt</button>
-                <button onclick="setTeamAvailability('home', false)">Ta Av R&ouml;tt</button>
-                <button onclick="setTeamAvailability('away', true)">Ta In Bl&aring;tt</button>
-                <button onclick="setTeamAvailability('away', false)">Ta Av Bl&aring;tt</button>
-                <button onclick="clearPlayers()">B&auml;nka Alla</button>
-            </div>
-        </div>
-        <div class="group">
-            <button onclick="addBall()" style="background:white; color:black; font-weight:bold;">&#9917; Boll</button>
-            <button onclick="addCone()" style="background:#ff9800; color:black; font-weight:bold;">+ Kon</button>
-        </div>
-        <div class="group">
-            <select id="zoomSelect" onchange="setZoom()" style="background:#1e3a8a; font-weight:bold;">
-                <option value="full">Vy: Helplan</option>
-                <option value="third-l">Vy: V&auml;nster Tredjedel</option>
-                <option value="third-c">Vy: Mittzon</option>
-                <option value="third-r">Vy: H&ouml;ger Tredjedel</option>
-                <option value="box-l">Vy: V&auml;nster Straffomr&aring;de</option>
-                <option value="box-r">Vy: H&ouml;ger Straffomr&aring;de</option>
-                <option value="mid-high">Vy: Central H&ouml;g</option>
-                <option value="mid-low">Vy: Central L&aring;g</option>
-                <option value="corner-tl">Vy: H&ouml;rna V&auml;nster Uppe</option>
-                <option value="corner-bl">Vy: H&ouml;rna V&auml;nster Nere</option>
-                <option value="corner-tr">Vy: H&ouml;rna H&ouml;ger Uppe</option>
-                <option value="corner-br">Vy: H&ouml;rna H&ouml;ger Nere</option>
-            </select>
-            <div class="slider-group">
-                <span style="font-size:12px;">Zoom</span>
-                <input type="range" id="zoomLevel" min="100" max="240" step="5" value="100" oninput="setZoom()">
-                <span id="zoomLevelValue" class="slider-value">100%</span>
-            </div>
-        </div>
-        <div class="group">
-            <div class="dropdown" id="layerDropdown">
-                <button type="button" class="dropdown-toggle" onclick="toggleDropdownMenu('layerDropdown')">
-                    <span>Planens Inneh&aring;ll</span>
-                    <span class="dropdown-caret"></span>
-                </button>
-                <div class="dropdown-content">
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; Assistyta</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
-                    <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner Straffomr&aring;de</label>
+<div class="tactic-board-shell">
+    <aside class="tactic-control-panel" aria-label="Taktikkontroller">
+        <header class="tactic-control-header">
+            <span class="tactic-control-eyebrow">Taktikkontroller</span>
+            <h2 class="tactic-control-title">Verktyg &amp; vyer</h2>
+        </header>
+
+        <div class="tactic-panel-stack" role="list">
+
+            <!-- 01 — PLAN: bakgrund + vy + zoom + zoner/lager -->
+            <details class="tactic-panel" id="panel-plan" open>
+                <summary>
+                    <span class="tactic-panel-num">01</span>
+                    <span class="tactic-panel-title">Plan &amp; vy</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <p class="tactic-panel-hint">V&auml;lj bakgrund, vy och vad du vill se p&aring; planen.</p>
+                    <label class="tactic-field">
+                        <span class="tactic-field-label">Bakgrund / tavla</span>
+                        <select id="sceneSelect" class="tactic-select">
+                            <option value="training_pitch">Tr&auml;ningsplan</option>
+                            <option value="whiteboard">Taktisk whiteboard</option>
+                            <option value="night_pitch">Kv&auml;llsmatch</option>
+                            <option value="match_overview">Matchplan ovanifr&aring;n</option>
+                            <option value="coachboard">Omkl&auml;dningsrum</option>
+                            <option value="neutral_analysis">Neutral analysyta</option>
+                        </select>
+                    </label>
+                    <label class="tactic-field">
+                        <span class="tactic-field-label">Vy / zon</span>
+                        <select id="zoomSelect" onchange="setZoom()" class="tactic-select">
+                            <option value="full">Helplan</option>
+                            <option value="third-l">V&auml;nster tredjedel</option>
+                            <option value="third-c">Mittzon</option>
+                            <option value="third-r">H&ouml;ger tredjedel</option>
+                            <option value="box-l">V&auml;nster straffomr&aring;de</option>
+                            <option value="box-r">H&ouml;ger straffomr&aring;de</option>
+                            <option value="mid-high">Central h&ouml;g</option>
+                            <option value="mid-low">Central l&aring;g</option>
+                            <option value="corner-tl">H&ouml;rna v&auml;nster uppe</option>
+                            <option value="corner-bl">H&ouml;rna v&auml;nster nere</option>
+                            <option value="corner-tr">H&ouml;rna h&ouml;ger uppe</option>
+                            <option value="corner-br">H&ouml;rna h&ouml;ger nere</option>
+                        </select>
+                    </label>
+                    <div class="slider-group">
+                        <span>Zoom</span>
+                        <input type="range" id="zoomLevel" min="100" max="240" step="5" value="100" oninput="setZoom()">
+                        <span id="zoomLevelValue" class="slider-value">100%</span>
+                    </div>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Visa p&aring; planen</span>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; Assistyta</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner straffomr&aring;de</label>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="group">
-            <div class="slider-group">
-                <span style="font-size:12px;">Spelarstorlek</span>
-                <input type="range" id="playerSize" min="28" max="56" value="34" oninput="setPlayerSize(this.value)">
-                <span id="playerSizeValue" class="slider-value">100%</span>
-            </div>
-        </div>
-        <div class="group">
-            <button onclick="takeScreenshot()" style="background:#2e7d32;">Spara Bild</button>
-        </div>
-    </div>
+            </details>
 
-    <div class="menu-row">
-        <div class="group formation-group">
-            <span class="group-label home">R&ouml;tt</span>
-            <div id="homeFormationButtons" class="formation-grid"></div>
-        </div>
-        <div class="group formation-group">
-            <span class="group-label away">Bl&aring;tt</span>
-            <div id="awayFormationButtons" class="formation-grid"></div>
-        </div>
-    </div>
-
-    <div class="menu-row">
-        <div class="group">
-            <select id="drawMode" onchange="updateToolOptionsVisibility()">
-                <option value="free">Frihand</option>
-                <option value="line">Rak Linje</option>
-                <option value="dashed">Streckad Linje</option>
-                <option value="curve">B&ouml;jd Linje</option>
-                <option value="curve-dashed">B&ouml;jd Streckad Linje</option>
-                <option value="wave">V&aring;gig Linje</option>
-                <option value="rect">Box / Rektangel</option>
-                <option value="triangle">Triangel</option>
-                <option value="text">Text</option>
-                <option value="eraser" style="background:#ff5252; color:white; font-weight:bold;">Suddgummi</option>
-            </select>
-            <span style="font-size:11px; margin-left:5px;">Linje:</span>
-            <input type="color" id="drawColor" value="#ffeb3b" title="Linjef&auml;rg">
-            <label class="checkbox-container"><input type="checkbox" id="drawArrow"> Pil</label>
-
-            <span style="font-size:11px; margin-left:10px;">Fyllning:</span>
-            <input type="color" id="fillColor" value="#1976d2" title="Fyllnadsf&auml;rg">
-            <label class="checkbox-container"><input type="checkbox" id="fillShape"> Fyll</label>
-
-            <button id="drawBtn" onclick="toggleDrawing()" style="margin-left:10px;">Aktivera Ritverktyg</button>
-            <button onclick="clearCanvas()">Rensa Allt Ritverk</button>
-        </div>
-        <div class="group">
-            <div id="curveControls" class="tool-panel">
-                <span class="tool-label">B&ouml;j</span>
-                <select id="curveDirection" class="compact-select">
-                    <option value="left">V&auml;nster</option>
-                    <option value="right">H&ouml;ger</option>
-                </select>
-                <div class="slider-group">
-                    <span style="font-size:12px;">Vinkel</span>
-                    <input type="range" id="curveAngle" min="-90" max="90" step="5" value="0" oninput="updateToolSettingsLabels()">
-                    <span id="curveAngleValue" class="slider-value">0&deg;</span>
-                </div>
-                <div class="slider-group">
-                    <span style="font-size:12px;">Sk&auml;rpa</span>
-                    <input type="range" id="curveSharpness" min="10" max="90" step="5" value="25" oninput="updateToolSettingsLabels()">
-                    <span id="curveSharpnessValue" class="slider-value">25%</span>
-                </div>
-            </div>
-            <div id="textControls" class="tool-panel hidden">
-                <span class="tool-label">Text</span>
-                <input id="textInput" class="text-input" type="text" value="Text" placeholder="Skriv text">
-                <div class="slider-group">
-                    <span style="font-size:12px;">Storlek</span>
-                    <input type="range" id="textSize" min="12" max="48" step="2" value="24" oninput="updateToolSettingsLabels()">
-                    <span id="textSizeValue" class="slider-value">24px</span>
-                </div>
-            </div>
-        </div>
-        <div class="group">
-            <button id="linkBtn" onclick="toggleLinkMode()" style="background:#8e24aa;">L&auml;nka Spelare P&Aring;/AV</button>
-            <button onclick="clearLinks()">Rensa L&auml;nkar</button>
-        </div>
-    </div>
-
-    <div class="menu-row">
-        <span style="font-size:12px; font-weight:bold; color:#ccc;">TIDSLINJE (Klicka = Ladda | Shift+Klicka = Spara):</span>
-        <div id="timeline" style="display:flex; gap:5px;"></div>
-        <button onclick="playMovie()" style="background:#4caf50; font-weight:bold; margin-left:10px;">&#9654; Spela Upp</button>
-        <button onclick="clearTimeline()" style="background:#d32f2f; font-weight:bold; margin-left:10px;">Rensa Film</button>
-    </div>
-</div>
-
-<div id="main-layout">
-    <div id="sidebar">
-        <h3>R&ouml;da Laget (1-11)</h3>
-        <div id="player-inputs"></div>
-    </div>
-
-    <div id="capture-wrapper">
-        <div id="capture-area">
-            <div id="pitch">
-                <canvas id="canvas" width="1100" height="700"></canvas>
-                <canvas id="attachedCanvas" width="1100" height="700"></canvas>
-                <canvas id="tempCanvas" width="1100" height="700"></canvas>
-                <svg id="dynamic-links"></svg>
-
-                <div class="goal goal-l"></div>
-                <div class="goal goal-r"></div>
-                <div class="line mid-line"></div>
-                <div class="line center-circle"></div>
-                <div class="center-spot"></div>
-                <div class="line penalty-box-l"></div>
-                <div class="line penalty-box-r"></div>
-                <div class="line goal-box-l"></div>
-                <div class="line goal-box-r"></div>
-
-                <div id="layer-korridorer" class="layer" style="display:none;">
-                    <div class="corridor-band corridor-band-outer" style="top:0; height:150px;"><span class="corridor-label">Ytterkorridor</span></div>
-                    <div class="corridor-band corridor-band-inner" style="top:150px; height:110px;"><span class="corridor-label">Innerkorridor</span></div>
-                    <div class="corridor-band corridor-band-center" style="top:260px; height:180px;"><span class="corridor-label">Central Korridor</span></div>
-                    <div class="corridor-band corridor-band-inner" style="top:440px; height:110px;"><span class="corridor-label">Innerkorridor</span></div>
-                    <div class="corridor-band corridor-band-outer" style="top:550px; height:150px;"><span class="corridor-label">Ytterkorridor</span></div>
-                </div>
-
-                <div id="layer-spelytor" class="layer" style="display:none; z-index:2;">
-                    <div class="zone play-zone zone-origin" style="left:0; width:400px; height:100%;">
-                        <div class="play-zone-content">
-                            <span class="zone-title">Utg&aring;ngsyta</span>
-                            <span class="zone-sub">Framf&ouml;r forwards</span>
+            <!-- 02 — LAG: formationer + in/ut + objekt + spelarlista -->
+            <details class="tactic-panel" id="panel-team">
+                <summary>
+                    <span class="tactic-panel-num">02</span>
+                    <span class="tactic-panel-title">Lag &amp; spelare</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Ta in / ta ut</span>
+                        <div class="quick-actions stacked">
+                            <button type="button" onclick="setTeamAvailability('home', true)">Ta in r&ouml;tt</button>
+                            <button type="button" onclick="setTeamAvailability('home', false)">Ta av r&ouml;tt</button>
+                            <button type="button" onclick="setTeamAvailability('away', true)">Ta in bl&aring;tt</button>
+                            <button type="button" onclick="setTeamAvailability('away', false)">Ta av bl&aring;tt</button>
+                            <button type="button" onclick="clearPlayers()" class="btn-warn">B&auml;nka alla</button>
                         </div>
                     </div>
-                    <div class="zone play-zone zone-one" style="left:400px; width:200px; height:100%;">
-                        <div class="play-zone-content">
-                            <span class="zone-title">Spelyta 1</span>
-                            <span class="zone-sub">Mellan forwards och mittf&auml;lt</span>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Formationer</span>
+                        <div class="formation-group">
+                            <span class="group-label home">R&ouml;tt</span>
+                            <div id="homeFormationButtons" class="formation-grid"></div>
+                        </div>
+                        <div class="formation-group">
+                            <span class="group-label away">Bl&aring;tt</span>
+                            <div id="awayFormationButtons" class="formation-grid"></div>
                         </div>
                     </div>
-                    <div class="zone play-zone zone-two" style="left:600px; width:250px; height:100%;">
-                        <div class="play-zone-content">
-                            <span class="zone-title">Spelyta 2</span>
-                            <span class="zone-sub">Mellan mittf&auml;lt och backlinje</span>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">L&auml;gg till objekt</span>
+                        <div class="quick-actions">
+                            <button type="button" onclick="addBall()" class="btn-ball">&#9917; Boll</button>
+                            <button type="button" onclick="addCone()" class="btn-cone">+ Kon</button>
                         </div>
                     </div>
-                    <div class="zone play-zone zone-three" style="left:850px; width:250px; height:100%;">
-                        <div class="play-zone-content">
-                            <span class="zone-title">Spelyta 3</span>
-                            <span class="zone-sub">Bakom backlinjen</span>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">R&ouml;da laget (1&ndash;11)</span>
+                        <div id="player-inputs" class="player-inputs-stack"></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- 03 — RITA: rita-l&auml;ge + f&auml;rger + pilar + l&auml;nka -->
+            <details class="tactic-panel" id="panel-draw">
+                <summary>
+                    <span class="tactic-panel-num">03</span>
+                    <span class="tactic-panel-title">Rita &amp; pilar</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <label class="tactic-field">
+                        <span class="tactic-field-label">Vad du ritar</span>
+                        <select id="drawMode" onchange="updateToolOptionsVisibility()" class="tactic-select">
+                            <option value="free">Frihand</option>
+                            <option value="line">Rak linje</option>
+                            <option value="dashed">Streckad linje</option>
+                            <option value="curve">B&ouml;jd linje</option>
+                            <option value="curve-dashed">B&ouml;jd streckad linje</option>
+                            <option value="wave">V&aring;gig linje</option>
+                            <option value="rect">Box / rektangel</option>
+                            <option value="triangle">Triangel</option>
+                            <option value="text">Text</option>
+                            <option value="eraser" class="opt-erase">Suddgummi</option>
+                        </select>
+                    </label>
+                    <div class="tactic-field-row">
+                        <label class="tactic-field tactic-field-color">
+                            <span class="tactic-field-label">Linje</span>
+                            <input type="color" id="drawColor" value="#ffeb3b" title="Linjef&auml;rg">
+                        </label>
+                        <label class="tactic-field tactic-field-color">
+                            <span class="tactic-field-label">Fyll</span>
+                            <input type="color" id="fillColor" value="#1976d2" title="Fyllnadsf&auml;rg">
+                        </label>
+                    </div>
+                    <div class="tactic-field-row" style="gap: 16px;">
+                        <label class="checkbox-container"><input type="checkbox" id="drawArrow"> Pilspets</label>
+                        <label class="checkbox-container"><input type="checkbox" id="fillShape"> Fyll form</label>
+                    </div>
+                    <div id="curveControls" class="tool-panel">
+                        <label class="tactic-field">
+                            <span class="tactic-field-label">B&ouml;j-riktning</span>
+                            <select id="curveDirection" class="compact-select tactic-select">
+                                <option value="left">V&auml;nster</option>
+                                <option value="right">H&ouml;ger</option>
+                            </select>
+                        </label>
+                        <div class="slider-group">
+                            <span>Vinkel</span>
+                            <input type="range" id="curveAngle" min="-90" max="90" step="5" value="0" oninput="updateToolSettingsLabels()">
+                            <span id="curveAngleValue" class="slider-value">0&deg;</span>
+                        </div>
+                        <div class="slider-group">
+                            <span>Sk&auml;rpa</span>
+                            <input type="range" id="curveSharpness" min="10" max="90" step="5" value="25" oninput="updateToolSettingsLabels()">
+                            <span id="curveSharpnessValue" class="slider-value">25%</span>
                         </div>
                     </div>
-
-                    <div class="dummy-player" style="left:400px; top:250px;"></div>
-                    <div class="dummy-player" style="left:400px; top:450px;"></div>
-                    <div class="dummy-player" style="left:600px; top:120px;"></div>
-                    <div class="dummy-player" style="left:600px; top:270px;"></div>
-                    <div class="dummy-player" style="left:600px; top:430px;"></div>
-                    <div class="dummy-player" style="left:600px; top:580px;"></div>
-                    <div class="dummy-player" style="left:850px; top:120px;"></div>
-                    <div class="dummy-player" style="left:850px; top:270px;"></div>
-                    <div class="dummy-player" style="left:850px; top:430px;"></div>
-                    <div class="dummy-player" style="left:850px; top:580px;"></div>
+                    <div id="textControls" class="tool-panel hidden">
+                        <label class="tactic-field">
+                            <span class="tactic-field-label">Text</span>
+                            <input id="textInput" class="text-input" type="text" value="Text" placeholder="Skriv text">
+                        </label>
+                        <div class="slider-group">
+                            <span>Storlek</span>
+                            <input type="range" id="textSize" min="12" max="48" step="2" value="24" oninput="updateToolSettingsLabels()">
+                            <span id="textSizeValue" class="slider-value">24px</span>
+                        </div>
+                    </div>
+                    <div class="quick-actions stacked">
+                        <button type="button" id="drawBtn" onclick="toggleDrawing()" class="btn-primary">Aktivera ritverktyg</button>
+                        <button type="button" onclick="clearCanvas()">Rensa ritverk</button>
+                    </div>
+                    <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Passningslinjer</span>
+                        <p class="tactic-panel-hint">L&auml;nka tv&aring; spelare = passningslinje mellan dem som f&ouml;ljer n&auml;r de flyttas.</p>
+                        <div class="quick-actions stacked">
+                            <button type="button" id="linkBtn" onclick="toggleLinkMode()" class="btn-link">L&auml;nka spelare P&Aring;/AV</button>
+                            <button type="button" onclick="clearLinks()">Rensa l&auml;nkar</button>
+                        </div>
+                    </div>
                 </div>
+            </details>
 
-                <div id="layer-assistv" class="layer" style="display:none; z-index:3;">
-                    <svg width="1100" height="700">
-                        <polygon points="550,0 165,150 165,550 550,700" fill="rgba(0,255,0,0.15)" stroke="#00ff00" stroke-width="2"></polygon>
-                        <polygon points="550,0 935,150 935,550 550,700" fill="rgba(0,255,0,0.2)" stroke="#00ff00" stroke-width="3"></polygon>
-                        <text x="740" y="325" fill="white" font-size="28" font-weight="bold" text-anchor="middle" letter-spacing="1">CREATION</text>
-                        <text x="740" y="355" fill="white" font-size="22" font-weight="bold" text-anchor="middle" letter-spacing="1">(ASSISTS V)</text>
-                        <g stroke="#FFD700" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
-                            <path d="M 660,80 L 710,120 M 710,120 L 690,115 M 710,120 L 700,100"></path>
-                            <path d="M 580,30 L 630,70 M 630,70 L 610,65 M 630,70 L 620,50"></path>
-                            <path d="M 660,620 L 710,580 M 710,580 L 690,585 M 710,580 L 700,600"></path>
-                            <path d="M 580,670 L 630,630 M 630,630 L 610,635 M 630,630 L 620,650"></path>
-                            <path d="M 610,350 L 670,350 M 670,350 L 650,335 M 670,350 L 650,365"></path>
-                            <path d="M 790,350 L 850,350 M 850,350 L 830,335 M 850,350 L 830,365"></path>
-                        </g>
-                    </svg>
+            <!-- 04 — SEKVENS &amp; TIMELINE: spara delar av spelet som frames, spela upp -->
+            <details class="tactic-panel" id="panel-timeline">
+                <summary>
+                    <span class="tactic-panel-num">04</span>
+                    <span class="tactic-panel-title">Sekvens &amp; film</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <div class="timeline-explainer">
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">1</span>
+                            <span class="timeline-step-text">Flytta spelare till f&ouml;rsta l&auml;get</span>
+                        </span>
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">2</span>
+                            <span class="timeline-step-text">Shift+klick p&aring; en ruta = spara</span>
+                        </span>
+                        <span class="timeline-explainer-step">
+                            <span class="timeline-step-num">3</span>
+                            <span class="timeline-step-text">Tryck Spela upp</span>
+                        </span>
+                    </div>
+                    <div id="timeline" class="timeline-strip" aria-label="Tidslinje med 10 frames"></div>
+                    <div class="slider-group">
+                        <span>Tid per ruta</span>
+                        <input type="range" id="frameDelay" min="500" max="4000" step="250" value="1500">
+                        <span id="frameDelayValue" class="slider-value">1.5s</span>
+                    </div>
+                    <div class="quick-actions stacked">
+                        <button type="button" onclick="playMovie()" class="btn-play">&#9654; Spela upp filmen</button>
+                        <button type="button" onclick="clearTimeline()" class="btn-warn">Rensa alla rutor</button>
+                    </div>
                 </div>
+            </details>
 
-                <div id="layer-golden" class="layer" style="display:none; z-index:4;">
-                    <div class="zone zone-box golden-zone" style="left:0; top:260px; width:165px; height:180px;">GOLDEN<br>ZONE</div>
-                    <div class="zone zone-box assist-zone" style="left:0; top:150px; width:165px; height:110px;">ASSIST ZONE</div>
-                    <div class="zone zone-box assist-zone" style="left:0; top:440px; width:165px; height:110px;">ASSIST ZONE</div>
-                    <div class="zone zone-box assist-zone" style="left:165px; top:150px; width:85px; height:400px;">ASSIST ZONE</div>
-
-                    <div class="zone zone-box golden-zone" style="right:0; top:260px; width:165px; height:180px;">GOLDEN<br>ZONE</div>
-                    <div class="zone zone-box assist-zone" style="right:0; top:150px; width:165px; height:110px;">ASSIST ZONE</div>
-                    <div class="zone zone-box assist-zone" style="right:0; top:440px; width:165px; height:110px;">ASSIST ZONE</div>
-                    <div class="zone zone-box assist-zone" style="right:165px; top:150px; width:85px; height:400px;">ASSIST ZONE</div>
+            <!-- 05 — SPARA: screenshot + spelarstorlek -->
+            <details class="tactic-panel" id="panel-save">
+                <summary>
+                    <span class="tactic-panel-num">05</span>
+                    <span class="tactic-panel-title">Spara &amp; finjustera</span>
+                    <span class="tactic-panel-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="tactic-panel-body">
+                    <p class="tactic-panel-hint">Spara en bild av nuvarande tavla med alla lager.</p>
+                    <div class="quick-actions stacked">
+                        <button type="button" onclick="takeScreenshot()" class="btn-primary">Spara som bild</button>
+                    </div>
+                    <div class="slider-group">
+                        <span>Spelar-storlek</span>
+                        <input type="range" id="playerSize" min="28" max="56" value="34" oninput="setPlayerSize(this.value)">
+                        <span id="playerSizeValue" class="slider-value">100%</span>
+                    </div>
                 </div>
+            </details>
+        </div>
+    </aside>
 
-                <div id="layer-straffzoner" class="layer" style="display:none; z-index:5;">
-                    <div class="box-zone" style="left:0; top:150px; width:110px; height:110px;"></div>
-                    <div class="box-zone" style="left:0; top:260px; width:110px; height:180px;"></div>
-                    <div class="box-zone" style="left:0; top:440px; width:110px; height:110px;"></div>
-                    <div class="box-zone" style="left:110px; top:150px; width:55px; height:110px;"></div>
-                    <div class="box-zone" style="left:110px; top:260px; width:55px; height:180px;"></div>
-                    <div class="box-zone" style="left:110px; top:440px; width:55px; height:110px;"></div>
-                    <div class="box-zone" style="right:0; top:150px; width:110px; height:110px;"></div>
-                    <div class="box-zone" style="right:0; top:260px; width:110px; height:180px;"></div>
-                    <div class="box-zone" style="right:0; top:440px; width:110px; height:110px;"></div>
-                    <div class="box-zone" style="right:110px; top:150px; width:55px; height:110px;"></div>
-                    <div class="box-zone" style="right:110px; top:260px; width:55px; height:180px;"></div>
-                    <div class="box-zone" style="right:110px; top:440px; width:55px; height:110px;"></div>
+    <main class="tactic-board-main">
+        <div id="capture-wrapper">
+            <div id="capture-area">
+                <div class="tactics-board" data-scene="training_pitch">
+                    <div id="tactics-backdrop-root"></div>
+                    <!-- B&Auml;NK-STRIPS: visuella zoner d&auml;r b&auml;nkade pieces sitter klart utanf&ouml;r planen -->
+                    <div class="bench-strip bench-strip-top" aria-hidden="true">
+                        <span class="bench-label bench-label-home">B&Auml;NK &middot; R&Ouml;TT</span>
+                    </div>
+                    <div class="bench-strip bench-strip-bottom" aria-hidden="true">
+                        <span class="bench-label bench-label-away">B&Auml;NK &middot; BL&Aring;TT</span>
+                    </div>
+                    <div id="pitch" class="tactics-interaction-layer" tabindex="0" aria-label="Interaktiv taktiktavla">
+                        <canvas id="canvas" width="1000" height="1000"></canvas>
+                        <canvas id="attachedCanvas" width="1000" height="1000"></canvas>
+                        <canvas id="tempCanvas" width="1000" height="1000"></canvas>
+                        <svg id="dynamic-links" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+
+                        <div class="goal goal-l"></div>
+                        <div class="goal goal-r"></div>
+                        <div class="line mid-line"></div>
+                        <div class="line center-circle"></div>
+                        <div class="center-spot"></div>
+                        <div class="line penalty-box-l"></div>
+                        <div class="line penalty-box-r"></div>
+                        <div class="line goal-box-l"></div>
+                        <div class="line goal-box-r"></div>
+
+                    <div id="layer-korridorer" class="layer" style="display:none;">
+                        <div class="corridor-band corridor-band-outer" style="top:0%; height:21.4286%;"><span class="corridor-label">Ytterkorridor</span></div>
+                        <div class="corridor-band corridor-band-inner" style="top:21.4286%; height:15.7143%;"><span class="corridor-label">Innerkorridor</span></div>
+                        <div class="corridor-band corridor-band-center" style="top:37.1429%; height:25.7143%;"><span class="corridor-label">Central Korridor</span></div>
+                        <div class="corridor-band corridor-band-inner" style="top:62.8571%; height:15.7143%;"><span class="corridor-label">Innerkorridor</span></div>
+                        <div class="corridor-band corridor-band-outer" style="top:78.5714%; height:21.4286%;"><span class="corridor-label">Ytterkorridor</span></div>
+                    </div>
+
+                    <div id="layer-spelytor" class="layer" style="display:none; z-index:2;">
+                        <div class="zone play-zone zone-origin" style="left:0%; width:36.3636%; height:100%;">
+                            <div class="play-zone-content">
+                                <span class="zone-title">Utg&aring;ngsyta</span>
+                                <span class="zone-sub">Framf&ouml;r forwards</span>
+                            </div>
+                        </div>
+                        <div class="zone play-zone zone-one" style="left:36.3636%; width:18.1818%; height:100%;">
+                            <div class="play-zone-content">
+                                <span class="zone-title">Spelyta 1</span>
+                                <span class="zone-sub">Mellan forwards och mittf&auml;lt</span>
+                            </div>
+                        </div>
+                        <div class="zone play-zone zone-two" style="left:54.5455%; width:22.7273%; height:100%;">
+                            <div class="play-zone-content">
+                                <span class="zone-title">Spelyta 2</span>
+                                <span class="zone-sub">Mellan mittf&auml;lt och backlinje</span>
+                            </div>
+                        </div>
+                        <div class="zone play-zone zone-three" style="left:77.2727%; width:22.7273%; height:100%;">
+                            <div class="play-zone-content">
+                                <span class="zone-title">Spelyta 3</span>
+                                <span class="zone-sub">Bakom backlinjen</span>
+                            </div>
+                        </div>
+
+                        <div class="dummy-player" style="left:36.3636%; top:35.7143%;"></div>
+                        <div class="dummy-player" style="left:36.3636%; top:64.2857%;"></div>
+                        <div class="dummy-player" style="left:54.5455%; top:17.1429%;"></div>
+                        <div class="dummy-player" style="left:54.5455%; top:38.5714%;"></div>
+                        <div class="dummy-player" style="left:54.5455%; top:61.4286%;"></div>
+                        <div class="dummy-player" style="left:54.5455%; top:82.8571%;"></div>
+                        <div class="dummy-player" style="left:77.2727%; top:17.1429%;"></div>
+                        <div class="dummy-player" style="left:77.2727%; top:38.5714%;"></div>
+                        <div class="dummy-player" style="left:77.2727%; top:61.4286%;"></div>
+                        <div class="dummy-player" style="left:77.2727%; top:82.8571%;"></div>
+                    </div>
+
+                    <div id="layer-assistv" class="layer" style="display:none; z-index:3;">
+                        <svg viewBox="0 0 1100 700" preserveAspectRatio="none">
+                            <polygon points="550,0 165,150 165,550 550,700" fill="rgba(0,255,0,0.15)" stroke="#00ff00" stroke-width="2"></polygon>
+                            <polygon points="550,0 935,150 935,550 550,700" fill="rgba(0,255,0,0.2)" stroke="#00ff00" stroke-width="3"></polygon>
+                            <text x="740" y="325" fill="white" font-size="28" font-weight="bold" text-anchor="middle" letter-spacing="1">CREATION</text>
+                            <text x="740" y="355" fill="white" font-size="22" font-weight="bold" text-anchor="middle" letter-spacing="1">(ASSISTS V)</text>
+                            <g stroke="#FFD700" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                                <path d="M 660,80 L 710,120 M 710,120 L 690,115 M 710,120 L 700,100"></path>
+                                <path d="M 580,30 L 630,70 M 630,70 L 610,65 M 630,70 L 620,50"></path>
+                                <path d="M 660,620 L 710,580 M 710,580 L 690,585 M 710,580 L 700,600"></path>
+                                <path d="M 580,670 L 630,630 M 630,630 L 610,635 M 630,630 L 620,650"></path>
+                                <path d="M 610,350 L 670,350 M 670,350 L 650,335 M 670,350 L 650,365"></path>
+                                <path d="M 790,350 L 850,350 M 850,350 L 830,335 M 850,350 L 830,365"></path>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div id="layer-golden" class="layer" style="display:none; z-index:4;">
+                        <div class="zone zone-box golden-zone" style="left:0%; top:37.1429%; width:15%; height:25.7143%;">GOLDEN<br>ZONE</div>
+                        <div class="zone zone-box assist-zone" style="left:0%; top:21.4286%; width:15%; height:15.7143%;">ASSIST ZONE</div>
+                        <div class="zone zone-box assist-zone" style="left:0%; top:62.8571%; width:15%; height:15.7143%;">ASSIST ZONE</div>
+                        <div class="zone zone-box assist-zone" style="left:15%; top:21.4286%; width:7.7273%; height:57.1429%;">ASSIST ZONE</div>
+
+                        <div class="zone zone-box golden-zone" style="right:0%; top:37.1429%; width:15%; height:25.7143%;">GOLDEN<br>ZONE</div>
+                        <div class="zone zone-box assist-zone" style="right:0%; top:21.4286%; width:15%; height:15.7143%;">ASSIST ZONE</div>
+                        <div class="zone zone-box assist-zone" style="right:0%; top:62.8571%; width:15%; height:15.7143%;">ASSIST ZONE</div>
+                        <div class="zone zone-box assist-zone" style="right:15%; top:21.4286%; width:7.7273%; height:57.1429%;">ASSIST ZONE</div>
+                    </div>
+
+                    <div id="layer-straffzoner" class="layer" style="display:none; z-index:5;">
+                        <div class="box-zone" style="left:0%; top:21.4286%; width:10%; height:15.7143%;"></div>
+                        <div class="box-zone" style="left:0%; top:37.1429%; width:10%; height:25.7143%;"></div>
+                        <div class="box-zone" style="left:0%; top:62.8571%; width:10%; height:15.7143%;"></div>
+                        <div class="box-zone" style="left:10%; top:21.4286%; width:5%; height:15.7143%;"></div>
+                        <div class="box-zone" style="left:10%; top:37.1429%; width:5%; height:25.7143%;"></div>
+                        <div class="box-zone" style="left:10%; top:62.8571%; width:5%; height:15.7143%;"></div>
+                        <div class="box-zone" style="right:0%; top:21.4286%; width:10%; height:15.7143%;"></div>
+                        <div class="box-zone" style="right:0%; top:37.1429%; width:10%; height:25.7143%;"></div>
+                        <div class="box-zone" style="right:0%; top:62.8571%; width:10%; height:15.7143%;"></div>
+                        <div class="box-zone" style="right:10%; top:21.4286%; width:5%; height:15.7143%;"></div>
+                        <div class="box-zone" style="right:10%; top:37.1429%; width:5%; height:25.7143%;"></div>
+                        <div class="box-zone" style="right:10%; top:62.8571%; width:5%; height:15.7143%;"></div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 </div>

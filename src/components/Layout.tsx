@@ -4,6 +4,7 @@ import TopNav from "@/components/TopNav";
 import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import SkipToContent from "@/components/SkipToContent";
+import MatchdayBanner from "@/components/MatchdayBanner";
 
 interface LayoutProps {
   children: ReactNode;
@@ -15,7 +16,13 @@ const Layout = ({ children }: LayoutProps) => {
       <SkipToContent />
       <AnimatedBackground />
       <TopNav />
-      <main id="main" tabIndex={-1} className="flex-1 relative z-10 focus:outline-none" aria-label="Huvudinnehåll">
+      <MatchdayBanner />
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex-1 relative z-10 focus:outline-none"
+        aria-label="Huvudinnehåll"
+      >
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />

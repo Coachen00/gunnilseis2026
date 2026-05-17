@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import {
+  clearLocalSlot,
+  loadLocalBlobUrl,
+  loadLocalSlot,
+  removeLocalBlob,
+  saveLocalBlob,
+  saveLocalSlot,
+} from "@/lib/principleMediaLocal";
 
 type MediaType = "video" | "image" | "text";
 type SourceKind = "url" | "upload" | "text";
-
-interface Row {
-  id: string;
-  block_id: string;
-  principle_id: string;
-  media_type: MediaType;
-  source_kind: SourceKind;
-  url: string | null;
-  storage_path: string | null;
-  text_title: string | null;
-  text_body: string | null;
-  caption: string | null;
-}
 
 interface Props {
   blockId: string;
@@ -32,127 +26,183 @@ interface Props {
 
 const IMAGE_ACCEPT = "image/png,image/jpeg,image/jpg,image/webp,image/gif";
 const VIDEO_ACCEPT = "video/mp4,video/quicktime,video/webm,video/x-matroska";
-const BUCKET = "match-media";
+const MAX_VIDEO_UPLOAD_BYTES = 500 * 1024 * 1024;
+const MAX_IMAGE_UPLOAD_BYTES = 25 * 1024 * 1024;
 
-function youtubeEmbed(url: string): string | null {
-  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
-  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+function videoEmbedUrl(url: string): string | null {
+  const youtube = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (youtube) return `https://www.youtube.com/embed/${youtube[1]}`;
+
+  const vimeo = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+
+  return null;
 }
 
 const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, disabled = false, hideHeader = false }: Props) => {
   const [mediaType, setMediaType] = useState<MediaType>("video");
   const [sourceKind, setSourceKind] = useState<SourceKind>("url");
   const [url, setUrl] = useState("");
-  const [storagePath, setStoragePath] = useState<string | null>(null);
-  const [signedUrl, setSignedUrl] = useState<string | null>(null);
+  const [hasLocalBlob, setHasLocalBlob] = useState(false);
+  const [localBlobUrl, setLocalBlobUrl] = useState<string | null>(null);
   const [textTitle, setTextTitle] = useState("");
   const [textBody, setTextBody] = useState("");
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
+  // Diagnostic-fel loggas till console; ingen UI-banner — admin ser ändå inget hen ska agera på.
+  const setErrorMsg = (msg: string | null) => {
+    if (msg) console.warn(`[PrincipleMediaSlot] ${blockId}/${principleId}: ${msg}`);
+  };
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // Load existing row
+  // Cleanup blob-URL när komponenten unmountas eller URL:en byts
+  useEffect(() => {
+    return () => {
+      if (localBlobUrl) URL.revokeObjectURL(localBlobUrl);
+    };
+  }, [localBlobUrl]);
+
+  // Load existing data från localStorage + IndexedDB
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     (async () => {
-      // @ts-expect-error principle_media saknas i auto-genererade typer
-      const { data } = await supabase
-        .from("principle_media")
-        .select("*")
-        .eq("block_id", blockId)
-        .eq("principle_id", principleId)
-        .maybeSingle();
-
-      if (cancelled) return;
-      const row = data as Row | null;
-      if (row) {
-        setMediaType(row.media_type);
-        setSourceKind(row.source_kind);
-        setUrl(row.url ?? "");
-        setStoragePath(row.storage_path);
-        setTextTitle(row.text_title ?? "");
-        setTextBody(row.text_body ?? "");
-        setCaption(row.caption ?? "");
+      try {
+        const row = loadLocalSlot(blockId, principleId);
+        if (cancelled) return;
+        if (row) {
+          setMediaType(row.media_type);
+          setSourceKind(row.source_kind);
+          setUrl(row.url ?? "");
+          setTextTitle(row.text_title ?? "");
+          setTextBody(row.text_body ?? "");
+          setCaption(row.caption ?? "");
+          if (row.source_kind === "upload" && row.storage_path) {
+            const blobUrl = await loadLocalBlobUrl(blockId, principleId);
+            if (cancelled) return;
+            if (blobUrl) {
+              setLocalBlobUrl(blobUrl);
+              setHasLocalBlob(true);
+            } else {
+              // Metadata pekar på upload men blob finns inte (annan device eller cleared) — visa vänligt
+              setHasLocalBlob(false);
+            }
+          }
+        }
+      } catch (err) {
+        console.error(`[PrincipleMediaSlot] load failed for ${blockId}/${principleId}:`, err);
+        if (!cancelled) setErrorMsg("Kunde inte ladda sparad data från lokal lagring.");
       }
-      setLoading(false);
+      if (!cancelled) setLoading(false);
     })();
     return () => {
       cancelled = true;
     };
   }, [blockId, principleId]);
 
-  // Refresh signed URL when storage path changes
-  useEffect(() => {
-    let cancelled = false;
-    if (sourceKind !== "upload" || !storagePath) {
-      setSignedUrl(null);
-      return;
-    }
-    (async () => {
-      const { data } = await supabase.storage.from(BUCKET).createSignedUrl(storagePath, 60 * 60);
-      if (!cancelled) setSignedUrl(data?.signedUrl ?? null);
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [sourceKind, storagePath]);
-
   const flashSaved = () => {
     setSavedToast(true);
     window.setTimeout(() => setSavedToast(false), 1500);
   };
 
-  async function persist(patch: Partial<Pick<Row, "media_type" | "source_kind" | "url" | "storage_path" | "text_title" | "text_body" | "caption">>) {
+  function persist(patch: Partial<{
+    media_type: MediaType;
+    source_kind: SourceKind;
+    url: string | null;
+    storage_path: string | null;
+    text_title: string | null;
+    text_body: string | null;
+    caption: string | null;
+  }>) {
     if (disabled) return;
-    const payload = {
-      block_id: blockId,
-      principle_id: principleId,
-      media_type: patch.media_type ?? mediaType,
-      source_kind: patch.source_kind ?? sourceKind,
-      url: patch.url !== undefined ? patch.url : url || null,
-      storage_path: patch.storage_path !== undefined ? patch.storage_path : storagePath,
-      text_title: patch.text_title !== undefined ? patch.text_title : textTitle || null,
-      text_body: patch.text_body !== undefined ? patch.text_body : textBody || null,
-      caption: patch.caption !== undefined ? patch.caption : caption || null,
-    };
-    // @ts-expect-error principle_media saknas i auto-genererade typer
-    const { error } = await supabase
-      .from("principle_media")
-      .upsert(payload, { onConflict: "block_id,principle_id" });
-    if (!error) flashSaved();
+    try {
+      saveLocalSlot(blockId, principleId, patch);
+      setErrorMsg(null);
+      flashSaved();
+    } catch (err) {
+      console.error(`[PrincipleMediaSlot] persist failed:`, err);
+      const msg = err instanceof Error ? err.message : "Kunde inte spara i lokal lagring.";
+      setErrorMsg(
+        msg.includes("quota") || msg.includes("QuotaExceeded")
+          ? "Lokal lagring är full. Rensa gamla uppladdningar eller använd en länk istället."
+          : msg
+      );
+    }
   }
 
   async function handleUpload(file: File) {
     if (disabled) return;
     setUploading(true);
-    const ext = file.name.split(".").pop() || "bin";
-    const path = `principles/${blockId}/${principleId}-${Date.now()}.${ext}`;
-    const { error } = await supabase.storage.from(BUCKET).upload(path, file, { upsert: true });
-    if (!error) {
-      if (storagePath && storagePath !== path) {
-        await supabase.storage.from(BUCKET).remove([storagePath]);
-      }
-      setStoragePath(path);
-      setSourceKind("upload");
-      const nextType: MediaType = file.type.startsWith("video/") ? "video" : "image";
-      setMediaType(nextType);
-      await persist({ source_kind: "upload", storage_path: path, url: null, media_type: nextType });
+    setErrorMsg(null);
+
+    const detectedType: MediaType | null = file.type.startsWith("video/")
+      ? "video"
+      : file.type.startsWith("image/")
+        ? "image"
+        : null;
+
+    if (!detectedType) {
+      setErrorMsg("Filen måste vara en bild eller film i ett vanligt webbformat.");
+      setUploading(false);
+      return;
     }
-    setUploading(false);
+
+    const maxBytes = detectedType === "video" ? MAX_VIDEO_UPLOAD_BYTES : MAX_IMAGE_UPLOAD_BYTES;
+    if (file.size > maxBytes) {
+      const limitMb = Math.round(maxBytes / 1024 / 1024);
+      setErrorMsg(`Filen är för stor. Max ${limitMb} MB för ${detectedType === "video" ? "film" : "bild"}.`);
+      setUploading(false);
+      return;
+    }
+
+    try {
+      // Spara blob i IndexedDB
+      const storagePath = await saveLocalBlob(blockId, principleId, file);
+      // Skapa preview-URL
+      if (localBlobUrl) URL.revokeObjectURL(localBlobUrl);
+      const blobUrl = URL.createObjectURL(file);
+      setLocalBlobUrl(blobUrl);
+      setHasLocalBlob(true);
+      setSourceKind("upload");
+      setMediaType(detectedType);
+      persist({
+        source_kind: "upload",
+        storage_path: storagePath,
+        url: null,
+        media_type: detectedType,
+      });
+    } catch (err) {
+      console.error(`[PrincipleMediaSlot] upload failed:`, err);
+      const msg = err instanceof Error ? err.message : "Uppladdningen misslyckades.";
+      setErrorMsg(
+        msg.includes("quota") || msg.includes("QuotaExceeded")
+          ? "Lokal lagring är full. Komprimera filen eller rensa gamla uppladdningar."
+          : msg
+      );
+    } finally {
+      setUploading(false);
+    }
   }
 
   async function clearMedia() {
     if (disabled) return;
-    if (storagePath) await supabase.storage.from(BUCKET).remove([storagePath]);
+    try {
+      if (hasLocalBlob) await removeLocalBlob(blockId, principleId);
+    } catch (err) {
+      console.warn(`[PrincipleMediaSlot] could not remove blob:`, err);
+    }
+    if (localBlobUrl) URL.revokeObjectURL(localBlobUrl);
+    setLocalBlobUrl(null);
+    setHasLocalBlob(false);
     setUrl("");
-    setStoragePath(null);
     setTextTitle("");
     setTextBody("");
     setCaption("");
-    await persist({ url: null, storage_path: null, text_title: null, text_body: null, caption: null });
+    clearLocalSlot(blockId, principleId);
+    setErrorMsg(null);
+    flashSaved();
   }
 
   const setTypeAndPersist = (t: MediaType) => {
@@ -167,7 +217,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     persist({ source_kind: s });
   };
 
-  const previewSrc = sourceKind === "upload" ? signedUrl : url;
+  const previewSrc = sourceKind === "upload" ? localBlobUrl : url;
   const hasMedia = mediaType === "text" ? Boolean(textTitle || textBody) : Boolean(previewSrc);
 
   const typeButton = (value: MediaType, Icon: typeof Video, label: string) => (
@@ -242,7 +292,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
               <input
                 type="text"
                 value={textTitle}
-                onChange={(e) => setTextTitle(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setTextTitle(next);
+                  persist({ text_title: next || null });
+                }}
                 onBlur={() => persist({ text_title: textTitle || null })}
                 placeholder="Rubrik på kortet"
                 disabled={disabled}
@@ -250,7 +304,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
               />
               <textarea
                 value={textBody}
-                onChange={(e) => setTextBody(e.target.value)}
+                onChange={(e) => {
+                  const next = e.target.value;
+                  setTextBody(next);
+                  persist({ text_body: next || null });
+                }}
                 onBlur={() => persist({ text_body: textBody || null })}
                 placeholder="Kort beskrivning eller 1–3 punkter — vad ska spelaren göra?"
                 rows={3}
@@ -262,9 +320,21 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
             <input
               type="url"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setUrl(next);
+                persist({ url: next || null });
+              }}
+              onPaste={(e) => {
+                const pasted = e.clipboardData.getData("text").trim();
+                if (pasted) {
+                  e.preventDefault();
+                  setUrl(pasted);
+                  persist({ url: pasted });
+                }
+              }}
               onBlur={() => persist({ url: url || null })}
-              placeholder={mediaType === "video" ? "YouTube-länk eller filmens URL" : "Bild-URL"}
+              placeholder={mediaType === "video" ? "YouTube-/Vimeo-länk eller filmens URL" : "Bild-URL"}
               disabled={disabled}
               className="h-10 w-full rounded-md border border-border bg-background/70 px-3 text-sm text-foreground outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
             />
@@ -287,7 +357,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
                 className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-dashed border-primary/35 bg-primary/5 px-3 text-xs font-bold uppercase tracking-wider text-primary transition hover:bg-primary/10 disabled:cursor-wait disabled:opacity-70"
               >
                 {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-                {uploading ? "Laddar upp" : `Välj ${mediaType === "video" ? "filmfil" : "bildfil"}`}
+                {uploading ? "Sparar lokalt" : `Välj ${mediaType === "video" ? "filmfil" : "bildfil"}`}
               </button>
             </div>
           )}
@@ -295,7 +365,11 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
           {mediaType !== "text" && (
             <textarea
               value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              onChange={(e) => {
+                const next = e.target.value;
+                setCaption(next);
+                persist({ caption: next || null });
+              }}
               onBlur={() => persist({ caption: caption || null })}
               placeholder="Kort beskrivning (valfri)"
               rows={2}
@@ -307,16 +381,16 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
           {hasMedia && mediaType !== "text" && (
             <div className="mt-3 overflow-hidden rounded-md border border-border bg-black">
               {mediaType === "video" ? (
-                sourceKind === "url" && previewSrc && youtubeEmbed(previewSrc) ? (
+                sourceKind === "url" && previewSrc && videoEmbedUrl(previewSrc) ? (
                   <iframe
-                    src={youtubeEmbed(previewSrc)!}
+                    src={videoEmbedUrl(previewSrc)!}
                     className="aspect-video w-full"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     title={principleLabel}
                   />
                 ) : (
-                  <video src={previewSrc!} controls className="aspect-video w-full bg-black" />
+                  <video src={previewSrc!} controls preload="metadata" playsInline className="aspect-video w-full bg-black" />
                 )
               ) : (
                 <img

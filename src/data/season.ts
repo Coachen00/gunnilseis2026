@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-05-07 (efter Velebit + inför Kareby).
+ * Senast uppdaterad: 2026-05-17 (inför IF Vardar/Makedonija).
  */
 
 export type SeasonMatch = {
@@ -82,6 +82,69 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     competition: "Division 4A Herr",
     venue: "Kareby Hed",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901098/kareby-is",
+  },
+  {
+    id: "2026-05-16-ifk-bjorko",
+    date: "2026-05-16T13:00:00+02:00",
+    opponent: "IFK Björkö",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 2 Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901099/ifk-bjorko",
+  },
+  {
+    id: "2026-05-22-vardar-makedonija",
+    date: "2026-05-22T19:15:00+02:00",
+    opponent: "IF Vardar/Makedonija",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Generatorsplan",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901100/if-vardar-makedonija",
+  },
+  {
+    id: "2026-05-30-hjuvik",
+    date: "2026-05-30T13:00:00+02:00",
+    opponent: "Hjuviks AIK",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901101/hjuviks-aik",
+  },
+  {
+    id: "2026-06-05-hisingsbacka",
+    date: "2026-06-05T19:15:00+02:00",
+    opponent: "Hisingsbacka FC",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Backavallen 1 Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901102/hisingsbacka-fc",
+  },
+  {
+    id: "2026-06-13-floda",
+    date: "2026-06-13T13:00:00+02:00",
+    opponent: "Floda BoIF",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901103/floda-boif",
+  },
+  {
+    id: "2026-06-17-ytterby",
+    date: "2026-06-17T19:30:00+02:00",
+    opponent: "Ytterby IS",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Ytterns IP 1 Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901104/ytterby-is",
+  },
+  {
+    id: "2026-06-27-stenkullen",
+    date: "2026-06-27T13:00:00+02:00",
+    opponent: "Stenkullen GoIK",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901105/stenkullen-goik",
   },
 ];
 
