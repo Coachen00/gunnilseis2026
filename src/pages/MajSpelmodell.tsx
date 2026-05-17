@@ -38,6 +38,7 @@ import {
   type MediaAsset,
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
+import FilmLibrary from "@/components/maj/FilmLibrary";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -1123,6 +1124,8 @@ const MajSpelmodell = () => {
     <Hero />
     <EffektlogikStrip />
     <SpelarenSnabbversion />
+
+    <FilmLibrary />
 
     <Accordion
       type="multiple"
