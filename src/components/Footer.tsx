@@ -2,12 +2,21 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { getSharedAccessUser, subscribeSharedAccess } from "@/lib/sharedAccess";
 
 const Footer = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [hasSharedAccess, setHasSharedAccess] = useState(() => Boolean(getSharedAccessUser()));
+  const isLoggedIn = Boolean(user || hasSharedAccess);
 
   useEffect(() => {
     let mounted = true;
+    const refreshSharedAccess = () => {
+      if (mounted) setHasSharedAccess(Boolean(getSharedAccessUser()));
+    };
+    const unsubscribeSharedAccess = subscribeSharedAccess(refreshSharedAccess);
+    refreshSharedAccess();
+
     supabase.auth.getUser().then(({ data }) => {
       if (mounted) setUser(data.user);
     });
@@ -17,6 +26,7 @@ const Footer = () => {
     return () => {
       mounted = false;
       subscription.unsubscribe();
+      unsubscribeSharedAccess();
     };
   }, []);
 
@@ -27,13 +37,13 @@ const Footer = () => {
           <p className="font-bold text-sm tracking-tight text-foreground">
             Gunnilse IS <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </p>
-          {user && (
+          {isLoggedIn && (
             <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">
               Så spelar vi · Träning · Match
             </p>
           )}
         </div>
-        {user && (
+        {isLoggedIn && (
           <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
             <Link to="/maj-2026" className="hover:text-foreground transition-colors duration-200">Så spelar vi</Link>
             <Link to="/verktyg" className="hover:text-foreground transition-colors duration-200">Verktyg</Link>

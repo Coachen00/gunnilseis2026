@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Session } from "@supabase/supabase-js";
 import { Loader2, Clock } from "lucide-react";
+import { getSharedAccessUser, subscribeSharedAccess } from "@/lib/sharedAccess";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -14,29 +15,53 @@ const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: Aut
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [approved, setApproved] = useState<boolean | null>(null);
+  const [sharedAccess, setSharedAccess] = useState(() => Boolean(getSharedAccessUser()));
   const navigate = useNavigate();
 
   useEffect(() => {
+    const refreshSharedAccess = () => setSharedAccess(Boolean(getSharedAccessUser()));
+    const unsubscribeSharedAccess = subscribeSharedAccess(refreshSharedAccess);
+    refreshSharedAccess();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const hasSharedAccess = Boolean(getSharedAccessUser());
+      setSharedAccess(hasSharedAccess);
       setSession(session);
-      if (!session) {
+      if (!session && !hasSharedAccess) {
         setLoading(false);
         if (requireAuth) navigate("/login");
+      } else if (hasSharedAccess) {
+        setApproved(true);
+        setLoading(false);
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+      const hasSharedAccess = Boolean(getSharedAccessUser());
+      setSharedAccess(hasSharedAccess);
       setSession(session);
-      if (!session) {
+      if (!session && !hasSharedAccess) {
         setLoading(false);
         if (requireAuth) navigate("/login");
+      } else if (hasSharedAccess) {
+        setApproved(true);
+        setLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      unsubscribeSharedAccess();
+    };
   }, [navigate, requireAuth]);
 
   useEffect(() => {
+    if (sharedAccess) {
+      setApproved(true);
+      setLoading(false);
+      return;
+    }
+
     if (!session || !requireApproval) {
       if (session && !requireApproval) {
         setApproved(true);
@@ -70,6 +95,8 @@ const AuthGuard = ({ children, requireAuth = true, requireApproval = true }: Aut
       </div>
     );
   }
+
+  if (sharedAccess) return <>{children}</>;
 
   if (!session) return requireAuth ? null : <>{children}</>;
 

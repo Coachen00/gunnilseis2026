@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import LogoutButton from "@/components/LogoutButton";
 import NavDropdown, { NavGroup } from "@/components/NavDropdown";
+import { getSharedAccessUser, subscribeSharedAccess, type SharedAccessUser } from "@/lib/sharedAccess";
 
 type SimpleItem = { kind: "link"; to: string; label: string };
 type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
@@ -129,8 +130,10 @@ const TopNav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [sharedUser, setSharedUser] = useState<SharedAccessUser | null>(() => getSharedAccessUser());
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
+  const isLoggedIn = Boolean(user || sharedUser);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -145,6 +148,11 @@ const TopNav = () => {
 
   useEffect(() => {
     let mounted = true;
+    const refreshSharedAccess = () => {
+      if (mounted) setSharedUser(getSharedAccessUser());
+    };
+    const unsubscribeSharedAccess = subscribeSharedAccess(refreshSharedAccess);
+    refreshSharedAccess();
 
     const checkAdmin = async (currentUser: User | null) => {
       if (!currentUser) {
@@ -175,6 +183,7 @@ const TopNav = () => {
     return () => {
       mounted = false;
       subscription.unsubscribe();
+      unsubscribeSharedAccess();
     };
   }, []);
 
@@ -183,6 +192,7 @@ const TopNav = () => {
     user?.user_metadata?.full_name ||
     user?.user_metadata?.name ||
     user?.email?.split("@")[0] ||
+    sharedUser?.displayName ||
     "Inloggad";
 
   return (
@@ -211,7 +221,7 @@ const TopNav = () => {
         </Link>
 
         {/* Desktop nav — endast inloggade ser strukturen */}
-        <nav className={cn("hidden items-center gap-1", user ? "lg:flex" : "lg:hidden")}>
+        <nav className={cn("hidden items-center gap-1", isLoggedIn ? "lg:flex" : "lg:hidden")}>
           {navItems.map((item) => {
             if (item.kind === "dropdown") {
               return (
@@ -263,7 +273,7 @@ const TopNav = () => {
               <Lock className="w-3.5 h-3.5" /> Admin
             </Link>
           )}
-          {user ? (
+          {isLoggedIn ? (
             <div className="hidden md:flex items-center gap-2">
               <span className="max-w-36 truncate text-xs font-semibold text-muted-foreground">
                 {displayName}
@@ -286,7 +296,7 @@ const TopNav = () => {
               </Link>
             </div>
           )}
-          {user && (
+          {isLoggedIn && (
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -304,7 +314,7 @@ const TopNav = () => {
       <div
         className={cn(
           "lg:hidden overflow-hidden transition-all duration-300 ease-out border-t border-border/60",
-          user && open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
+          isLoggedIn && open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
@@ -382,7 +392,7 @@ const TopNav = () => {
               <Lock className="w-4 h-4" /> Admin
             </Link>
           )}
-          {user ? (
+          {isLoggedIn ? (
             <div className="pt-2 border-t border-border/60 mt-2">
               <div className="px-3 pb-2 text-xs font-semibold text-muted-foreground">
                 {displayName}

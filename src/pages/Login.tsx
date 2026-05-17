@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { getLoginEmailCandidates, toSupabaseEmail } from "@/lib/sharedLogin";
+import { getSharedAccessUser, isSharedAccessCredential, setSharedAccessActive } from "@/lib/sharedAccess";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,6 +25,11 @@ const Login = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    if (getSharedAccessUser()) {
+      navigate("/");
+      return;
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         navigate("/");
@@ -90,7 +96,13 @@ const Login = () => {
         }
 
         if (signInError) {
-          throw signInError;
+          const canUseSharedAccess = await isSharedAccessCredential(username, password);
+
+          if (!canUseSharedAccess) {
+            throw signInError;
+          }
+
+          setSharedAccessActive();
         }
 
         toast({
