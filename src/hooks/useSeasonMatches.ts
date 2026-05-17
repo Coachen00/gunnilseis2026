@@ -55,13 +55,21 @@ export function useSeasonMatches() {
 
 export function ensureWeeklyMatch(matches: SeasonMatch[], now = new Date()): SeasonMatch[] {
   if (!STATIC_WEEKLY_MATCH) return matches;
+  const staticWeeklyTime = new Date(STATIC_WEEKLY_MATCH.date).getTime();
+  const nowTime = now.getTime();
 
   const withoutStaleUpcoming = matches.filter((match) => {
-    const isFuture = new Date(match.date).getTime() >= now.getTime();
+    const matchTime = new Date(match.date).getTime();
+    const isFuture = matchTime >= nowTime;
+    const isStaticWeeklyMatch =
+      match.id === STATIC_WEEKLY_MATCH.id ||
+      match.opponent.toLowerCase() === STATIC_WEEKLY_MATCH.opponent.toLowerCase();
     const isStaleOpponent = STALE_UPCOMING_NAMES.some((name) =>
       match.opponent.toLowerCase().includes(name)
     );
-    return !(isFuture && isStaleOpponent);
+    const blocksStaticWeeklyMatch =
+      !isStaticWeeklyMatch && staticWeeklyTime >= nowTime && matchTime <= staticWeeklyTime;
+    return !(isFuture && (isStaleOpponent || blocksStaticWeeklyMatch));
   });
 
   const hasWeeklyMatch = withoutStaleUpcoming.some((match) =>

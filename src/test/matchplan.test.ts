@@ -15,10 +15,10 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Ytterby IS + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Ytterby IS");
-    expect(MATCH_META.kickoff).toMatch(/20:15/);
-    expect(MATCH_META.venue).toContain("Ytterns IP");
+  it("MATCH_META har IF Vardar/Makedonija + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("IF Vardar/Makedonija");
+    expect(MATCH_META.kickoff).toMatch(/19:15/);
+    expect(MATCH_META.venue).toContain("Generatorsplan");
     expect(MATCH_META.competition).toContain("Division 4A");
   });
 
@@ -28,7 +28,7 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Ytterby-kallelsen är satt", () => {
+  it("FORMATION är tom tills Vardar-kallelsen är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
@@ -45,7 +45,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "ytterby",
+      "vardar-makedonija",
       "identitet",
       "anfall",
       "forsvar",
@@ -62,7 +62,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("gammal kommande Björkö-rad kan inte ersätta Ytterby som veckans match", () => {
+  it("gammal kommande Björkö-rad kan inte ersätta Vardar/Makedonija som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -78,6 +78,25 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.opponent === "IFK Björkö")).toBe(false);
-    expect(matches[0].opponent).toBe("Ytterby IS");
+    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+  });
+
+  it("en felaktig match före Vardar/Makedonija blockerar inte veckans match", () => {
+    const matches = ensureWeeklyMatch(
+      [
+        {
+          id: "stale-ytterby-may",
+          date: "2026-05-19T20:15:00+02:00",
+          opponent: "Ytterby IS",
+          homeAway: "away",
+          competition: "Division 4A Herr",
+          venue: "Ytterns IP 1 Konstgräs",
+        },
+      ],
+      new Date("2026-05-17T12:00:00+02:00")
+    );
+
+    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+    expect(matches.some((match) => match.id === "stale-ytterby-may")).toBe(false);
   });
 });

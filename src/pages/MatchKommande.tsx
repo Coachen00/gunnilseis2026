@@ -119,7 +119,7 @@ function KalladTrupp() {
             Inte inlagd än
           </p>
           <p className="mt-1 text-sm font-bold leading-relaxed text-foreground">
-            Startelva, avbytare och fasta ansvar fylls i när Ytterby-kallelsen är satt.
+            Startelva, avbytare och fasta ansvar fylls i när kallelsen är satt.
           </p>
         </div>
       )}

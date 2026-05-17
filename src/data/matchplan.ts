@@ -1,7 +1,7 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-05-17 inför Ytterby IS
- * (borta · Ytterns IP 1 Konstgräs · tisdag 19 maj 20:15).
+ * Senast uppdaterad 2026-05-17 inför IF Vardar/Makedonija
+ * (borta · Generatorsplan · fredag 22 maj 19:15).
  * Förra match: IFK Björkö (hemma · 2026-05-16).
  */
 
@@ -36,10 +36,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Ytterby IS",
-  venue: "Ytterns IP 1 Konstgräs",
+  opponent: "IF Vardar/Makedonija",
+  venue: "Generatorsplan",
   home: false,
-  kickoff: "Tis 19 maj · 20:15",
+  kickoff: "Fre 22 maj · 19:15",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -47,12 +47,12 @@ export const MATCH_META: MatchMeta = {
 
 /* Matchdagsschema — visas i hero och i praktisk-info-block. */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: "Enligt kallelse", label: "Samling", note: "Bekräftas av ledarstaben" },
+  { time: "17:45", label: "Samling", note: "Generatorsplan" },
   { time: "Före avresa/uppvärmning", label: "Genomgång" },
-  { time: "19:35 – 20:05", label: "Aktivering" },
-  { time: "20:05 – 20:12", label: "Ner + sista instruktion" },
-  { time: "20:12", label: "Upp + sista löpningar" },
-  { time: "20:15", label: "Avspark" },
+  { time: "18:35 – 19:05", label: "Aktivering" },
+  { time: "19:05 – 19:12", label: "Ner + sista instruktion" },
+  { time: "19:12", label: "Upp + sista löpningar" },
+  { time: "19:15", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -130,7 +130,7 @@ export const CALLED_SQUAD = {
 
 export const FOCUS: string[] = [
   "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
-  "Skydda mitten och tvinga spelet utåt — låt inte Ytterby hitta rättvänd spelare mellan våra lagdelar.",
+  "Skydda mitten och tvinga spelet utåt — låt inte Vardar/Makedonija hitta rättvänd spelare mellan våra lagdelar.",
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
@@ -143,8 +143,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Ytterby IS borta · Ytterns IP 1 Konstgräs · tisdag 19 maj 20:15.",
-      "Samling, avresa och genomgång bekräftas i kallelsen.",
+      "IF Vardar/Makedonija borta · Generatorsplan · fredag 22 maj 19:15.",
+      "Samling 17:45. Genomgång och uppvärmning sker på plats.",
       "Startelva och roller läggs in när kallelsen är satt.",
     ],
   },
@@ -155,7 +155,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kommer", "Startelva", "Avbytare"],
     bullets: [
-      "Kallad trupp för Ytterby är inte inlagd än.",
+      "Kallad trupp för IF Vardar/Makedonija är inte inlagd än.",
       "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
@@ -164,26 +164,26 @@ export const COHERENCE: CoherenceSection[] = [
     id: "forra-match",
     num: "03",
     title: "Förra match — IFK Björkö",
-    eyebrow: "Vad vi tar med till Ytterby",
+    eyebrow: "Vad vi tar med till Vardar/Makedonija",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
       "Vi spelade IFK Björkö hemma lördag 16 maj.",
       "Resultat och detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Ytterby borta.",
+      "Nu flyttar vi fokus direkt till nästa prestation: IF Vardar/Makedonija borta.",
     ],
   },
   {
-    id: "ytterby",
+    id: "vardar-makedonija",
     num: "04",
-    title: "Vad vi vet om Ytterby",
+    title: "Vad vi vet om Vardar/Makedonija",
     eyebrow: "Motståndaren",
     bullets: [
-      "Nästa match är borta på Ytterns IP 1 Konstgräs.",
-      "Vi mötte Ytterby hemma 2 april och vann 3–1.",
+      "Nästa match är borta på Generatorsplan.",
+      "Vardar/Makedonija ligger på undre halvan men gör mål — vi behöver vara kompakta och vakna i första duellen.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Vardar/Makedonija-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -219,7 +219,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Ytterby).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Vardar/Makedonija).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -269,8 +269,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "20:15"],
-      ["Bortaplan", "Ytterns IP"],
+      ["Matchstart", "19:15"],
+      ["Bortaplan", "Generatorsplan"],
     ],
   },
 ];
