@@ -103,15 +103,32 @@ const matchGroups: NavGroup[] = [
   },
 ];
 
+/* Maj 2026 dropdown — direktlänk till filmbibliotek + de sex blocken
+   så användaren slipper scrolla till sektionen. */
+const majGroups: NavGroup[] = [
+  {
+    label: "Maj 2026 · Spelmodellen",
+    to: "/maj-2026",
+    children: [
+      { label: "Filmbibliotek", to: "/maj-2026#filmbibliotek", hint: "Allt klippmaterial sorterat efter spelfas" },
+      { label: "Försvarsspel", to: "/maj-2026#forsvarsspel" },
+      { label: "Omställning till anfall", to: "/maj-2026#overgang-anfall" },
+      { label: "Anfallsspel", to: "/maj-2026#anfallsspel" },
+      { label: "Omställning till försvar", to: "/maj-2026#overgang-forsvar" },
+      { label: "Identitet", to: "/maj-2026#identitet" },
+      { label: "Fasta situationer", to: "/maj-2026#fasta-situationer" },
+    ],
+  },
+];
+
 const navItems: NavItem[] = [
   { kind: "link", to: "/", label: "Hem" },
-  { kind: "link", to: "/maj-2026", label: "Maj 2026" },
   {
     kind: "dropdown",
-    label: "Spelet",
-    groups: skedenGroups,
-    variant: "wide",
-    activePathPrefixes: ["/identitet", "/roller", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+    label: "Maj 2026",
+    groups: majGroups,
+    variant: "narrow",
+    activePathPrefixes: ["/maj-2026"],
   },
   {
     kind: "dropdown",
@@ -120,8 +137,15 @@ const navItems: NavItem[] = [
     variant: "narrow",
     activePathPrefixes: ["/match"],
   },
+  {
+    kind: "dropdown",
+    label: "Spelet",
+    groups: skedenGroups,
+    variant: "wide",
+    // Roller är i Spelet — vi tar bort top-level-dubbletten
+    activePathPrefixes: ["/identitet", "/roller", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+  },
   { kind: "link", to: "/truppen", label: "Trupp" },
-  { kind: "link", to: "/roller", label: "Roller" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
   { kind: "link", to: "/under-process", label: "Under process" },
 ];
