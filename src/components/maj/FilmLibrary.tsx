@@ -8,13 +8,14 @@
  *  - MAJ_2026_PRINCIPLE_MEDIA   → klipp kopplade till specifika principer i ett block
  *  - MAJ_2026_OVRIGT_MEDIA      → klipp utan princip-koppling
  *
- * När admin lägger till nya klipp via Supabase eller via majSpelmodell.ts
- * dyker de upp i rätt kategori automatiskt. Tomma kategorier visar
- * tydligt tomt läge istället för att försvinna.
+ * Klicka ett kort → öppnas direkt i ClipModal (helsärm-spelare).
+ * YouTube → embedat via youtube-nocookie. Lokal mp4 → native <video>.
+ * Bilder → <img>. Pilarna ← → bläddrar inom samma kategori.
  */
 
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Film, Image as ImageIcon, Play, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Film, Image as ImageIcon, Play, Sparkles, X } from "lucide-react";
 import {
   MAJ_2026_BLOCKS,
   MAJ_2026_OVRIGT_MEDIA,
@@ -42,7 +43,7 @@ const CATEGORIES: FilmCategory[] = [
     id: "veckans-match",
     label: "Veckans match",
     description:
-      "Klipp och bilder kopplade till matchen som spelas nu på lördag — motståndaranalys, fokuspunkter och repris.",
+      "Klipp och bilder kopplade till veckans match — motståndaranalys, fokuspunkter och repris.",
     accent: "amber",
     blockIds: [],
     jumpTo: "/match/kommande",
@@ -106,48 +107,12 @@ const CATEGORIES: FilmCategory[] = [
 ];
 
 const ACCENT: Record<AccentKey, { bar: string; text: string; ring: string; chipBg: string; chipText: string }> = {
-  amber: {
-    bar: "bg-amber-500",
-    text: "text-amber-700",
-    ring: "hover:border-amber-500/60",
-    chipBg: "bg-amber-50",
-    chipText: "text-amber-800",
-  },
-  red: {
-    bar: "bg-red-500",
-    text: "text-red-700",
-    ring: "hover:border-red-500/60",
-    chipBg: "bg-red-50",
-    chipText: "text-red-800",
-  },
-  blue: {
-    bar: "bg-sky-500",
-    text: "text-sky-700",
-    ring: "hover:border-sky-500/60",
-    chipBg: "bg-sky-50",
-    chipText: "text-sky-800",
-  },
-  green: {
-    bar: "bg-emerald-500",
-    text: "text-emerald-700",
-    ring: "hover:border-emerald-500/60",
-    chipBg: "bg-emerald-50",
-    chipText: "text-emerald-800",
-  },
-  violet: {
-    bar: "bg-violet-500",
-    text: "text-violet-700",
-    ring: "hover:border-violet-500/60",
-    chipBg: "bg-violet-50",
-    chipText: "text-violet-800",
-  },
-  slate: {
-    bar: "bg-slate-400",
-    text: "text-slate-600",
-    ring: "hover:border-slate-400/60",
-    chipBg: "bg-slate-100",
-    chipText: "text-slate-700",
-  },
+  amber:  { bar: "bg-amber-500",   text: "text-amber-700",   ring: "hover:border-amber-500/60",  chipBg: "bg-amber-50",  chipText: "text-amber-800" },
+  red:    { bar: "bg-red-500",     text: "text-red-700",     ring: "hover:border-red-500/60",    chipBg: "bg-red-50",    chipText: "text-red-800" },
+  blue:   { bar: "bg-sky-500",     text: "text-sky-700",     ring: "hover:border-sky-500/60",    chipBg: "bg-sky-50",    chipText: "text-sky-800" },
+  green:  { bar: "bg-emerald-500", text: "text-emerald-700", ring: "hover:border-emerald-500/60", chipBg: "bg-emerald-50", chipText: "text-emerald-800" },
+  violet: { bar: "bg-violet-500",  text: "text-violet-700",  ring: "hover:border-violet-500/60", chipBg: "bg-violet-50", chipText: "text-violet-800" },
+  slate:  { bar: "bg-slate-400",   text: "text-slate-600",   ring: "hover:border-slate-400/60",  chipBg: "bg-slate-100", chipText: "text-slate-700" },
 };
 
 function mediaIdentityKey(src: string) {
@@ -176,50 +141,239 @@ function gatherCategoryMedia(cat: FilmCategory): MediaAsset[] {
   return out;
 }
 
-function getBlockLabel(blockId: string): string {
-  return MAJ_2026_BLOCKS.find((b) => b.id === blockId)?.navLabel ?? blockId;
+/** YouTube och Vimeo har officiella thumbnail-URLs. Bilder visar sig själva.
+ *  Lokal mp4 har ingen poster utan server-side, så vi returnerar null. */
+function getThumbnailUrl(item: MediaAsset): string | null {
+  if (item.kind === "image") return item.src;
+  const yt = item.src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (yt) return `https://i.ytimg.com/vi/${yt[1]}/hqdefault.jpg`;
+  // Vimeo kräver API-anrop — hoppa över i denna preview
+  return null;
 }
 
-function isInternal(src: string): boolean {
-  return !/^https?:\/\//i.test(src);
+function getEmbedUrl(src: string): string | null {
+  const yt = src.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]+)/);
+  if (yt) {
+    const params = new URLSearchParams({
+      autoplay: "1",
+      rel: "0",
+      modestbranding: "1",
+      playsinline: "1",
+      iv_load_policy: "3",
+    });
+    return `https://www.youtube-nocookie.com/embed/${yt[1]}?${params}`;
+  }
+  const vm = src.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}?dnt=1&autoplay=1`;
+  return null;
 }
 
-function ClipCard({ item, accent }: { item: MediaAsset; accent: AccentKey }) {
+/* =========================================================================
+   COMPONENTS
+   ========================================================================= */
+
+function ClipCard({
+  item,
+  accent,
+  onPlay,
+}: {
+  item: MediaAsset;
+  accent: AccentKey;
+  onPlay: () => void;
+}) {
   const a = ACCENT[accent];
   const isVideo = item.kind === "video";
-  const Icon = isVideo ? Play : ImageIcon;
-  // Stripped, fast thumbnail card — full playback lives in the block accordion below.
+  const thumb = getThumbnailUrl(item);
+  const [imgFailed, setImgFailed] = useState(false);
+
   return (
-    <div
-      className={`group flex flex-col gap-2 rounded-lg border border-border bg-card p-3 transition-colors ${a.ring}`}
+    <button
+      type="button"
+      onClick={onPlay}
+      className={`group flex flex-col gap-2 rounded-lg border border-border bg-card p-3 text-left transition-all ${a.ring} hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2`}
+      aria-label={`Spela ${item.label}`}
     >
-      <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-md bg-[radial-gradient(circle_at_30%_20%,hsl(var(--muted))_0%,#0b0b0b_75%)]">
-        <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(245,194,66,0.10),transparent_46%,rgba(58,111,198,0.10))]" />
-        <span className={`relative flex h-10 w-10 items-center justify-center rounded-full bg-white/90 ${a.text} shadow-md`}>
-          <Icon className="h-4 w-4" strokeWidth={2.2} />
+      <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-md bg-black">
+        {thumb && !imgFailed ? (
+          <img
+            src={thumb}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={() => setImgFailed(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--muted))_0%,#0b0b0b_75%)]" />
+        )}
+        {/* gradient overlay för bra play-knapp-kontrast */}
+        <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,0,0,0.32),rgba(0,0,0,0.04)_50%,rgba(0,0,0,0.32))]" />
+        <span className={`relative flex h-12 w-12 items-center justify-center rounded-full bg-white/95 ${a.text} shadow-lg transition-transform group-hover:scale-110`}>
+          {isVideo ? <Play className="ml-0.5 h-5 w-5 fill-current" strokeWidth={2.2} /> : <ImageIcon className="h-5 w-5" strokeWidth={2.2} />}
         </span>
-        <span className="absolute left-2 top-2 rounded px-1.5 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-white/90"
-              style={{ background: "rgba(0,0,0,0.55)" }}>
+        <span
+          className="absolute left-2 top-2 rounded px-1.5 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-white"
+          style={{ background: "rgba(0,0,0,0.65)" }}
+        >
           {isVideo ? "Film" : "Bild"}
         </span>
       </div>
       <div className="min-h-[2.5rem]">
-        <p className="line-clamp-2 text-sm font-semibold leading-snug text-foreground">
+        <p className="line-clamp-2 text-sm font-semibold leading-snug text-foreground group-hover:text-amber-700">
           {item.label}
+        </p>
+      </div>
+    </button>
+  );
+}
+
+function ClipModal({
+  item,
+  onClose,
+  onPrev,
+  onNext,
+  hasPrev,
+  hasNext,
+  position,
+  total,
+}: {
+  item: MediaAsset;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+  hasPrev: boolean;
+  hasNext: boolean;
+  position: number;
+  total: number;
+}) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft" && hasPrev) onPrev();
+      else if (e.key === "ArrowRight" && hasNext) onNext();
+    };
+    document.addEventListener("keydown", handler);
+    // Lås body-scroll medan modal är öppen
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handler);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose, onPrev, onNext, hasPrev, hasNext]);
+
+  const embedUrl = getEmbedUrl(item.src);
+  const isVideo = item.kind === "video";
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.label}
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
+    >
+      {/* Backdrop */}
+      <button
+        type="button"
+        aria-label="Stäng"
+        onClick={onClose}
+        className="absolute inset-0 cursor-default bg-black/85 backdrop-blur-md"
+      />
+
+      {/* Innehåll */}
+      <div className="relative z-10 flex w-full max-w-5xl flex-col gap-3">
+        {/* Header */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">
+              {position} / {total}
+            </p>
+            <h3 className="truncate text-lg font-bold leading-tight text-white md:text-xl">
+              {item.label}
+            </h3>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20"
+            aria-label="Stäng (Esc)"
+          >
+            <X className="h-5 w-5" strokeWidth={2.4} />
+          </button>
+        </div>
+
+        {/* Player */}
+        <div className="relative overflow-hidden rounded-lg bg-black shadow-2xl">
+          {isVideo && embedUrl && (
+            <iframe
+              src={embedUrl}
+              title={item.label}
+              className="aspect-video w-full"
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          )}
+          {isVideo && !embedUrl && (
+            <video
+              src={item.src}
+              controls
+              autoPlay
+              preload="metadata"
+              playsInline
+              className="aspect-video w-full bg-black"
+            />
+          )}
+          {!isVideo && (
+            <img src={item.src} alt={item.label} className="max-h-[80vh] w-full object-contain" />
+          )}
+
+          {/* Bläddra-pilar */}
+          {hasPrev && (
+            <button
+              type="button"
+              onClick={onPrev}
+              aria-label="Föregående (←)"
+              className="absolute left-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"
+            >
+              <ChevronLeft className="h-6 w-6" strokeWidth={2.4} />
+            </button>
+          )}
+          {hasNext && (
+            <button
+              type="button"
+              onClick={onNext}
+              aria-label="Nästa (→)"
+              className="absolute right-2 top-1/2 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-full bg-black/60 text-white hover:bg-black/80"
+            >
+              <ChevronRight className="h-6 w-6" strokeWidth={2.4} />
+            </button>
+          )}
+        </div>
+
+        {/* Footer-tips */}
+        <p className="text-center text-xs text-white/60">
+          Esc = stäng · ← → = bläddra · klick utanför stänger
         </p>
       </div>
     </div>
   );
 }
 
-function CategoryCard({ category }: { category: FilmCategory }) {
+function CategoryCard({
+  category,
+  onPlayClip,
+}: {
+  category: FilmCategory;
+  onPlayClip: (categoryId: string, clipIndex: number) => void;
+}) {
   const items = gatherCategoryMedia(category);
   const a = ACCENT[category.accent];
   const videoCount = items.filter((i) => i.kind === "video").length;
   const imageCount = items.length - videoCount;
   const hasItems = items.length > 0;
 
-  // Preview = max 3 items in the library card; remaining are accessible via "Visa allt"
+  // Preview = max 3 items i kategorikortet
   const preview = items.slice(0, 3);
 
   return (
@@ -257,25 +411,28 @@ function CategoryCard({ category }: { category: FilmCategory }) {
         )}
       </header>
 
-      <p className="text-sm leading-relaxed text-muted-foreground">
-        {category.description}
-      </p>
+      <p className="text-sm leading-relaxed text-muted-foreground">{category.description}</p>
 
       {hasItems ? (
         <>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {preview.map((item) => (
-              <ClipCard key={mediaIdentityKey(item.src)} item={item} accent={category.accent} />
+            {preview.map((item, idx) => (
+              <ClipCard
+                key={mediaIdentityKey(item.src)}
+                item={item}
+                accent={category.accent}
+                onPlay={() => onPlayClip(category.id, idx)}
+              />
             ))}
           </div>
-          {category.jumpTo && (
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                {items.length > preview.length
-                  ? `${items.length - preview.length} fler i blocket`
-                  : "Hela blocket"}
-              </p>
-              {category.jumpTo.startsWith("/") ? (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              {items.length > preview.length
+                ? `${items.length - preview.length} fler — bläddra i spelaren`
+                : "Klicka för att spela"}
+            </p>
+            {category.jumpTo && (
+              category.jumpTo.startsWith("/") ? (
                 <Link
                   to={category.jumpTo}
                   className={`inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-foreground transition-colors ${a.ring}`}
@@ -288,12 +445,12 @@ function CategoryCard({ category }: { category: FilmCategory }) {
                   href={category.jumpTo}
                   className={`inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-foreground transition-colors ${a.ring}`}
                 >
-                  Visa allt i blocket
+                  Hela blocket
                   <ArrowRight className="h-3 w-3" strokeWidth={2.4} />
                 </a>
-              )}
-            </div>
-          )}
+              )
+            )}
+          </div>
         </>
       ) : (
         <EmptyCategoryState category={category} />
@@ -329,8 +486,39 @@ function EmptyCategoryState({ category }: { category: FilmCategory }) {
   );
 }
 
+/* =========================================================================
+   ROOT
+   ========================================================================= */
+
 export default function FilmLibrary() {
-  // Aggregate totals — visas i sektionsrubriken så användaren ser hela bibliotekets storlek
+  // Modal state: vilken kategori + vilket index inom kategorin spelar vi nu?
+  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  const activeCategory = activeCategoryId
+    ? CATEGORIES.find((c) => c.id === activeCategoryId) ?? null
+    : null;
+  const activeItems = activeCategory ? gatherCategoryMedia(activeCategory) : [];
+  const activeItem = activeItems[activeIndex] ?? null;
+
+  const openClip = useCallback((categoryId: string, clipIndex: number) => {
+    setActiveCategoryId(categoryId);
+    setActiveIndex(clipIndex);
+  }, []);
+
+  const closeClip = useCallback(() => {
+    setActiveCategoryId(null);
+  }, []);
+
+  const prevClip = useCallback(() => {
+    setActiveIndex((i) => Math.max(0, i - 1));
+  }, []);
+
+  const nextClip = useCallback(() => {
+    setActiveIndex((i) => Math.min(activeItems.length - 1, i + 1));
+  }, [activeItems.length]);
+
+  // Aggregate totals — visas i sektionsrubriken
   const totals = CATEGORIES.reduce(
     (acc, cat) => {
       const items = gatherCategoryMedia(cat);
@@ -360,9 +548,9 @@ export default function FilmLibrary() {
               Hitta rätt film direkt
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Allt material under Maj 2026 sorterat efter spelfas. Klicka på en
-              kategori för att se preview, eller hoppa direkt till blocket för
-              full uppspelning.
+              Allt material under Maj 2026 sorterat efter spelfas. Klicka på ett
+              klipp så öppnas spelaren direkt — använd pilarna för att bläddra
+              mellan filmer i samma fas.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
@@ -380,7 +568,7 @@ export default function FilmLibrary() {
           </div>
         </div>
 
-        {/* Quick-nav chips — gör det snabbt att skanna alla 8 kategorier */}
+        {/* Snabb-nav chips */}
         <nav aria-label="Snabbnav filmbibliotek" className="mb-8 flex flex-wrap gap-2">
           {CATEGORIES.map((cat) => {
             const count = gatherCategoryMedia(cat).length;
@@ -393,9 +581,7 @@ export default function FilmLibrary() {
               >
                 <span className={`h-1.5 w-1.5 rounded-full ${a.bar}`} aria-hidden="true" />
                 <span>{cat.label}</span>
-                <span className="text-muted-foreground">
-                  {count > 0 ? count : "–"}
-                </span>
+                <span className="text-muted-foreground">{count > 0 ? count : "–"}</span>
               </a>
             );
           })}
@@ -403,7 +589,7 @@ export default function FilmLibrary() {
 
         <div className="grid gap-5 md:grid-cols-2">
           {CATEGORIES.map((cat) => (
-            <CategoryCard key={cat.id} category={cat} />
+            <CategoryCard key={cat.id} category={cat} onPlayClip={openClip} />
           ))}
         </div>
 
@@ -436,6 +622,20 @@ export default function FilmLibrary() {
           </div>
         </div>
       </div>
+
+      {/* Modal — renderas alltid när activeItem != null */}
+      {activeItem && activeCategory && (
+        <ClipModal
+          item={activeItem}
+          onClose={closeClip}
+          onPrev={prevClip}
+          onNext={nextClip}
+          hasPrev={activeIndex > 0}
+          hasNext={activeIndex < activeItems.length - 1}
+          position={activeIndex + 1}
+          total={activeItems.length}
+        />
+      )}
     </section>
   );
 }
