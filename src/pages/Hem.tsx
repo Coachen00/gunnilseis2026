@@ -1,5 +1,5 @@
-import CinematicPitchHero from "@/components/home/CinematicPitchHero";
+import MagicalPitchHero from "@/components/home/MagicalPitchHero";
 
-const Hem = () => <CinematicPitchHero />;
+const Hem = () => <MagicalPitchHero />;
 
 export default Hem;
