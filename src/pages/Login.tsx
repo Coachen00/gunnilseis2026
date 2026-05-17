@@ -7,27 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-
-const SHARED_LOGIN_EMAIL = "gunnilse2026@gunnilse.se";
-
-const normalizeLogin = (value: string) => value.trim().toLowerCase();
-
-const isSharedLogin = (value: string) => {
-  const normalized = normalizeLogin(value);
-  return normalized === "gunnilse2026" || normalized === SHARED_LOGIN_EMAIL;
-};
-
-const toSupabaseEmail = (value: string) => {
-  const normalized = normalizeLogin(value);
-
-  if (isSharedLogin(normalized)) {
-    return SHARED_LOGIN_EMAIL;
-  }
-
-  return normalized.includes("@")
-    ? normalized
-    : `${normalized}@gunnilse.local`;
-};
+import { getLoginEmailCandidates, toSupabaseEmail } from "@/lib/sharedLogin";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -93,23 +73,24 @@ const Login = () => {
           description: "En administratör behöver godkänna ditt konto innan du får tillgång.",
         });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+        let signInError: Error | null = null;
 
-        if (error) {
-          // Temporary bridge while the live Supabase project still has the old internal account.
-          if (isSharedLogin(username)) {
-            const fallback = await supabase.auth.signInWithPassword({
-              email: LEGACY_SHARED_LOGIN_EMAIL,
-              password,
-            });
+        for (const candidateEmail of getLoginEmailCandidates(username)) {
+          const { error } = await supabase.auth.signInWithPassword({
+            email: candidateEmail,
+            password,
+          });
 
-            if (fallback.error) throw fallback.error;
-          } else {
-            throw error;
+          if (!error) {
+            signInError = null;
+            break;
           }
+
+          signInError = error;
+        }
+
+        if (signInError) {
+          throw signInError;
         }
 
         toast({
@@ -179,7 +160,7 @@ const Login = () => {
                 id="username"
                 type="text"
                 autoComplete="username"
-                placeholder="t.ex. gunnilse2026@gunnilse.se"
+                placeholder="t.ex. Gunnilse@gunnilse.se"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
