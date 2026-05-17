@@ -84,7 +84,7 @@ const App = () => (
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
           <Route path="/" element={<Public><Hem /></Public>} />
           <Route path="/period/1" element={<Protected><Period1 /></Protected>} />
-          <Route path="/maj-2026" element={<Public><MajSpelmodell /></Public>} />
+          <Route path="/maj-2026" element={<Protected><MajSpelmodell /></Protected>} />
           <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected><Anfall /></Protected>} />
