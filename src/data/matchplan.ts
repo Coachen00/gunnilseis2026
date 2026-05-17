@@ -40,7 +40,7 @@ export const MATCH_META: MatchMeta = {
   venue: "Ytterns IP 1 Konstgräs",
   home: false,
   kickoff: "Tis 19 maj · 20:15",
-  competition: "Borta · Division 4A Herr",
+  competition: "Division 4A Herr",
   weather: "",
   absent: [],
 };
