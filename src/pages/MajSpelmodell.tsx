@@ -39,6 +39,7 @@ import {
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import FilmLibrary from "@/components/maj/FilmLibrary";
+import VeckansPlanering from "@/components/maj2026/VeckansPlanering";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -1122,6 +1123,7 @@ const MajSpelmodell = () => {
   return (
   <div className="relative -mt-px bg-background text-foreground">
     <Hero />
+    <VeckansPlanering />
     <EffektlogikStrip />
     <SpelarenSnabbversion />
 
