@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
+import { Cloud, CloudOff, FileText, Image as ImageIcon, Link as LinkIcon, Loader2, Trash2, Upload, Video } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+
+// principle_media saknas i auto-genererade Database-typer tills migrationen
+// är applicerad live. Cast hit för att slippa @ts-expect-error på varje rad.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const supabaseAny: any = supabase;
 import {
   clearLocalSlot,
   loadLocalBlobUrl,
@@ -12,6 +18,19 @@ import {
 
 type MediaType = "video" | "image" | "text";
 type SourceKind = "url" | "upload" | "text";
+type SyncStatus = "loading" | "synced" | "local-only";
+
+interface RemoteRow {
+  block_id: string;
+  principle_id: string;
+  media_type: MediaType;
+  source_kind: SourceKind;
+  url: string | null;
+  storage_path: string | null;
+  text_title: string | null;
+  text_body: string | null;
+  caption: string | null;
+}
 
 interface Props {
   blockId: string;
@@ -51,6 +70,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [savedToast, setSavedToast] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>("loading");
   // Diagnostic-fel loggas till console; ingen UI-banner — admin ser ändå inget hen ska agera på.
   const setErrorMsg = (msg: string | null) => {
     if (msg) console.warn(`[PrincipleMediaSlot] ${blockId}/${principleId}: ${msg}`);
@@ -64,38 +84,89 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     };
   }, [localBlobUrl]);
 
-  // Load existing data från localStorage + IndexedDB
+  // Load existing data: lokal lagring först (snabb feedback), sen försök
+  // hämta delad version från Supabase och uppgradera state om den finns.
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
+    setSyncStatus("loading");
+
+    const applyRow = (row: {
+      media_type: MediaType;
+      source_kind: SourceKind;
+      url: string | null;
+      text_title: string | null;
+      text_body: string | null;
+      caption: string | null;
+    }) => {
+      setMediaType(row.media_type);
+      setSourceKind(row.source_kind);
+      setUrl(row.url ?? "");
+      setTextTitle(row.text_title ?? "");
+      setTextBody(row.text_body ?? "");
+      setCaption(row.caption ?? "");
+    };
+
     (async () => {
+      // 1) Lokal lagring först — instant feedback
       try {
-        const row = loadLocalSlot(blockId, principleId);
-        if (cancelled) return;
-        if (row) {
-          setMediaType(row.media_type);
-          setSourceKind(row.source_kind);
-          setUrl(row.url ?? "");
-          setTextTitle(row.text_title ?? "");
-          setTextBody(row.text_body ?? "");
-          setCaption(row.caption ?? "");
-          if (row.source_kind === "upload" && row.storage_path) {
+        const local = loadLocalSlot(blockId, principleId);
+        if (!cancelled && local) {
+          applyRow(local);
+          if (local.source_kind === "upload" && local.storage_path) {
             const blobUrl = await loadLocalBlobUrl(blockId, principleId);
-            if (cancelled) return;
-            if (blobUrl) {
+            if (!cancelled && blobUrl) {
               setLocalBlobUrl(blobUrl);
               setHasLocalBlob(true);
-            } else {
-              // Metadata pekar på upload men blob finns inte (annan device eller cleared) — visa vänligt
-              setHasLocalBlob(false);
             }
           }
         }
       } catch (err) {
-        console.error(`[PrincipleMediaSlot] load failed for ${blockId}/${principleId}:`, err);
-        if (!cancelled) setErrorMsg("Kunde inte ladda sparad data från lokal lagring.");
+        console.error(`[PrincipleMediaSlot] local load failed:`, err);
       }
+
       if (!cancelled) setLoading(false);
+
+      // 2) Supabase — om tabellen finns och vi har en rad, ersätt local + state
+      try {
+        const { data, error } = await supabaseAny
+          .from("principle_media")
+          .select("media_type,source_kind,url,storage_path,text_title,text_body,caption")
+          .eq("block_id", blockId)
+          .eq("principle_id", principleId)
+          .maybeSingle();
+
+        if (cancelled) return;
+        if (error) {
+          // 42P01 = tabellen finns inte än. Andra felkoder loggas men UI faller tillbaka.
+          if (error.code !== "42P01") {
+            console.warn(`[PrincipleMediaSlot] Supabase load failed (${error.code}):`, error.message);
+          }
+          setSyncStatus("local-only");
+          return;
+        }
+
+        if (data) {
+          const row = data as RemoteRow;
+          applyRow(row);
+          // Cacha till localStorage så reload utan nät fungerar
+          saveLocalSlot(blockId, principleId, {
+            media_type: row.media_type,
+            source_kind: row.source_kind,
+            url: row.url,
+            storage_path: row.storage_path,
+            text_title: row.text_title,
+            text_body: row.text_body,
+            caption: row.caption,
+          });
+        }
+        setSyncStatus("synced");
+      } catch (err) {
+        if (!cancelled) {
+          console.warn(`[PrincipleMediaSlot] Supabase load threw:`, err);
+          setSyncStatus("local-only");
+        }
+      }
     })();
     return () => {
       cancelled = true;
@@ -117,10 +188,42 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     caption: string | null;
   }>) {
     if (disabled) return;
+    // 1) localStorage — synkron, ger instant "Sparat ✓"
     try {
-      saveLocalSlot(blockId, principleId, patch);
+      const merged = saveLocalSlot(blockId, principleId, patch);
       setErrorMsg(null);
       flashSaved();
+
+      // 2) Supabase — fire-and-forget, syncar mellan enheter
+      void (async () => {
+        const payload = {
+          block_id: blockId,
+          principle_id: principleId,
+          media_type: merged.media_type,
+          source_kind: merged.source_kind,
+          url: merged.url,
+          storage_path: merged.storage_path,
+          text_title: merged.text_title,
+          text_body: merged.text_body,
+          caption: merged.caption,
+        };
+        try {
+          const { error } = await supabaseAny
+            .from("principle_media")
+            .upsert(payload, { onConflict: "block_id,principle_id" });
+          if (error) {
+            if (error.code !== "42P01") {
+              console.warn(`[PrincipleMediaSlot] Supabase upsert failed (${error.code}):`, error.message);
+            }
+            setSyncStatus("local-only");
+          } else {
+            setSyncStatus("synced");
+          }
+        } catch (err) {
+          console.warn(`[PrincipleMediaSlot] Supabase upsert threw:`, err);
+          setSyncStatus("local-only");
+        }
+      })();
     } catch (err) {
       console.error(`[PrincipleMediaSlot] persist failed:`, err);
       const msg = err instanceof Error ? err.message : "Kunde inte spara i lokal lagring.";
@@ -203,6 +306,28 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
     clearLocalSlot(blockId, principleId);
     setErrorMsg(null);
     flashSaved();
+
+    // Radera även på servern om tabellen finns
+    void (async () => {
+      try {
+        const { error } = await supabaseAny
+          .from("principle_media")
+          .delete()
+          .eq("block_id", blockId)
+          .eq("principle_id", principleId);
+        if (error) {
+          if (error.code !== "42P01") {
+            console.warn(`[PrincipleMediaSlot] Supabase delete failed (${error.code}):`, error.message);
+          }
+          setSyncStatus("local-only");
+        } else {
+          setSyncStatus("synced");
+        }
+      } catch (err) {
+        console.warn(`[PrincipleMediaSlot] Supabase delete threw:`, err);
+        setSyncStatus("local-only");
+      }
+    })();
   }
 
   const setTypeAndPersist = (t: MediaType) => {
@@ -405,14 +530,41 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
 
           {hasMedia && (
             <div className="mt-2 flex items-center justify-between gap-2">
-              <span
-                className={cn(
-                  "text-[10px] font-mono font-bold uppercase tracking-[0.18em] transition-opacity",
-                  savedToast ? "text-pitch opacity-100" : "text-muted-foreground/0 opacity-0"
+              <div className="flex items-center gap-3">
+                <span
+                  className={cn(
+                    "text-[10px] font-mono font-bold uppercase tracking-[0.18em] transition-opacity",
+                    savedToast ? "text-pitch opacity-100" : "text-muted-foreground/0 opacity-0"
+                  )}
+                >
+                  Sparat ✓
+                </span>
+                {syncStatus !== "loading" && (
+                  <span
+                    className={cn(
+                      "inline-flex items-center gap-1 text-[10px] font-mono font-bold uppercase tracking-[0.18em]",
+                      syncStatus === "synced" ? "text-pitch" : "text-amber-700"
+                    )}
+                    title={
+                      syncStatus === "synced"
+                        ? "Synkad mot servern — syns för alla inloggade"
+                        : "Bara sparat lokalt i denna webbläsare. Servern är inte aktiverad ännu."
+                    }
+                  >
+                    {syncStatus === "synced" ? (
+                      <>
+                        <Cloud className="h-3 w-3" strokeWidth={2.2} />
+                        Synkad
+                      </>
+                    ) : (
+                      <>
+                        <CloudOff className="h-3 w-3" strokeWidth={2.2} />
+                        Bara lokalt
+                      </>
+                    )}
+                  </span>
                 )}
-              >
-                Sparat ✓
-              </span>
+              </div>
               {!disabled && (
                 <button
                   type="button"
