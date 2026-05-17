@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 import { SQUAD, STAFF, type Player, type StaffMember, type Position } from "@/data/squad";
+import { useRealtimeChannel } from "./useRealtimeChannel";
 
 type PlayerRow = {
   id: string;
@@ -13,45 +15,59 @@ type PlayerRow = {
   sort_order: number | null;
 };
 
-export function useSquad() {
-  const [players, setPlayers] = useState<Player[]>(SQUAD);
-  const [staff, setStaff] = useState<StaffMember[]>(STAFF);
-  const [loading, setLoading] = useState(true);
-  const [usingFallback, setUsingFallback] = useState(true);
+const SQUAD_KEY = ["players", "squad"] as const;
 
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      // @ts-expect-error - players-tabellen finns inte i auto-genererade Supabase-typer än
+interface SquadData {
+  players: Player[];
+  staff: StaffMember[];
+  usingFallback: boolean;
+}
+
+/**
+ * useSquad — trupp + ledarstab med Supabase + realtime fallback.
+ * API: `{ players, staff, loading, usingFallback }`.
+ */
+export function useSquad() {
+  const query = useQuery<SquadData>({
+    queryKey: SQUAD_KEY,
+    queryFn: async () => {
+      // @ts-expect-error - players-tabellen finns inte i auto-genererade typer
       const { data, error } = await supabase.from("players").select("*").order("sort_order");
-      if (!mounted) return;
-      if (error || !data || (data as unknown as PlayerRow[]).length === 0) {
-        setLoading(false);
-        return;
+      if (error) {
+        logger.warn(error, { scope: "squad" });
+        return { players: SQUAD, staff: STAFF, usingFallback: true };
       }
-      const rows = data as unknown as PlayerRow[];
-      setPlayers(
-        rows
+      const rows = (data ?? []) as unknown as PlayerRow[];
+      if (rows.length === 0) {
+        return { players: SQUAD, staff: STAFF, usingFallback: true };
+      }
+      return {
+        players: rows
           .filter((r) => !r.is_staff)
           .map((r) => ({
             name: r.name,
             position: r.position,
             jerseyNumber: r.jersey_number ?? undefined,
             birthYear: r.birth_year ?? undefined,
-          }))
-      );
-      setStaff(
-        rows
+          })),
+        staff: rows
           .filter((r) => r.is_staff && r.staff_role)
-          .map((r) => ({ name: r.name, role: r.staff_role! }))
-      );
-      setUsingFallback(false);
-      setLoading(false);
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+          .map((r) => ({ name: r.name, role: r.staff_role! })),
+        usingFallback: false,
+      };
+    },
+  });
 
-  return { players, staff, loading, usingFallback };
+  useRealtimeChannel({
+    table: "players",
+    invalidate: [SQUAD_KEY],
+  });
+
+  return {
+    players: query.data?.players ?? SQUAD,
+    staff: query.data?.staff ?? STAFF,
+    loading: query.isLoading,
+    usingFallback: query.data?.usingFallback ?? true,
+    error: query.error,
+  };
 }

@@ -2,11 +2,13 @@ import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import AuthGuard from "./components/AuthGuard";
 import Layout from "./components/Layout";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { createAppQueryClient } from "./lib/queryClient";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -42,33 +44,49 @@ const Taktiktavla = lazy(() => import("./pages/Taktiktavla"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+const queryClient = createAppQueryClient();
 
 const PageFallback = () => (
-  <div className="min-h-screen hero-gradient flex items-center justify-center">
+  <div className="min-h-screen hero-gradient flex items-center justify-center" role="status" aria-label="Laddar sida">
     <Loader2 className="h-8 w-8 animate-spin text-primary" />
+    <span className="sr-only">Laddar…</span>
   </div>
 );
 
-// Wrap a protected page with AuthGuard + shared Layout (nav + animated background + footer).
-const Protected = ({ children, requireApproval = true }: { children: React.ReactNode; requireApproval?: boolean }) => (
+// Wrap a protected page with AuthGuard + shared Layout + ErrorBoundary.
+const Protected = ({
+  children,
+  requireApproval = true,
+  routeName,
+}: {
+  children: React.ReactNode;
+  requireApproval?: boolean;
+  routeName?: string;
+}) => (
   <AuthGuard requireApproval={requireApproval}>
     <Layout>
-      <Suspense fallback={<PageFallback />}>{children}</Suspense>
+      <ErrorBoundary routeName={routeName}>
+        <Suspense fallback={<PageFallback />}>{children}</Suspense>
+      </ErrorBoundary>
     </Layout>
   </AuthGuard>
 );
 
-// Print-vy: ingen Layout (för ren A4), men fortfarande Suspense.
-const Public = ({ children }: { children: React.ReactNode }) => (
+// Public-vy: ingen auth, men Layout + ErrorBoundary för felsäkerhet.
+const Public = ({ children, routeName }: { children: React.ReactNode; routeName?: string }) => (
   <Layout>
-    <Suspense fallback={<PageFallback />}>{children}</Suspense>
+    <ErrorBoundary routeName={routeName}>
+      <Suspense fallback={<PageFallback />}>{children}</Suspense>
+    </ErrorBoundary>
   </Layout>
 );
 
-const PrintRoute = ({ children }: { children: React.ReactNode }) => (
+// Print-vy: ingen Layout (för ren A4), men fortfarande Suspense + ErrorBoundary.
+const PrintRoute = ({ children, routeName }: { children: React.ReactNode; routeName?: string }) => (
   <AuthGuard>
-    <Suspense fallback={<PageFallback />}>{children}</Suspense>
+    <ErrorBoundary routeName={routeName}>
+      <Suspense fallback={<PageFallback />}>{children}</Suspense>
+    </ErrorBoundary>
   </AuthGuard>
 );
 
@@ -82,42 +100,45 @@ const App = () => (
           <Route path="/login" element={<Login />} />
 
           {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
-          <Route path="/" element={<Public><Hem /></Public>} />
-          <Route path="/period/1" element={<Protected><Period1 /></Protected>} />
-          <Route path="/maj-2026" element={<Public><MajSpelmodell /></Public>} />
-          <Route path="/spelide" element={<Protected><Spelide /></Protected>} />
-          <Route path="/forsvar" element={<Protected><Forsvar /></Protected>} />
-          <Route path="/anfall" element={<Protected><Anfall /></Protected>} />
-          <Route path="/omstallning-forsvar" element={<Protected><OmstallningForsvar /></Protected>} />
-          <Route path="/omstallning-anfall" element={<Protected><OmstallningAnfall /></Protected>} />
-          <Route path="/fasta" element={<Protected><Fasta /></Protected>} />
-          <Route path="/fasta/forsvar" element={<Protected><FastaForsvar /></Protected>} />
-          <Route path="/fasta/anfall" element={<Protected><FastaAnfall /></Protected>} />
-          <Route path="/match/forra" element={<Protected><MatchForra /></Protected>} />
-          <Route path="/match/kommande" element={<Protected><MatchKommande /></Protected>} />
-          <Route path="/match/reflektioner" element={<Protected><MatchReflektioner /></Protected>} />
-          <Route path="/match/matcher" element={<Protected><Matcher /></Protected>} />
-          <Route path="/truppen" element={<Protected><Truppen /></Protected>} />
-          <Route path="/roller" element={<Protected><Roller /></Protected>} />
-          <Route path="/identitet" element={<Protected><Identitet /></Protected>} />
-          <Route path="/identitet/:slug" element={<Protected><Identitet /></Protected>} />
-          <Route path="/spelmodell-labb" element={<Protected><SpelmodellLab /></Protected>} />
-          <Route path="/verktyg" element={<Protected><Verktyg /></Protected>} />
-          <Route path="/under-process" element={<Protected><UnderProcess /></Protected>} />
+          <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
+          <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
+          {/* /maj-2026 är medvetet Public — spelarna ska kunna nå filmerna utan inlogg */}
+          <Route path="/maj-2026" element={<Public routeName="Maj 2026"><MajSpelmodell /></Public>} />
+          <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
+          <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
+          <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
+          <Route path="/omstallning-forsvar" element={<Protected routeName="Omställning försvar"><OmstallningForsvar /></Protected>} />
+          <Route path="/omstallning-anfall" element={<Protected routeName="Omställning anfall"><OmstallningAnfall /></Protected>} />
+          <Route path="/fasta" element={<Protected routeName="Fasta"><Fasta /></Protected>} />
+          <Route path="/fasta/forsvar" element={<Protected routeName="Fasta försvar"><FastaForsvar /></Protected>} />
+          <Route path="/fasta/anfall" element={<Protected routeName="Fasta anfall"><FastaAnfall /></Protected>} />
+          <Route path="/match/forra" element={<Protected routeName="Förra matchen"><MatchForra /></Protected>} />
+          <Route path="/match/kommande" element={<Protected routeName="Kommande match"><MatchKommande /></Protected>} />
+          <Route path="/match/reflektioner" element={<Protected routeName="Reflektioner"><MatchReflektioner /></Protected>} />
+          <Route path="/match/matcher" element={<Protected routeName="Matcher"><Matcher /></Protected>} />
+          <Route path="/truppen" element={<Protected routeName="Truppen"><Truppen /></Protected>} />
+          <Route path="/roller" element={<Protected routeName="Roller"><Roller /></Protected>} />
+          <Route path="/identitet" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
+          <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
+          <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
+          <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
+          <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
 
           {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
-          <Route path="/traningsplan" element={<PrintRoute><TrainingPlan /></PrintRoute>} />
-          <Route path="/matchblad" element={<PrintRoute><Matchblad /></PrintRoute>} />
-          <Route path="/motstandaranalys" element={<PrintRoute><Motstandaranalys /></PrintRoute>} />
-          <Route path="/taktiktavla" element={<PrintRoute><Taktiktavla /></PrintRoute>} />
+          <Route path="/traningsplan" element={<PrintRoute routeName="Träningsplan"><TrainingPlan /></PrintRoute>} />
+          <Route path="/matchblad" element={<PrintRoute routeName="Matchblad"><Matchblad /></PrintRoute>} />
+          <Route path="/motstandaranalys" element={<PrintRoute routeName="Motståndaranalys"><Motstandaranalys /></PrintRoute>} />
+          <Route path="/taktiktavla" element={<PrintRoute routeName="Taktiktavla"><Taktiktavla /></PrintRoute>} />
 
           <Route
             path="/admin"
             element={
               <AuthGuard requireApproval={false}>
-                <Suspense fallback={<PageFallback />}>
-                  <Admin />
-                </Suspense>
+                <ErrorBoundary routeName="Admin">
+                  <Suspense fallback={<PageFallback />}>
+                    <Admin />
+                  </Suspense>
+                </ErrorBoundary>
               </AuthGuard>
             }
           />

@@ -1,0 +1,20 @@
+{
+  "name": "Gunnilse IS · Spelmodell 2026",
+  "short_name": "Spelmodellen",
+  "description": "Hela spelmodellen — försvar, omställning, anfall, identitet och fasta.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0b121a",
+  "lang": "sv-SE",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["sports", "education"]
+}
