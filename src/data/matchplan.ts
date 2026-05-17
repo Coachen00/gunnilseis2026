@@ -45,6 +45,9 @@ export const MATCH_META: MatchMeta = {
   absent: [],
 };
 
+export const MATCH_PRESENTATION_URL =
+  "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
+
 /* Matchdagsschema — visas i hero och i praktisk-info-block. */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: "17:45", label: "Samling", note: "Generatorsplan" },

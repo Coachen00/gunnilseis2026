@@ -13,7 +13,7 @@
  */
 
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, MapPin, Clock, Users, ChevronRight, Shirt, Star } from "lucide-react";
+import { ArrowRight, Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, Shirt, Star } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
@@ -22,6 +22,7 @@ import {
   FOCUS,
   MATCH_META,
   MATCH_PLAN_SHORT,
+  MATCH_PRESENTATION_URL,
   MATCH_SCHEDULE,
   PRACTICAL_INFO,
   type PlanCard,
@@ -58,13 +59,25 @@ function MatchInfoCard() {
               {MATCH_META.home ? "Hemma" : "Borta"} · {MATCH_META.competition}
             </p>
           </div>
-          <Link
-            to="/motstandaranalys"
-            className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/60 bg-amber-500 px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-950 transition hover:bg-amber-400"
-          >
-            Motståndaranalys
-            <ChevronRight className="h-3 w-3" strokeWidth={2.4} />
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            <a
+              href={MATCH_PRESENTATION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-md border border-sky-500/60 bg-sky-500 px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-sky-950 transition hover:bg-sky-400"
+              aria-label="Öppna redigerbar presentation för veckans match"
+            >
+              Presentation
+              <ExternalLink className="h-3 w-3" strokeWidth={2.4} />
+            </a>
+            <Link
+              to="/motstandaranalys"
+              className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/60 bg-amber-500 px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-950 transition hover:bg-amber-400"
+            >
+              Motståndaranalys
+              <ChevronRight className="h-3 w-3" strokeWidth={2.4} />
+            </Link>
+          </div>
         </div>
       </div>
 
