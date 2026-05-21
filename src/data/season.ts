@@ -81,6 +81,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Kareby Hed",
+    ourScore: 1,
+    theirScore: 1,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901098/kareby-is",
   },
   {
@@ -90,6 +92,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 2 Konstgräs",
+    ourScore: 3,
+    theirScore: 1,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901099/ifk-bjorko",
   },
   {

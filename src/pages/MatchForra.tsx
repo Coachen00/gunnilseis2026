@@ -1,23 +1,44 @@
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
-import { FORRA_MATCH } from "@/data/forraMatch";
+import { getForraMatch, type ForraMatch } from "@/data/forraMatch";
 import { formatMatchDate } from "@/lib/dateUtils";
 
-const homeAwayLabel = (m: typeof FORRA_MATCH.meta) =>
+const homeAwayLabel = (m: ForraMatch["meta"]) =>
   m.homeAway === "home" ? "Hemma" : "Borta";
 
 const Placeholder = ({ children }: { children: React.ReactNode }) => (
   <p className="text-sm italic text-muted-foreground">{children}</p>
 );
 
+const resultText = (m: ForraMatch["meta"]) => {
+  if (m.ourScore == null || m.theirScore == null) return "—";
+  return `${m.ourScore}–${m.theirScore}`;
+};
+
 const MatchForra = () => {
-  const m = FORRA_MATCH;
+  // Dynamiskt: hämtar senast spelade matchen från season.ts.
+  // Auto-rullar vidare när nästa match är spelad utan kod-redigering.
+  const m = getForraMatch();
+
+  if (!m) {
+    return (
+      <>
+        <PageHero
+          eyebrow="Match · Förra"
+          title="Ingen spelad match än"
+          description="Säsongen har inte börjat — kom tillbaka efter första match."
+        />
+      </>
+    );
+  }
+
+  const hasResult = m.meta.ourScore != null && m.meta.theirScore != null;
 
   return (
     <>
       <PageHero
         eyebrow="Match · Förra"
-        title={`${m.meta.opponent} · ${m.meta.ourScore}–${m.meta.theirScore}`}
+        title={hasResult ? `${m.meta.opponent} · ${resultText(m.meta)}` : m.meta.opponent}
         description={m.summary}
       />
 
@@ -50,7 +71,9 @@ const MatchForra = () => {
                 Resultat
               </div>
               <div className="text-2xl font-bold tracking-tight tabular text-foreground">
-                {m.meta.ourScore}–{m.meta.theirScore}
+                {hasResult ? resultText(m.meta) : (
+                  <span className="text-base italic text-muted-foreground">Ej rapporterat</span>
+                )}
               </div>
             </div>
           </div>
