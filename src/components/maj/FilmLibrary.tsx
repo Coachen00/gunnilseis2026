@@ -536,36 +536,19 @@ export default function FilmLibrary() {
       className="scroll-mt-24 border-t border-border bg-gradient-to-b from-muted/30 via-background to-background py-16 md:py-20"
     >
       <div className="container">
-        <div className="mb-3 flex items-center gap-3">
-          <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
-          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
-            Filmbibliotek
-          </p>
-        </div>
-        <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-2xl">
-            <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl lg:text-4xl">
-              Hitta rätt film direkt
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Allt material under Maj 2026 sorterat efter spelfas. Klicka på ett
-              klipp så öppnas spelaren direkt — använd pilarna för att bläddra
-              mellan filmer i samma fas.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
-              <Film className="h-3 w-3 text-amber-700" strokeWidth={2.2} />
-              {totals.videos} filmer
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
-              <ImageIcon className="h-3 w-3 text-amber-700" strokeWidth={2.2} />
-              {totals.total - totals.videos} bilder
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
-              {totals.categoriesWithMedia} / {CATEGORIES.length} kategorier
-            </span>
-          </div>
+        <h2 className="sr-only">Filmbibliotek</h2>
+        <div className="mb-8 flex flex-wrap items-center gap-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
+            <Film className="h-3 w-3 text-amber-700" strokeWidth={2.2} />
+            {totals.videos} filmer
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
+            <ImageIcon className="h-3 w-3 text-amber-700" strokeWidth={2.2} />
+            {totals.total - totals.videos} bilder
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3 py-1.5">
+            {totals.categoriesWithMedia} / {CATEGORIES.length} kategorier
+          </span>
         </div>
 
         {/* Snabb-nav chips */}
