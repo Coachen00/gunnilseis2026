@@ -53,26 +53,9 @@ const PageFallback = () => (
   </div>
 );
 
-// Wrap a protected page with AuthGuard + shared Layout + ErrorBoundary.
-const Protected = ({
-  children,
-  requireApproval = true,
-  routeName,
-}: {
-  children: React.ReactNode;
-  requireApproval?: boolean;
-  routeName?: string;
-}) => (
-  <AuthGuard requireApproval={requireApproval}>
-    <Layout>
-      <ErrorBoundary routeName={routeName}>
-        <Suspense fallback={<PageFallback />}>{children}</Suspense>
-      </ErrorBoundary>
-    </Layout>
-  </AuthGuard>
-);
-
-// Public-vy: ingen auth, men Layout + ErrorBoundary för felsäkerhet.
+// Public-vy: ingen auth, Layout + ErrorBoundary. All innehållsidor använder
+// denna sedan vi gjort hela sajten publik. Inloggning krävs nu endast för
+// admin-panelen.
 const Public = ({ children, routeName }: { children: React.ReactNode; routeName?: string }) => (
   <Layout>
     <ErrorBoundary routeName={routeName}>
@@ -81,13 +64,11 @@ const Public = ({ children, routeName }: { children: React.ReactNode; routeName?
   </Layout>
 );
 
-// Print-vy: ingen Layout (för ren A4), men fortfarande Suspense + ErrorBoundary.
+// Print-vy: ingen Layout (för ren A4-utskrift) — också publik.
 const PrintRoute = ({ children, routeName }: { children: React.ReactNode; routeName?: string }) => (
-  <AuthGuard>
-    <ErrorBoundary routeName={routeName}>
-      <Suspense fallback={<PageFallback />}>{children}</Suspense>
-    </ErrorBoundary>
-  </AuthGuard>
+  <ErrorBoundary routeName={routeName}>
+    <Suspense fallback={<PageFallback />}>{children}</Suspense>
+  </ErrorBoundary>
 );
 
 const App = () => (
@@ -99,37 +80,37 @@ const App = () => (
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* Content pages — wrapped with Layout (sticky nav + animated bg) */}
+          {/* Alla innehållsidor är nu publika — ingen inloggning krävs */}
           <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
-          <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
-          {/* /maj-2026 är medvetet Public — spelarna ska kunna nå filmerna utan inlogg */}
+          <Route path="/period/1" element={<Public routeName="Period 1"><Period1 /></Public>} />
           <Route path="/maj-2026" element={<Public routeName="Maj 2026"><MajSpelmodell /></Public>} />
-          <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
-          <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
-          <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
-          <Route path="/omstallning-forsvar" element={<Protected routeName="Omställning försvar"><OmstallningForsvar /></Protected>} />
-          <Route path="/omstallning-anfall" element={<Protected routeName="Omställning anfall"><OmstallningAnfall /></Protected>} />
-          <Route path="/fasta" element={<Protected routeName="Fasta"><Fasta /></Protected>} />
-          <Route path="/fasta/forsvar" element={<Protected routeName="Fasta försvar"><FastaForsvar /></Protected>} />
-          <Route path="/fasta/anfall" element={<Protected routeName="Fasta anfall"><FastaAnfall /></Protected>} />
-          <Route path="/match/forra" element={<Protected routeName="Förra matchen"><MatchForra /></Protected>} />
-          <Route path="/match/kommande" element={<Protected routeName="Kommande match"><MatchKommande /></Protected>} />
-          <Route path="/match/reflektioner" element={<Protected routeName="Reflektioner"><MatchReflektioner /></Protected>} />
-          <Route path="/match/matcher" element={<Protected routeName="Matcher"><Matcher /></Protected>} />
-          <Route path="/truppen" element={<Protected routeName="Truppen"><Truppen /></Protected>} />
-          <Route path="/roller" element={<Protected routeName="Roller"><Roller /></Protected>} />
-          <Route path="/identitet" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
-          <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
-          <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
-          <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
-          <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
+          <Route path="/spelide" element={<Public routeName="Spelidé"><Spelide /></Public>} />
+          <Route path="/forsvar" element={<Public routeName="Försvar"><Forsvar /></Public>} />
+          <Route path="/anfall" element={<Public routeName="Anfall"><Anfall /></Public>} />
+          <Route path="/omstallning-forsvar" element={<Public routeName="Omställning försvar"><OmstallningForsvar /></Public>} />
+          <Route path="/omstallning-anfall" element={<Public routeName="Omställning anfall"><OmstallningAnfall /></Public>} />
+          <Route path="/fasta" element={<Public routeName="Fasta"><Fasta /></Public>} />
+          <Route path="/fasta/forsvar" element={<Public routeName="Fasta försvar"><FastaForsvar /></Public>} />
+          <Route path="/fasta/anfall" element={<Public routeName="Fasta anfall"><FastaAnfall /></Public>} />
+          <Route path="/match/forra" element={<Public routeName="Förra matchen"><MatchForra /></Public>} />
+          <Route path="/match/kommande" element={<Public routeName="Kommande match"><MatchKommande /></Public>} />
+          <Route path="/match/reflektioner" element={<Public routeName="Reflektioner"><MatchReflektioner /></Public>} />
+          <Route path="/match/matcher" element={<Public routeName="Matcher"><Matcher /></Public>} />
+          <Route path="/truppen" element={<Public routeName="Truppen"><Truppen /></Public>} />
+          <Route path="/roller" element={<Public routeName="Roller"><Roller /></Public>} />
+          <Route path="/identitet" element={<Public routeName="Identitet"><Identitet /></Public>} />
+          <Route path="/identitet/:slug" element={<Public routeName="Identitet"><Identitet /></Public>} />
+          <Route path="/spelmodell-labb" element={<Public routeName="Spelmodell-labb"><SpelmodellLab /></Public>} />
+          <Route path="/verktyg" element={<Public routeName="Verktyg"><Verktyg /></Public>} />
+          <Route path="/under-process" element={<Public routeName="Under process"><UnderProcess /></Public>} />
 
-          {/* Print-optimized tools — kept WITHOUT Layout to preserve clean A4 output */}
+          {/* Print-optimerade tools — också publika nu, men utan Layout-chrome (A4) */}
           <Route path="/traningsplan" element={<PrintRoute routeName="Träningsplan"><TrainingPlan /></PrintRoute>} />
           <Route path="/matchblad" element={<PrintRoute routeName="Matchblad"><Matchblad /></PrintRoute>} />
           <Route path="/motstandaranalys" element={<PrintRoute routeName="Motståndaranalys"><Motstandaranalys /></PrintRoute>} />
           <Route path="/taktiktavla" element={<PrintRoute routeName="Taktiktavla"><Taktiktavla /></PrintRoute>} />
 
+          {/* Endast /admin är fortfarande inloggnings-skyddad — ledar-panel */}
           <Route
             path="/admin"
             element={
