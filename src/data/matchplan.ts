@@ -48,9 +48,11 @@ export const MATCH_META: MatchMeta = {
 export const MATCH_PRESENTATION_URL =
   "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
 
-/* Matchdagsschema — visas i hero och i praktisk-info-block. */
+/* Matchdagsschema — visas i hero och i praktisk-info-block.
+ * Samling sker på Hjällbovallen (Gunnilses hemmaplan) före avresa till
+ * Generatorsplan där matchen spelas. */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: "17:45", label: "Samling", note: "Generatorsplan" },
+  { time: "17:30", label: "Samling", note: "Hjällbovallen" },
   { time: "Före avresa/uppvärmning", label: "Genomgång" },
   { time: "18:35 – 19:05", label: "Aktivering" },
   { time: "19:05 – 19:12", label: "Ner + sista instruktion" },

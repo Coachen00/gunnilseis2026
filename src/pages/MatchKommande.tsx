@@ -17,6 +17,7 @@ import { ArrowRight, Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink,
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
+import MatchgenomgangEditor from "@/components/match/MatchgenomgangEditor";
 import {
   CALLED_SQUAD,
   FOCUS,
@@ -384,6 +385,10 @@ const MatchKommande = () => (
     <div className="container space-y-8 pb-section md:space-y-10">
       <SectionReveal>
         <MatchInfoCard />
+      </SectionReveal>
+
+      <SectionReveal>
+        <MatchgenomgangEditor />
       </SectionReveal>
 
       <SectionReveal>
