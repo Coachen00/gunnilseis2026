@@ -2,7 +2,12 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import MajSpelmodell from "./MajSpelmodell";
-import { MAJ_2026_BLOCKS, MAJ_2026_HERO, MAJ_2026_NAV_CARDS } from "@/data/majSpelmodell";
+import {
+  MAJ_2026_BLOCKS,
+  MAJ_2026_HERO,
+  MAJ_2026_NAV_CARDS,
+  MAJ_2026_PRINCIPLE_MEDIA,
+} from "@/data/majSpelmodell";
 
 const renderPage = () =>
   render(
@@ -73,5 +78,24 @@ describe("MajSpelmodell page", () => {
         expect(p.oneLiner.length).toBeGreaterThan(0);
       }
     }
+  });
+
+  it("sorterar Björkö-spellistans klipp efter titel till rätt princip", () => {
+    expect(MAJ_2026_PRINCIPLE_MEDIA.anfallsspel["spela-ut"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/l1H5hwu3CNQ",
+          label: "anfallsspel. Spelvändning, fram, avslut",
+        }),
+      ])
+    );
+    expect(MAJ_2026_PRINCIPLE_MEDIA.identitet.andrabollsspel).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/q5Y4ThoZqK4",
+          label: "Identitet. 2a boll, Ihab, bollvinst",
+        }),
+      ])
+    );
   });
 });

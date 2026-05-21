@@ -373,8 +373,8 @@ function CategoryCard({
   const imageCount = items.length - videoCount;
   const hasItems = items.length > 0;
 
-  // Preview = max 3 items i kategorikortet
-  const preview = items.slice(0, 3);
+  // Visa fler direkt i kortet så nya matchklipp inte göms bakom modal-bläddring.
+  const preview = items.slice(0, 6);
 
   return (
     <article

@@ -372,6 +372,7 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
     "spela-ut": [
       M("anf-vandning-utnyttjar-inte-2-vs-1.mp4", "Anfall — vändning, utnyttjar inte 2 vs 1"),
       M("anf-2-vs-1-ej-lyckat.png", "Anfall — 2 vs 1 ej lyckat", "image"),
+      U("https://youtu.be/l1H5hwu3CNQ", "anfallsspel. Spelvändning, fram, avslut"),
     ],
     "ta-med-framat": [
       M("assistytan-2-vs-1.png", "Assistytan — 2 vs 1", "image"),
@@ -389,6 +390,7 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       M("forsv-2a-bollsspel.mp4", "Försvar — 2:a bollsspel"),
       U("https://youtu.be/2YAQ5wXf_2M", "2:a bollsspel — ej lyckat"),
       U("https://youtu.be/PSP_YpetKYc", "2:a bollsspel — var beredd på lång boll"),
+      U("https://youtu.be/q5Y4ThoZqK4", "Identitet. 2a boll, Ihab, bollvinst"),
       M("2a-bollsspel-misslyckat.png", "2:a bollsspel — misslyckat", "image"),
     ],
     "vardigt-kroppssprak": [
