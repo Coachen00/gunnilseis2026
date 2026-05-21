@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION } from "@/data/matchplan";
+import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION, PRACTICAL_INFO } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
@@ -11,7 +11,7 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  * - att MATCH_META är ifylld med riktig motståndare/avspark
  * - att FOCUS har 1-5 punkter
  * - att COHERENCE har förväntade sektions-id (matchar genvägar i sidofältet)
- * - att FORMATION/kallad trupp inte råkar visa föregående match när kallelsen saknas
+ * - att FORMATION inte råkar visa föregående match när startelvan saknas
  */
 
 describe("matchplan", () => {
@@ -33,15 +33,20 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Vardar-kallelsen är satt", () => {
+  it("FORMATION är tom tills Vardar-startelvan är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp är inte återanvänd från Björkö-matchen", () => {
+  it("kallad trupp är inlagd för Vardar och Ado är kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toEqual(
+      expect.arrayContaining(["Ali Carneil", "Adnan Hadzialic", "Yosef Ismail"])
+    );
+    expect(CALLED_SQUAD.bench).not.toEqual(expect.arrayContaining(["Pascal", "Sabarr"]));
+    expect(PRACTICAL_INFO.responsibilities).toEqual(expect.arrayContaining([["Kapten", "Ado"]]));
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {

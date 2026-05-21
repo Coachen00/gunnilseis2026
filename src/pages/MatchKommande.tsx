@@ -138,6 +138,7 @@ function BigFact({
 function KalladTrupp() {
   const totalPlayers = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
   const hasStartingLineup = CALLED_SQUAD.starting.length === 11;
+  const calledPlayers = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
 
   return (
     <article className="rounded-2xl border border-border bg-card p-5 md:p-7">
@@ -147,12 +148,16 @@ function KalladTrupp() {
             Kallad trupp
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
-            {totalPlayers > 0 ? `${totalPlayers} spelare · 4-2-3-1` : "Kallelse kommer"}
+            {totalPlayers > 0
+              ? hasStartingLineup
+                ? `${totalPlayers} spelare · 4-2-3-1`
+                : `${totalPlayers} spelare kallade`
+              : "Kallelse kommer"}
           </h2>
         </div>
       </header>
 
-      {!hasStartingLineup && (
+      {totalPlayers === 0 && (
         <div className="rounded-xl border border-dashed border-amber-500/60 bg-amber-50 px-5 py-4">
           <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
             Inte inlagd än
@@ -160,6 +165,27 @@ function KalladTrupp() {
           <p className="mt-1 text-sm font-bold leading-relaxed text-foreground">
             Startelva, avbytare och fasta ansvar fylls i när kallelsen är satt.
           </p>
+        </div>
+      )}
+
+      {totalPlayers > 0 && !hasStartingLineup && (
+        <div className="rounded-xl border border-border bg-background p-4 md:p-5">
+          <p className="mb-4 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
+            Kallade spelare
+          </p>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {calledPlayers.map((name, i) => (
+              <div
+                key={name}
+                className="flex items-center gap-3 rounded-md border border-border bg-card px-3 py-2.5"
+              >
+                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[10px] font-black text-amber-800">
+                  {i + 1}
+                </span>
+                <span className="text-sm font-bold text-foreground">{name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

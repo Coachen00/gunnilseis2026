@@ -120,7 +120,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 export const PRACTICAL_INFO = {
   kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
   responsibilities: [
-    ["Kapten", "Bekräftas i kallelse"],
+    ["Kapten", "Ado"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -130,7 +130,24 @@ export const PRACTICAL_INFO = {
 
 export const CALLED_SQUAD = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Daniel Matin",
+    "Rayan Fedaila",
+    "Rinor Zenullah",
+    "Vedat Dzambegovic",
+    "Ahmad Aljafari",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Yosef Ismail",
+  ],
 } as const;
 
 export const FOCUS: string[] = [

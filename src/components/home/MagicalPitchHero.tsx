@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { MATCH_META } from "@/data/matchplan";
 
 type Principle = {
   id: string;
@@ -123,13 +124,11 @@ export default function MagicalPitchHero() {
                 transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
                 className="text-[2.6rem] font-black leading-[0.96] tracking-tight text-[#fef3e2] sm:text-6xl md:text-7xl lg:text-[5.2rem]"
               >
-                En magisk
+                Nästa match
                 <br />
                 <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
-                  fotbollsvärld
+                  mot Vardar
                 </span>
-                <br />
-                tar form.
               </motion.h1>
 
               {/* Underrubrik */}
@@ -139,8 +138,8 @@ export default function MagicalPitchHero() {
                 transition={{ duration: 0.7, delay: 0.65 }}
                 className="mt-7 max-w-xl text-base leading-relaxed text-amber-100/85 md:text-lg"
               >
-                Planen vaknar, linjerna tecknas och bollen glider fram. Sex
-                spelfaser, ett lag och en idé — så spelar vi fotboll i Gunnilse IS.
+                {MATCH_META.kickoff} · {MATCH_META.venue}. Samling 17:30 på Hjällbovallen.
+                Truppen är kallad och matchplanen ligger under Veckans match.
               </motion.p>
 
               {/* CTAs — auth-aware: logged-in får action-länkar, ej-inloggad får login/signup */}
