@@ -1,11 +1,12 @@
 /**
- * Reflektion förra matchen — Velebit (lör 2 maj, 13:00, hemma 1–0).
+ * Reflektioner per match — hämtas automatiskt för senast spelade matchen.
  *
- * Statisk i kod tills vidare så hela laget och alla i ledarstaben kan läsa
- * samma sak inför nästa match utan att Supabase-fältet behöver vara ifyllt.
+ * Källa: `season.ts` är sanning för datum + resultat (svenskalag.se).
+ * `REFLECTIONS` håller tränarens manuella reflektion per match-id.
  *
- * Fakta (resultat, datum, plats) från https://www.svenskalag.se/gunnilseis-herr/matcher.
- * Spelartrupp + tränaranteckningar/reflektioner fyller huvudtränaren i.
+ * När en match är klar men tränaren inte har fyllt i ännu visas en
+ * auto-summary baserad på resultat + en tom shell ("Fylls i av
+ * tränaren") så användaren ALDRIG ser fel match som "förra".
  */
 
 import { lastPlayedMatch, SEASON_MATCHES, type SeasonMatch } from "./season";
@@ -36,53 +37,101 @@ export interface ForraMatch {
   larDomar: string[];
 }
 
-const meta = SEASON_MATCHES.find((m) => m.id === "2026-05-02-velebit")!;
+type ReflectionContent = Omit<ForraMatch, "meta">;
 
-export const FORRA_MATCH: ForraMatch = {
-  meta,
-  summary:
-    "Vi vann 1–0 hemma. Femte raka utan förlust (4 vinster + 1 oavgjord, 11/15 möjliga poäng).",
-  truppen: [], // TODO: tränaren fyller i — startelva + avbytare som spelade
-  ejTillgangliga: [], // TODO om relevant
-  blocks: [
-    {
-      badge: "Bra",
-      title: "Det här fungerade",
-      bullets: [], // TODO: fylls i av tränaren
-    },
-    {
-      badge: "Förbättra",
-      title: "Det här tar vi tag i",
-      bullets: [], // TODO
-    },
-    {
-      badge: "Anfall",
-      title: "Anfall — så blev det",
-      bullets: [], // TODO
-    },
-    {
-      badge: "Försvar",
-      title: "Försvar — så blev det",
-      bullets: [], // TODO
-    },
-    {
-      badge: "Omställningar",
-      title: "Omställningar",
-      bullets: [], // TODO
-    },
-    {
-      badge: "Fasta",
-      title: "Fasta situationer",
-      bullets: [], // TODO
-    },
-  ],
-  larDomar: [], // TODO: 1–3 punkter
+/* =================================================================
+   REFLEKTIONER PER MATCH
+   Lägg till nya entries här när tränaren skrivit klart en reflektion.
+   ================================================================= */
+
+const STANDARD_BLOCKS: ForraMatchSection[] = [
+  { badge: "Bra", title: "Det här fungerade", bullets: [] },
+  { badge: "Förbättra", title: "Det här tar vi tag i", bullets: [] },
+  { badge: "Anfall", title: "Anfall — så blev det", bullets: [] },
+  { badge: "Försvar", title: "Försvar — så blev det", bullets: [] },
+  { badge: "Omställningar", title: "Omställningar", bullets: [] },
+  { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+];
+
+export const REFLECTIONS: Record<string, ReflectionContent> = {
+  "2026-05-02-velebit": {
+    summary:
+      "Vi vann 1–0 hemma. Femte raka utan förlust (4 vinster + 1 oavgjord, 11/15 möjliga poäng).",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
+  "2026-05-08-kareby": {
+    summary:
+      "Vi spelade 1–1 borta — fortsatt obesegrade i serien (4 vinster + 2 oavgjorda).",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
+  "2026-05-16-ifk-bjorko": {
+    summary:
+      "Vi vann 3–1 hemma mot IFK Björkö — sjunde raka utan förlust.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
 };
 
-/** Hjälpfunktion: hämta senaste spelade match från säsongsdata + statisk reflektion. */
-export function getForraMatch(now = new Date()) {
+/* =================================================================
+   AUTO-SUMMARY från resultat — används när tränaren inte hunnit skriva
+   ================================================================= */
+
+function autoSummary(m: SeasonMatch): string {
+  if (m.ourScore == null || m.theirScore == null) {
+    return "Resultat ej rapporterat än — fylls in när matchen är klar.";
+  }
+  const place = m.homeAway === "home" ? "hemma" : "borta";
+  if (m.ourScore > m.theirScore) {
+    return `Vi vann ${m.ourScore}–${m.theirScore} ${place} mot ${m.opponent}.`;
+  }
+  if (m.ourScore < m.theirScore) {
+    return `Vi förlorade ${m.ourScore}–${m.theirScore} ${place} mot ${m.opponent}.`;
+  }
+  return `Vi spelade ${m.ourScore}–${m.theirScore} ${place} mot ${m.opponent}.`;
+}
+
+function emptyShell(meta: SeasonMatch): ReflectionContent {
+  return {
+    summary: autoSummary(meta),
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  };
+}
+
+/* =================================================================
+   HUVUD-API: getForraMatch — anropas av sidan
+   ================================================================= */
+
+/**
+ * Hämtar senast spelade matchen från `season.ts` och kombinerar med
+ * manuell reflektion om sådan finns. När säsongen rullar vidare flyttar
+ * "förra matchen" sig automatiskt — ingen kod-redigering behövs.
+ */
+export function getForraMatch(now = new Date()): ForraMatch | null {
   const last = lastPlayedMatch(SEASON_MATCHES, now);
   if (!last) return null;
-  if (last.id === FORRA_MATCH.meta.id) return FORRA_MATCH;
-  return { ...FORRA_MATCH, meta: last, blocks: [], truppen: [], larDomar: [] };
+  const reflection = REFLECTIONS[last.id] ?? emptyShell(last);
+  return { meta: last, ...reflection };
 }
+
+/**
+ * Backwards-compat: FORRA_MATCH är fortfarande exporterad så befintliga
+ * tester och eventuell admin-kod kan importera direkt. Den följer dock
+ * NU `getForraMatch()` istället för en hårdkodad match. När du behöver
+ * deterministisk data till en test, anropa `getForraMatch(new Date(...))`
+ * med ett explicit datum istället.
+ */
+export const FORRA_MATCH: ForraMatch = getForraMatch() ?? {
+  meta: SEASON_MATCHES[0],
+  ...emptyShell(SEASON_MATCHES[0]),
+};
