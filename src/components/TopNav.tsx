@@ -103,14 +103,12 @@ const matchGroups: NavGroup[] = [
   },
 ];
 
-/* Maj 2026 dropdown — direktlänk till filmbibliotek + de sex blocken
-   så användaren slipper scrolla till sektionen. */
+/* Maj 2026 dropdown — de sex spelmodellblocken utan separat filmlänk. */
 const majGroups: NavGroup[] = [
   {
     label: "Maj 2026 · Spelmodellen",
     to: "/maj-2026",
     children: [
-      { label: "Filmbibliotek", to: "/maj-2026#filmbibliotek", hint: "Allt klippmaterial sorterat efter spelfas" },
       { label: "Försvarsspel", to: "/maj-2026#forsvarsspel" },
       { label: "Omställning till anfall", to: "/maj-2026#overgang-anfall" },
       { label: "Anfallsspel", to: "/maj-2026#anfallsspel" },
