@@ -13,11 +13,10 @@
  */
 
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, Shirt, Star } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, Shirt, Star } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
-import MatchgenomgangEditor from "@/components/match/MatchgenomgangEditor";
 import {
   CALLED_SQUAD,
   FOCUS,
@@ -44,68 +43,94 @@ const ACCENT: Record<PlanCard["accent"], { bar: string; text: string; bg: string
 function MatchInfoCard() {
   const gathering = MATCH_SCHEDULE[0];
   const totalPlayers = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
+  const kickoffTime = MATCH_META.kickoff.split("·").at(-1)?.trim() ?? MATCH_META.kickoff;
 
   return (
-    <article className="overflow-hidden rounded-2xl border border-border bg-card">
-      <div className="border-b border-border bg-gradient-to-br from-amber-50 to-card px-6 py-5 md:px-8 md:py-6">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
-              Veckans match
-            </p>
-            <h1 className="mt-1 text-3xl font-black tracking-tight text-foreground md:text-4xl">
-              {MATCH_META.opponent}
-            </h1>
-            <p className="mt-1 text-sm font-semibold text-muted-foreground">
-              {MATCH_META.home ? "Hemma" : "Borta"} · {MATCH_META.competition}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <a
-              href={MATCH_PRESENTATION_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-md border border-sky-500/60 bg-sky-500 px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-sky-950 transition hover:bg-sky-400"
-              aria-label="Öppna redigerbar presentation för veckans match"
-            >
-              Presentation
-              <ExternalLink className="h-3 w-3" strokeWidth={2.4} />
-            </a>
-            <Link
-              to="/motstandaranalys"
-              className="inline-flex items-center gap-1.5 rounded-md border border-amber-500/60 bg-amber-500 px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-950 transition hover:bg-amber-400"
-            >
-              Motståndaranalys
-              <ChevronRight className="h-3 w-3" strokeWidth={2.4} />
-            </Link>
-          </div>
+    <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div className="grid gap-0 border-b border-border md:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="bg-gradient-to-br from-amber-50 via-card to-card px-5 py-5 md:px-8 md:py-7">
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+            Veckans match
+          </p>
+          <h1 className="mt-1 text-3xl font-black tracking-tight text-foreground md:text-5xl">
+            {MATCH_META.opponent}
+          </h1>
+          <p className="mt-2 text-sm font-bold text-muted-foreground md:text-base">
+            {MATCH_META.home ? "Hemma" : "Borta"} · {MATCH_META.competition}
+          </p>
+        </div>
+        <div className="grid grid-cols-2 border-t border-border bg-card md:border-l md:border-t-0">
+          <BigFact label="Avspark" value={kickoffTime} icon={<Clock className="h-4 w-4" />} strong />
+          <BigFact label="Samling" value={gathering?.time ?? "Se kallelse"} icon={<Users className="h-4 w-4" />} />
+          <BigFact label="Plats" value={MATCH_META.venue} icon={<MapPin className="h-4 w-4" />} wide />
+          <BigFact label="Trupp" value={totalPlayers > 0 ? `${totalPlayers} spelare` : "Ej publicerad"} icon={<Calendar className="h-4 w-4" />} wide />
         </div>
       </div>
 
-      <dl className="grid grid-cols-2 gap-px bg-border md:grid-cols-4">
-        <Cell icon={<Calendar className="h-4 w-4" />} label="Avspark" value={MATCH_META.kickoff} />
-        <Cell icon={<MapPin className="h-4 w-4" />} label="Plats" value={MATCH_META.venue} />
-        <Cell icon={<Clock className="h-4 w-4" />} label="Samling" value={gathering?.time ?? "Enligt kallelse"} sub={gathering?.note ?? "Bekräftas av ledarstaben"} />
-        <Cell
-          icon={<Users className="h-4 w-4" />}
-          label="Trupp"
-          value={totalPlayers > 0 ? `${totalPlayers} spelare` : "Inte satt"}
-          sub={totalPlayers > 0 ? `${CALLED_SQUAD.starting.length} start + ${CALLED_SQUAD.bench.length} avbytare` : "Kallelse kommer"}
-        />
-      </dl>
+      <div className="grid gap-5 px-5 py-5 md:grid-cols-[minmax(0,1fr)_auto] md:px-8">
+        <div>
+          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
+            Matchdag i ordning
+          </p>
+          <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {MATCH_SCHEDULE.map((step) => (
+              <li key={`${step.time}-${step.label}`} className="rounded-lg border border-border bg-background px-3 py-2">
+                <div className="flex items-baseline gap-2">
+                  <span className="font-mono text-xs font-black text-amber-700">{step.time}</span>
+                  <span className="text-sm font-black text-foreground">{step.label}</span>
+                </div>
+                {step.note && <p className="mt-0.5 text-xs font-medium text-muted-foreground">{step.note}</p>}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="flex flex-wrap content-start gap-2 md:w-56">
+          <a
+            href={MATCH_PRESENTATION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-full items-center justify-between gap-2 rounded-md border border-sky-500/60 bg-sky-500 px-3.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-sky-950 transition hover:bg-sky-400"
+            aria-label="Öppna redigerbar presentation för veckans match"
+          >
+            Presentation
+            <ExternalLink className="h-3 w-3" strokeWidth={2.4} />
+          </a>
+          <Link
+            to="/motstandaranalys"
+            className="inline-flex h-10 w-full items-center justify-between gap-2 rounded-md border border-amber-500/60 bg-amber-500 px-3.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-950 transition hover:bg-amber-400"
+          >
+            Motståndaranalys
+            <ChevronRight className="h-3 w-3" strokeWidth={2.4} />
+          </Link>
+        </div>
+      </div>
     </article>
   );
 }
 
-function Cell({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub?: string }) {
+function BigFact({
+  icon,
+  label,
+  value,
+  strong = false,
+  wide = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  strong?: boolean;
+  wide?: boolean;
+}) {
   return (
-    <div className="bg-card p-4 md:p-5">
+    <div className={`border-border p-4 ${wide ? "col-span-2 border-t" : "border-t first:border-r md:border-t-0 md:first:border-r"}`}>
       <div className="mb-1.5 flex items-center gap-2 text-amber-700">
         {icon}
-        <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em]">{label}</span>
+        <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em]">{label}</span>
       </div>
-      <p className="text-base font-extrabold leading-tight text-foreground md:text-lg">{value}</p>
-      {sub && <p className="mt-0.5 text-xs font-medium text-muted-foreground">{sub}</p>}
+      <p className={`${strong ? "text-3xl md:text-4xl" : "text-base md:text-lg"} font-black leading-tight text-foreground`}>
+        {value}
+      </p>
     </div>
   );
 }
@@ -119,7 +144,7 @@ function KalladTrupp() {
       <header className="mb-5 flex items-end justify-between gap-3">
         <div>
           <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
-            02 · Kallad trupp
+            Kallad trupp
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
             {totalPlayers > 0 ? `${totalPlayers} spelare · 4-2-3-1` : "Kallelse kommer"}
@@ -206,7 +231,7 @@ function MatchplanIKorthet() {
       <header className="mb-5 flex items-end justify-between gap-3 md:mb-6">
         <div>
           <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
-            03 · Matchplan i korthet
+            Matchplan i korthet
           </p>
           <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
             Hur vi spelar matchen
@@ -259,7 +284,7 @@ function TreViktigaste() {
           <div className="mb-1 flex items-center gap-2">
             <Star className="h-4 w-4 text-amber-700" strokeWidth={2.4} />
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
-              04 · Idag är detta viktigast
+              Idag är detta viktigast
             </p>
           </div>
           <h2 className="text-2xl font-black tracking-tight text-foreground md:text-3xl">
@@ -289,81 +314,45 @@ function TreViktigaste() {
 
 function PraktiskInfo() {
   return (
-    <article className="rounded-2xl border border-border bg-card p-5 md:p-7">
+    <article className="rounded-2xl border border-border bg-card p-5 md:p-6">
       <header className="mb-5 flex items-end justify-between gap-3">
         <div>
           <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
-            05 · Praktiskt
+            Praktiskt
           </p>
-          <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
-            Tider, ansvar, kläder
+          <h2 className="mt-1 text-xl font-black tracking-tight text-foreground md:text-2xl">
+            Kläder och ansvar
           </h2>
         </div>
       </header>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        {/* Tidslinje */}
+      <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
-            Schema
+          <div className="mb-3 flex items-center gap-2">
+            <Shirt className="h-4 w-4 text-amber-700" strokeWidth={2.2} />
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
+              Kläder
+            </p>
+          </div>
+          <p className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm font-semibold text-foreground/90">
+            {PRACTICAL_INFO.kit}
           </p>
-          <ol className="relative space-y-3 border-l-2 border-amber-500/40 pl-5">
-            {MATCH_SCHEDULE.map((step, i) => {
-              const isKick = step.label === "Avspark";
-              return (
-                <li key={i} className="relative">
-                  <span
-                    className={`absolute -left-[26px] top-1 grid h-4 w-4 place-items-center rounded-full border-2 ${
-                      isKick ? "border-amber-500 bg-amber-500" : "border-amber-500/50 bg-background"
-                    }`}
-                    aria-hidden="true"
-                  />
-                  <div className="flex flex-wrap items-baseline gap-2">
-                    <span className={`font-mono text-sm font-black ${isKick ? "text-amber-700" : "text-foreground"}`}>
-                      {step.time}
-                    </span>
-                    <span className={`text-sm font-bold ${isKick ? "text-amber-700 uppercase tracking-wide" : "text-foreground/85"}`}>
-                      {step.label}
-                    </span>
-                  </div>
-                  {step.note && (
-                    <p className="text-xs text-muted-foreground">{step.note}</p>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
         </div>
 
-        {/* Ansvar + kläder */}
-        <div className="space-y-5">
-          <div>
-            <div className="mb-3 flex items-center gap-2">
-              <Shirt className="h-4 w-4 text-amber-700" strokeWidth={2.2} />
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
-                Kläder
-              </p>
-            </div>
-            <p className="rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm font-semibold text-foreground/90">
-              {PRACTICAL_INFO.kit}
-            </p>
-          </div>
-
-          <div>
-            <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
-              Ansvar
-            </p>
-            <dl className="grid gap-1.5 rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm">
-              {PRACTICAL_INFO.responsibilities.map(([role, person]) => (
-                <div key={role} className="grid grid-cols-[1fr_auto] items-baseline gap-3">
-                  <dt className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
-                    {role}
-                  </dt>
-                  <dd className="font-bold text-foreground">{person}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+        <div>
+          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
+            Ansvar
+          </p>
+          <dl className="grid gap-1.5 rounded-lg border border-border bg-muted/30 px-4 py-3 text-sm">
+            {PRACTICAL_INFO.responsibilities.map(([role, person]) => (
+              <div key={role} className="grid grid-cols-[1fr_auto] items-baseline gap-3">
+                <dt className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                  {role}
+                </dt>
+                <dd className="font-bold text-foreground">{person}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </article>
@@ -388,15 +377,7 @@ const MatchKommande = () => (
       </SectionReveal>
 
       <SectionReveal>
-        <MatchgenomgangEditor />
-      </SectionReveal>
-
-      <SectionReveal>
         <KalladTrupp />
-      </SectionReveal>
-
-      <SectionReveal>
-        <MatchplanIKorthet />
       </SectionReveal>
 
       <SectionReveal>
@@ -404,40 +385,11 @@ const MatchKommande = () => (
       </SectionReveal>
 
       <SectionReveal>
-        <PraktiskInfo />
+        <MatchplanIKorthet />
       </SectionReveal>
 
-      {/* Footer cross-links */}
       <SectionReveal>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Link
-            to="/match/forra"
-            className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-colors hover:border-amber-500/60 hover:bg-amber-50"
-          >
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground">
-              Förra matchen
-            </span>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" strokeWidth={2.2} />
-          </Link>
-          <Link
-            to="/maj-2026"
-            className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-colors hover:border-amber-500/60 hover:bg-amber-50"
-          >
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground">
-              Spelmodellen 2026
-            </span>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" strokeWidth={2.2} />
-          </Link>
-          <Link
-            to="/match/reflektioner"
-            className="group flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-5 py-4 transition-colors hover:border-amber-500/60 hover:bg-amber-50"
-          >
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground">
-              Reflektioner
-            </span>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" strokeWidth={2.2} />
-          </Link>
-        </div>
+        <PraktiskInfo />
       </SectionReveal>
     </div>
   </>
