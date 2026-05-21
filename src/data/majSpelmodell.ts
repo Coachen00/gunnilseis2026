@@ -348,17 +348,20 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       M("def-mitt-ansvar.mp4", "Defensiv mitt — ansvar"),
       M("forsvar-misslyckat.mp4", "Försvar — misslyckat"),
       M("forsvar-avstand.png", "Försvar — avstånd", "image"),
+      U("https://youtu.be/ByjV5xoRi64", "försvar. styr mot yttre korridor för att vi"),
     ],
   },
   "overgang-anfall": {
     kontring: [
       U("https://youtu.be/v9GPU-jxFF4", "2:a bollsspel — start om anfall högt"),
+      U("https://youtu.be/fD5GS8Ez4pc", "Omställning till anfall, kontring. mål"),
     ],
   },
   "overgang-forsvar": {
     direkt: [
       U("https://youtu.be/NBdI1FkHtiI", "Direkt bollåtererövring"),
       U("https://youtu.be/ehAbno5VYdM", "Direkt bollåtererövring — leder till mål"),
+      U("https://youtu.be/YhS2r2rip8A", "omställning till försvar. direkt reaktion"),
     ],
   },
   anfallsspel: {
@@ -373,12 +376,18 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       M("anf-vandning-utnyttjar-inte-2-vs-1.mp4", "Anfall — vändning, utnyttjar inte 2 vs 1"),
       M("anf-2-vs-1-ej-lyckat.png", "Anfall — 2 vs 1 ej lyckat", "image"),
       U("https://youtu.be/l1H5hwu3CNQ", "anfallsspel. Spelvändning, fram, avslut"),
+      U("https://youtu.be/FNiuGVbptI4", "anfall. In, in, ut"),
+      U("https://youtu.be/JIi84a_FrY0", "anfallsspel. Spelvändning.mp4"),
     ],
     "ta-med-framat": [
       M("assistytan-2-vs-1.png", "Assistytan — 2 vs 1", "image"),
       M("anf-djupled.mp4", "Anfall — djupled"),
       M("galvan-1-ej-assist.mp4", "Vi följer inte idén om assistytan — 1"),
       M("galvan-2-ej-assistyta.mp4", "Vi följer inte idén om assistytan — 2"),
+      U("https://youtu.be/5Ub2i3J9rdQ", "Anfallsspel. In, ut, fram, mål."),
+    ],
+    "fyll-pa-box": [
+      U("https://youtu.be/MtKIJtFnU6E", "Anfall. In, ut, fram, box. MÅL"),
     ],
   },
   identitet: {

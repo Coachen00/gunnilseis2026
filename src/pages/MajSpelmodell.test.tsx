@@ -81,11 +81,59 @@ describe("MajSpelmodell page", () => {
   });
 
   it("sorterar Björkö-spellistans klipp efter titel till rätt princip", () => {
+    expect(MAJ_2026_PRINCIPLE_MEDIA.forsvarsspel.medel).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/ByjV5xoRi64",
+          label: "försvar. styr mot yttre korridor för att vi",
+        }),
+      ])
+    );
+    expect(MAJ_2026_PRINCIPLE_MEDIA["overgang-anfall"].kontring).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/fD5GS8Ez4pc",
+          label: "Omställning till anfall, kontring. mål",
+        }),
+      ])
+    );
+    expect(MAJ_2026_PRINCIPLE_MEDIA["overgang-forsvar"].direkt).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/YhS2r2rip8A",
+          label: "omställning till försvar. direkt reaktion",
+        }),
+      ])
+    );
     expect(MAJ_2026_PRINCIPLE_MEDIA.anfallsspel["spela-ut"]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           src: "https://youtu.be/l1H5hwu3CNQ",
           label: "anfallsspel. Spelvändning, fram, avslut",
+        }),
+        expect.objectContaining({
+          src: "https://youtu.be/FNiuGVbptI4",
+          label: "anfall. In, in, ut",
+        }),
+        expect.objectContaining({
+          src: "https://youtu.be/JIi84a_FrY0",
+          label: "anfallsspel. Spelvändning.mp4",
+        }),
+      ])
+    );
+    expect(MAJ_2026_PRINCIPLE_MEDIA.anfallsspel["ta-med-framat"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/5Ub2i3J9rdQ",
+          label: "Anfallsspel. In, ut, fram, mål.",
+        }),
+      ])
+    );
+    expect(MAJ_2026_PRINCIPLE_MEDIA.anfallsspel["fyll-pa-box"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: "https://youtu.be/MtKIJtFnU6E",
+          label: "Anfall. In, ut, fram, box. MÅL",
         }),
       ])
     );
