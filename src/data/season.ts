@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-05-17 (inför IF Vardar/Makedonija).
+ * Senast uppdaterad: 2026-05-27 (efter Vardar/Makedonija 1–1, inför Hjuviks AIK).
  */
 
 export type SeasonMatch = {
@@ -103,6 +103,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Generatorsplan",
+    ourScore: 1,
+    theirScore: 1,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901100/if-vardar-makedonija",
   },
   {

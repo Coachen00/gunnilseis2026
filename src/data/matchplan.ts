@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-05-17 inför IF Vardar/Makedonija
- * (borta · Generatorsplan · fredag 22 maj 19:15).
- * Förra match: IFK Björkö (hemma · 2026-05-16).
+ * Senast uppdaterad 2026-05-27 inför Hjuviks AIK
+ * (hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00).
+ * Förra match: IF Vardar/Makedonija (borta · 2026-05-22 · 1–1).
  */
 
 export type MatchMeta = {
@@ -36,10 +36,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "IF Vardar/Makedonija",
-  venue: "Generatorsplan",
-  home: false,
-  kickoff: "Fre 22 maj · 19:15",
+  opponent: "Hjuviks AIK",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 30 maj · 13:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -49,15 +49,16 @@ export const MATCH_PRESENTATION_URL =
   "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
 
 /* Matchdagsschema — visas i hero och i praktisk-info-block.
- * Samling sker på Hjällbovallen (Gunnilses hemmaplan) före avresa till
- * Generatorsplan där matchen spelas. */
+ * Hemmamatch lördag 13:00 på Hjällbovallen 1 Gräs — samling och
+ * uppvärmning sker på plats. Tider speglar bortamatchens 2h-fönster
+ * räknat baklänges från avspark. */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: "17:30", label: "Samling", note: "Hjällbovallen" },
-  { time: "Före avresa/uppvärmning", label: "Genomgång" },
-  { time: "18:35 – 19:05", label: "Aktivering" },
-  { time: "19:05 – 19:12", label: "Ner + sista instruktion" },
-  { time: "19:12", label: "Upp + sista löpningar" },
-  { time: "19:15", label: "Avspark" },
+  { time: "11:00", label: "Samling", note: "Hjällbovallen" },
+  { time: "Före uppvärmning", label: "Genomgång" },
+  { time: "12:20 – 12:50", label: "Aktivering" },
+  { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
+  { time: "12:57", label: "Upp + sista löpningar" },
+  { time: "13:00", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -76,7 +77,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Stäng mitten först — särskilt borta när de vill spela igång rytmen.",
+      "Hemmaplan — vi sätter rytmen. Kompakta led, inget jagande på låsta passningar.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -118,9 +119,9 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
-  kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
+  kit: "Hemmamatch på gräs — gula matchställen och rätt skor för gräs (dobb/multi).",
   responsibilities: [
-    ["Kapten", "Ado"],
+    ["Kapten", "Bekräftas i kallelse"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -130,29 +131,12 @@ export const PRACTICAL_INFO = {
 
 export const CALLED_SQUAD = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Daniel Matin",
-    "Rayan Fedaila",
-    "Rinor Zenullah",
-    "Vedat Dzambegovic",
-    "Ahmad Aljafari",
-    "Benjamin Arapovic",
-    "Galvan Ayoub",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Kamal Mustafa",
-    "Yosef Ismail",
-  ],
+  bench: [],
 } as const;
 
 export const FOCUS: string[] = [
-  "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
-  "Skydda mitten och tvinga spelet utåt — låt inte Vardar/Makedonija hitta rättvänd spelare mellan våra lagdelar.",
+  "Starta som hemmalag med tempo: vi sätter rytmen, korta avstånd, första duellen direkt.",
+  "Skydda mitten och tvinga Hjuviks utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
@@ -165,8 +149,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "IF Vardar/Makedonija borta · Generatorsplan · fredag 22 maj 19:15.",
-      "Samling 17:45. Genomgång och uppvärmning sker på plats.",
+      "Hjuviks AIK hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00.",
+      "Samling 11:00. Genomgång och uppvärmning sker på plats.",
       "Startelva och roller läggs in när kallelsen är satt.",
     ],
   },
@@ -177,7 +161,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kommer", "Startelva", "Avbytare"],
     bullets: [
-      "Kallad trupp för IF Vardar/Makedonija är inte inlagd än.",
+      "Kallad trupp för Hjuviks AIK är inte inlagd än.",
       "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
@@ -185,27 +169,27 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — IFK Björkö",
-    eyebrow: "Vad vi tar med till Vardar/Makedonija",
+    title: "Förra match — IF Vardar/Makedonija 1–1",
+    eyebrow: "Vad vi tar med till Hjuviks",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi spelade IFK Björkö hemma lördag 16 maj.",
-      "Resultat och detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: IF Vardar/Makedonija borta.",
+      "Vi spelade 1–1 borta mot IF Vardar/Makedonija fredag 22 maj.",
+      "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Hjuviks AIK hemma.",
     ],
   },
   {
-    id: "vardar-makedonija",
+    id: "hjuviks",
     num: "04",
-    title: "Vad vi vet om Vardar/Makedonija",
+    title: "Vad vi vet om Hjuviks AIK",
     eyebrow: "Motståndaren",
     bullets: [
-      "Nästa match är borta på Generatorsplan.",
-      "Vardar/Makedonija ligger på undre halvan men gör mål — vi behöver vara kompakta och vakna i första duellen.",
+      "Hemmamatch på Hjällbovallen 1 Gräs — vi sätter rytm och tempo från start.",
+      "Lördag lunch — räkna med varm temperatur. Hydrering och tempo-växling avgörande.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Vardar/Makedonija-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Hjuviks-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -214,7 +198,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Borta = vi tar med oss egen rytm, egen röst och egen intensitet.",
+      "Hemma = vi sätter rytm och tempo. Första 10 min ska Hjuviks känna att vi äger planen.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -241,7 +225,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Vardar/Makedonija).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Hjuviks).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -291,8 +275,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "19:15"],
-      ["Bortaplan", "Generatorsplan"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

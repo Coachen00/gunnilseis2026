@@ -117,29 +117,43 @@ export default function MagicalPitchHero() {
                 Gunnilse IS · Spelmodellen 2026
               </motion.div>
 
-              {/* Huvudtitel: serif-känsla via tracking + skala, utan att byta typsnitt */}
+              {/* Huvudtitel: serif-känsla via tracking + skala, utan att byta typsnitt.
+                  Match-info läcker ALDRIG till oinloggade — generisk rubrik istället. */}
               <motion.h1
                 initial={reduced ? undefined : { opacity: 0, y: 28 }}
                 animate={reduced ? undefined : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
                 className="text-[2.6rem] font-black leading-[0.96] tracking-tight text-[#fef3e2] sm:text-6xl md:text-7xl lg:text-[5.2rem]"
               >
-                Nästa match
-                <br />
-                <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
-                  mot Vardar
-                </span>
+                {authed ? (
+                  <>
+                    Nästa match
+                    <br />
+                    <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
+                      mot {MATCH_META.opponent.split(" ")[0]}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Så spelar vi
+                    <br />
+                    <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
+                      fotboll 2026
+                    </span>
+                  </>
+                )}
               </motion.h1>
 
-              {/* Underrubrik */}
+              {/* Underrubrik — match-detaljer endast för inloggade */}
               <motion.p
                 initial={reduced ? undefined : { opacity: 0 }}
                 animate={reduced ? undefined : { opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.65 }}
                 className="mt-7 max-w-xl text-base leading-relaxed text-amber-100/85 md:text-lg"
               >
-                {MATCH_META.kickoff} · {MATCH_META.venue}. Samling 17:30 på Hjällbovallen.
-                Truppen är kallad och matchplanen ligger under Veckans match.
+                {authed
+                  ? `${MATCH_META.kickoff} · ${MATCH_META.venue}. Samling 11:00 på Hjällbovallen. Kallelse och matchplan ligger under Veckans match.`
+                  : "Gunnilse IS Division 4A Herrar — vår spelmodell, vår taktik och våra matcher. Logga in för att se veckans matchplan, kallad trupp och hela säsongens material."}
               </motion.p>
 
               {/* CTAs — auth-aware: logged-in får action-länkar, ej-inloggad får login/signup */}

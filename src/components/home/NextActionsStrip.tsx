@@ -1,11 +1,11 @@
 /**
  * NextActionsStrip — visas direkt under hero på förstasidan.
  *
- * Mål: tydlig väg vidare. Inga vägval, inga gömda länkar. Tre kort som
- * spelaren ser direkt efter intro-animationen:
- *   1. Veckans match — när, var, mot vem (mest tid-känsligt)
- *   2. Spelmodellen Maj 2026 — så här spelar vi (huvudidén)
- *   3. Filmbibliotek — alla klipp i 8 kategorier
+ * Mål: tydlig väg vidare. Inga vägval, inga gömda länkar.
+ *
+ * Auth-läge:
+ *   - Inloggad → tre kort: veckans match, spelmodellen, filmbibliotek
+ *   - Ej inloggad → renderar INGENTING (match-info får aldrig läcka)
  *
  * Datakälla: MATCH_META (för veckans match-rubrik). Övrigt statiskt.
  */
@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CalendarClock, Film, PlayCircle } from "lucide-react";
 import { MATCH_META } from "@/data/matchplan";
+import { useAuthSession } from "@/hooks/useAuthSession";
 
 type Action = {
   to: string;
@@ -34,6 +35,11 @@ const ACCENT = {
 
 export default function NextActionsStrip() {
   const reduced = Boolean(useReducedMotion());
+  const { isAuthed, loading: authLoading } = useAuthSession();
+
+  // Ej inloggad (eller loading) → dölj stripen helt. Match-info, motståndare
+  // och länkar till skyddade sidor får aldrig synas för oinloggade.
+  if (authLoading || !isAuthed) return null;
 
   const actions: Action[] = [
     {

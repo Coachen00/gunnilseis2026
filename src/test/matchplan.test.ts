@@ -15,11 +15,12 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har IF Vardar/Makedonija + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("IF Vardar/Makedonija");
-    expect(MATCH_META.kickoff).toMatch(/19:15/);
-    expect(MATCH_META.venue).toContain("Generatorsplan");
+  it("MATCH_META har Hjuviks AIK + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("Hjuviks AIK");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toContain("Division 4A");
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("veckans match har redigerbar presentationslänk", () => {
@@ -33,20 +34,18 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Vardar-startelvan är satt", () => {
+  it("FORMATION är tom tills Hjuviks-startelvan är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp är inlagd för Vardar och Ado är kapten", () => {
+  it("kallad trupp är inte satt än för Hjuviks och Kapten bekräftas i kallelse", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
-    expect(CALLED_SQUAD.bench).toEqual(
-      expect.arrayContaining(["Ali Carneil", "Adnan Hadzialic", "Yosef Ismail"])
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(PRACTICAL_INFO.responsibilities).toEqual(
+      expect.arrayContaining([["Kapten", "Bekräftas i kallelse"]])
     );
-    expect(CALLED_SQUAD.bench).not.toEqual(expect.arrayContaining(["Pascal", "Sabarr"]));
-    expect(PRACTICAL_INFO.responsibilities).toEqual(expect.arrayContaining([["Kapten", "Ado"]]));
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -55,7 +54,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "vardar-makedonija",
+      "hjuviks",
       "identitet",
       "anfall",
       "forsvar",
@@ -72,41 +71,41 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("gammal kommande Björkö-rad kan inte ersätta Vardar/Makedonija som veckans match", () => {
+  it("stale Vardar-rad i framtiden blockerar inte Hjuviks som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
-          id: "stale-bjorko",
-          date: "2026-05-19T12:00:00+02:00",
-          opponent: "IFK Björkö",
-          homeAway: "home",
+          id: "stale-vardar",
+          date: "2026-05-29T12:00:00+02:00",
+          opponent: "IF Vardar/Makedonija",
+          homeAway: "away",
           competition: "Division 4A Herr",
-          venue: "Hjällbovallen 1 Gräs",
+          venue: "Generatorsplan",
         },
       ],
-      new Date("2026-05-17T12:00:00+02:00")
+      new Date("2026-05-27T12:00:00+02:00")
     );
 
-    expect(matches.some((match) => match.opponent === "IFK Björkö")).toBe(false);
-    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+    expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
+    expect(matches[0].opponent).toBe("Hjuviks AIK");
   });
 
-  it("en felaktig match före Vardar/Makedonija blockerar inte veckans match", () => {
+  it("en felaktig match före Hjuviks blockerar inte veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
           id: "stale-ytterby-may",
-          date: "2026-05-19T20:15:00+02:00",
+          date: "2026-05-28T20:15:00+02:00",
           opponent: "Ytterby IS",
           homeAway: "away",
           competition: "Division 4A Herr",
           venue: "Ytterns IP 1 Konstgräs",
         },
       ],
-      new Date("2026-05-17T12:00:00+02:00")
+      new Date("2026-05-27T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+    expect(matches[0].opponent).toBe("Hjuviks AIK");
     expect(matches.some((match) => match.id === "stale-ytterby-may")).toBe(false);
   });
 });

@@ -78,6 +78,14 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
     blocks: STANDARD_BLOCKS,
     larDomar: [],
   },
+  "2026-05-22-vardar-makedonija": {
+    summary:
+      "Vi spelade 1–1 borta mot IF Vardar/Makedonija — fortsatt obesegrade i serien.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
 };
 
 /* =================================================================
