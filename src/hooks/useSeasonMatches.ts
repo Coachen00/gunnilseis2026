@@ -18,7 +18,7 @@ import { useRealtimeChannel } from "./useRealtimeChannel";
  */
 const SEASON_KEY = ["matches", "season"] as const;
 const STATIC_WEEKLY_MATCH = SEASON_MATCHES.find((match) => match.opponent === MATCH_META.opponent);
-const STALE_UPCOMING_NAMES = ["kareby", "lerum", "björkö", "bjorko"];
+const STALE_UPCOMING_NAMES = ["kareby", "lerum", "björkö", "bjorko", "vardar"];
 
 export function useSeasonMatches() {
   const query = useQuery({

@@ -127,7 +127,7 @@ export default function MagicalPitchHero() {
                 Nästa match
                 <br />
                 <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
-                  mot Vardar
+                  mot Hjuviks
                 </span>
               </motion.h1>
 
@@ -138,8 +138,8 @@ export default function MagicalPitchHero() {
                 transition={{ duration: 0.7, delay: 0.65 }}
                 className="mt-7 max-w-xl text-base leading-relaxed text-amber-100/85 md:text-lg"
               >
-                {MATCH_META.kickoff} · {MATCH_META.venue}. Samling 17:30 på Hjällbovallen.
-                Truppen är kallad och matchplanen ligger under Veckans match.
+                {MATCH_META.kickoff} · {MATCH_META.venue}. Samling 11:00 på Hjällbovallen.
+                Kallelse och matchplan ligger under Veckans match.
               </motion.p>
 
               {/* CTAs — auth-aware: logged-in får action-länkar, ej-inloggad får login/signup */}
