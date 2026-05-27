@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, X } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { MATCH_META } from "@/data/matchplan";
+import { useAuthSession } from "@/hooks/useAuthSession";
 
 const DISMISS_KEY = "matchday-banner:dismissed-for";
 
@@ -56,6 +57,7 @@ function formatCountdown(diffMs: number): string {
 
 export default function MatchdayBanner() {
   const reduced = Boolean(useReducedMotion());
+  const { isAuthed, loading: authLoading } = useAuthSession();
   const kickoff = useMemo(() => parseKickoff(MATCH_META.kickoff), []);
   const [now, setNow] = useState<Date>(() => new Date());
   const [dismissed, setDismissed] = useState<boolean>(() => {
@@ -70,6 +72,8 @@ export default function MatchdayBanner() {
     return () => window.clearInterval(id);
   }, [kickoff]);
 
+  // Bannern visar motståndare + plats — får aldrig synas för oinloggade.
+  if (authLoading || !isAuthed) return null;
   if (!kickoff) return null;
   if (!sameDay(now, kickoff)) return null;
   if (dismissed) return null;
