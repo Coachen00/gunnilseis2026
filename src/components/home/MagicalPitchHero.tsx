@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
-import { MATCH_META } from "@/data/matchplan";
+import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
 
 type Principle = {
   id: string;
@@ -152,7 +152,7 @@ export default function MagicalPitchHero() {
                 className="mt-7 max-w-xl text-base leading-relaxed text-amber-100/85 md:text-lg"
               >
                 {authed
-                  ? `${MATCH_META.kickoff} · ${MATCH_META.venue}. Samling 11:00 på Hjällbovallen. Kallelse och matchplan ligger under Veckans match.`
+                  ? `${MATCH_META.kickoff} · ${MATCH_META.venue}. Samling ${SAMLING_TIME} på Hjällbovallen. Kallelse och matchplan ligger under Veckans match.`
                   : "Gunnilse IS Division 4A Herrar — vår spelmodell, vår taktik och våra matcher. Logga in för att se veckans matchplan, kallad trupp och hela säsongens material."}
               </motion.p>
 

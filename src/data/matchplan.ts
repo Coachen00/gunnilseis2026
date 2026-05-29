@@ -3,6 +3,9 @@
  * Senast uppdaterad 2026-05-27 inför Hjuviks AIK
  * (hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00).
  * Förra match: IF Vardar/Makedonija (borta · 2026-05-22 · 1–1).
+ *
+ * Samlingstid: räknas automatiskt från `MATCH_META.kickoff` via
+ * `computeSamlingTime` — hemmamatch 1h30 före avspark, bortamatch 1h45.
  */
 
 export type MatchMeta = {
@@ -48,12 +51,41 @@ export const MATCH_META: MatchMeta = {
 export const MATCH_PRESENTATION_URL =
   "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
 
+/**
+ * Räknar baklänges från `MATCH_META.kickoff` ("Lör 30 maj · 13:00") och
+ * returnerar samlingstid som "HH:MM".
+ *
+ * Regel (Gunnilse IS):
+ *   - Hemmamatch → samling 1h30 före avspark.
+ *   - Bortamatch → samling 1h45 före avspark.
+ *
+ * Detta är samma regel för alla matcher hela säsongen, så den ska
+ * aldrig hardkodas per match. Returnerar "Se kallelse" om kickoff
+ * saknar parsbart klockslag.
+ */
+export function computeSamlingTime(meta: MatchMeta = MATCH_META): string {
+  const m = meta.kickoff.match(/(\d{1,2}):(\d{2})/);
+  if (!m) return "Se kallelse";
+  const kickoffMinutes = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+  const offsetMinutes = meta.home ? 90 : 105;
+  const totalMinutes = kickoffMinutes - offsetMinutes;
+  if (totalMinutes < 0) return "Se kallelse";
+  const hh = Math.floor(totalMinutes / 60);
+  const mm = totalMinutes % 60;
+  return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
+}
+
+export const SAMLING_TIME = computeSamlingTime();
+
 /* Matchdagsschema — visas i hero och i praktisk-info-block.
- * Hemmamatch lördag 13:00 på Hjällbovallen 1 Gräs — samling och
- * uppvärmning sker på plats. Tider speglar bortamatchens 2h-fönster
- * räknat baklänges från avspark. */
+ * Samlingstid räknas dynamiskt från MATCH_META.kickoff (se
+ * `computeSamlingTime`). Övriga tider relativa till avspark:
+ *   - Aktivering: avspark - 40 till avspark - 10
+ *   - Ner + sista instruktion: avspark - 10 till avspark - 3
+ *   - Upp + sista löpningar: avspark - 3
+ */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: "11:00", label: "Samling", note: "Hjällbovallen" },
+  { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
   { time: "Före uppvärmning", label: "Genomgång" },
   { time: "12:20 – 12:50", label: "Aktivering" },
   { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
@@ -121,7 +153,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 export const PRACTICAL_INFO = {
   kit: "Hemmamatch på gräs — gula matchställen och rätt skor för gräs (dobb/multi).",
   responsibilities: [
-    ["Kapten", "Bekräftas i kallelse"],
+    ["Kapten", "Ado"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -129,9 +161,29 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
+/* Kallad trupp inför Hjuviks AIK (lör 30 maj). Ado är lagkapten (se
+ * PRACTICAL_INFO.responsibilities). Startelva sätts senare — alla 16
+ * ligger som bänk tills laguppställningen är spikad. */
 export const CALLED_SQUAD = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rinor Zenullah",
+    "Ahmad Aljafari",
+    "Ayub Ahmed",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Kamal Mustafa",
+    "Leodon Johansson",
+    "Mostafa Ayoub",
+    "Yosef Ismail",
+  ],
 } as const;
 
 export const FOCUS: string[] = [
@@ -150,8 +202,8 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Kontext",
     bullets: [
       "Hjuviks AIK hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00.",
-      "Samling 11:00. Genomgång och uppvärmning sker på plats.",
-      "Startelva och roller läggs in när kallelsen är satt.",
+      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark — hemmamatchsregel).`,
+      "Startelva och roller bekräftas på genomgång.",
     ],
   },
   {
@@ -159,10 +211,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kommer", "Startelva", "Avbytare"],
+    principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "Kallad trupp för Hjuviks AIK är inte inlagd än.",
-      "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
+      "16 spelare kallade — se listan nedan. Ado är lagkapten.",
+      "Startelva och avbytare bekräftas på genomgång.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
@@ -271,7 +323,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Bekräftas i kallelse"],
+      ["Kapten", "Ado"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
