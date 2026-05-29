@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION, PRACTICAL_INFO } from "@/data/matchplan";
+import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION, PRACTICAL_INFO, SAMLING_TIME, computeSamlingTime } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
@@ -40,12 +40,52 @@ describe("matchplan", () => {
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp är inte satt än för Hjuviks och Kapten bekräftas i kallelse", () => {
+  it("kallad trupp är 16 spelare för Hjuviks och Ado är kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
-    expect(PRACTICAL_INFO.responsibilities).toEqual(
-      expect.arrayContaining([["Kapten", "Bekräftas i kallelse"]])
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toEqual(
+      expect.arrayContaining(["Ali Carneil", "Pascal Jabbour", "Leodon Johansson", "Yosef Ismail"])
     );
+    expect(PRACTICAL_INFO.responsibilities).toEqual(
+      expect.arrayContaining([["Kapten", "Ado"]])
+    );
+  });
+
+  it("SAMLING_TIME är 11:30 för Hjuviks (hemma 13:00 → 1h30 före)", () => {
+    expect(SAMLING_TIME).toBe("11:30");
+  });
+
+  it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
+    expect(
+      computeSamlingTime({
+        opponent: "X",
+        venue: "Y",
+        home: true,
+        kickoff: "Lör 30 maj · 13:00",
+        competition: "Z",
+        absent: [],
+      })
+    ).toBe("11:30");
+    expect(
+      computeSamlingTime({
+        opponent: "X",
+        venue: "Y",
+        home: false,
+        kickoff: "Fre 22 maj · 19:15",
+        competition: "Z",
+        absent: [],
+      })
+    ).toBe("17:30");
+    expect(
+      computeSamlingTime({
+        opponent: "X",
+        venue: "Y",
+        home: true,
+        kickoff: "Söndag · saknar tid",
+        competition: "Z",
+        absent: [],
+      })
+    ).toBe("Se kallelse");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
