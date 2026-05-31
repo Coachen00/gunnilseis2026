@@ -16,31 +16,14 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, X } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { MATCH_META } from "@/data/matchplan";
+import { MATCH_KICKOFF_DATE, MATCH_META } from "@/data/matchplan";
 import { useAuthSession } from "@/hooks/useAuthSession";
 
 const DISMISS_KEY = "matchday-banner:dismissed-for";
 
-/**
- * Parsar MATCH_META.kickoff (t.ex. "Lör 16 maj · 13:00") till en Date.
- * Använder enkelt regex för svenska månadsförkortningar — räcker
- * eftersom matchplan.ts uppdateras inför varje match med samma format.
- */
-function parseKickoff(kickoff: string, year = new Date().getFullYear()): Date | null {
-  const months: Record<string, number> = {
-    jan: 0, feb: 1, mar: 2, apr: 3, maj: 4, jun: 5,
-    jul: 6, aug: 7, sep: 8, okt: 9, nov: 10, dec: 11,
-  };
-  // ".. 16 maj · 13:00" → ["16", "maj", "13", "00"]
-  const m = kickoff.match(/(\d{1,2})\s+([a-zåäö]+)\s*[·\-,]?\s*(\d{1,2}):(\d{2})/i);
-  if (!m) return null;
-  const day = parseInt(m[1], 10);
-  const month = months[m[2].toLowerCase()];
-  if (month === undefined) return null;
-  const hour = parseInt(m[3], 10);
-  const minute = parseInt(m[4], 10);
-  return new Date(year, month, day, hour, minute);
-}
+// MATCH_KICKOFF_DATE härleds centralt från MATCH_META.kickoff i
+// `src/data/matchplan.ts`. Tidigare hade vi en lokal `parseKickoff`-kopia här
+// — borttagen för att eliminera dubbla parser-implementationer.
 
 function sameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -58,7 +41,7 @@ function formatCountdown(diffMs: number): string {
 export default function MatchdayBanner() {
   const reduced = Boolean(useReducedMotion());
   const { isAuthed, loading: authLoading } = useAuthSession();
-  const kickoff = useMemo(() => parseKickoff(MATCH_META.kickoff), []);
+  const kickoff = useMemo(() => MATCH_KICKOFF_DATE, []);
   const [now, setNow] = useState<Date>(() => new Date());
   const [dismissed, setDismissed] = useState<boolean>(() => {
     if (typeof window === "undefined" || !kickoff) return false;
