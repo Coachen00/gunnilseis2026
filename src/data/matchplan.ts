@@ -4,9 +4,14 @@
  * (hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00).
  * Förra match: IF Vardar/Makedonija (borta · 2026-05-22 · 1–1).
  *
- * Samlingstid: räknas automatiskt från `MATCH_META.kickoff` via
- * `computeSamlingTime` — hemmamatch 1h30 före avspark, bortamatch 1h45.
+ * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
+ *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
+ *   - `MATCH_KICKOFF_DATE` / `MATCH_KICKOFF_ISO` — parsat datum
+ *   - `PAST_OPPONENT_NAMES` — motståndare med matchdatum FÖRE veckans match
+ *     (används av hooks för att filtrera bort stale supabase-rader)
  */
+
+import { SEASON_MATCHES } from "./season";
 
 export type MatchMeta = {
   opponent: string;
@@ -50,6 +55,62 @@ export const MATCH_META: MatchMeta = {
 
 export const MATCH_PRESENTATION_URL =
   "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
+
+/**
+ * Parsar svensk kickoff-sträng som `"Lör 30 maj · 13:00"` till en Date.
+ *
+ * Anledning till att vi har en parser: `MATCH_META.kickoff` är "single source
+ * of truth" för veckans match-datum. Resten av kodbasen (MatchdayBanner,
+ * useMatch.ts STATIC_UPCOMING_DATE m.fl.) ska härleda från den — inte
+ * hardkoda ett parallellt datum.
+ *
+ * `year` defaultar till aktuellt år; matchade matcher har alltid samma år.
+ * Returnerar `null` när strängen saknar parsbart datum (defensive fallback).
+ */
+const SWEDISH_MONTHS: Record<string, number> = {
+  jan: 0, feb: 1, mar: 2, apr: 3, maj: 4, jun: 5,
+  jul: 6, aug: 7, sep: 8, okt: 9, nov: 10, dec: 11,
+};
+
+export function parseKickoffDate(
+  meta: MatchMeta = MATCH_META,
+  year: number = new Date().getFullYear()
+): Date | null {
+  const m = meta.kickoff.match(/(\d{1,2})\s+([a-zåäö]+)\s*[·\-,]?\s*(\d{1,2}):(\d{2})/i);
+  if (!m) return null;
+  const month = SWEDISH_MONTHS[m[2].toLowerCase()];
+  if (month === undefined) return null;
+  return new Date(year, month, parseInt(m[1], 10), parseInt(m[3], 10), parseInt(m[4], 10));
+}
+
+/** Aktuell veckans match-datum som Date — härlett från MATCH_META.kickoff. */
+export const MATCH_KICKOFF_DATE = parseKickoffDate();
+
+/** Samma som ovan men som ISO-sträng — används av useMatch.ts för synthetic
+ *  match-rader. `null` blir tom sträng så `new Date("")` ger NaN och
+ *  shouldUseStaticUpcoming graceful-degraderar till false. */
+export const MATCH_KICKOFF_ISO = MATCH_KICKOFF_DATE?.toISOString() ?? "";
+
+/**
+ * Motståndare vars matcher ligger FÖRE veckans match (`MATCH_META.opponent`)
+ * i `SEASON_MATCHES`. Används av `useSeasonMatches.ensureWeeklyMatch` och
+ * `useMatch` för att filtrera bort stale supabase-rader som annars skuggar
+ * veckans riktiga match.
+ *
+ * Härleds automatiskt — inga manuella listor att hålla uppdaterade.
+ * Tomt set om MATCH_META.opponent inte finns i SEASON_MATCHES eller om
+ * kickoff inte kan parsas (defensive degradation).
+ */
+export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
+  const weeklyMatch = SEASON_MATCHES.find((m) => m.opponent === MATCH_META.opponent);
+  if (!weeklyMatch) return new Set();
+  const cutoff = new Date(weeklyMatch.date).getTime();
+  return new Set(
+    SEASON_MATCHES
+      .filter((m) => new Date(m.date).getTime() < cutoff)
+      .map((m) => m.opponent.toLowerCase())
+  );
+})();
 
 /**
  * Räknar baklänges från `MATCH_META.kickoff` ("Lör 30 maj · 13:00") och

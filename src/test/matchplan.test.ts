@@ -1,5 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { CALLED_SQUAD, MATCH_META, MATCH_PRESENTATION_URL, FOCUS, COHERENCE, FORMATION, PRACTICAL_INFO, SAMLING_TIME, computeSamlingTime } from "@/data/matchplan";
+import {
+  CALLED_SQUAD,
+  MATCH_META,
+  MATCH_PRESENTATION_URL,
+  FOCUS,
+  COHERENCE,
+  FORMATION,
+  PRACTICAL_INFO,
+  SAMLING_TIME,
+  computeSamlingTime,
+  parseKickoffDate,
+  MATCH_KICKOFF_DATE,
+  MATCH_KICKOFF_ISO,
+  PAST_OPPONENT_NAMES,
+} from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
@@ -86,6 +100,53 @@ describe("matchplan", () => {
         absent: [],
       })
     ).toBe("Se kallelse");
+  });
+
+  it("parseKickoffDate parsar svenska kickoff-strängar korrekt", () => {
+    const d = parseKickoffDate(
+      { opponent: "X", venue: "Y", home: true, kickoff: "Lör 30 maj · 13:00", competition: "Z", absent: [] },
+      2026
+    );
+    expect(d).not.toBeNull();
+    expect(d?.getFullYear()).toBe(2026);
+    expect(d?.getMonth()).toBe(4); // maj = index 4
+    expect(d?.getDate()).toBe(30);
+    expect(d?.getHours()).toBe(13);
+    expect(d?.getMinutes()).toBe(0);
+  });
+
+  it("parseKickoffDate returnerar null för osparbara strängar", () => {
+    expect(
+      parseKickoffDate(
+        { opponent: "X", venue: "Y", home: true, kickoff: "Söndag · saknar tid", competition: "Z", absent: [] },
+        2026
+      )
+    ).toBeNull();
+    expect(
+      parseKickoffDate(
+        { opponent: "X", venue: "Y", home: true, kickoff: "5 xyz · 13:00", competition: "Z", absent: [] },
+        2026
+      )
+    ).toBeNull();
+  });
+
+  it("MATCH_KICKOFF_DATE och MATCH_KICKOFF_ISO är härledda från MATCH_META", () => {
+    expect(MATCH_KICKOFF_DATE).not.toBeNull();
+    expect(MATCH_KICKOFF_ISO).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    // Robust check: sträng-formen ska representera samma datum som Date-formen
+    expect(new Date(MATCH_KICKOFF_ISO).getTime()).toBe(MATCH_KICKOFF_DATE!.getTime());
+  });
+
+  it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
+    // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
+    // MATCH_META.kickoff ska finnas i settet, lowercase.
+    expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
+    expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
+    expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
+    expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
+    // Och INTE Hjuviks själv (det är veckans match) eller framtida motståndare
+    expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(false);
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {

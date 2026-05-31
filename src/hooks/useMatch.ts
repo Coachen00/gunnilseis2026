@@ -1,11 +1,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { MATCH_META } from "@/data/matchplan";
+import { MATCH_META, MATCH_KICKOFF_ISO, PAST_OPPONENT_NAMES } from "@/data/matchplan";
 
-/** Hardcoded fallback för veckans match — håll synkad med `MATCH_META` i
- *  `src/data/matchplan.ts`. Används bara när Supabase är otillgänglig eller
- *  returnerar stale data. Lör 30 maj 13:00 hemma mot Hjuviks AIK. */
-const STATIC_UPCOMING_DATE = "2026-05-30T13:00:00+02:00";
+/** Härlett från `MATCH_META.kickoff` — INGEN parallell konstant att hålla
+ *  synkad. Tom sträng om kickoff inte kan parsas → shouldUseStaticUpcoming
+ *  blir false (NaN-jämförelse) och hooken faller tillbaka till supabase-data. */
+const STATIC_UPCOMING_DATE = MATCH_KICKOFF_ISO;
 
 export type MatchRow = {
   id: string;
@@ -45,7 +45,7 @@ export function useMatch(status: "upcoming" | "played") {
       (!row ||
         (rowDateTime !== null && rowDateTime < now) ||
         (staticUpcomingTime >= now && !rowIsStaticUpcoming) ||
-        ["lerum", "kareby", "björkö", "bjorko", "vardar"].some((name) => row.opponent.toLowerCase().includes(name)));
+        PAST_OPPONENT_NAMES.has(row.opponent.toLowerCase()));
 
     if (shouldUseStaticUpcoming) {
       setMatch({

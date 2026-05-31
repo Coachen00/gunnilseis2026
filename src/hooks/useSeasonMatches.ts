@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { SEASON_MATCHES, type SeasonMatch } from "@/data/season";
-import { MATCH_META } from "@/data/matchplan";
+import { MATCH_META, PAST_OPPONENT_NAMES } from "@/data/matchplan";
 import { useRealtimeChannel } from "./useRealtimeChannel";
 
 /**
@@ -18,7 +18,8 @@ import { useRealtimeChannel } from "./useRealtimeChannel";
  */
 const SEASON_KEY = ["matches", "season"] as const;
 const STATIC_WEEKLY_MATCH = SEASON_MATCHES.find((match) => match.opponent === MATCH_META.opponent);
-const STALE_UPCOMING_NAMES = ["kareby", "lerum", "björkö", "bjorko", "vardar"];
+// PAST_OPPONENT_NAMES härleds i `@/data/matchplan` från SEASON_MATCHES — ingen
+// manuell lista här att underhålla. Se docstring i matchplan.ts.
 
 export function useSeasonMatches() {
   const query = useQuery({
@@ -84,9 +85,7 @@ export function ensureWeeklyMatch(matches: SeasonMatch[], now = new Date()): Sea
     const isStaticWeeklyMatch =
       match.id === STATIC_WEEKLY_MATCH.id ||
       match.opponent.toLowerCase() === STATIC_WEEKLY_MATCH.opponent.toLowerCase();
-    const isStaleOpponent = STALE_UPCOMING_NAMES.some((name) =>
-      match.opponent.toLowerCase().includes(name)
-    );
+    const isStaleOpponent = PAST_OPPONENT_NAMES.has(match.opponent.toLowerCase());
     const blocksStaticWeeklyMatch =
       !isStaticWeeklyMatch && staticWeeklyTime >= nowTime && matchTime <= staticWeeklyTime;
     return !(isFuture && (isStaleOpponent || blocksStaticWeeklyMatch));
