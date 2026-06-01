@@ -3,8 +3,15 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-05-27 (efter Vardar/Makedonija 1–1, inför Hjuviks AIK).
+ * Senast uppdaterad: 2026-06-01 (efter Hjuviks AIK 4–1, inför Hisingsbacka FC).
  */
+
+export type MatchScorer = {
+  name: string;
+  goals: number;
+  /** Frivillig not — t.ex. "hattrick", "straff", "Man of the Match". */
+  note?: string;
+};
 
 export type SeasonMatch = {
   id: string;
@@ -15,6 +22,8 @@ export type SeasonMatch = {
   venue: string;
   ourScore?: number;
   theirScore?: number;
+  /** Våra målskyttar i matchen. Utelämnad/tom = inte rapporterat än. */
+  scorers?: MatchScorer[];
   sourceUrl?: string;
 };
 
@@ -114,6 +123,12 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 4,
+    theirScore: 1,
+    scorers: [
+      { name: "Yosef Ismail", goals: 3, note: "hattrick + assist · Man of the Match" },
+      { name: "Leodon Johansson", goals: 1 },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901101/hjuviks-aik",
   },
   {

@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-05-27 inför Hjuviks AIK
- * (hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00).
- * Förra match: IF Vardar/Makedonija (borta · 2026-05-22 · 1–1).
+ * Senast uppdaterad 2026-06-01 inför Hisingsbacka FC
+ * (borta · Backavallen 1 Konstgräs · fredag 5 juni 19:15).
+ * Förra match: Hjuviks AIK (hemma · 2026-05-30 · 4–1).
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -44,10 +44,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Hjuviks AIK",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 30 maj · 13:00",
+  opponent: "Hisingsbacka FC",
+  venue: "Backavallen 1 Konstgräs",
+  home: false,
+  kickoff: "Fre 5 jun · 19:15",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -113,7 +113,7 @@ export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
 })();
 
 /**
- * Räknar baklänges från `MATCH_META.kickoff` ("Lör 30 maj · 13:00") och
+ * Räknar baklänges från `MATCH_META.kickoff` ("Fre 5 jun · 19:15") och
  * returnerar samlingstid som "HH:MM".
  *
  * Regel (Gunnilse IS):
@@ -147,11 +147,11 @@ export const SAMLING_TIME = computeSamlingTime();
  */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
-  { time: "Före uppvärmning", label: "Genomgång" },
-  { time: "12:20 – 12:50", label: "Aktivering" },
-  { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
-  { time: "12:57", label: "Upp + sista löpningar" },
-  { time: "13:00", label: "Avspark" },
+  { time: "Före avresa/uppvärmning", label: "Genomgång" },
+  { time: "18:35 – 19:05", label: "Aktivering" },
+  { time: "19:05 – 19:12", label: "Ner + sista instruktion" },
+  { time: "19:12", label: "Upp + sista löpningar" },
+  { time: "19:15", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -170,7 +170,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Hemmaplan — vi sätter rytmen. Kompakta led, inget jagande på låsta passningar.",
+      "Borta — stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -212,9 +212,9 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
-  kit: "Hemmamatch på gräs — gula matchställen och rätt skor för gräs (dobb/multi).",
+  kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
   responsibilities: [
-    ["Kapten", "Ado"],
+    ["Kapten", "Bekräftas i kallelse"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -222,34 +222,17 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Hjuviks AIK (lör 30 maj). Ado är lagkapten (se
- * PRACTICAL_INFO.responsibilities). Startelva sätts senare — alla 16
- * ligger som bänk tills laguppställningen är spikad. */
+/* Kallad trupp inför Hisingsbacka FC (fre 5 juni) sätts när kallelsen gått
+ * ut. Tom tills laguppställningen är spikad — då fylls startelva/avbytare och
+ * fasta ansvar i här och i COHERENCE-sektionen "kallad-trupp". */
 export const CALLED_SQUAD = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Pascal Jabbour",
-    "Rinor Zenullah",
-    "Ahmad Aljafari",
-    "Ayub Ahmed",
-    "Benjamin Arapovic",
-    "Galvan Ayoub",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Kamal Mustafa",
-    "Leodon Johansson",
-    "Mostafa Ayoub",
-    "Yosef Ismail",
-  ],
+  bench: [],
 } as const;
 
 export const FOCUS: string[] = [
-  "Starta som hemmalag med tempo: vi sätter rytmen, korta avstånd, första duellen direkt.",
-  "Skydda mitten och tvinga Hjuviks utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
+  "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
+  "Skydda mitten och tvinga Hisingsbacka utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
@@ -262,8 +245,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Hjuviks AIK hemma · Hjällbovallen 1 Gräs · lördag 30 maj 13:00.",
-      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark — hemmamatchsregel).`,
+      "Hisingsbacka FC borta · Backavallen 1 Konstgräs · fredag 5 juni 19:15.",
+      `Samling ${SAMLING_TIME} på Hjällbovallen — avresa direkt efter (1h45 före avspark, bortamatchsregel).`,
       "Startelva och roller bekräftas på genomgång.",
     ],
   },
@@ -274,35 +257,35 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "16 spelare kallade — se listan nedan. Ado är lagkapten.",
-      "Startelva och avbytare bekräftas på genomgång.",
+      "Kallad trupp för Hisingsbacka är inte satt än — fylls i när kallelsen gått ut.",
+      "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — IF Vardar/Makedonija 1–1",
-    eyebrow: "Vad vi tar med till Hjuviks",
+    title: "Förra match — Hjuviks AIK 4–1",
+    eyebrow: "Vad vi tar med till Hisingsbacka",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi spelade 1–1 borta mot IF Vardar/Makedonija fredag 22 maj.",
+      "Vi vann 4–1 hemma mot Hjuviks AIK i gräspremiären — Yosef Ismail hattrick (+ assist), Leodon Johansson en.",
       "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Hjuviks AIK hemma.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Hisingsbacka FC borta.",
     ],
   },
   {
-    id: "hjuviks",
+    id: "hisingsbacka",
     num: "04",
-    title: "Vad vi vet om Hjuviks AIK",
+    title: "Vad vi vet om Hisingsbacka FC",
     eyebrow: "Motståndaren",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs — vi sätter rytm och tempo från start.",
-      "Lördag lunch — räkna med varm temperatur. Hydrering och tempo-växling avgörande.",
+      "Bortamatch på Backavallen 1 Konstgräs — snabbt underlag, vi tar med egen rytm och röst.",
+      "Fredagskväll borta — lugn start, första duellen direkt, vakna i andrabollarna.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Hjuviks-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Hisingsbacka-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -311,7 +294,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Hemma = vi sätter rytm och tempo. Första 10 min ska Hjuviks känna att vi äger planen.",
+      "Borta = vi tar med oss egen rytm, egen röst och egen intensitet.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -338,7 +321,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Hjuviks).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Hisingsbacka).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -384,12 +367,12 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Ado"],
+      ["Kapten", "Bekräftas i kallelse"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Matchstart", "19:15"],
+      ["Bortaplan", "Backavallen 1 Konstgräs"],
     ],
   },
 ];

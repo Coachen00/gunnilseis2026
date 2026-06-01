@@ -29,12 +29,12 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Hjuviks AIK + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Hjuviks AIK");
-    expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toContain("Hjällbovallen");
+  it("MATCH_META har Hisingsbacka FC + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("Hisingsbacka FC");
+    expect(MATCH_META.kickoff).toMatch(/19:15/);
+    expect(MATCH_META.venue).toContain("Backavallen");
     expect(MATCH_META.competition).toContain("Division 4A");
-    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.home).toBe(false);
   });
 
   it("veckans match har redigerbar presentationslänk", () => {
@@ -48,25 +48,22 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Hjuviks-startelvan är satt", () => {
+  it("FORMATION är tom tills Hisingsbacka-startelvan är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp är 16 spelare för Hjuviks och Ado är kapten", () => {
+  it("kallad trupp är tom tills Hisingsbacka-kallelsen är satt", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
-    expect(CALLED_SQUAD.bench).toEqual(
-      expect.arrayContaining(["Ali Carneil", "Pascal Jabbour", "Leodon Johansson", "Yosef Ismail"])
-    );
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
-      expect.arrayContaining([["Kapten", "Ado"]])
+      expect.arrayContaining([["Kapten", "Bekräftas i kallelse"]])
     );
   });
 
-  it("SAMLING_TIME är 11:30 för Hjuviks (hemma 13:00 → 1h30 före)", () => {
-    expect(SAMLING_TIME).toBe("11:30");
+  it("SAMLING_TIME är 17:30 för Hisingsbacka (borta 19:15 → 1h45 före)", () => {
+    expect(SAMLING_TIME).toBe("17:30");
   });
 
   it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
@@ -144,9 +141,11 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
-    // Och INTE Hjuviks själv (det är veckans match) eller framtida motståndare
-    expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(false);
+    // Hjuviks (30 maj) ligger nu före veckans match (5 juni) → past opponent.
+    expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
+    // Och INTE Hisingsbacka själv (det är veckans match) eller framtida motståndare
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(false);
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -155,7 +154,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "hjuviks",
+      "hisingsbacka",
       "identitet",
       "anfall",
       "forsvar",
@@ -172,41 +171,41 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte Hjuviks som veckans match", () => {
+  it("stale Vardar-rad i framtiden blockerar inte Hisingsbacka som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
           id: "stale-vardar",
-          date: "2026-05-29T12:00:00+02:00",
+          date: "2026-06-03T12:00:00+02:00",
           opponent: "IF Vardar/Makedonija",
           homeAway: "away",
           competition: "Division 4A Herr",
           venue: "Generatorsplan",
         },
       ],
-      new Date("2026-05-27T12:00:00+02:00")
+      new Date("2026-06-01T12:00:00+02:00")
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Hjuviks AIK");
+    expect(matches[0].opponent).toBe("Hisingsbacka FC");
   });
 
-  it("en felaktig match före Hjuviks blockerar inte veckans match", () => {
+  it("en felaktig match före Hisingsbacka blockerar inte veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
-          id: "stale-ytterby-may",
-          date: "2026-05-28T20:15:00+02:00",
+          id: "stale-ytterby-jun",
+          date: "2026-06-04T20:15:00+02:00",
           opponent: "Ytterby IS",
           homeAway: "away",
           competition: "Division 4A Herr",
           venue: "Ytterns IP 1 Konstgräs",
         },
       ],
-      new Date("2026-05-27T12:00:00+02:00")
+      new Date("2026-06-01T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Hjuviks AIK");
-    expect(matches.some((match) => match.id === "stale-ytterby-may")).toBe(false);
+    expect(matches[0].opponent).toBe("Hisingsbacka FC");
+    expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });
