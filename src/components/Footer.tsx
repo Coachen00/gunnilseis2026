@@ -35,7 +35,7 @@ const Footer = () => {
       <div className="container flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div>
           <p className="font-bold text-sm tracking-tight text-foreground">
-            Gunnilse IS <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            Gunnilse IS <span className="text-accent-ink ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </p>
           {isLoggedIn && (
             <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">

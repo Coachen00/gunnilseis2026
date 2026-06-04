@@ -78,8 +78,8 @@ export default function ContentEditor<T>({
         <span
           className={
             source === "remote"
-              ? "inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-400"
-              : "inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-400"
+              ? "inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700"
+              : "inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-amber-700"
           }
           title={
             source === "remote"
@@ -138,7 +138,7 @@ export default function ContentEditor<T>({
             </button>
           </div>
           {source === "fallback" && (
-            <p className="text-xs text-amber-400/90 mt-3 leading-relaxed">
+            <p className="text-xs text-amber-700/90 mt-3 leading-relaxed">
               Tabellen <code className="font-mono bg-muted px-1 rounded">content_blocks</code>{" "}
               hittas inte. Kör migrationen{" "}
               <code className="font-mono bg-muted px-1 rounded">
