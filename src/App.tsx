@@ -35,6 +35,7 @@ const MatchKommande = lazy(() => import("./pages/MatchKommande"));
 const MatchReflektioner = lazy(() => import("./pages/MatchReflektioner"));
 const Truppen = lazy(() => import("./pages/Truppen"));
 const Matcher = lazy(() => import("./pages/Matcher"));
+const Tavlingar = lazy(() => import("./pages/Tavlingar"));
 
 // Print-optimerade verktygsidor — egna chunks; sällan besökta men tunga.
 const TrainingPlan = lazy(() => import("./pages/TrainingPlan"));
@@ -111,6 +112,7 @@ const App = () => (
           <Route path="/match/reflektioner" element={<Protected routeName="Reflektioner"><MatchReflektioner /></Protected>} />
           <Route path="/match/matcher" element={<Protected routeName="Matcher"><Matcher /></Protected>} />
           <Route path="/truppen" element={<Protected routeName="Truppen"><Truppen /></Protected>} />
+          <Route path="/tavlingar" element={<Protected routeName="Tävlingar"><Tavlingar /></Protected>} />
           <Route path="/roller" element={<Protected routeName="Roller"><Roller /></Protected>} />
           <Route path="/identitet" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
           <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
