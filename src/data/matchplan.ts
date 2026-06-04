@@ -222,12 +222,29 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Hisingsbacka FC (fre 5 juni) sätts när kallelsen gått
- * ut. Tom tills laguppställningen är spikad — då fylls startelva/avbytare och
- * fasta ansvar i här och i COHERENCE-sektionen "kallad-trupp". */
+/* Kallad trupp inför Hisingsbacka FC (fre 5 juni). 16 spelare kallade.
+ * Startelva sätts på genomgång — alla 16 ligger som bänk tills
+ * laguppställningen är spikad. */
 export const CALLED_SQUAD = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Rayan Fedaila",
+    "Adnan Hadzialic",
+    "Rinor Zenullah",
+    "Idris Abdi",
+    "Vedad Dzambegovic",
+    "Ahmad Aljafari",
+    "Benjamin Arapovic",
+    "Ihab Naser",
+    "Måns Orwén",
+    "Ayub Ahmed",
+    "Yosef Ismail",
+    "Haris Avdiu",
+    "Aldin Zeljkovic",
+    "Mustafa Ayub",
+    "Leodon Johansson",
+  ],
 } as const;
 
 export const FOCUS: string[] = [
@@ -257,8 +274,8 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "Kallad trupp för Hisingsbacka är inte satt än — fylls i när kallelsen gått ut.",
-      "När kallelsen är satt ska startelva, avbytare och fasta ansvar fyllas i här.",
+      "16 spelare kallade — se listan nedan.",
+      "Startelva och avbytare bekräftas på genomgång.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
