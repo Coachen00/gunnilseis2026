@@ -112,9 +112,17 @@ const Login = () => {
         navigate("/");
       }
     } catch (error: unknown) {
+      const raw = error instanceof Error ? error.message : "";
+      const description = /invalid login credentials/i.test(raw)
+        ? "Fel användarnamn eller lösenord. Kontrollera och försök igen."
+        : /email not confirmed|not.*approved/i.test(raw)
+          ? "Kontot väntar fortfarande på godkännande av en ledare."
+          : /network|fetch|failed to/i.test(raw)
+            ? "Ingen kontakt med servern. Kontrollera nätet och försök igen."
+            : "Inloggningen gick inte just nu. Försök igen om en stund.";
       toast({
-        title: "Fel",
-        description: error instanceof Error ? error.message : "Något gick fel",
+        title: "Inloggning misslyckades",
+        description,
         variant: "destructive",
       });
     } finally {
@@ -200,7 +208,7 @@ const Login = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Vänta...
+                  {isSignUp ? "Skickar förfrågan…" : "Loggar in…"}
                 </>
               ) : isSignUp ? (
                 "Skicka förfrågan"

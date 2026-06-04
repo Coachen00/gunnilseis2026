@@ -41,20 +41,23 @@ const MatchReflektioner = () => {
     } catch (err) {
       toast({
         title: "Kunde inte spara",
-        description: err instanceof Error ? err.message : "Okänt fel",
+        description: "Kontrollera nätet och försök igen.",
         variant: "destructive",
       });
     }
   };
 
   const handleRemove = async (id: string, title: string) => {
+    if (!window.confirm(`Ta bort reflektionen "${title}"? Den försvinner för alla och går inte att ångra.`)) {
+      return;
+    }
     try {
       await removeReflection.mutateAsync(id);
       toast({ title: "Borttagen", description: title });
     } catch (err) {
       toast({
         title: "Kunde inte ta bort",
-        description: err instanceof Error ? err.message : "Okänt fel",
+        description: "Försök igen om en stund.",
         variant: "destructive",
       });
     }
@@ -106,7 +109,7 @@ const MatchReflektioner = () => {
             className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive inline-flex items-center gap-2"
           >
             <AlertCircle className="h-4 w-4" aria-hidden="true" />
-            Kunde inte ladda reflektioner. Försök igen senare.
+            Kunde inte hämta reflektionerna. Kontrollera nätet och ladda om sidan.
           </div>
         )}
 
@@ -218,7 +221,7 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
       <div className="flex items-center justify-end gap-2">
         <Button type="submit" disabled={pending}>
           {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
-          Spara
+          {pending ? "Sparar…" : "Spara reflektion"}
         </Button>
       </div>
     </form>

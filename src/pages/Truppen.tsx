@@ -28,8 +28,8 @@ const Truppen = () => {
         )}
 
         {usingFallback && !loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-            Fallback-data · väntar på första syncen
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent-ink">
+            Visar sparad lista · väntar på dagens uppdatering
           </div>
         )}
 
@@ -82,7 +82,7 @@ const Truppen = () => {
                   ))}
                   {list.length === 0 && (
                     <li className="px-5 py-6 text-center text-xs text-muted-foreground">
-                      Inga spelare i denna grupp ännu.
+                      Inga spelare i den här gruppen ännu — truppen synkas dagligen från svenskalag.se.
                     </li>
                   )}
                 </ul>
