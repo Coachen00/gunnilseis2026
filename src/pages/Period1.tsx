@@ -111,7 +111,7 @@ const Period1 = () => {
               <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
                 Periodens facts
               </p>
-              <dl className="space-y-2 text-sm">
+              <dl className="space-y-3 text-sm">
                 <div className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">Aktiva veckor</dt>
                   <dd className="font-bold text-foreground">6</dd>

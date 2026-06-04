@@ -75,7 +75,7 @@ const IdentityOverview = () => {
             <a
               key={group.id}
               href={`#${group.id}`}
-              className="group rounded-lg border border-border bg-card p-4 transition hover:border-accent/50"
+              className="group rounded-lg border border-border bg-card p-5 transition hover:border-accent/50"
             >
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
                 {String(index + 1).padStart(2, "0")}
@@ -114,7 +114,7 @@ const IdentityOverview = () => {
                   <article
                     key={slotTitle}
                     className={cn(
-                      "card-hover rounded-xl border border-border bg-card p-4 shadow-sm"
+                      "card-hover rounded-xl border border-border bg-card p-5 shadow-sm"
                     )}
                   >
                     <h3 className="mb-4 text-2xl leading-tight text-foreground">
@@ -176,7 +176,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
             </h2>
             <ul className="space-y-3">
               {item.practice.map((p, i) => (
-                <li key={p} className="rounded-lg border border-border bg-card p-4">
+                <li key={p} className="rounded-lg border border-border bg-card p-5">
                   <div className="flex items-start gap-3">
                     <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-black text-accent-ink">
                       {i + 1}
