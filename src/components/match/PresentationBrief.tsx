@@ -117,7 +117,7 @@ export default function PresentationBrief() {
         <button
           type="button"
           onClick={copyPrompt}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-4 text-xs font-black uppercase tracking-wider text-accent transition hover:bg-accent hover:text-background"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-4 text-xs font-black uppercase tracking-wider text-accent-ink transition hover:bg-accent hover:text-background"
         >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           {copied ? "Kopierad" : "Kopiera brief"}
