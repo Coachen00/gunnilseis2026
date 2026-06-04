@@ -94,7 +94,7 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
               onChange={(e) => setUrl(e.target.value)}
               onBlur={() => hasImage && setEditing(false)}
               placeholder="https://..."
-              className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/60"
+              className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
             />
             {hasImage && (
               <button

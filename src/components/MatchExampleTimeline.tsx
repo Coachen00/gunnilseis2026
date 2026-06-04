@@ -43,7 +43,8 @@ const MatchExampleTimeline = () => {
             value={values[i]}
             onChange={(e) => updateValue(i, e.target.value)}
             placeholder={step.fieldPlaceholder}
-            className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2 mb-3 placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
+            aria-label={step.fieldLabel}
+            className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2 mb-3 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
           />
           <label className="text-xs text-muted-foreground font-medium">{step.fieldLabel}</label>
           
@@ -54,7 +55,8 @@ const MatchExampleTimeline = () => {
               value={urls[i]}
               onChange={(e) => updateUrl(i, e.target.value)}
               placeholder="Bildlänk"
-              className="flex-1 text-xs bg-muted/50 border border-border rounded-lg px-2 py-1.5 placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
+              aria-label={`Bildlänk för ${step.label}`}
+              className="flex-1 text-xs bg-muted/50 border border-border rounded-lg px-2 py-1.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
 

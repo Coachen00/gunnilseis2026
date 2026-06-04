@@ -109,6 +109,7 @@ export default function ContentEditor<T>({
             value={text}
             onChange={(e) => handleChange(e.target.value)}
             spellCheck={false}
+            aria-label={`JSON för ${label}`}
             className="w-full h-80 font-mono text-xs bg-background border border-border rounded-md p-3 text-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
           />
           {parseError && (

@@ -518,8 +518,9 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
       value={url}
       onChange={(e) => setUrl(e.target.value)}
       onBlur={() => persist({ url, source_kind: "url", storage_path: null })}
+      aria-label={mode === "video" ? "Film-URL" : "Bild-URL"}
       placeholder={mode === "video" ? "YouTube-länk eller filmens URL" : "Bild-URL"}
-      className="h-10 w-full rounded-md border border-border bg-background/70 px-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+      className="h-10 w-full rounded-md border border-border bg-background/70 px-3 text-sm text-foreground placeholder:text-muted-foreground outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
     />
   ) : (
     <div>
@@ -556,7 +557,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
         onBlur={() => persist({ caption: caption || null })}
         placeholder={captionPlaceholder ?? "Skriv kort vad bilden eller filmen visar..."}
         rows={compact ? 2 : 3}
-        className="min-h-[72px] w-full resize-y rounded-md border border-border bg-background/70 px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+        className="min-h-[72px] w-full resize-y rounded-md border border-border bg-background/70 px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
       />
     </label>
   );

@@ -487,14 +487,14 @@ export const KvalitetSection = () => (
       ].map((item) => (
         <div key={item.label} className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover">
           <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4">{item.label}</h4>
-          <input type="text" placeholder={item.placeholder} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 mb-3 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
-          <textarea placeholder="Kort anteckning" rows={2} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
+          <input type="text" placeholder={item.placeholder} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 mb-3 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
+          <textarea placeholder="Kort anteckning" rows={2} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
         </div>
       ))}
     </div>
     <div className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm">
       <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-foreground mb-4">Lärdom (1–3 meningar)</h4>
-      <textarea placeholder="Vad lärde vi oss idag?" rows={3} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
+      <textarea placeholder="Vad lärde vi oss idag?" rows={3} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
     </div>
   </section>
 );
