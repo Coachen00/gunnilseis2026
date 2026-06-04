@@ -121,7 +121,7 @@ export default function HalftimeAdjustmentPanel() {
     <section className="rounded-xl border border-border bg-card">
       <header className="grid gap-5 border-b border-border p-5 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
-          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
             <Gauge className="h-3.5 w-3.5" />
             Halvtidskorrigering
           </div>
@@ -157,7 +157,7 @@ function ProblemList({ activeId, onSelect }: { activeId: ProblemKey; onSelect: (
   return (
     <div className="rounded-lg border border-border bg-background/35 p-3">
       <div className="mb-3 flex items-center gap-2 px-1 text-sm font-black">
-        <SearchCheck className="h-4 w-4 text-accent" />
+        <SearchCheck className="h-4 w-4 text-accent-ink" />
         Matchbild
       </div>
       <div className="space-y-2">
@@ -226,7 +226,7 @@ function InfoBlock({
 }) {
   return (
     <div className="grid grid-cols-[28px_1fr] gap-3 rounded-md border border-border bg-card/60 p-3">
-      <Icon className="mt-0.5 h-4 w-4 text-accent" />
+      <Icon className="mt-0.5 h-4 w-4 text-accent-ink" />
       <p className={cn("text-sm leading-relaxed", strong ? "font-semibold text-foreground" : "text-muted-foreground")}>
         <span className="font-mono text-[10px] font-black uppercase tracking-wider text-muted-foreground">{label}: </span>
         {value}
@@ -239,13 +239,13 @@ function Checklist() {
   return (
     <div className="rounded-lg border border-border bg-background/35 p-4">
       <div className="mb-3 flex items-center gap-2 text-sm font-black">
-        <ListChecks className="h-4 w-4 text-accent" />
+        <ListChecks className="h-4 w-4 text-accent-ink" />
         Pausens fem kontroller
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
         {CHECKS.map((check, index) => (
           <div key={check} className="flex items-start gap-3 rounded-md border border-border bg-card/60 p-3">
-            <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded bg-accent/10 font-mono text-[10px] font-black text-accent">
+            <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded bg-accent/10 font-mono text-[10px] font-black text-accent-ink">
               {index + 1}
             </span>
             <p className="text-sm font-semibold leading-snug">{check}</p>

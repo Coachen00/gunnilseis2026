@@ -19,7 +19,7 @@ const SessionAccordion = ({ week }: { week: Week }) => (
         >
           <AccordionTrigger className="py-3 text-left">
             <div className="flex flex-1 flex-wrap items-baseline gap-x-3 gap-y-1 pr-3">
-              <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+              <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
                 {session.day} · {session.date}
               </span>
               <span className="text-sm font-black tracking-normal text-foreground md:text-base">

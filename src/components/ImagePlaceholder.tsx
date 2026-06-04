@@ -42,7 +42,7 @@ const ImagePlaceholder = ({ title, description, className, compact = false, src,
             alt={alt ?? title}
             className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-[1.015]"
           />
-          <div className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md bg-background/75 text-muted-foreground backdrop-blur-sm transition group-hover:text-accent">
+          <div className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-md bg-background/75 text-muted-foreground backdrop-blur-sm transition group-hover:text-accent-ink">
             <Maximize2 className="h-3.5 w-3.5" />
           </div>
         </div>
