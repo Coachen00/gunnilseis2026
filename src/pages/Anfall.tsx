@@ -74,7 +74,7 @@ const Anfall = () => (
               href={`#${p.slug}`}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border border-border bg-card hover:border-accent hover:-translate-y-px transition-all duration-200"
             >
-              <span className="font-mono font-bold tabular text-accent">
+              <span className="font-mono font-bold tabular text-accent-ink">
                 {String(p.order).padStart(2, "0")}
               </span>
               <span className="font-bold tracking-tight">{p.headline}</span>

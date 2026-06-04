@@ -63,7 +63,7 @@ const IdentityOverview = () => {
       >
         <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
-            {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImagePlus className="h-3.5 w-3.5 text-accent" />}
+            {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <ImagePlus className="h-3.5 w-3.5 text-accent-ink" />}
             {loading ? "Kopplar media" : error ? "Media offline" : "Media autosparas"}
           </span>
         </div>
@@ -77,10 +77,10 @@ const IdentityOverview = () => {
               href={`#${group.id}`}
               className="group rounded-lg border border-border bg-card p-4 transition hover:border-accent/50"
             >
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="mt-2 block text-lg font-black tracking-tight text-foreground group-hover:text-accent">
+              <span className="mt-2 block text-lg font-black tracking-tight text-foreground group-hover:text-accent-ink">
                 {group.title}
               </span>
             </a>
@@ -93,10 +93,10 @@ const IdentityOverview = () => {
               <div className="mb-7 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-3xl">
                   <div className="mb-4 flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent/10 font-mono text-xs font-black text-accent">
+                    <span className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent/10 font-mono text-xs font-black text-accent-ink">
                       {String(groupIndex + 1).padStart(2, "0")}
                     </span>
-                    <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent-ink">
                       Identitet
                     </span>
                   </div>
@@ -171,14 +171,14 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
           </div>
 
           <section>
-            <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-accent">
+            <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-accent-ink">
               Så gör vi det
             </h2>
             <ul className="space-y-3">
               {item.practice.map((p, i) => (
                 <li key={p} className="rounded-lg border border-border bg-card p-4">
                   <div className="flex items-start gap-3">
-                    <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-black text-accent">
+                    <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-accent/15 text-xs font-black text-accent-ink">
                       {i + 1}
                     </span>
                     <span className="text-sm leading-relaxed text-foreground/90 md:text-base">{p}</span>
@@ -199,7 +199,7 @@ const IdentityDetail = ({ slug }: { slug: string }) => {
 
           <section className="grid gap-4 md:grid-cols-2">
             <div className="rounded-lg border border-border bg-card p-5">
-              <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+              <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-accent-ink">
                 <Check className="h-4 w-4" /> Godkänt
               </div>
               <p className="text-sm leading-relaxed text-foreground/85">{item.gVillkor}</p>

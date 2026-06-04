@@ -44,7 +44,7 @@ const Matcher = () => {
             return (
               <SectionReveal key={key} as="section">
                 <h2 className="mb-4 flex items-baseline gap-3">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
                     {String(monthIdx).padStart(2, "0")}
                   </span>
                   <span className="text-xl font-black tracking-tight text-foreground">{label}</span>
@@ -68,7 +68,7 @@ const Matcher = () => {
           href="https://www.svenskalag.se/gunnilseis-herr/matcher"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
+          className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent-ink"
         >
           Källa · svenskalag.se
           <ExternalLink className="h-3 w-3" />
@@ -148,7 +148,7 @@ const MatchRowContent = ({
             className={cn(
               "grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border font-mono text-[9px] font-black uppercase",
               match.homeAway === "home"
-                ? "border-accent/40 bg-accent/10 text-accent"
+                ? "border-accent/40 bg-accent/10 text-accent-ink"
                 : "border-border bg-background/60 text-muted-foreground"
             )}
             title={match.homeAway === "home" ? "Hemmamatch" : "Bortamatch"}
@@ -163,7 +163,7 @@ const MatchRowContent = ({
             {match.homeAway === "home" ? "Gunnilse — " : ""}
             {match.opponent}
             {match.homeAway === "away" ? " — Gunnilse" : ""}
-            {match.sourceUrl && <ExternalLink className="ml-1.5 inline h-3 w-3 text-muted-foreground transition group-hover:text-accent" />}
+            {match.sourceUrl && <ExternalLink className="ml-1.5 inline h-3 w-3 text-muted-foreground transition group-hover:text-accent-ink" />}
           </p>
         </div>
         <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
@@ -180,7 +180,7 @@ const MatchRowContent = ({
       {/* Result / status */}
       <div className="flex flex-col items-end gap-0.5">
         {isUpcoming && (
-          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-accent">
+          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-accent-ink">
             Veckans
           </span>
         )}

@@ -179,7 +179,7 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
               className={cn(
                 "cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition focus-within:ring-2 focus-within:ring-ring",
                 badge === b
-                  ? "border-accent bg-accent/10 text-accent"
+                  ? "border-accent bg-accent/10 text-accent-ink"
                   : "border-border text-muted-foreground hover:border-accent/50"
               )}
             >
@@ -246,7 +246,7 @@ const ReflectionCard = ({ reflection, canEdit, onRemove }: ReflectionCardProps) 
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-accent">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-accent-ink">
             {reflection.badge}
           </span>
           <h3 className="mt-1 text-xl font-bold leading-tight text-foreground">

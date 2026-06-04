@@ -9,7 +9,7 @@ const CuesBlock = ({ set }: CuesBlockProps) => (
     <div className="bg-card/85 backdrop-blur-sm rounded-2xl border border-accent/30 p-7 md:p-10 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
         <span className="inline-block w-8 h-px bg-accent" />
-        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent">Match-cues · {set.label}</span>
+        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent-ink">Match-cues · {set.label}</span>
       </div>
       <p className="text-base md:text-lg text-foreground/90 font-semibold leading-snug mb-8">{set.oneLiner}</p>
 
@@ -32,7 +32,7 @@ const CuesBlock = ({ set }: CuesBlockProps) => (
               <li key={i} className="border-l-2 border-accent/40 pl-3">
                 <div className="text-xs font-mono uppercase tracking-wider text-muted-foreground">När</div>
                 <div className="text-foreground/90 mb-1">{c.trigger}</div>
-                <div className="text-xs font-mono uppercase tracking-wider text-accent">→ Då</div>
+                <div className="text-xs font-mono uppercase tracking-wider text-accent-ink">→ Då</div>
                 <div className="text-foreground/90 font-medium">{c.action}</div>
               </li>
             ))}
