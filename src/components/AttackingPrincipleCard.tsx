@@ -11,7 +11,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
     id={p.slug}
     className="scroll-mt-24 bg-card/85 backdrop-blur-sm rounded-xl border border-border overflow-hidden"
   >
-    <header className="flex items-start gap-4 p-5 md:p-6 border-b border-border">
+    <header className="flex items-start gap-4 p-6 md:p-8 border-b border-border">
       <div className="flex-shrink-0 w-11 h-11 rounded-sm border border-accent/40 bg-accent/10 text-accent font-mono font-bold text-sm flex items-center justify-center tabular">
         {String(p.order).padStart(2, "0")}
       </div>
@@ -40,7 +40,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
       </div>
     </header>
 
-    <div className="grid gap-x-8 gap-y-6 p-5 md:p-6 md:grid-cols-2">
+    <div className="grid gap-x-8 gap-y-8 p-6 md:p-8 md:grid-cols-2">
       <section className="md:col-span-2">
         <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">
           Förklaring
@@ -54,7 +54,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">
           Titta efter
         </h4>
-        <ul className="space-y-1.5 text-sm text-foreground/85">
+        <ul className="space-y-2.5 text-sm text-foreground/85">
           {p.tittaEfter.map((t, i) => (
             <li key={i} className="flex items-start gap-2">
               <span className="text-accent mt-0.5 select-none">•</span>
@@ -68,7 +68,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-2">
           Gör så här
         </h4>
-        <ul className="space-y-1.5 text-sm text-foreground/85">
+        <ul className="space-y-2.5 text-sm text-foreground/85">
           {p.goraDetta.map((t, i) => (
             <li key={i} className="flex items-start gap-2">
               <span className="text-accent mt-0.5 select-none">→</span>
@@ -78,8 +78,8 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         </ul>
       </section>
 
-      <section className="md:col-span-2 border-t border-border pt-5">
-        <div className="grid gap-5 md:grid-cols-2">
+      <section className="md:col-span-2 border-t border-border pt-7">
+        <div className="grid gap-6 md:grid-cols-2">
           <div className="border-l-2 border-accent/60 pl-4">
             <div className="text-[10px] font-sans font-semibold uppercase tracking-[0.22em] text-muted-foreground mb-1.5">
               Klippanalys · {p.matchExempel.motstandare}
@@ -99,7 +99,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
         </div>
       </section>
 
-      <section className="md:col-span-2 border-t border-border pt-4">
+      <section className="md:col-span-2 border-t border-border pt-7">
         <div className="mb-3 flex items-baseline justify-between gap-3">
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
             Bilder & filmer
@@ -120,7 +120,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
       </section>
 
       {p.aktiverarIdentitet && p.aktiverarIdentitet.length > 0 && (
-        <section className="md:col-span-2 border-t border-border pt-4">
+        <section className="md:col-span-2 border-t border-border pt-7">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.22em] text-muted-foreground">
               Aktiverar identitet:

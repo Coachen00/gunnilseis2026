@@ -19,6 +19,7 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       spacing: {
+        "section-xs": "2rem",
         "section-sm": "4rem",
         section: "6rem",
         "section-lg": "8rem",
