@@ -72,9 +72,9 @@ function MatchInfoCard() {
           <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
             Matchdag i ordning
           </p>
-          <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {MATCH_SCHEDULE.map((step) => (
-              <li key={`${step.time}-${step.label}`} className="rounded-lg border border-border bg-background px-3 py-2">
+              <li key={`${step.time}-${step.label}`} className="rounded-lg border border-border bg-background px-4 py-3">
                 <div className="flex items-baseline gap-2">
                   <span className="font-mono text-xs font-black text-amber-700">{step.time}</span>
                   <span className="text-sm font-black text-foreground">{step.label}</span>
@@ -173,11 +173,11 @@ function KalladTrupp() {
           <p className="mb-4 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
             Kallade spelare
           </p>
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {calledPlayers.map((name, i) => (
               <div
                 key={name}
-                className="flex items-center gap-3 rounded-md border border-border bg-card px-3 py-2.5"
+                className="flex items-center gap-3 rounded-md border border-border bg-card px-4 py-3"
               >
                 <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[10px] font-black text-amber-800">
                   {i + 1}

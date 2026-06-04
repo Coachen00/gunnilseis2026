@@ -90,11 +90,11 @@ const MatchForra = () => {
             </h2>
           </div>
           {m.truppen.length > 0 ? (
-            <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 text-sm">
+            <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 text-sm">
               {m.truppen.map((p, i) => (
                 <li
                   key={i}
-                  className="bg-card/60 border border-border rounded-md px-3 py-1.5"
+                  className="bg-card/60 border border-border rounded-md px-4 py-2"
                 >
                   {p}
                 </li>

@@ -125,7 +125,7 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
               />
             )}
           </div>
-          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-foreground/85">
+          <figcaption className="px-4 py-3 text-xs font-bold leading-snug text-foreground/85">
             {item.label}
           </figcaption>
         </figure>
