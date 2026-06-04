@@ -624,7 +624,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
           <button
             type="button"
             onClick={clearMedia}
-            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-border bg-background/85 text-muted-foreground backdrop-blur transition hover:text-foreground"
+            className="absolute right-2 top-2 grid h-9 w-9 place-items-center rounded-full border border-border bg-background/85 text-muted-foreground backdrop-blur transition hover:text-foreground"
             aria-label="Ta bort"
           >
             <X className="h-3 w-3" />
@@ -672,7 +672,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
             type="button"
             onClick={() => setExpanded(true)}
             title="Expandera"
-            className="grid h-7 w-7 place-items-center rounded-md border border-border bg-background/50 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
+            className="grid h-9 w-9 place-items-center rounded-md border border-border bg-background/50 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
             aria-label="Expandera media"
           >
             <Maximize2 className="h-3.5 w-3.5" />
@@ -698,7 +698,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
             <button
               type="button"
               onClick={() => setExpanded(false)}
-              className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:text-foreground"
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:text-foreground"
               aria-label="Stäng"
             >
               <X className="h-4 w-4" />

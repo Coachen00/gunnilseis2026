@@ -323,7 +323,7 @@ const TopNav = () => {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-muted transition-colors"
+              className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-foreground hover:bg-muted transition-colors"
               aria-label={open ? "Stäng meny" : "Öppna meny"}
               aria-expanded={open}
             >
