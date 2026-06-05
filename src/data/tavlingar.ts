@@ -4,6 +4,17 @@
  * Uppdateras veckovis efter varje träningstillfälle.
  */
 
+/** Ledord för poängligan — varför vi tävlar varje träning. */
+export interface Quote {
+  text: string;
+  attribution: string;
+}
+
+export const QUOTE: Quote = {
+  text: "Det är de långsiktiga målen som visar vart vi ska — men det är de akuta vinsterna, en träning och en poäng i taget, som bär oss dit. Varje seger här är ett litet steg på en lång resa.",
+  attribution: "Gunnilse IS, ledarstaben",
+};
+
 export interface PointRule {
   label: string;
   points: string;

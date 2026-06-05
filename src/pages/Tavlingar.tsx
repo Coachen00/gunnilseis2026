@@ -4,6 +4,7 @@ import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   POINT_RULES,
+  QUOTE,
   SESSIONS,
   rankPlayers,
   describeMatch,
@@ -28,8 +29,20 @@ const Tavlingar = () => {
       />
 
       <div className="container pb-section">
+        {/* Ledord — varför vi tävlar */}
+        <SectionReveal as="section" aria-label="Ledord">
+          <figure className="rounded-md border-l-2 border-accent bg-card px-5 py-5 sm:px-6 sm:py-6">
+            <blockquote className="text-balance text-base italic leading-relaxed text-foreground/90 sm:text-lg">
+              {QUOTE.text}
+            </blockquote>
+            <figcaption className="mt-3 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+              {QUOTE.attribution}
+            </figcaption>
+          </figure>
+        </SectionReveal>
+
         {/* Regler & poängsystem */}
-        <SectionReveal as="section" aria-labelledby="regler-rubrik">
+        <SectionReveal as="section" aria-labelledby="regler-rubrik" className="mt-10">
           <header className="mb-4 flex items-baseline gap-3">
             <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
               Regler

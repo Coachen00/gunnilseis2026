@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-06-01 inför Hisingsbacka FC
- * (borta · Backavallen 1 Konstgräs · fredag 5 juni 19:15).
- * Förra match: Hjuviks AIK (hemma · 2026-05-30 · 4–1).
+ * Senast uppdaterad 2026-06-05 inför Floda BoIF
+ * (hemma · Hjällbovallen 1 Gräs · lördag 13 juni 13:00).
+ * Förra match: Hisingsbacka FC (borta · 2026-06-05 · 4–0).
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -44,10 +44,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Hisingsbacka FC",
-  venue: "Backavallen 1 Konstgräs",
-  home: false,
-  kickoff: "Fre 5 jun · 19:15",
+  opponent: "Floda BoIF",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 13 jun · 13:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -113,7 +113,7 @@ export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
 })();
 
 /**
- * Räknar baklänges från `MATCH_META.kickoff` ("Fre 5 jun · 19:15") och
+ * Räknar baklänges från `MATCH_META.kickoff` ("Lör 13 jun · 13:00") och
  * returnerar samlingstid som "HH:MM".
  *
  * Regel (Gunnilse IS):
@@ -147,11 +147,11 @@ export const SAMLING_TIME = computeSamlingTime();
  */
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
-  { time: "Före avresa/uppvärmning", label: "Genomgång" },
-  { time: "18:35 – 19:05", label: "Aktivering" },
-  { time: "19:05 – 19:12", label: "Ner + sista instruktion" },
-  { time: "19:12", label: "Upp + sista löpningar" },
-  { time: "19:15", label: "Avspark" },
+  { time: "Före uppvärmning", label: "Genomgång" },
+  { time: "12:20 – 12:50", label: "Aktivering" },
+  { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
+  { time: "12:57", label: "Upp + sista löpningar" },
+  { time: "13:00", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -170,7 +170,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Borta — stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
+      "Hemma — vi sätter tempot, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -212,7 +212,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
-  kit: "Bortamatch på konstgräs — följ kallelsen och ta med rätt skor/överdrag.",
+  kit: "Hemmamatch på gräs (Hjällbovallen 1) — följ kallelsen och ta med rätt skor.",
   responsibilities: [
     ["Kapten", "Bekräftas i kallelse"],
     ["Hörnor", "Bekräftas på genomgång"],
@@ -222,7 +222,7 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Hisingsbacka FC (fre 5 juni). 16 spelare kallade.
+/* Kallad trupp inför Floda BoIF (lör 13 juni). 16 spelare kallade.
  * Startelva sätts på genomgång — alla 16 ligger som bänk tills
  * laguppställningen är spikad. */
 export const CALLED_SQUAD = {
@@ -248,8 +248,8 @@ export const CALLED_SQUAD = {
 } as const;
 
 export const FOCUS: string[] = [
-  "Starta som bortalag med lugn kropp: korta avstånd, tydlig röst och första duellen direkt.",
-  "Skydda mitten och tvinga Hisingsbacka utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
+  "Sätt tempot hemma från första sekund: korta avstånd, tydlig röst och första duellen direkt.",
+  "Skydda mitten och tvinga Floda utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
@@ -262,8 +262,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Hisingsbacka FC borta · Backavallen 1 Konstgräs · fredag 5 juni 19:15.",
-      `Samling ${SAMLING_TIME} på Hjällbovallen — avresa direkt efter (1h45 före avspark, bortamatchsregel).`,
+      "Floda BoIF hemma · Hjällbovallen 1 Gräs · lördag 13 juni 13:00.",
+      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark, hemmamatchsregel).`,
       "Startelva och roller bekräftas på genomgång.",
     ],
   },
@@ -282,27 +282,27 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — Hjuviks AIK 4–1",
-    eyebrow: "Vad vi tar med till Hisingsbacka",
+    title: "Förra match — Hisingsbacka FC 4–0",
+    eyebrow: "Vad vi tar med till Floda",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi vann 4–1 hemma mot Hjuviks AIK i gräspremiären — Yosef Ismail hattrick (+ assist), Leodon Johansson en.",
+      "Vi vann 4–0 borta mot Hisingsbacka FC — Haris Avdiu hattrick, Mustafa Ayub satte det sista.",
       "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Hisingsbacka FC borta.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Floda BoIF hemma.",
     ],
   },
   {
-    id: "hisingsbacka",
+    id: "floda",
     num: "04",
-    title: "Vad vi vet om Hisingsbacka FC",
+    title: "Vad vi vet om Floda BoIF",
     eyebrow: "Motståndaren",
     bullets: [
-      "Bortamatch på Backavallen 1 Konstgräs — snabbt underlag, vi tar med egen rytm och röst.",
-      "Fredagskväll borta — lugn start, första duellen direkt, vakna i andrabollarna.",
+      "Hemmamatch på Hjällbovallen 1 Gräs — vår plan, vårt tempo, egen rytm och röst.",
+      "Lördag lunch hemma — vakna start, första duellen direkt, var igång i andrabollarna.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Hisingsbacka-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Floda-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -311,7 +311,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Borta = vi tar med oss egen rytm, egen röst och egen intensitet.",
+      "Hemma = vi sätter rytmen, höjer rösten och äger intensiteten.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -338,7 +338,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Hisingsbacka).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Floda).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -388,8 +388,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "19:15"],
-      ["Bortaplan", "Backavallen 1 Konstgräs"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

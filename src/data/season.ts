@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-06-01 (efter Hjuviks AIK 4–1, inför Hisingsbacka FC).
+ * Senast uppdaterad: 2026-06-05 (efter Hisingsbacka FC 4–0, inför Floda BoIF).
  */
 
 export type MatchScorer = {
@@ -138,6 +138,12 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Backavallen 1 Konstgräs",
+    ourScore: 4,
+    theirScore: 0,
+    scorers: [
+      { name: "Haris Avdiu", goals: 3, note: "hattrick" },
+      { name: "Mustafa Ayub", goals: 1 },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901102/hisingsbacka-fc",
   },
   {

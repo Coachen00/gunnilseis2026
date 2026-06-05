@@ -86,6 +86,14 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
     blocks: STANDARD_BLOCKS,
     larDomar: [],
   },
+  "2026-06-05-hisingsbacka": {
+    summary:
+      "Vi vann 4–0 borta mot Hisingsbacka FC — Haris Avdiu hattrick, Mustafa Ayub satte det sista.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
 };
 
 /* =================================================================

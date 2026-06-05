@@ -29,12 +29,12 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Hisingsbacka FC + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Hisingsbacka FC");
-    expect(MATCH_META.kickoff).toMatch(/19:15/);
-    expect(MATCH_META.venue).toContain("Backavallen");
+  it("MATCH_META har Floda BoIF + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("Floda BoIF");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toContain("Division 4A");
-    expect(MATCH_META.home).toBe(false);
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("veckans match har redigerbar presentationslänk", () => {
@@ -48,13 +48,13 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Hisingsbacka-startelvan är satt", () => {
+  it("FORMATION är tom tills Floda-startelvan är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp: 16 spelare kallade till Hisingsbacka, startelva sätts på genomgång", () => {
+  it("kallad trupp: 16 spelare kallade till Floda, startelva sätts på genomgång", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
     expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(new Set(CALLED_SQUAD.bench).size).toBe(16);
@@ -66,8 +66,8 @@ describe("matchplan", () => {
     );
   });
 
-  it("SAMLING_TIME är 17:30 för Hisingsbacka (borta 19:15 → 1h45 före)", () => {
-    expect(SAMLING_TIME).toBe("17:30");
+  it("SAMLING_TIME är 11:30 för Floda (hemma 13:00 → 1h30 före)", () => {
+    expect(SAMLING_TIME).toBe("11:30");
   });
 
   it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
@@ -145,10 +145,10 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
-    // Hjuviks (30 maj) ligger nu före veckans match (5 juni) → past opponent.
     expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
-    // Och INTE Hisingsbacka själv (det är veckans match) eller framtida motståndare
-    expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(false);
+    // Hisingsbacka (5 juni) ligger nu före veckans match (13 juni) → past opponent.
+    expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
+    // Och INTE Floda själv (det är veckans match) eller framtida motståndare
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(false);
   });
 
@@ -158,7 +158,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "hisingsbacka",
+      "floda",
       "identitet",
       "anfall",
       "forsvar",
@@ -175,7 +175,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte Hisingsbacka som veckans match", () => {
+  it("stale Vardar-rad i framtiden blockerar inte Floda som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -191,10 +191,10 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Hisingsbacka FC");
+    expect(matches[0].opponent).toBe("Floda BoIF");
   });
 
-  it("en felaktig match före Hisingsbacka blockerar inte veckans match", () => {
+  it("en felaktig match före Floda blockerar inte veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -209,7 +209,7 @@ describe("matchplan", () => {
       new Date("2026-06-01T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Hisingsbacka FC");
+    expect(matches[0].opponent).toBe("Floda BoIF");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });
