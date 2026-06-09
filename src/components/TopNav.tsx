@@ -106,7 +106,7 @@ const matchGroups: NavGroup[] = [
 /* Maj 2026 dropdown — de sex spelmodellblocken utan separat filmlänk. */
 const majGroups: NavGroup[] = [
   {
-    label: "Maj 2026 · Spelmodellen",
+    label: "Sommaren 2026 · Spelmodellen",
     to: "/maj-2026",
     children: [
       { label: "Försvarsspel", to: "/maj-2026#forsvarsspel" },
@@ -123,7 +123,7 @@ const navItems: NavItem[] = [
   { kind: "link", to: "/", label: "Hem" },
   {
     kind: "dropdown",
-    label: "Maj 2026",
+    label: "Sommaren 2026",
     groups: majGroups,
     variant: "narrow",
     activePathPrefixes: ["/maj-2026"],

@@ -548,7 +548,7 @@ export default function FilmLibrary() {
               Hitta rätt film direkt
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
-              Allt material under Maj 2026 sorterat efter spelfas. Klicka på ett
+              Allt material under Sommaren 2026 sorterat efter spelfas. Klicka på ett
               klipp så öppnas spelaren direkt — använd pilarna för att bläddra
               mellan filmer i samma fas.
             </p>

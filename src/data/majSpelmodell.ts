@@ -44,7 +44,7 @@ export interface MajBlock {
 }
 
 export const MAJ_2026_HERO = {
-  eyebrow: "Maj 2026",
+  eyebrow: "Sommaren 2026",
   title: "SÅ SPELAR VI FOTBOLL",
   description:
     "Vi försvarar tillsammans, ställer om framåt, attackerar assistytan, återerövrar direkt och visar vår identitet i varje aktion.",

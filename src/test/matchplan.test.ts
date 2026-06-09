@@ -54,13 +54,9 @@ describe("matchplan", () => {
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp: 16 spelare kallade till Floda, startelva sätts på genomgång", () => {
+  it("kallad trupp: ej spikad — tom tills kallelsen är satt", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
-    expect(new Set(CALLED_SQUAD.bench).size).toBe(16);
-    expect(CALLED_SQUAD.bench).toEqual(
-      expect.arrayContaining(["Ali Carneil", "Adnan Hadzialic", "Mustafa Ayub", "Leodon Johansson"])
-    );
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Bekräftas i kallelse"]])
     );
