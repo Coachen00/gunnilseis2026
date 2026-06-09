@@ -151,3 +151,64 @@ export function describeMatch(match: SessionMatch): string {
   if (match.black > match.red) return "Svart lag vann";
   return "Oavgjort";
 }
+
+/**
+ * Dumle CUP — lagtävling vid sidan av poängligan. Två lag, poäng + trupp.
+ * `reserves` (t.ex. ej spelklar/tveksam) visas dämpat under truppen.
+ */
+export interface CupTeam {
+  name: string;
+  points: number;
+  /** Styr färgsättning av lagkortet. */
+  tone: "svarta" | "gron";
+  players: string[];
+  reserves?: string[];
+}
+
+export interface Cup {
+  title: string;
+  emoji: string;
+  teams: CupTeam[];
+}
+
+export const DUMLE_CUP: Cup = {
+  title: "Dumle CUP",
+  emoji: "🏆",
+  teams: [
+    {
+      name: "SVARTA",
+      points: 14,
+      tone: "svarta",
+      players: [
+        "Ali",
+        "Pascal",
+        "Benji",
+        "Mustafa",
+        "Nayef",
+        "Ado",
+        "Aldin",
+        "Kamal",
+        "Meisam",
+        "Rayan",
+      ],
+    },
+    {
+      name: "GRÖN",
+      points: 8,
+      tone: "gron",
+      players: [
+        "Parsa",
+        "Kian",
+        "Haris",
+        "Galvan",
+        "Rinor",
+        "Omar",
+        "Shoheyb",
+        "Måns",
+        "Ali",
+        "Leo",
+      ],
+      reserves: ["Elias"],
+    },
+  ],
+};
