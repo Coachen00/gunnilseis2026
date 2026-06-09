@@ -57,7 +57,7 @@ const PHASES: MacroPhase[] = [
 const CurrentStateSection = () => (
   <section id="nulage" className="scroll-mt-24 pt-10">
     <div className="mb-10 max-w-3xl">
-      <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent">Nuläge</p>
+      <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.28em] text-accent-ink">Nuläge</p>
       <h1 className="text-4xl md:text-6xl leading-[1.05] text-foreground">
         En enkel spelidé i fyra skeden.
       </h1>

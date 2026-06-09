@@ -239,7 +239,7 @@ const TopNav = () => {
           </div>
           <span className="font-bold text-base tracking-tight text-foreground hidden sm:inline">
             Gunnilse IS
-            <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            <span className="text-accent-ink ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </span>
         </Link>
 
@@ -323,7 +323,7 @@ const TopNav = () => {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-muted transition-colors"
+              className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md text-foreground hover:bg-muted transition-colors"
               aria-label={open ? "Stäng meny" : "Öppna meny"}
               aria-expanded={open}
             >
@@ -361,12 +361,12 @@ const TopNav = () => {
                           {group.to ? (
                             <Link
                               to={group.to}
-                              className="block px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent"
+                              className="block px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent-ink"
                             >
                               {group.label}
                             </Link>
                           ) : (
-                            <div className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent">
+                            <div className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent-ink">
                               {group.label}
                             </div>
                           )}
@@ -398,7 +398,7 @@ const TopNav = () => {
                   cn(
                     "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
                     isActive
-                      ? "bg-card text-accent border-l-2 border-accent"
+                      ? "bg-card text-accent-ink border-l-2 border-accent"
                       : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
                   )
                 }

@@ -31,11 +31,11 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="border-t border-border/70 py-12 mt-section bg-card/40">
-      <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+    <footer className="border-t border-border/70 py-section-sm mt-section bg-card/40">
+      <div className="container flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
         <div>
           <p className="font-bold text-sm tracking-tight text-foreground">
-            Gunnilse IS <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            Gunnilse IS <span className="text-accent-ink ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </p>
           {isLoggedIn && (
             <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">
@@ -44,12 +44,12 @@ const Footer = () => {
           )}
         </div>
         {isLoggedIn && (
-          <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
-            <Link to="/maj-2026" className="hover:text-foreground transition-colors duration-200">Så spelar vi</Link>
-            <Link to="/verktyg" className="hover:text-foreground transition-colors duration-200">Verktyg</Link>
+          <div className="flex items-center gap-5 text-xs font-medium text-muted-foreground">
+            <Link to="/maj-2026" className="inline-flex items-center py-2 -my-2 hover:text-foreground transition-colors duration-200">Så spelar vi</Link>
+            <Link to="/verktyg" className="inline-flex items-center py-2 -my-2 hover:text-foreground transition-colors duration-200">Verktyg</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="hover:text-foreground transition-colors duration-200"
+              className="inline-flex items-center py-2 -my-2 hover:text-foreground transition-colors duration-200"
             >
               ↑ Toppen
             </button>

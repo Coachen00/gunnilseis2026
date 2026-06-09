@@ -112,9 +112,17 @@ const Login = () => {
         navigate("/");
       }
     } catch (error: unknown) {
+      const raw = error instanceof Error ? error.message : "";
+      const description = /invalid login credentials/i.test(raw)
+        ? "Fel användarnamn eller lösenord. Kontrollera och försök igen."
+        : /email not confirmed|not.*approved/i.test(raw)
+          ? "Kontot väntar fortfarande på godkännande av en ledare."
+          : /network|fetch|failed to/i.test(raw)
+            ? "Ingen kontakt med servern. Kontrollera nätet och försök igen."
+            : "Inloggningen gick inte just nu. Försök igen om en stund.";
       toast({
-        title: "Fel",
-        description: error instanceof Error ? error.message : "Något gick fel",
+        title: "Inloggning misslyckades",
+        description,
         variant: "destructive",
       });
     } finally {
@@ -155,7 +163,7 @@ const Login = () => {
     <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
       <Card className="w-full max-w-md card-gradient border-border">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-accent">
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-accent-ink">
             <ShieldCheck className="h-3 w-3" strokeWidth={2.4} />
             Gunnilse IS · 2026
           </div>
@@ -200,7 +208,7 @@ const Login = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Vänta...
+                  {isSignUp ? "Skickar förfrågan…" : "Loggar in…"}
                 </>
               ) : isSignUp ? (
                 "Skicka förfrågan"
@@ -213,20 +221,20 @@ const Login = () => {
           {/* Inne efter login — visa vad användaren kommer åt */}
           {isSignUp && (
             <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
-              <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+              <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
                 Du får tillgång till
               </p>
               <ul className="space-y-2 text-sm text-foreground/90">
                 <li className="flex items-center gap-2">
-                  <PlayCircle className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <PlayCircle className="h-4 w-4 shrink-0 text-accent-ink" strokeWidth={2.2} />
                   Hela spelmodellen — sex spelfaser, identitet och fasta situationer
                 </li>
                 <li className="flex items-center gap-2">
-                  <CalendarClock className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <CalendarClock className="h-4 w-4 shrink-0 text-accent-ink" strokeWidth={2.2} />
                   Veckans match — trupp, matchplan och fokuspunkter
                 </li>
                 <li className="flex items-center gap-2">
-                  <Film className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <Film className="h-4 w-4 shrink-0 text-accent-ink" strokeWidth={2.2} />
                   Filmbibliotek — klipp sorterade efter spelfas
                 </li>
               </ul>

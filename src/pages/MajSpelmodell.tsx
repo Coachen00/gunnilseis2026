@@ -125,7 +125,7 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
               />
             )}
           </div>
-          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-foreground/85">
+          <figcaption className="px-4 py-3 text-xs font-bold leading-snug text-foreground/85">
             {item.label}
           </figcaption>
         </figure>
@@ -1024,7 +1024,7 @@ function SpelarenSnabbversion() {
           {MAJ_2026_QUICK_ACTIONS.map((qa, i) => {
             const tone = SNABB_TONES[i] ?? "white";
             return (
-              <div key={qa.scenario} className="border border-border bg-background p-5 transition-colors hover:border-[#f5c242]/40">
+              <div key={qa.scenario} className="border border-border bg-background p-5 transition-colors hover:border-accent/40">
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="text-lg font-black uppercase tracking-tight text-foreground">{qa.scenario}</h3>
                   <span className={["inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em]", TONE_BG[tone], TONE_TEXT[tone]].join(" ")}>
@@ -1181,7 +1181,7 @@ const MajSpelmodell = () => {
             </a>
             <Link
               to="/period/1"
-              className="inline-flex items-center gap-2 border border-border bg-card px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#f5c242] hover:text-amber-600"
+              className="inline-flex items-center gap-2 border border-border bg-card px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:border-accent hover:text-amber-700"
             >
               Träna det
               <ArrowRight className="h-4 w-4" strokeWidth={2.4} />

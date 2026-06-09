@@ -82,7 +82,7 @@ const MatchForra = () => {
         {/* Trupp */}
         <SectionReveal as="section">
           <div className="mb-4">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent-ink">
               Trupp · matchen
             </span>
             <h2 className="text-2xl md:text-3xl mt-2 leading-tight">
@@ -90,11 +90,11 @@ const MatchForra = () => {
             </h2>
           </div>
           {m.truppen.length > 0 ? (
-            <ul className="grid gap-1.5 sm:grid-cols-2 md:grid-cols-3 text-sm">
+            <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-3 text-sm">
               {m.truppen.map((p, i) => (
                 <li
                   key={i}
-                  className="bg-card/60 border border-border rounded-md px-3 py-1.5"
+                  className="bg-card/60 border border-border rounded-md px-4 py-2"
                 >
                   {p}
                 </li>
@@ -119,7 +119,7 @@ const MatchForra = () => {
         {m.blocks.map((b) => (
           <SectionReveal key={b.badge} as="section">
             <div className="mb-4">
-              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent-ink">
                 {b.badge}
               </span>
               <h2 className="text-3xl md:text-4xl mt-3 leading-tight">
@@ -144,7 +144,7 @@ const MatchForra = () => {
         {/* Lärdomar */}
         <SectionReveal as="section" className="border-t border-border pt-10">
           <div className="mb-4">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-[0.28em] text-accent-ink">
               Lärdom
             </span>
             <h2 className="text-2xl md:text-3xl mt-2 leading-tight">
@@ -155,7 +155,7 @@ const MatchForra = () => {
             <ol className="space-y-3 text-sm md:text-base text-foreground/90 leading-relaxed">
               {m.larDomar.map((x, i) => (
                 <li key={i} className="flex items-start gap-3">
-                  <span className="font-mono font-black text-accent">
+                  <span className="font-mono font-black text-accent-ink">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span>{x}</span>

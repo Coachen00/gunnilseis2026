@@ -19,12 +19,12 @@ const SectionHeader = ({ title, subtitle, badge, number, className }: SectionHea
       {(badge || number !== undefined) && (
         <div className="mb-5 flex items-center gap-3">
           {number !== undefined && (
-            <span className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent/10 font-mono text-xs font-black text-accent">
+            <span className="grid h-10 w-10 place-items-center rounded-lg border border-accent/35 bg-accent/10 font-mono text-xs font-black text-accent-ink">
               {String(number).padStart(2, "0")}
             </span>
           )}
           {badge && (
-            <span className="inline-flex items-center gap-3 text-[11px] font-sans font-semibold uppercase tracking-[0.28em] text-accent">
+            <span className="inline-flex items-center gap-3 text-[11px] font-sans font-semibold uppercase tracking-[0.28em] text-accent-ink">
               {number === undefined && <span className="inline-block w-8 h-px bg-accent/70" />}
               {badge}
             </span>

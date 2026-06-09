@@ -51,7 +51,7 @@ const Verktyg = () => (
             to={to}
             className="group grid items-center gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[48px_220px_1fr_28px]"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent">
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent-ink">
               <Icon className="h-4 w-4" strokeWidth={1.75} />
             </span>
             <h2 className="text-xl text-foreground">{label}</h2>

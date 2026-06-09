@@ -44,7 +44,7 @@ const Tavlingar = () => {
         {/* Regler & poängsystem */}
         <SectionReveal as="section" aria-labelledby="regler-rubrik" className="mt-10">
           <header className="mb-4 flex items-baseline gap-3">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent-ink">
               Regler
             </span>
             <h2 id="regler-rubrik" className="text-xl text-foreground">
@@ -55,9 +55,9 @@ const Tavlingar = () => {
             {POINT_RULES.map((rule) => (
               <div
                 key={rule.label}
-                className="rounded-md border border-border/70 bg-card px-4 py-4"
+                className="rounded-md border border-border/70 bg-card px-5 py-5"
               >
-                <div className="font-mono text-2xl font-black tracking-tight text-accent">
+                <div className="font-mono text-2xl font-black tracking-tight text-accent-ink">
                   {rule.points}
                 </div>
                 <div className="mt-1 text-sm font-bold tracking-tight text-foreground">
@@ -75,11 +75,11 @@ const Tavlingar = () => {
         <SectionReveal
           as="section"
           aria-labelledby="leaderboard-rubrik"
-          className="mt-10"
+          className="mt-12"
         >
           <header className="mb-4 flex items-baseline justify-between gap-3">
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent-ink">
                 Totalt
               </span>
               <h2 id="leaderboard-rubrik" className="text-xl text-foreground">
@@ -138,7 +138,7 @@ const Tavlingar = () => {
                       key={player.name}
                       className="transition-colors hover:bg-muted/30"
                     >
-                      <td className="px-3 py-2.5 text-center">
+                      <td className="px-3 py-3.5 text-center">
                         <span
                           className={cn(
                             "grid h-7 w-7 mx-auto place-items-center rounded-sm border font-mono text-xs font-black",
@@ -148,7 +148,7 @@ const Tavlingar = () => {
                           {player.rank}
                         </span>
                       </td>
-                      <td className="px-3 py-2.5">
+                      <td className="px-3 py-3.5">
                         <span className="font-bold tracking-tight text-foreground">
                           {player.name}
                         </span>
@@ -163,7 +163,7 @@ const Tavlingar = () => {
                         return (
                           <td
                             key={s.index}
-                            className="px-3 py-2.5 text-center font-mono text-xs tabular-nums"
+                            className="px-3 py-3.5 text-center font-mono text-xs tabular-nums"
                           >
                             {score === null ? (
                               <span className="text-muted-foreground/50">–</span>
@@ -173,8 +173,8 @@ const Tavlingar = () => {
                           </td>
                         );
                       })}
-                      <td className="px-3 py-2.5 text-center">
-                        <span className="font-mono text-sm font-black tabular-nums text-accent">
+                      <td className="px-3 py-3.5 text-center">
+                        <span className="font-mono text-sm font-black tabular-nums text-accent-ink">
                           {player.total}
                         </span>
                       </td>
@@ -194,10 +194,10 @@ const Tavlingar = () => {
         <SectionReveal
           as="section"
           aria-labelledby="historik-rubrik"
-          className="mt-12"
+          className="mt-16"
         >
           <header className="mb-4 flex items-baseline gap-3">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent-ink">
               Historik
             </span>
             <h2 id="historik-rubrik" className="text-xl text-foreground">
@@ -213,7 +213,7 @@ const Tavlingar = () => {
               >
                 <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
                   <div className="flex items-baseline gap-3">
-                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black text-accent">
+                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black text-accent-ink">
                       T{session.index + 1}
                     </span>
                     <div>
@@ -234,7 +234,7 @@ const Tavlingar = () => {
                   {session.matches.map((match, i) => (
                     <li
                       key={i}
-                      className="flex items-center justify-between gap-3 px-5 py-3"
+                      className="flex items-center justify-between gap-3 px-5 py-4"
                     >
                       <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                         Match {i + 1}
@@ -251,7 +251,7 @@ const Tavlingar = () => {
                   ))}
                 </ul>
                 {session.note && (
-                  <p className="border-t border-border/50 px-5 py-3 text-xs italic text-muted-foreground">
+                  <p className="border-t border-border/50 px-5 py-4 text-xs italic text-muted-foreground">
                     {session.note} <span className="text-rose-400">Rött</span> =
                     vänster siffra.
                   </p>

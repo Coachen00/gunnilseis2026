@@ -518,8 +518,9 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
       value={url}
       onChange={(e) => setUrl(e.target.value)}
       onBlur={() => persist({ url, source_kind: "url", storage_path: null })}
+      aria-label={mode === "video" ? "Film-URL" : "Bild-URL"}
       placeholder={mode === "video" ? "YouTube-länk eller filmens URL" : "Bild-URL"}
-      className="h-10 w-full rounded-md border border-border bg-background/70 px-3 text-sm text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+      className="h-10 w-full rounded-md border border-border bg-background/70 px-3 text-sm text-foreground placeholder:text-muted-foreground outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
     />
   ) : (
     <div>
@@ -556,7 +557,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
         onBlur={() => persist({ caption: caption || null })}
         placeholder={captionPlaceholder ?? "Skriv kort vad bilden eller filmen visar..."}
         rows={compact ? 2 : 3}
-        className="min-h-[72px] w-full resize-y rounded-md border border-border bg-background/70 px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60 outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
+        className="min-h-[72px] w-full resize-y rounded-md border border-border bg-background/70 px-3 py-2 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/20"
       />
     </label>
   );
@@ -623,7 +624,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
           <button
             type="button"
             onClick={clearMedia}
-            className="absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border border-border bg-background/85 text-muted-foreground backdrop-blur transition hover:text-foreground"
+            className="absolute right-2 top-2 grid h-9 w-9 place-items-center rounded-full border border-border bg-background/85 text-muted-foreground backdrop-blur transition hover:text-foreground"
             aria-label="Ta bort"
           >
             <X className="h-3 w-3" />
@@ -671,7 +672,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
             type="button"
             onClick={() => setExpanded(true)}
             title="Expandera"
-            className="grid h-7 w-7 place-items-center rounded-md border border-border bg-background/50 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
+            className="grid h-9 w-9 place-items-center rounded-md border border-border bg-background/50 text-muted-foreground transition hover:bg-muted/60 hover:text-foreground"
             aria-label="Expandera media"
           >
             <Maximize2 className="h-3.5 w-3.5" />
@@ -697,7 +698,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
             <button
               type="button"
               onClick={() => setExpanded(false)}
-              className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:text-foreground"
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-border bg-background/90 text-muted-foreground transition hover:text-foreground"
               aria-label="Stäng"
             >
               <X className="h-4 w-4" />

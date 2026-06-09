@@ -30,6 +30,9 @@
 
     --accent: 42 90% 48%;
     --accent-foreground: 215 70% 12%;
+    /* Mörkare guld enbart för text/ikoner på ljust tema — ljusa --accent (48%)
+       ger bara ~2.1:1 mot vitt (WCAG-underkänt). Denna ~32% ger ≥4.5:1. */
+    --accent-text: 42 95% 29%;
 
     --destructive: 358 72% 48%;
     --destructive-foreground: 0 0% 100%;
@@ -117,6 +120,15 @@
     letter-spacing: 0.14em;
     font-size: 0.7rem;
     line-height: 1.4;
+  }
+
+  /* Synlig fokusring för contentEditable-celler (Matchblad, Motståndaranalys).
+     Dessa sätter Tailwinds `outline-none`; utan detta ser tangentbordsanvändare
+     ingenting. Attributselektorn vinner på specificitet (WCAG 2.4.7). */
+  [contenteditable]:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 1px;
+    border-radius: 2px;
   }
 }
 

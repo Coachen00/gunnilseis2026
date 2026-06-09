@@ -41,20 +41,23 @@ const MatchReflektioner = () => {
     } catch (err) {
       toast({
         title: "Kunde inte spara",
-        description: err instanceof Error ? err.message : "Okänt fel",
+        description: "Kontrollera nätet och försök igen.",
         variant: "destructive",
       });
     }
   };
 
   const handleRemove = async (id: string, title: string) => {
+    if (!window.confirm(`Ta bort reflektionen "${title}"? Den försvinner för alla och går inte att ångra.`)) {
+      return;
+    }
     try {
       await removeReflection.mutateAsync(id);
       toast({ title: "Borttagen", description: title });
     } catch (err) {
       toast({
         title: "Kunde inte ta bort",
-        description: err instanceof Error ? err.message : "Okänt fel",
+        description: "Försök igen om en stund.",
         variant: "destructive",
       });
     }
@@ -106,7 +109,7 @@ const MatchReflektioner = () => {
             className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive inline-flex items-center gap-2"
           >
             <AlertCircle className="h-4 w-4" aria-hidden="true" />
-            Kunde inte ladda reflektioner. Försök igen senare.
+            Kunde inte hämta reflektionerna. Kontrollera nätet och ladda om sidan.
           </div>
         )}
 
@@ -176,7 +179,7 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
               className={cn(
                 "cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition focus-within:ring-2 focus-within:ring-ring",
                 badge === b
-                  ? "border-accent bg-accent/10 text-accent"
+                  ? "border-accent bg-accent/10 text-accent-ink"
                   : "border-border text-muted-foreground hover:border-accent/50"
               )}
             >
@@ -218,7 +221,7 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
       <div className="flex items-center justify-end gap-2">
         <Button type="submit" disabled={pending}>
           {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
-          Spara
+          {pending ? "Sparar…" : "Spara reflektion"}
         </Button>
       </div>
     </form>
@@ -243,7 +246,7 @@ const ReflectionCard = ({ reflection, canEdit, onRemove }: ReflectionCardProps) 
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-accent">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-accent-ink">
             {reflection.badge}
           </span>
           <h3 className="mt-1 text-xl font-bold leading-tight text-foreground">

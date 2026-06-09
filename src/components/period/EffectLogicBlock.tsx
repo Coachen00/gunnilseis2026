@@ -15,7 +15,7 @@ const EffectLogic = ({ blocks }: { blocks: Block[] }) => (
       return (
         <div key={block.label} className="contents">
           <div className="rounded-lg border border-border bg-card/40 p-4">
-            <div className="mb-2 flex items-center gap-2 text-accent">
+            <div className="mb-2 flex items-center gap-2 text-accent-ink">
               <Icon className="h-4 w-4" strokeWidth={1.75} />
               <h3 className="text-[11px] font-black uppercase tracking-[0.2em]">{block.label}</h3>
             </div>
