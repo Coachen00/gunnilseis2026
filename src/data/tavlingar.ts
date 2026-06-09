@@ -205,7 +205,6 @@ export const DUMLE_CUP: Cup = {
         "Omar",
         "Shoheyb",
         "Måns",
-        "Ali",
         "Leo",
       ],
       reserves: ["Elias"],
