@@ -222,30 +222,12 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Floda BoIF (lör 13 juni). 16 spelare kallade.
- * Startelva sätts på genomgång — alla 16 ligger som bänk tills
- * laguppställningen är spikad. */
-export const CALLED_SQUAD = {
+/* Kallad trupp inför Floda BoIF (lör 13 juni). Truppen är inte spikad än —
+ * fylls i när kallelsen är satt. Tom trupp = UI visar "Kallelse kommer". */
+export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Rayan Fedaila",
-    "Adnan Hadzialic",
-    "Rinor Zenullah",
-    "Idris Abdi",
-    "Vedad Dzambegovic",
-    "Ahmad Aljafari",
-    "Benjamin Arapovic",
-    "Ihab Naser",
-    "Måns Orwén",
-    "Ayub Ahmed",
-    "Yosef Ismail",
-    "Haris Avdiu",
-    "Aldin Zeljkovic",
-    "Mustafa Ayub",
-    "Leodon Johansson",
-  ],
-} as const;
+  bench: [],
+};
 
 export const FOCUS: string[] = [
   "Sätt tempot hemma från första sekund: korta avstånd, tydlig röst och första duellen direkt.",
@@ -274,7 +256,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "16 spelare kallade — se listan nedan.",
+      "Truppen bekräftas i kallelsen inför match.",
       "Startelva och avbytare bekräftas på genomgång.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],

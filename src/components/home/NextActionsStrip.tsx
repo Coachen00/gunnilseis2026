@@ -56,7 +56,7 @@ export default function NextActionsStrip() {
       eyebrow: "Spelmodellen 2026",
       title: "Så spelar vi fotboll",
       description: "Sex spelfaser, ett lag och en idé. Försvar, omställning, anfall, identitet, fasta.",
-      meta: "Maj 2026 · alla principer",
+      meta: "Sommaren 2026 · alla principer",
       Icon: PlayCircle,
       accent: "blue",
     },
