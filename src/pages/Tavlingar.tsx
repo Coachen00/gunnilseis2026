@@ -1,15 +1,15 @@
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
-import { Calendar, Crown } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DUMLE_CUP,
+  DUMLE_CUP_PLAYERS,
   POINT_RULES,
   QUOTE,
   SESSIONS,
   rankPlayers,
   describeMatch,
-  type CupTeam,
 } from "@/data/tavlingar";
 
 const MEDAL_STYLES: Record<number, string> = {
@@ -18,32 +18,9 @@ const MEDAL_STYLES: Record<number, string> = {
   3: "border-orange-500/40 bg-orange-500/10 text-orange-300",
 };
 
-/** Färgsättning per lag i Dumle CUP. SVARTA = mörk/slate, GRÖN = emerald. */
-const TEAM_TONES: Record<CupTeam["tone"], {
-  card: string;
-  header: string;
-  swatch: string;
-  name: string;
-  points: string;
-}> = {
-  svarta: {
-    card: "border-slate-400/40",
-    header: "border-slate-400/30 bg-slate-500/[0.06]",
-    swatch: "bg-slate-900 ring-2 ring-slate-400/60",
-    name: "text-slate-700 dark:text-slate-200",
-    points: "text-slate-800 dark:text-slate-100",
-  },
-  gron: {
-    card: "border-emerald-500/40",
-    header: "border-emerald-600/25 bg-emerald-500/[0.07]",
-    swatch: "bg-emerald-500 ring-2 ring-emerald-400/50",
-    name: "text-emerald-700 dark:text-emerald-300",
-    points: "text-emerald-600 dark:text-emerald-300",
-  },
-};
-
 const Tavlingar = () => {
   const ranked = rankPlayers();
+  const rankedCup = rankPlayers(DUMLE_CUP_PLAYERS);
   const lastSession = SESSIONS[SESSIONS.length - 1];
 
   return (
@@ -55,7 +32,7 @@ const Tavlingar = () => {
       />
 
       <div className="container pb-section">
-        {/* Dumle CUP — lagtävling */}
+        {/* Dumle CUP — individuell totalräkning */}
         <SectionReveal as="section" aria-labelledby="dumle-rubrik">
           <header className="mb-4 flex items-baseline justify-between gap-3">
             <div className="flex items-baseline gap-3">
@@ -67,83 +44,77 @@ const Tavlingar = () => {
               </h2>
             </div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-              {DUMLE_CUP.teams.length} lag
+              {rankedCup.length} spelare
             </span>
           </header>
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {[...DUMLE_CUP.teams]
-              .sort((a, b) => b.points - a.points)
-              .map((team, i) => {
-                const tone = TEAM_TONES[team.tone];
-                const leader = i === 0;
-                return (
-                  <article
-                    key={team.name}
-                    className={cn("overflow-hidden rounded-md border bg-card", tone.card)}
+          <div className="overflow-x-auto rounded-md border border-border/70 bg-card">
+            <table className="w-full min-w-[22rem] text-sm">
+              <caption className="sr-only">
+                Dumle CUP — individuell poängtabell, sorterad fallande på total poäng.
+              </caption>
+              <thead>
+                <tr className="border-b border-border/60 text-left">
+                  <th
+                    scope="col"
+                    className="px-3 py-3 text-center font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground"
                   >
-                    <header
-                      className={cn(
-                        "flex items-center justify-between gap-3 border-b px-5 py-4",
-                        tone.header
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          className={cn("h-3.5 w-3.5 rounded-full", tone.swatch)}
-                          aria-hidden="true"
-                        />
-                        <h3 className={cn("text-lg font-black tracking-tight", tone.name)}>
-                          Lag {team.name}
-                        </h3>
-                        {leader && (
-                          <span className="inline-flex items-center gap-1 rounded-sm border border-amber-400/40 bg-amber-400/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] text-amber-300">
-                            <Crown className="h-3 w-3" strokeWidth={2.4} />
-                            Leder
-                          </span>
-                        )}
-                      </div>
-                      <div className="shrink-0 text-right">
+                    #
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground"
+                  >
+                    Spelare
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-3 py-3 text-right font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-foreground"
+                  >
+                    Poäng
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/50">
+                {rankedCup.map((player) => {
+                  const medal = MEDAL_STYLES[player.rank];
+                  return (
+                    <tr key={player.name} className="transition-colors hover:bg-muted/30">
+                      <td className="px-3 py-2 text-center">
                         <span
                           className={cn(
-                            "font-mono text-3xl font-black leading-none tabular-nums",
-                            tone.points
+                            "grid h-7 w-7 mx-auto place-items-center rounded-sm border font-mono text-xs font-black",
+                            medal ?? "border-border/70 text-muted-foreground"
                           )}
                         >
-                          {team.points}
+                          {player.rank}
                         </span>
-                        <span className="ml-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                          p
+                      </td>
+                      <td className="px-3 py-2">
+                        <span className="font-bold tracking-tight text-foreground">
+                          {player.name}
                         </span>
-                      </div>
-                    </header>
-
-                    <ol className="columns-2 gap-x-6 px-5 py-4 [&>li]:mb-1.5">
-                      {team.players.map((player, idx) => (
-                        <li
-                          key={`${player}-${idx}`}
-                          className="flex items-baseline gap-2 break-inside-avoid"
-                        >
-                          <span className="w-4 text-right font-mono text-[10px] tabular-nums text-muted-foreground/60">
-                            {idx + 1}
+                      </td>
+                      <td className="px-3 py-2 text-right">
+                        {player.played === 0 ? (
+                          <span className="font-mono text-sm text-muted-foreground/50">–</span>
+                        ) : (
+                          <span className="font-mono text-sm font-black tabular-nums text-accent">
+                            {player.total}
                           </span>
-                          <span className="text-sm font-medium text-foreground">{player}</span>
-                        </li>
-                      ))}
-                    </ol>
-
-                    {team.reserves && team.reserves.length > 0 && (
-                      <p className="border-t border-border/50 px-5 py-2.5 text-xs text-muted-foreground">
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em]">
-                          Reserv
-                        </span>{" "}
-                        {team.reserves.join(", ")}
-                      </p>
-                    )}
-                  </article>
-                );
-              })}
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Individuell totalräkning — poäng delas ut per träningstillfälle utifrån
+            lagindelningen den dagen. <span className="font-mono">–</span> = poäng ej
+            registrerad. Spelare med lika poäng delar placering.
+          </p>
         </SectionReveal>
 
         {/* Ledord — varför vi tävlar */}

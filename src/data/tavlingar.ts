@@ -153,61 +153,46 @@ export function describeMatch(match: SessionMatch): string {
 }
 
 /**
- * Dumle CUP — lagtävling vid sidan av poängligan. Två lag, poäng + trupp.
- * `reserves` (t.ex. ej spelklar/tveksam) visas dämpat under truppen.
+ * Dumle CUP — individuell poängjakt vid sidan av den ordinarie poängligan.
+ * Tabellen räknas SPELARE FÖR SPELARE i en löpande total. Lagindelningen på
+ * träningen (svart/grönt) avgör bara hur många poäng varje spelare får det
+ * tillfället — laget är inte en tävlingsenhet. Index i `scores` följer
+ * DUMLE_CUP_SESSIONS; null = ej närvarande/poäng ej registrerad.
  */
-export interface CupTeam {
-  name: string;
-  points: number;
-  /** Styr färgsättning av lagkortet. */
-  tone: "svarta" | "gron";
-  players: string[];
-  reserves?: string[];
+export interface CupSession {
+  label: string;
+  dateShort?: string;
 }
 
-export interface Cup {
-  title: string;
-  emoji: string;
-  teams: CupTeam[];
-}
+export const DUMLE_CUP_SESSIONS: CupSession[] = [{ label: "Tillfälle 1" }];
 
-export const DUMLE_CUP: Cup = {
+export const DUMLE_CUP_PLAYERS: PlayerEntry[] = [
+  // 14 p — spelade i svarta laget tillfälle 1
+  { name: "Ali", scores: [14] },
+  { name: "Pascal", scores: [14] },
+  { name: "Benji", scores: [14] },
+  { name: "Mustafa", scores: [14] },
+  { name: "Nayef", scores: [14] },
+  { name: "Ado", scores: [14] },
+  { name: "Aldin", scores: [14] },
+  { name: "Kamal", scores: [14] },
+  { name: "Meisam", scores: [14] },
+  { name: "Rayan", scores: [14] },
+  // 8 p — spelade i gröna laget tillfälle 1
+  { name: "Parsa", scores: [8] },
+  { name: "Kian", scores: [8] },
+  { name: "Haris", scores: [8] },
+  { name: "Galvan", scores: [8] },
+  { name: "Rinor", scores: [8] },
+  { name: "Omar", scores: [8] },
+  { name: "Shoheyb", scores: [8] },
+  { name: "Måns", scores: [8] },
+  { name: "Leo", scores: [8] },
+  // Osäker närvaro tillfälle 1 ("(Elias)") — poäng ej registrerad
+  { name: "Elias", scores: [null] },
+];
+
+export const DUMLE_CUP = {
   title: "Dumle CUP",
   emoji: "🏆",
-  teams: [
-    {
-      name: "SVARTA",
-      points: 14,
-      tone: "svarta",
-      players: [
-        "Ali",
-        "Pascal",
-        "Benji",
-        "Mustafa",
-        "Nayef",
-        "Ado",
-        "Aldin",
-        "Kamal",
-        "Meisam",
-        "Rayan",
-      ],
-    },
-    {
-      name: "GRÖN",
-      points: 8,
-      tone: "gron",
-      players: [
-        "Parsa",
-        "Kian",
-        "Haris",
-        "Galvan",
-        "Rinor",
-        "Omar",
-        "Shoheyb",
-        "Måns",
-        "Leo",
-      ],
-      reserves: ["Elias"],
-    },
-  ],
-};
+} as const;
