@@ -40,6 +40,8 @@ import {
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import FilmLibrary from "@/components/maj/FilmLibrary";
 import VeckansPlanering from "@/components/maj2026/VeckansPlanering";
+import GrundenSection from "@/components/maj2026/GrundenSection";
+import LevelBadge from "@/components/LevelBadge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 
@@ -1009,6 +1011,7 @@ function SpelarenSnabbversion() {
       <div className="container">
         <div className="mb-8 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
           <div>
+            <LevelBadge level={1} className="mb-3" />
             <div className="mb-3 flex items-center gap-3">
               <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Spelarens snabbversion</p>
@@ -1123,12 +1126,25 @@ const MajSpelmodell = () => {
   return (
   <div className="relative -mt-px bg-background text-foreground">
     <Hero />
+    {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
+        nivå 2 (blocken) → nivå 3 (filmbibliotek + övrigt). */}
+    <GrundenSection />
     <VeckansPlanering />
     <EffektlogikStrip />
     <SpelarenSnabbversion />
 
-    <FilmLibrary />
-
+    {/* Nivå 2 — principerna per fas */}
+    <div className="border-t border-border bg-background pt-10">
+      <div className="container">
+        <LevelBadge level={2} className="mb-3" />
+        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+          Blocken — principerna per fas
+        </h2>
+        <p className="mb-6 mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Öppna en fas i taget. Varje block fördjupar sin rad från Grunden.
+        </p>
+      </div>
+    </div>
     <Accordion
       type="multiple"
       value={openBlocks}
@@ -1139,6 +1155,14 @@ const MajSpelmodell = () => {
         <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
       ))}
     </Accordion>
+
+    {/* Nivå 3 — fördjupning: filmbibliotek (flyttat ned under blocken) */}
+    <div className="border-t border-border bg-background pt-10">
+      <div className="container">
+        <LevelBadge level={3} className="mb-1" />
+      </div>
+    </div>
+    <FilmLibrary />
 
     {/* Övrigt — filmer/bilder utan koppling till specifik princip */}
     {MAJ_2026_OVRIGT_MEDIA.length > 0 && (
