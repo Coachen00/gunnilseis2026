@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import SectionHeader from "@/components/SectionHeader";
 import { OmstallningForsvarSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
@@ -13,6 +14,7 @@ const OmstallningForsvar = () => (
       title="Bollförlust → vinn tillbaka"
       description="Vinn tillbaka bollen, hindra spel framåt, förhindra kontring. Forwarden är vår första försvarare."
     />
+    <FasTrappa blockId="overgang-forsvar" />
     <div className="container mb-16">
       <CuesBlock set={PHASE_CUES["omstallning-forsvar"]} />
       <PrincipleBlock phase="omstallning-forsvar" showSource />

@@ -5,6 +5,7 @@ import { useContent } from "@/hooks/useContent";
 import { useGlobalMediaMatch } from "@/hooks/useGlobalMediaMatch";
 import { useScrollToHash } from "@/hooks/useScrollToHash";
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import SectionReveal from "@/components/SectionReveal";
 import MediaSlot from "@/components/match/MediaSlot";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,7 @@ const IdentityOverview = () => {
           </span>
         </div>
       </PageHero>
+      <FasTrappa blockId="identitet" />
 
       <div className="container pb-section">
         <nav className="mb-12 grid gap-2 sm:grid-cols-2 lg:grid-cols-4" aria-label="Identitetsområden">
