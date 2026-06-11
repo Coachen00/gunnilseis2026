@@ -28,10 +28,14 @@ export const POINT_RULES: PointRule[] = [
   { label: "Närvaro", points: "+1 p", detail: "Till alla som dyker upp och spelar" },
 ];
 
-/** En enskild smålagsmatch inom ett tillfälle. Rött lag = hemmasiffran. */
+/**
+ * En enskild smålagsmatch inom ett tillfälle. Rött lag = hemmasiffran.
+ * När exakta siffror inte noterats anges bara utgången via `winner`.
+ */
 export interface SessionMatch {
-  red: number;
-  black: number;
+  red?: number;
+  black?: number;
+  winner?: "red" | "black" | "draw";
 }
 
 export interface Session {
@@ -73,6 +77,19 @@ export const SESSIONS: Session[] = [
     ],
     note: "Rött lag spelade först i Match 1.",
   },
+  {
+    index: 2,
+    label: "Tillfälle 3",
+    date: "2026-06-10",
+    dateShort: "10/6",
+    type: "Träning",
+    matches: [
+      { winner: "red" },
+      { red: 1, black: 1 },
+      { winner: "black" },
+    ],
+    note: "Siffror noterades inte för match 1 och 3 — bara vinnande lag.",
+  },
 ];
 
 export interface PlayerEntry {
@@ -84,31 +101,32 @@ export interface PlayerEntry {
 }
 
 export const PLAYERS: PlayerEntry[] = [
-  { name: "Ali", scores: [8, 8] },
-  { name: "Galwan", scores: [5, 8] },
-  { name: "Adnan", alias: "Ado", scores: [2, 8] },
-  { name: "Mustafa", alias: "Musti", scores: [5, 5] },
-  { name: "Rayan", scores: [5, 5] },
-  { name: "Soheyl", scores: [5, 5] },
-  { name: "Haris", scores: [5, 5] },
-  { name: "Ayub", scores: [8, 2] },
-  { name: "Aldin", scores: [8, 2] },
-  { name: "Daniel", scores: [null, 8] },
-  { name: "Leo", scores: [null, 8] },
-  { name: "Meisam", scores: [8, null] },
-  { name: "Kamal", scores: [8, null] },
-  { name: "Nayef", scores: [2, 5] },
-  { name: "Ahmed", scores: [null, 5] },
-  { name: "Maric", scores: [null, 5] },
-  { name: "Benji", scores: [null, 5] },
-  { name: "Idriss", scores: [5, null] },
-  { name: "Yosef", scores: [5, null] },
-  { name: "Ihab", scores: [5, null] },
-  { name: "Parsa", scores: [2, 2] },
-  { name: "Rinor", scores: [null, 2] },
-  { name: "Vedad", scores: [null, 2] },
-  { name: "Måns", scores: [2, null] },
-  { name: "Pascal", scores: [2, null] },
+  { name: "Ali", scores: [8, 8, 5] },
+  { name: "Galwan", scores: [5, 8, null] },
+  { name: "Adnan", alias: "Ado", scores: [2, 8, 5] },
+  { name: "Mustafa", alias: "Musti", scores: [5, 5, 5] },
+  { name: "Rayan", scores: [5, 5, 5] },
+  { name: "Soheyl", scores: [5, 5, 2] },
+  { name: "Haris", scores: [5, 5, null] },
+  { name: "Ayub", scores: [8, 2, 2] },
+  { name: "Aldin", scores: [8, 2, null] },
+  { name: "Daniel", scores: [null, 8, null] },
+  { name: "Leo", scores: [null, 8, 5] },
+  { name: "Meisam", scores: [8, null, 5] },
+  { name: "Kamal", scores: [8, null, 8] },
+  { name: "Nayef", scores: [2, 5, 5] },
+  { name: "Ahmed", scores: [null, 5, 5] },
+  { name: "Maric", scores: [null, 5, null] },
+  { name: "Benji", scores: [null, 5, null] },
+  { name: "Idriss", scores: [5, null, 2] },
+  { name: "Yosef", scores: [5, null, 5] },
+  { name: "Ihab", scores: [5, null, 8] },
+  { name: "Parsa", scores: [2, 2, 5] },
+  { name: "Rinor", scores: [null, 2, 5] },
+  { name: "Vedad", scores: [null, 2, 2] },
+  { name: "Måns", scores: [2, null, 5] },
+  { name: "Pascal", scores: [2, null, null] },
+  { name: "Tess", scores: [null, null, 5] },
 ];
 
 export interface RankedPlayer extends PlayerEntry {
@@ -147,8 +165,15 @@ export function rankPlayers(players: PlayerEntry[] = PLAYERS): RankedPlayer[] {
 }
 
 export function describeMatch(match: SessionMatch): string {
-  if (match.red > match.black) return "Rött lag vann";
-  if (match.black > match.red) return "Svart lag vann";
+  const winner =
+    match.winner ??
+    ((match.red ?? 0) > (match.black ?? 0)
+      ? "red"
+      : (match.black ?? 0) > (match.red ?? 0)
+        ? "black"
+        : "draw");
+  if (winner === "red") return "Rött lag vann";
+  if (winner === "black") return "Svart lag vann";
   return "Oavgjort";
 }
 
@@ -195,4 +220,10 @@ export const DUMLE_CUP_PLAYERS: PlayerEntry[] = [
 export const DUMLE_CUP = {
   title: "Dumle CUP",
   emoji: "🏆",
+} as const;
+
+/** Poängligan med rött/svart lag heter "Kungen". */
+export const KUNGEN = {
+  title: "Kungen",
+  emoji: "👑",
 } as const;
