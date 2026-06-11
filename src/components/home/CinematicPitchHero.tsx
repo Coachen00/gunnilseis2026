@@ -19,7 +19,7 @@ type StoryBeat = {
 const beats: StoryBeat[] = [
   {
     number: "01",
-    title: "2:a bollsspel",
+    title: "Andrabollsspel",
     detail: "Vi läser duellen innan den händer och är först på nästa boll.",
     start: 0.18,
     end: 0.36,

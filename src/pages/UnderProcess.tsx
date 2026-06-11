@@ -149,7 +149,7 @@ const systemSteps = [
     no: "09",
     title: "Analys och lärandeloop",
     before: "Gör detta först när vi vet exakt vilka beteenden vi vill mäta.",
-    do: "Följ upp video och data: bollvinster, spelvändningar, assistyta, boxfyllnad och bolltapp.",
+    do: "Följ upp video och data: bollvinster, spelvändningar, attacker i assistytan, spelare i boxen och bolltapp.",
     output: "Vi justerar utifrån vad som faktiskt händer, inte bara magkänsla.",
     icon: BarChart3,
     tone: "green" as Tone,

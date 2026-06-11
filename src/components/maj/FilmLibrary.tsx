@@ -51,7 +51,7 @@ const CATEGORIES: FilmCategory[] = [
   {
     id: "forsvarsspel",
     label: "Försvarsspel",
-    description: "Tre korridorer, kompakt block, vinn duellen och 2:a bollsspel.",
+    description: "Tre korridorer, kompakt block, vinn duellen och andrabollsspel.",
     accent: "red",
     blockIds: ["forsvarsspel"],
     jumpTo: "#forsvarsspel",
@@ -91,7 +91,7 @@ const CATEGORIES: FilmCategory[] = [
   {
     id: "identitet",
     label: "Identitet",
-    description: "Duellspel, 2:a bollsspel, djupledslöpningar, värdigt kroppsspråk.",
+    description: "Duellspel, andrabollsspel, djupledslöpningar, värdigt kroppsspråk.",
     accent: "violet",
     blockIds: ["identitet"],
     jumpTo: "#identitet",

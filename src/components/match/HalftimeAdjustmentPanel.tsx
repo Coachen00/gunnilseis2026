@@ -75,7 +75,7 @@ const ADJUSTMENTS: Adjustment[] = [
   },
   {
     id: "box",
-    label: "Boxfyllnad",
+    label: "Fyll boxen",
     symptom: "Vi kommer runt men har för få spelare i målområdet.",
     question: "Fyller vi första, straffpunkt, bortre, cutback och andraboll?",
     correction: "Lås roller: 9:a första/central, bortre ytter bortre, 10:a cutback, 6/8 andraboll.",

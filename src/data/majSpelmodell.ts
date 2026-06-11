@@ -83,7 +83,7 @@ export const MAJ_2026_EFFECT_LOGIC: EffectLogicBlock[] = [
     items: [
       "Få in bollen i assistytan",
       "Fyll boxen vid varje inlägg",
-      "Vinn 2:a bollar och dueller",
+      "Vinn andrabollar och dueller",
       "Återta initiativet efter bolltapp",
     ],
   },
