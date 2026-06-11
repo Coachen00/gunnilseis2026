@@ -66,6 +66,17 @@ const FORBIDDEN_TERMS: Rule[] = [
     canonical: "spelbarhet",
     reason: "Skrivs i ett ord: 'spelbarhet'.",
   },
+  // Kanoniska handlingsfraser (VOCAB.actions i principles.ts)
+  {
+    pattern: /\b2:a\s*boll/i,
+    canonical: "andrabollar",
+    reason: "Kanonisk term är 'andraboll/andrabollar' (identitetsblocket heter Andrabollsspel).",
+  },
+  {
+    pattern: /\bboxfyllnad\b/i,
+    canonical: "fyll boxen",
+    reason: "Kanonisk handlingsfras är 'fyll boxen' (blockens remember-rad). Slug 'boxfyllnad' är ok.",
+  },
 ];
 
 /** Filer som FÅR innehålla de förbjudna termerna (källcitat, testet självt). */

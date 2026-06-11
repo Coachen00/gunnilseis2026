@@ -157,7 +157,7 @@ export const FinalThirdGraphic = ({ className, label }: { className?: string; la
       <rect x="60" y="6" width="80" height="14" fill="hsl(var(--accent))" opacity="0.12" />
     </PitchFrame>
     <figcaption className="mt-2 text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-      {label ?? "Assistyta + boxfyllnad"}
+      {label ?? "Assistytan + fyll boxen"}
     </figcaption>
   </figure>
 );

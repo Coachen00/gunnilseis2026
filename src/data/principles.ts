@@ -50,6 +50,15 @@ export const VOCAB = {
   firstDefender: "första försvarare",
   fundamentals: ["spelbarhet", "spelavstånd", "spelbredd", "speldjup"] as const,
   pressTechnique: "press- och brytteknik",
+  /* Kanoniska handlingsfraser — skriv så här, inte synonymerna i parentes.
+   * Låses av src/test/canonical-vocab.test.ts där reglerna är säkra. */
+  actions: {
+    skyddaMitten: "skydda mitten", // (stäng mitten, mittblock, stäng inre korridorer)
+    motpress: "motpress", // etablerad term för press direkt efter bolltapp
+    fyllBoxen: "fyll boxen", // (boxfyllnad, minst fyra i boxen)
+    vinnAndrabollar: "vinn andrabollar", // (2:a bollar, andraboll)
+    attraheraPress: "attrahera press", // (locka press, fixera pressaren)
+  },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────
