@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import { FastaSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
 
@@ -9,6 +10,7 @@ const Fasta = () => (
       title="När spelet stannar"
       description="Hörnor, frisparkar, inkast, avspark — defensivt och offensivt. Vi gissar inte, vi har regler."
     />
+    <FasTrappa blockId="fasta-situationer" />
     <div className="container">
       <div className="max-w-3xl mb-16 border-l-2 border-accent/60 pl-6">
         <p className="text-base md:text-lg text-foreground/90 leading-relaxed">

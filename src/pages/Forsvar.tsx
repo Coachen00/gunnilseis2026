@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import SectionHeader from "@/components/SectionHeader";
 import { ForsvarsspelSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
@@ -14,6 +15,7 @@ const Forsvar = () => (
       title="Försvarsspel"
       description="Vi förhindrar avslut i gyllene zonen genom positionering, press och markering — tre höjder, samma logik."
     />
+    <FasTrappa blockId="forsvarsspel" />
     <div className="container">
       <SectionReveal>
         <CuesBlock set={PHASE_CUES.forsvar} />

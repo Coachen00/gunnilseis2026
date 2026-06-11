@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import SectionHeader from "@/components/SectionHeader";
 import { OmstallningAnfallSection } from "@/components/sections/TacticsSections";
 import PrincipleBlock from "@/components/PrincipleBlock";
@@ -13,6 +14,7 @@ const OmstallningAnfall = () => (
       title="Bollvinst → utnyttja obalansen"
       description="Snabba omställningspass eller spelvändningar — utnyttja motståndarens obalans. Press- och brytteknik skapar offensiva omställningar."
     />
+    <FasTrappa blockId="overgang-anfall" />
     <div className="container mb-16">
       <CuesBlock set={PHASE_CUES["omstallning-anfall"]} />
       <PrincipleBlock phase="omstallning-anfall" showSource />

@@ -1,4 +1,5 @@
 import PageHero from "@/components/PageHero";
+import FasTrappa from "@/components/FasTrappa";
 import CuesBlock from "@/components/CuesBlock";
 import AttackingPrincipleCard from "@/components/AttackingPrincipleCard";
 import SectionReveal from "@/components/SectionReveal";
@@ -18,6 +19,7 @@ const Anfall = () => (
       title="Anfallsspel — fem principer"
       description="Vi anfaller alltid i denna ordning: skydda mot kontring, spela in, spela ut, ta med framåt, fyll på i box."
     />
+    <FasTrappa blockId="anfallsspel" />
 
     <div className="container">
       <SectionReveal>
