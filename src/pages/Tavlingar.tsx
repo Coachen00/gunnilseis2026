@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import {
   DUMLE_CUP,
   DUMLE_CUP_PLAYERS,
+  KUNGEN,
   POINT_RULES,
   QUOTE,
   SESSIONS,
@@ -168,10 +169,10 @@ const Tavlingar = () => {
           <header className="mb-4 flex items-baseline justify-between gap-3">
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
-                Totalt
+                Tävling
               </span>
               <h2 id="leaderboard-rubrik" className="text-xl text-foreground">
-                Aktuell topplista
+                {KUNGEN.title} {KUNGEN.emoji}
               </h2>
             </div>
             <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
@@ -327,11 +328,17 @@ const Tavlingar = () => {
                       <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                         Match {i + 1}
                       </span>
-                      <span className="flex items-center gap-2 font-mono text-sm font-black tabular-nums text-foreground">
-                        <span className="text-rose-400">{match.red}</span>
-                        <span className="text-muted-foreground/60">–</span>
-                        <span className="text-foreground/80">{match.black}</span>
-                      </span>
+                      {match.red !== undefined && match.black !== undefined ? (
+                        <span className="flex items-center gap-2 font-mono text-sm font-black tabular-nums text-foreground">
+                          <span className="text-rose-400">{match.red}</span>
+                          <span className="text-muted-foreground/60">–</span>
+                          <span className="text-foreground/80">{match.black}</span>
+                        </span>
+                      ) : (
+                        <span className="font-mono text-sm font-black text-muted-foreground/60">
+                          –
+                        </span>
+                      )}
                       <span className="min-w-[6.5rem] text-right text-xs text-muted-foreground">
                         {describeMatch(match)}
                       </span>
