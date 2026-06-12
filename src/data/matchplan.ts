@@ -214,7 +214,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 export const PRACTICAL_INFO = {
   kit: "Hemmamatch på gräs (Hjällbovallen 1) — följ kallelsen och ta med rätt skor.",
   responsibilities: [
-    ["Kapten", "Bekräftas i kallelse"],
+    ["Kapten", "Adnan Hadzialic"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -222,11 +222,29 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Floda BoIF (lör 13 juni). Truppen är inte spikad än —
- * fylls i när kallelsen är satt. Tom trupp = UI visar "Kallelse kommer". */
+/* Kallad trupp inför Floda BoIF (lör 13 juni). 16 spelare kallade.
+ * Adnan Hadzialic är lagkapten. Startelva sätts på genomgång — alla 16
+ * ligger som bänk tills laguppställningen är spikad. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Rinor Zenullah",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Vedad Dzambegovic",
+    "Ahmad Aljafari",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Ayub Ahmed",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Leodon Johansson",
+    "Yosef Ismail",
+    "Mostafa Ayoub",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -256,7 +274,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "Truppen bekräftas i kallelsen inför match.",
+      "16 spelare kallade — se listan nedan. Adnan Hadzialic är lagkapten.",
       "Startelva och avbytare bekräftas på genomgång.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
@@ -366,7 +384,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Bekräftas i kallelse"],
+      ["Kapten", "Adnan Hadzialic"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
