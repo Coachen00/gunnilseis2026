@@ -36,3 +36,7 @@ supabase/.branches/
 *.njsproj
 *.sln
 *.sw?
+.gstack/
+
+# Lokala matchpresentationer (stora binärer, ej självhostade — sajten länkar claude.ai)
+public/presentationer/
