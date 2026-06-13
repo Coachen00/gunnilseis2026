@@ -212,7 +212,6 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
-  kit: "Hemmamatch på gräs (Hjällbovallen 1) — följ kallelsen och ta med rätt skor.",
   responsibilities: [
     ["Kapten", "Adnan Hadzialic"],
     ["Hörnor", "Bekräftas på genomgång"],
