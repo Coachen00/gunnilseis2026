@@ -59,8 +59,7 @@ export function useReflections(matchId?: string) {
   const query = useQuery<ReflectionsData>({
     queryKey: REFLECTIONS_KEY,
     queryFn: async () => {
-      const { data, error } = await supabase
-        // @ts-expect-error content_blocks finns inte i auto-genererade typer
+      const { data, error } = await (supabase as any)
         .from("content_blocks")
         .select("data")
         .eq("key", "match-reflections")
@@ -85,8 +84,7 @@ export function useReflections(matchId?: string) {
   });
 
   const save = async (next: ReflectionsData) => {
-    const { error } = await supabase
-      // @ts-expect-error content_blocks finns inte i auto-genererade typer
+    const { error } = await (supabase as any)
       .from("content_blocks")
       .upsert({ key: "match-reflections", data: next }, { onConflict: "key" });
     if (error) throw new Error(error.message);

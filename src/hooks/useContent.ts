@@ -29,8 +29,7 @@ export function useContent<T>(key: string, fallback: T): UseContentResult<T> {
   const query = useQuery<{ value: T; source: "fallback" | "remote" }>({
     queryKey: ["content", key],
     queryFn: async () => {
-      // @ts-expect-error content_blocks finns inte i de auto-genererade typerna
-      const { data: row, error } = await supabase
+      const { data: row, error } = await (supabase as any)
         .from("content_blocks")
         .select("data")
         .eq("key", key)
@@ -81,8 +80,7 @@ export function useContent<T>(key: string, fallback: T): UseContentResult<T> {
  * ContentEditor, men `useContentMutation` är att föredra i nytt komponentkod.
  */
 export async function saveContent<T>(key: string, data: T) {
-  // @ts-expect-error content_blocks finns inte i de auto-genererade typerna
-  const { error } = await supabase
+  const { error } = await (supabase as any)
     .from("content_blocks")
     .upsert({ key, data }, { onConflict: "key" });
   if (error) throw new Error(error.message);

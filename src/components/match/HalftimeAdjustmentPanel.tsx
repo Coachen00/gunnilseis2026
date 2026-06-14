@@ -299,8 +299,8 @@ function PitchGraphic({ mode, tone }: { mode: ProblemKey; tone: Tone }) {
   return <TransitionGraphic tone={tone} />;
 }
 
-function Dot({ className }: { className?: string }) {
-  return <span className={cn("absolute h-4 w-4 rounded-full border-2 border-background bg-gunnilse-gold shadow", className)} />;
+function Dot({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return <span style={style} className={cn("absolute h-4 w-4 rounded-full border-2 border-background bg-gunnilse-gold shadow", className)} />;
 }
 
 function Arrow({ className }: { className?: string }) {
