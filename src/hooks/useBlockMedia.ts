@@ -36,8 +36,7 @@ export function useBlockMedia(blockId: string) {
   const query = useQuery<MediaRow[]>({
     queryKey: ["principle_media", "block", blockId],
     queryFn: async () => {
-      // @ts-expect-error principle_media saknas i auto-genererade typer
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("principle_media")
         .select("block_id, principle_id, media_type, source_kind, url, storage_path, text_title, text_body, caption")
         .eq("block_id", blockId);

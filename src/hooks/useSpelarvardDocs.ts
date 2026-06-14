@@ -53,7 +53,6 @@ export function useSpelarvardDocs() {
   const query = useQuery<SpelarvardDoc[]>({
     queryKey: QUERY_KEY,
     queryFn: async () => {
-      // @ts-expect-error spelarvard_docs saknas i de auto-genererade typerna
       const { data, error } = await supabase
         .from(TABLE)
         .select("id, section_id, title, doc_kind, source_kind, url, storage_path, caption, sort_order")
@@ -100,7 +99,6 @@ export function useSpelarvardDocs() {
       if (uploadError) throw new Error(uploadError.message);
 
       const nextOrder = (bySection.get(sectionId)?.length ?? 0);
-      // @ts-expect-error spelarvard_docs saknas i de auto-genererade typerna
       const { error: insertError } = await supabase.from(TABLE).insert({
         section_id: sectionId,
         title: opts?.title?.trim() || file.name.replace(/\.[^.]+$/, ""),
@@ -124,7 +122,6 @@ export function useSpelarvardDocs() {
   const addLink = useCallback(
     async (sectionId: string, input: { title: string; url: string; kind?: DocKind; caption?: string }) => {
       const nextOrder = (bySection.get(sectionId)?.length ?? 0);
-      // @ts-expect-error spelarvard_docs saknas i de auto-genererade typerna
       const { error } = await supabase.from(TABLE).insert({
         section_id: sectionId,
         title: input.title.trim(),
@@ -146,7 +143,6 @@ export function useSpelarvardDocs() {
       if (doc.source_kind === "upload" && doc.storage_path) {
         await supabase.storage.from(BUCKET).remove([doc.storage_path]);
       }
-      // @ts-expect-error spelarvard_docs saknas i de auto-genererade typerna
       const { error } = await supabase.from(TABLE).delete().eq("id", doc.id);
       if (error) throw new Error(error.message);
       refresh();

@@ -177,6 +177,51 @@ export type Database = {
         }
         Relationships: []
       }
+      spelarvard_docs: {
+        Row: {
+          caption: string | null
+          created_at: string
+          doc_kind: string
+          id: string
+          section_id: string
+          sort_order: number
+          source_kind: string
+          storage_path: string | null
+          title: string
+          updated_at: string
+          updated_by: string | null
+          url: string | null
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          doc_kind?: string
+          id?: string
+          section_id: string
+          sort_order?: number
+          source_kind?: string
+          storage_path?: string | null
+          title: string
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          doc_kind?: string
+          id?: string
+          section_id?: string
+          sort_order?: number
+          source_kind?: string
+          storage_path?: string | null
+          title?: string
+          updated_at?: string
+          updated_by?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

@@ -53,7 +53,6 @@ export function useRealtimeChannel({
     const channelName = `${table}:${event}:${filter ?? "all"}:${Math.random().toString(36).slice(2, 8)}`;
     const channel = supabase
       .channel(channelName)
-      // @ts-expect-error supabase-js typer matchar inte vår event-union exakt
       .on("postgres_changes", { event, schema: "public", table, filter }, (payload) => {
         try {
           onChange?.(payload as never);
