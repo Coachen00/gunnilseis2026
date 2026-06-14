@@ -13,6 +13,7 @@ import {
   MATCH_KICKOFF_DATE,
   MATCH_KICKOFF_ISO,
   PAST_OPPONENT_NAMES,
+  resolveWeeklyMatch,
 } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
@@ -29,12 +30,12 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Floda BoIF + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Floda BoIF");
-    expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toContain("Hjällbovallen");
+  it("MATCH_META har Ytterby IS + avspark + plats", () => {
+    expect(MATCH_META.opponent).toBe("Ytterby IS");
+    expect(MATCH_META.kickoff).toMatch(/19:30/);
+    expect(MATCH_META.venue).toContain("Ytterns");
     expect(MATCH_META.competition).toContain("Division 4A");
-    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.home).toBe(false);
   });
 
   it("veckans match har redigerbar presentationslänk", () => {
@@ -48,26 +49,24 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Floda-startelvan är satt", () => {
+  it("FORMATION är tom tills Ytterby-startelvan är satt", () => {
     expect(FORMATION).toHaveLength(0);
     const ids = FORMATION.map((s) => s.id);
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp: 16 spelare kallade till Floda, startelva sätts på genomgång", () => {
+  it("kallad trupp: pending inför Ytterby (kallelse ej satt än)", () => {
+    // Inför Ytterby IS är truppen ännu inte kallad → båda listor tomma och
+    // UI visar "Kallelse kommer". Fylls på när ledarstaben spikat truppen.
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
-    expect(new Set(CALLED_SQUAD.bench).size).toBe(16);
-    expect(CALLED_SQUAD.bench).toEqual(
-      expect.arrayContaining(["Ali Carneil", "Adnan Hadzialic", "Pascal Jabbour", "Mostafa Ayoub"])
-    );
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Adnan Hadzialic"]])
     );
   });
 
-  it("SAMLING_TIME är 11:30 för Floda (hemma 13:00 → 1h30 före)", () => {
-    expect(SAMLING_TIME).toBe("11:30");
+  it("SAMLING_TIME är 17:45 för Ytterby (borta 19:30 → 1h45 före)", () => {
+    expect(SAMLING_TIME).toBe("17:45");
   });
 
   it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
@@ -146,10 +145,18 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
-    // Hisingsbacka (5 juni) ligger nu före veckans match (13 juni) → past opponent.
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
-    // Och INTE Floda själv (det är veckans match) eller framtida motståndare
-    expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(false);
+    // Floda (13 juni) ligger nu före veckans match (Ytterby 17 juni) → past opponent.
+    expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
+    // Men INTE Ytterby själv — trots att vi mötte dem i premiären (2 apr).
+    // Veckans egna motståndare får aldrig flaggas som stale.
+    expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(false);
+  });
+
+  it("resolveWeeklyMatch väljer retur-Ytterby (17 jun), inte premiären (2 apr)", () => {
+    const wm = resolveWeeklyMatch();
+    expect(wm?.opponent).toBe("Ytterby IS");
+    expect(wm?.id).toBe("2026-06-17-ytterby");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -158,7 +165,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "floda",
+      "ytterby",
       "identitet",
       "anfall",
       "forsvar",
@@ -175,41 +182,41 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte Floda som veckans match", () => {
+  it("stale Vardar-rad i framtiden blockerar inte Ytterby som veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
           id: "stale-vardar",
-          date: "2026-06-03T12:00:00+02:00",
+          date: "2026-06-16T12:00:00+02:00",
           opponent: "IF Vardar/Makedonija",
           homeAway: "away",
           competition: "Division 4A Herr",
           venue: "Generatorsplan",
         },
       ],
-      new Date("2026-06-01T12:00:00+02:00")
+      new Date("2026-06-14T12:00:00+02:00")
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Floda BoIF");
+    expect(matches[0].opponent).toBe("Ytterby IS");
   });
 
-  it("en felaktig match före Floda blockerar inte veckans match", () => {
+  it("en stale Floda-rad efter att matchen spelats blockerar inte veckans match", () => {
     const matches = ensureWeeklyMatch(
       [
         {
-          id: "stale-ytterby-jun",
-          date: "2026-06-04T20:15:00+02:00",
-          opponent: "Ytterby IS",
-          homeAway: "away",
+          id: "stale-floda-jun",
+          date: "2026-06-16T13:00:00+02:00",
+          opponent: "Floda BoIF",
+          homeAway: "home",
           competition: "Division 4A Herr",
-          venue: "Ytterns IP 1 Konstgräs",
+          venue: "Hjällbovallen 1 Gräs",
         },
       ],
-      new Date("2026-06-01T12:00:00+02:00")
+      new Date("2026-06-14T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Floda BoIF");
-    expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
+    expect(matches[0].opponent).toBe("Ytterby IS");
+    expect(matches.some((match) => match.id === "stale-floda-jun")).toBe(false);
   });
 });

@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-06-05 inför Floda BoIF
- * (hemma · Hjällbovallen 1 Gräs · lördag 13 juni 13:00).
- * Förra match: Hisingsbacka FC (borta · 2026-06-05 · 4–0).
+ * Senast uppdaterad 2026-06-13 inför Ytterby IS
+ * (borta · Ytterns IP 1 Konstgräs · onsdag 17 juni 19:30).
+ * Förra match: Floda BoIF (hemma · 2026-06-13 · 5–1).
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -11,7 +11,7 @@
  *     (används av hooks för att filtrera bort stale supabase-rader)
  */
 
-import { SEASON_MATCHES } from "./season";
+import { SEASON_MATCHES, type SeasonMatch } from "./season";
 
 export type MatchMeta = {
   opponent: string;
@@ -44,10 +44,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Floda BoIF",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 13 jun · 13:00",
+  opponent: "Ytterby IS",
+  venue: "Ytterns IP 1 Konstgräs",
+  home: false,
+  kickoff: "Ons 17 jun · 19:30",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -92,6 +92,31 @@ export const MATCH_KICKOFF_DATE = parseKickoffDate();
 export const MATCH_KICKOFF_ISO = MATCH_KICKOFF_DATE?.toISOString() ?? "";
 
 /**
+ * Hittar säsongsmatchen som motsvarar veckans match (`MATCH_META`).
+ *
+ * Matchar på motståndarnamn, men när samma motståndare förekommer flera
+ * gånger (t.ex. Ytterby IS både i premiären och i returmötet) väljs den
+ * instans vars datum ligger närmast `MATCH_KICKOFF_DATE` — annars skulle
+ * `find` alltid plocka den FÖRSTA (oftast en redan spelad match) och ge fel
+ * cutoff/stale-filtrering. Faller tillbaka till namnmatch om kickoff inte
+ * kan parsas.
+ */
+export function resolveWeeklyMatch(
+  matches: SeasonMatch[] = SEASON_MATCHES,
+  kickoff: Date | null = MATCH_KICKOFF_DATE
+): SeasonMatch | undefined {
+  const byName = matches.filter((m) => m.opponent === MATCH_META.opponent);
+  if (byName.length <= 1 || !kickoff) return byName[0];
+  const kickoffMs = kickoff.getTime();
+  return byName.reduce((best, m) =>
+    Math.abs(new Date(m.date).getTime() - kickoffMs) <
+    Math.abs(new Date(best.date).getTime() - kickoffMs)
+      ? m
+      : best
+  );
+}
+
+/**
  * Motståndare vars matcher ligger FÖRE veckans match (`MATCH_META.opponent`)
  * i `SEASON_MATCHES`. Används av `useSeasonMatches.ensureWeeklyMatch` och
  * `useMatch` för att filtrera bort stale supabase-rader som annars skuggar
@@ -102,13 +127,18 @@ export const MATCH_KICKOFF_ISO = MATCH_KICKOFF_DATE?.toISOString() ?? "";
  * kickoff inte kan parsas (defensive degradation).
  */
 export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
-  const weeklyMatch = SEASON_MATCHES.find((m) => m.opponent === MATCH_META.opponent);
+  const weeklyMatch = resolveWeeklyMatch();
   if (!weeklyMatch) return new Set();
   const cutoff = new Date(weeklyMatch.date).getTime();
+  // Veckans egna motståndare får ALDRIG flaggas som stale, även om laget
+  // mötts tidigare i säsongen (t.ex. Ytterby i både premiär och retur) —
+  // annars filtreras den riktiga veckomatchen bort som "past opponent".
+  const weeklyOpponent = MATCH_META.opponent.toLowerCase();
   return new Set(
     SEASON_MATCHES
       .filter((m) => new Date(m.date).getTime() < cutoff)
       .map((m) => m.opponent.toLowerCase())
+      .filter((name) => name !== weeklyOpponent)
   );
 })();
 
@@ -148,10 +178,10 @@ export const SAMLING_TIME = computeSamlingTime();
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
   { time: "Före uppvärmning", label: "Genomgång" },
-  { time: "12:20 – 12:50", label: "Aktivering" },
-  { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
-  { time: "12:57", label: "Upp + sista löpningar" },
-  { time: "13:00", label: "Avspark" },
+  { time: "18:50 – 19:20", label: "Aktivering" },
+  { time: "19:20 – 19:27", label: "Ner + sista instruktion" },
+  { time: "19:27", label: "Upp + sista löpningar" },
+  { time: "19:30", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -170,7 +200,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Hemma — vi sätter tempot, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
+      "Borta — vi håller vårt tempo, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -221,34 +251,18 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Floda BoIF (lör 13 juni). 16 spelare kallade.
- * Adnan Hadzialic är lagkapten. Startelva sätts på genomgång — alla 16
- * ligger som bänk tills laguppställningen är spikad. */
+/* Kallad trupp inför Ytterby IS (ons 17 juni, borta). Truppen kallas av
+ * ledarstaben närmare match — tills dess är listorna tomma och sidan visar
+ * "Kallelse kommer". Adnan Hadzialic är lagkapten. Fyll på `bench` (och vid
+ * spikad startelva `starting`) när kallelsen är satt. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Rinor Zenullah",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    "Ahmad Aljafari",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Ayub Ahmed",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Leodon Johansson",
-    "Yosef Ismail",
-    "Mostafa Ayoub",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Sätt tempot hemma från första sekund: korta avstånd, tydlig röst och första duellen direkt.",
-  "Skydda mitten och tvinga Floda utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
+  "Borta mot Ytterby: stå i matchen från första sekund — vårt tempo, korta avstånd och första duellen direkt.",
+  "Skydda mitten och tvinga Ytterby utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
 ];
 
@@ -261,8 +275,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Floda BoIF hemma · Hjällbovallen 1 Gräs · lördag 13 juni 13:00.",
-      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark, hemmamatchsregel).`,
+      "Ytterby IS borta · Ytterns IP 1 Konstgräs · onsdag 17 juni 19:30.",
+      `Samling ${SAMLING_TIME} på Hjällbovallen för avresa (1h45 före avspark, bortamatchsregel).`,
       "Startelva och roller bekräftas på genomgång.",
     ],
   },
@@ -273,7 +287,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "16 spelare kallade — se listan nedan. Adnan Hadzialic är lagkapten.",
+      "Truppen kallas inför match — listan fylls på när ledarstaben spikat den. Adnan Hadzialic är lagkapten.",
       "Startelva och avbytare bekräftas på genomgång.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
@@ -281,27 +295,28 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — Hisingsbacka FC 4–0",
-    eyebrow: "Vad vi tar med till Floda",
+    title: "Förra match — Floda BoIF 5–1",
+    eyebrow: "Vad vi tar med till Ytterby",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi vann 4–0 borta mot Hisingsbacka FC — Haris Avdiu hattrick, Mustafa Ayub satte det sista.",
+      "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål.",
       "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Floda BoIF hemma.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Ytterby IS borta.",
     ],
   },
   {
-    id: "floda",
+    id: "ytterby",
     num: "04",
-    title: "Vad vi vet om Floda BoIF",
+    title: "Vad vi vet om Ytterby IS",
     eyebrow: "Motståndaren",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs — vår plan, vårt tempo, egen rytm och röst.",
-      "Lördag lunch hemma — vakna start, första duellen direkt, var igång i andrabollarna.",
+      "Bortamatch på Ytterns IP 1 Konstgräs — håll vårt tempo, egen rytm och röst trots bortaplan.",
+      "Vi vann 3–1 hemma mot Ytterby i premiären (2 apr) — räkna med att de vill revansch.",
+      "Onsdag kväll borta — vakna start, första duellen direkt, var igång i andrabollarna.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Floda-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -310,7 +325,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Hemma = vi sätter rytmen, höjer rösten och äger intensiteten.",
+      "Borta = vi tar med oss rytmen, höjer rösten och äger intensiteten oavsett plan.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -337,7 +352,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Floda).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Ytterby).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -387,8 +402,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Matchstart", "19:30"],
+      ["Bortaplan", "Ytterns IP 1 Konstgräs"],
     ],
   },
 ];

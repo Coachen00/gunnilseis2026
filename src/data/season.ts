@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-06-05 (efter Hisingsbacka FC 4–0, inför Floda BoIF).
+ * Senast uppdaterad: 2026-06-13 (efter Floda BoIF 5–1, inför Ytterby IS borta).
  */
 
 export type MatchScorer = {
@@ -153,6 +153,12 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 5,
+    theirScore: 1,
+    scorers: [
+      { name: "Haris Avdiu", goals: 3, note: "hattrick · andra raka · Man of the Match" },
+      { name: "Idris Abdi", goals: 2 },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901103/floda-boif",
   },
   {

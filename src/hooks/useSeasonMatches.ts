@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { SEASON_MATCHES, type SeasonMatch } from "@/data/season";
-import { MATCH_META, PAST_OPPONENT_NAMES } from "@/data/matchplan";
+import { PAST_OPPONENT_NAMES, resolveWeeklyMatch } from "@/data/matchplan";
 import { useRealtimeChannel } from "./useRealtimeChannel";
 
 /**
@@ -17,7 +17,7 @@ import { useRealtimeChannel } from "./useRealtimeChannel";
  * API bevaras: `{ matches, loading, usingFallback }`.
  */
 const SEASON_KEY = ["matches", "season"] as const;
-const STATIC_WEEKLY_MATCH = SEASON_MATCHES.find((match) => match.opponent === MATCH_META.opponent);
+const STATIC_WEEKLY_MATCH = resolveWeeklyMatch();
 // PAST_OPPONENT_NAMES härleds i `@/data/matchplan` från SEASON_MATCHES — ingen
 // manuell lista här att underhålla. Se docstring i matchplan.ts.
 

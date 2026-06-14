@@ -94,6 +94,14 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
     blocks: STANDARD_BLOCKS,
     larDomar: [],
   },
+  "2026-06-13-floda": {
+    summary:
+      "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
 };
 
 /* =================================================================
