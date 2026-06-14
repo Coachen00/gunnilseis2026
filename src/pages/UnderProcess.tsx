@@ -10,14 +10,17 @@ import {
   Layers,
   Lock,
   MessageSquare,
+  MonitorPlay,
   RefreshCcw,
   ShieldCheck,
   Users,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { isOwnerEmail } from "@/lib/owner";
 
 type Tone = "yellow" | "red" | "blue" | "green";
 
@@ -69,8 +72,6 @@ const principles = [
     tone: "green" as Tone,
   },
 ];
-
-const ownerLogin = "leojsjoqvist";
 
 const systemSteps = [
   {
@@ -175,8 +176,7 @@ const everydayLoop = [
 
 function OwnerOnlySystem() {
   const { session, loading } = useAuthSession();
-  const email = session?.user?.email?.toLowerCase() ?? "";
-  const isOwner = email === ownerLogin || email.startsWith(`${ownerLogin}@`);
+  const isOwner = isOwnerEmail(session?.user?.email);
 
   if (loading) {
     return (
@@ -232,6 +232,27 @@ function OwnerOnlySystem() {
       <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.5fr]">
           <aside className="space-y-4">
+            <Link
+              to="/under-process/spelmodell-neon"
+              className="group flex items-center gap-4 border border-cyan-400/70 bg-slate-950 p-5 transition-colors hover:bg-slate-900"
+            >
+              <span className="grid h-11 w-11 flex-shrink-0 place-items-center border border-cyan-400 bg-cyan-400/10 text-cyan-300">
+                <MonitorPlay className="h-5 w-5" strokeWidth={2.2} />
+              </span>
+              <span className="min-w-0">
+                <span className="block font-mono text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">
+                  Interaktivt deck · WIP
+                </span>
+                <span className="mt-1 flex items-center gap-1.5 text-base font-black text-white">
+                  Spelmodell Neon
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
+                </span>
+                <span className="mt-1 block text-xs font-semibold leading-relaxed text-white/55">
+                  Helskärms-presentation av tränarskapets portfölj.
+                </span>
+              </span>
+            </Link>
+
             <div className="border border-emerald-400/60 bg-emerald-50 p-5">
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">
                 Sammanfattning
