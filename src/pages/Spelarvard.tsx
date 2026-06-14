@@ -1,31 +1,62 @@
 /**
  * Spelarvard — "Ta hand om dig själv" som egen sida (/spelarvard).
  *
- * Tidigare låg sektionen längst ner inne på Veckans match. Nu är den en egen
- * sida med egen menypost: varje avsnitt (kost, sömn, gym, sommar …) är uppöppnat
- * och har ett eget dokumentgalleri där tränarstaben (admin) laddar upp PDF,
- * PowerPoint, HTML eller länkar. Spelaren klickar ett kort och öppnar materialet.
+ * Materialet är grupperat i OMRÅDEN (kost, sömn, gym, sommar) som väljs i en
+ * rullgardin högst upp. Sidan visar ett område i taget — minsta möjliga val
+ * för den minst tekniske spelaren. Varje avsnitt har ett dokumentgalleri som
+ * blandar inbyggt material (följer med bygget) med det tränarstaben (admin)
+ * laddar upp. Spelaren klickar ett kort och öppnar materialet.
  *
- * Copy/avsnitt: src/data/spelarvard.ts. Filer: src/hooks/useSpelarvardDocs.ts.
+ * Områden/copy: src/data/spelarvard.ts. Doc-data: src/hooks/useSpelarvardDocs.ts.
  */
 
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Info } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import SpelarvardDocs from "@/components/spelarvard/SpelarvardDocs";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
-import { useSpelarvardDocs } from "@/hooks/useSpelarvardDocs";
+import { useSpelarvardDocs, type SpelarvardDoc } from "@/hooks/useSpelarvardDocs";
 import {
+  SPELARVARD_AREAS,
   SPELARVARD_INTRO,
   SPELARVARD_SECTIONS,
   SPELARVARD_SOURCE_NOTE,
   SPELARVARD_TITLE,
+  type BuiltinDoc,
 } from "@/data/spelarvard";
+
+/** Inbyggt material → samma form som ett dokument från Supabase. */
+function builtinToDoc(sectionId: string, b: BuiltinDoc, order: number): SpelarvardDoc {
+  return {
+    id: `builtin-${b.id}`,
+    section_id: sectionId,
+    title: b.title,
+    doc_kind: b.kind,
+    source_kind: "url",
+    url: b.url,
+    storage_path: null,
+    caption: b.caption ?? null,
+    sort_order: order,
+    builtin: true,
+  };
+}
 
 const Spelarvard = () => {
   const { isAdmin } = useIsAdmin();
   const { bySection, uploadDoc, addLink, deleteDoc } = useSpelarvardDocs();
+  const [areaId, setAreaId] = useState<string>(SPELARVARD_AREAS[0]?.id ?? "");
+
+  const sectionById = useMemo(
+    () => new Map(SPELARVARD_SECTIONS.map((s) => [s.id, s])),
+    [],
+  );
+
+  const area = SPELARVARD_AREAS.find((a) => a.id === areaId) ?? SPELARVARD_AREAS[0];
+  const sections = area.sectionIds
+    .map((id) => sectionById.get(id))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   return (
     <>
@@ -38,52 +69,91 @@ const Spelarvard = () => {
               <Info className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" strokeWidth={2.2} />
               <p className="text-sm font-semibold leading-relaxed text-amber-900">
                 Adminläge — du kan ladda upp PDF, PowerPoint, HTML eller länkar i varje avsnitt nedan.
-                Materialet syns direkt för spelarna.
+                Materialet syns direkt för spelarna. Inbyggt material går inte att ta bort här.
               </p>
             </div>
           </SectionReveal>
         )}
 
-        {SPELARVARD_SECTIONS.map((section, i) => (
-          <SectionReveal key={section.id}>
-            <article id={section.id} className="scroll-mt-24 rounded-2xl border border-border bg-card p-5 md:p-7">
-              <header className="flex items-start gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[12px] font-black text-amber-800">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-xl font-black tracking-tight text-foreground md:text-2xl">{section.title}</h2>
-                    {section.proposal && (
-                      <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-amber-800">
-                        Förslag
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-0.5 text-sm font-medium text-muted-foreground">{section.question}</p>
-                </div>
-              </header>
-
-              <ul className="mt-4 space-y-2.5">
-                {section.bullets.map((b, bi) => (
-                  <li key={bi} className="grid grid-cols-[22px_1fr] items-baseline gap-2">
-                    <span className="font-mono text-[10px] font-black text-amber-700">{String(bi + 1).padStart(2, "0")}</span>
-                    <span className="text-sm leading-relaxed text-foreground/90">{b}</span>
-                  </li>
+        {/* Rullgardin: välj område */}
+        <SectionReveal>
+          <div className="rounded-2xl border border-border bg-card p-4 md:p-5">
+            <label
+              htmlFor="spelarvard-omrade"
+              className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground"
+            >
+              Välj område
+            </label>
+            <div className="relative mt-2">
+              <select
+                id="spelarvard-omrade"
+                value={area.id}
+                onChange={(e) => setAreaId(e.target.value)}
+                className="h-12 w-full appearance-none rounded-xl border border-border bg-background pl-4 pr-10 text-base font-black tracking-tight text-foreground outline-none transition focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20"
+              >
+                {SPELARVARD_AREAS.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.emoji}  {a.label}
+                  </option>
                 ))}
-              </ul>
-
-              <SpelarvardDocs
-                sectionId={section.id}
-                docs={bySection.get(section.id) ?? []}
-                isAdmin={isAdmin}
-                onUpload={uploadDoc}
-                onAddLink={addLink}
-                onDelete={deleteDoc}
+              </select>
+              <ArrowRight
+                className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 rotate-90 text-amber-600"
+                strokeWidth={2.4}
+                aria-hidden="true"
               />
-            </article>
-          </SectionReveal>
-        ))}
+            </div>
+            <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{area.blurb}</p>
+          </div>
+        </SectionReveal>
+
+        {sections.map((section, i) => {
+          const builtins = (section.builtinDocs ?? []).map((b, bi) =>
+            builtinToDoc(section.id, b, bi),
+          );
+          const docs = [...builtins, ...(bySection.get(section.id) ?? [])];
+
+          return (
+            <SectionReveal key={section.id}>
+              <article id={section.id} className="scroll-mt-24 rounded-2xl border border-border bg-card p-5 md:p-7">
+                <header className="flex items-start gap-3">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[12px] font-black text-amber-800">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-xl font-black tracking-tight text-foreground md:text-2xl">{section.title}</h2>
+                      {section.proposal && (
+                        <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-amber-800">
+                          Förslag
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-0.5 text-sm font-medium text-muted-foreground">{section.question}</p>
+                  </div>
+                </header>
+
+                <ul className="mt-4 space-y-2.5">
+                  {section.bullets.map((b, bi) => (
+                    <li key={bi} className="grid grid-cols-[22px_1fr] items-baseline gap-2">
+                      <span className="font-mono text-[10px] font-black text-amber-700">{String(bi + 1).padStart(2, "0")}</span>
+                      <span className="text-sm leading-relaxed text-foreground/90">{b}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <SpelarvardDocs
+                  sectionId={section.id}
+                  docs={docs}
+                  isAdmin={isAdmin}
+                  onUpload={uploadDoc}
+                  onAddLink={addLink}
+                  onDelete={deleteDoc}
+                />
+              </article>
+            </SectionReveal>
+          );
+        })}
 
         <SectionReveal>
           <p className="text-xs text-muted-foreground">{SPELARVARD_SOURCE_NOTE}</p>
