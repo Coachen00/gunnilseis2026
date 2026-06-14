@@ -7,14 +7,14 @@
  *   3. Matchplan       — 4 kort: försvar, anfall, omställning, fasta
  *   4. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
  *   5. Praktisk info   — schema, ansvar
- *   6. Ta hand om dig själv — kost, sömn, gym, sommar
+ *   6. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
  *
  * Inga upprepningar. Inga långa textstycken. Allt scannbart före match
  * från mobilen på resan till planen.
  */
 
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, ChevronRight, ChevronDown, ExternalLink, Star } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, HeartPulse, Star } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
@@ -28,12 +28,7 @@ import {
   PRACTICAL_INFO,
   type PlanCard,
 } from "@/data/matchplan";
-import {
-  SPELARVARD_INTRO,
-  SPELARVARD_SECTIONS,
-  SPELARVARD_SOURCE_NOTE,
-  SPELARVARD_TITLE,
-} from "@/data/spelarvard";
+import { SPELARVARD_INTRO, SPELARVARD_TITLE } from "@/data/spelarvard";
 
 /* ---------- color tokens per plan-accent ---------- */
 const ACCENT: Record<PlanCard["accent"], { bar: string; text: string; bg: string; ring: string }> = {
@@ -375,70 +370,32 @@ function PraktiskInfo() {
   );
 }
 
-function TaHandOmDigSjalv() {
+function SpelarvardCTA() {
   return (
-    <article className="rounded-2xl border border-border bg-card p-5 md:p-7">
-      <header className="mb-5">
+    <Link
+      to="/spelarvard"
+      className="group flex items-center gap-4 rounded-2xl border border-border bg-gradient-to-br from-amber-50 via-card to-card p-5 transition hover:border-amber-500/60 hover:shadow-md md:p-7"
+    >
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-amber-100 text-amber-700">
+        <HeartPulse className="h-6 w-6" strokeWidth={2.2} />
+      </span>
+      <div className="min-w-0 flex-1">
         <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
           Spelarvård
         </p>
-        <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-3xl">
+        <h2 className="mt-1 text-xl font-black tracking-tight text-foreground md:text-2xl">
           {SPELARVARD_TITLE}
         </h2>
-        <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed text-muted-foreground md:text-base">
+        <p className="mt-1 text-sm font-semibold leading-relaxed text-muted-foreground">
           {SPELARVARD_INTRO}
         </p>
-      </header>
-
-      <div className="space-y-2.5">
-        {SPELARVARD_SECTIONS.map((section, i) => (
-          <details
-            key={section.id}
-            className="group overflow-hidden rounded-xl border border-border bg-background"
-          >
-            <summary className="flex min-h-[44px] cursor-pointer list-none items-center gap-3 px-4 py-3 outline-none transition hover:bg-muted/40 focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-1 [&::-webkit-details-marker]:hidden">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[11px] font-black text-amber-800">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="text-base font-black tracking-tight text-foreground">
-                    {section.title}
-                  </span>
-                  {section.proposal && (
-                    <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-amber-800">
-                      Förslag
-                    </span>
-                  )}
-                </span>
-                <span className="mt-0.5 block text-xs font-medium text-muted-foreground">
-                  {section.question}
-                </span>
-              </span>
-              <ChevronDown
-                className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-open:rotate-180"
-                strokeWidth={2.4}
-                aria-hidden="true"
-              />
-            </summary>
-            <div className="px-4 pb-4 pt-1">
-              <ul className="space-y-2.5">
-                {section.bullets.map((b, bi) => (
-                  <li key={bi} className="grid grid-cols-[22px_1fr] items-baseline gap-2">
-                    <span className="font-mono text-[10px] font-black text-amber-700">
-                      {String(bi + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-sm leading-relaxed text-foreground/90">{b}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </details>
-        ))}
       </div>
-
-      <p className="mt-5 text-xs text-muted-foreground">{SPELARVARD_SOURCE_NOTE}</p>
-    </article>
+      <ChevronRight
+        className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-amber-700"
+        strokeWidth={2.4}
+        aria-hidden="true"
+      />
+    </Link>
   );
 }
 
@@ -476,7 +433,7 @@ const MatchKommande = () => (
       </SectionReveal>
 
       <SectionReveal>
-        <TaHandOmDigSjalv />
+        <SpelarvardCTA />
       </SectionReveal>
     </div>
   </>

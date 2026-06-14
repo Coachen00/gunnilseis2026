@@ -33,6 +33,7 @@ const FastaAnfall = lazy(() => import("./pages/FastaAnfall"));
 const MatchForra = lazy(() => import("./pages/MatchForra"));
 const MatchKommande = lazy(() => import("./pages/MatchKommande"));
 const MatchReflektioner = lazy(() => import("./pages/MatchReflektioner"));
+const Spelarvard = lazy(() => import("./pages/Spelarvard"));
 const Truppen = lazy(() => import("./pages/Truppen"));
 const Matcher = lazy(() => import("./pages/Matcher"));
 const Tavlingar = lazy(() => import("./pages/Tavlingar"));
@@ -111,6 +112,7 @@ const App = () => (
           <Route path="/match/kommande" element={<Protected routeName="Kommande match"><MatchKommande /></Protected>} />
           <Route path="/match/reflektioner" element={<Protected routeName="Reflektioner"><MatchReflektioner /></Protected>} />
           <Route path="/match/matcher" element={<Protected routeName="Matcher"><Matcher /></Protected>} />
+          <Route path="/spelarvard" element={<Protected routeName="Ta hand om dig själv"><Spelarvard /></Protected>} />
           <Route path="/truppen" element={<Protected routeName="Truppen"><Truppen /></Protected>} />
           <Route path="/tavlingar" element={<Protected routeName="Tävlingar"><Tavlingar /></Protected>} />
           <Route path="/roller" element={<Protected routeName="Roller"><Roller /></Protected>} />

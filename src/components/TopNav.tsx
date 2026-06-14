@@ -143,6 +143,7 @@ const navItems: NavItem[] = [
     // Roller är i Spelet — vi tar bort top-level-dubbletten
     activePathPrefixes: ["/identitet", "/roller", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
   },
+  { kind: "link", to: "/spelarvard", label: "Spelarvård" },
   { kind: "link", to: "/tavlingar", label: "Tävlingar" },
   { kind: "link", to: "/truppen", label: "Trupp" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
