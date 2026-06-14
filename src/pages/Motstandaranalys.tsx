@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, Printer } from "lucide-react";
-import LogoutButton from "@/components/LogoutButton";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Image as ImageIcon, BookOpen } from "lucide-react";
+import LogoutButton from "@/components/LogoutButton";
+import { usePrintForm, Field, Area, Collapsible, PrintToolbarActions, labelCls, type PrintForm } from "@/lib/printForm";
 
-const FootballPitchSVG = () => (
+const STORAGE_KEY = "gunnilse:motstandaranalys:v1";
+
+const FullPitch = () => (
   <svg viewBox="0 0 68 105" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
     <g stroke="white" strokeWidth="0.5" fill="none">
       <rect x="0" y="0" width="68" height="105" />
@@ -43,7 +46,6 @@ const HalfPitchWithCorridors = () => (
 );
 
 const DiagramArea = ({ half = false }: { half?: boolean }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,199 +54,185 @@ const DiagramArea = ({ half = false }: { half?: boolean }) => {
     const reader = new FileReader();
     reader.onload = (ev) => {
       if (wrapperRef.current && ev.target?.result) {
-        wrapperRef.current.innerHTML = "";
         const img = document.createElement("img");
         img.src = ev.target.result as string;
         img.className = "w-full h-full object-contain";
         wrapperRef.current.style.background = "transparent";
-        wrapperRef.current.appendChild(img);
+        wrapperRef.current.replaceChildren(img);
       }
     };
     reader.readAsDataURL(file);
   };
 
   return (
-    <div className="bg-[#f9fafb] border-2 border-dashed border-[#cbd5e1] min-h-[180px] flex flex-col items-center justify-center mt-auto rounded-md relative p-2.5">
-      <div
-        ref={wrapperRef}
-        className="bg-[#4CAF50] overflow-hidden resize"
-        style={{ width: half ? 200 : 140, height: half ? 154 : 216 }}
-      >
-        {half ? <HalfPitchWithCorridors /> : <FootballPitchSVG />}
+    <div className="bg-[#f9fafb] border-2 border-dashed border-[#cbd5e1] min-h-[160px] flex flex-col items-center justify-center mt-2 rounded-md relative p-2.5">
+      <div ref={wrapperRef} className="bg-[#4CAF50] overflow-hidden resize" style={{ width: half ? 200 : 140, height: half ? 154 : 200 }}>
+        {half ? <HalfPitchWithCorridors /> : <FullPitch />}
       </div>
-      <label className="absolute bottom-1.5 right-1.5 bg-[#1e3a8a] text-white px-3 py-1.5 rounded text-[11px] font-bold cursor-pointer opacity-40 hover:opacity-100 transition-opacity print:hidden">
-        📷 Välj bild
-        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+      <label className="absolute bottom-1.5 right-1.5 flex items-center gap-1 bg-[#1e3a8a] text-white px-2.5 py-1.5 rounded text-[11px] font-bold cursor-pointer opacity-50 hover:opacity-100 transition-opacity print:hidden">
+        <ImageIcon className="w-3.5 h-3.5" />
+        Bild
+        <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
       </label>
     </div>
   );
 };
 
-const EditableField = ({ placeholder, className = "", minHeight }: { placeholder?: string; className?: string; minHeight?: string }) => (
-  <div
-    contentEditable
-    suppressContentEditableWarning
-    data-placeholder={placeholder}
-    className={`bg-[#fdfdfd] border border-dashed border-[#ccc] rounded p-2 text-xs leading-relaxed mb-2 outline-none focus:bg-[#f0f4ff] focus:border-[#1e3a8a] focus:shadow-[inset_0_0_5px_rgba(30,58,138,0.1)] empty:before:content-[attr(data-placeholder)] empty:before:text-[#999] empty:before:italic flex-grow ${className}`}
-    style={{ minHeight: minHeight || "60px" }}
-  />
-);
+type Step = {
+  id: string;
+  title: string;
+  note: string;
+  bg: string;
+  fg: string;
+  fields: [string, string, string][];
+  diagram?: "full" | "half";
+};
 
-const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-[#f0f0f0] text-[#1e3a8a] px-2 py-1 font-bold text-xs my-1 rounded border-l-[3px] border-[#1e3a8a]">{children}</div>
+const STEPS: Step[] = [
+  {
+    id: "steg1", title: "Steg 1 · Observera innan du analyserar", note: "Första 10 min – skriv inget då", bg: "#FFD700", fg: "#1e3a8a",
+    fields: [
+      ["a", "Matchbild, tempo & energi", "Vem styr? Direkt eller uppbyggande?"],
+      ["b", "Tydliga anfallsvägar", "Via specifik sida? Centralt?"],
+      ["c", "Bollinnehav vs omställning", "Vill de dominera bollen eller spelet utan boll?"],
+    ],
+  },
+  {
+    id: "steg2", title: "Steg 2 · Identifiera struktur", note: "Formationer i rörelse", bg: "#FFD700", fg: "#1e3a8a", diagram: "full",
+    fields: [["a", "Startformation & övergångar", "T.ex. 3-4-3 försvar → 3-2-5 anfall"]],
+  },
+  {
+    id: "steg3", title: "Steg 3 · Spelets 3 faser", note: "Hur tar de sig framåt?", bg: "#FFD700", fg: "#1e3a8a",
+    fields: [
+      ["a", "1. Uppbyggnadsfas", "Kort/långt från målvakt?"],
+      ["b", "2. Mellanfas", "Mittfältsrotationer? Bredd/djup? Vilka ytor?"],
+      ["c", "3. Slutfas", "Löpningstyp? Hur in i box (cross, cutback)?"],
+    ],
+  },
+  {
+    id: "steg4", title: "Steg 4 · Identifiera mönster", note: "Vad upprepas?", bg: "#FFD700", fg: "#1e3a8a", diagram: "half",
+    fields: [["a", "Nyckelspelare (nav) & överbelastning", "Vilka går spelet genom? Vilka ytor överbelastas?"]],
+  },
+  {
+    id: "steg5", title: "Steg 5 · Förstå justeringar", note: "Andra halvlek (problem → justering)", bg: "#eab308", fg: "#000000",
+    fields: [
+      ["a", "Förändrad press/försvar", "Högre/lägre? Ny formation?"],
+      ["b", "Förändrad uppbyggnad/anfall", "Längre bollar? Avgörande byten?"],
+      ["c", "Varför skedde förändringen?", "Vilket problem löstes? Vilken effekt?"],
+    ],
+  },
+  {
+    id: "steg6", title: "Steg 6 · Dra slutsatser", note: "Analys blir beslutsunderlag", bg: "#22c55e", fg: "#ffffff",
+    fields: [
+      ["a", "Största styrka", "Vad är de bäst på? Hur hotar de oss?"],
+      ["b", "Tydligaste svaghet", "Var finns ytorna? (omställning, bakom ytterback)"],
+      ["c", "Våra åtgärder / gameplan", "Hur justerar vi nästa möte?"],
+    ],
+  },
+];
+
+const PRINCIPLES: { title: string; items: string[] }[] = [
+  { title: "Kontext", items: ["Bygg helhetsbild före detaljer", "Observera utan att skriva (10 min)", "Identifiera matchbild & energi"] },
+  { title: "Struktur", items: ["Startformation & utgångsyta", "Struktur i anfall/försvar", "Formationers övergångar"] },
+  { title: "Mönster", items: ["Upprepning är instruktion, ej slump", "Identifiera nav & överbelastningar", "Undvik tidig låsning (bias)"] },
+  { title: "Konsekvens", items: ["Orsak → handling → mönster → resultat", "Förstå halvleksjusteringar", "Dra slutsats & skapa lösning"] },
+];
+
+const StepCard = ({ form, step }: { form: PrintForm; step: Step }) => (
+  <div className="border-2 border-[#1e3a8a]/20 rounded-lg p-3 flex flex-col print:break-inside-avoid">
+    <div className="px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wide uppercase flex justify-between items-center gap-2" style={{ background: step.bg, color: step.fg }}>
+      <span>{step.title}</span>
+      <span className="text-[11px] font-normal italic opacity-80 normal-case">{step.note}</span>
+    </div>
+    {step.fields.map(([k, lab, ph]) => (
+      <div key={k} className="mb-2">
+        <label className={labelCls}>{lab}</label>
+        <Area form={form} k={`${step.id}:${k}`} placeholder={ph} />
+      </div>
+    ))}
+    {step.diagram && <DiagramArea half={step.diagram === "half"} />}
+  </div>
 );
 
 const Motstandaranalys = () => {
-  const handlePrint = () => window.print();
+  const form = usePrintForm(STORAGE_KEY);
 
   return (
     <div className="min-h-screen bg-muted/30 p-4 md:p-6 print:bg-white print:p-0">
-      {/* Top bar */}
-      <div className="max-w-[1050px] mx-auto mb-4 flex items-center justify-between print:hidden">
+      <div className="max-w-[1050px] mx-auto mb-4 flex items-center justify-between gap-3 print:hidden">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-primary hover:underline">
           <ArrowLeft className="w-4 h-4" />
           Tillbaka till spelkarta
         </Link>
-        <div className="flex items-center gap-3">
-          <button onClick={handlePrint} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:bg-primary/90 transition-colors">
-            <Printer className="w-4 h-4" />
-            Skriv ut
-          </button>
+        <div className="flex items-center gap-2">
+          <PrintToolbarActions form={form} clearLabel="Rensa analys" />
           <LogoutButton />
         </div>
       </div>
 
-      <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#1e3a8a] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none text-[13px] text-[#333]">
-        
-        {/* Header top - dark blue */}
-        <div className="flex flex-col md:flex-row gap-3 bg-[#1e3a8a] p-3">
-          {[
-            { title: "Kontext", items: ["Bygg helhetsbild före detaljer", "Observera utan att skriva (10 min)", "Identifiera matchbild & energi"] },
-            { title: "Struktur", items: ["Startformation & utgångsyta", "Struktur i anfall/försvar", "Formationers övergångar"] },
-            { title: "Mönster", items: ["Upprepning är instruktion, ej slump", "Identifiera nav & överbelastningar", "Undvik tidig låsning (bias)"] },
-            { title: "Konsekvens", items: ["Orsak → Handling → Mönster → Resultat", "Förstå halvleksjusteringar", "Dra slutsats & skapa lösning"] },
-          ].map((box, i) => (
-            <div key={i} className="flex-1 text-center p-2 bg-white/10 rounded-lg min-h-[100px] text-white">
-              <h3 contentEditable suppressContentEditableWarning className="text-[15px] font-bold uppercase mb-1.5 text-[#FFD700] border-b-2 border-[#FFD700]/30 pb-1 outline-none">
-                {box.title}
-              </h3>
-              <ul className="list-none text-xs text-left pl-1 leading-relaxed text-[#f8f9fa]">
-                {box.items.map((item, j) => (
-                  <li key={j} contentEditable suppressContentEditableWarning className="outline-none">{item}</li>
-                ))}
-              </ul>
+      <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#1e3a8a] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none">
+        {/* Title */}
+        <div className="bg-[#1e3a8a] text-white px-5 py-3 flex items-baseline justify-between">
+          <h1 className="text-lg font-bold uppercase tracking-wide">Motståndaranalys</h1>
+          <span className="text-[#FFD700] text-xs font-semibold print:hidden">Sparas automatiskt</span>
+        </div>
+
+        {/* Essentials */}
+        <div className="p-4 border-b border-gray-200">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div>
+              <label className={labelCls}>Motståndare</label>
+              <Field form={form} k="motstandare" placeholder="Lagnamn…" />
             </div>
+            <div>
+              <label className={labelCls}>Datum / omgång</label>
+              <Field form={form} k="datum" placeholder="ÅÅÅÅ-MM-DD" />
+            </div>
+            <div>
+              <label className={labelCls}>Vårt lag</label>
+              <Field form={form} k="lag" placeholder="T.ex. U17 / Herr" />
+            </div>
+            <div>
+              <label className={labelCls}>Analytiker</label>
+              <Field form={form} k="analytiker" placeholder="Ditt namn…" />
+            </div>
+          </div>
+        </div>
+
+        {/* Steps 1–4 */}
+        <div className="p-4 grid md:grid-cols-2 gap-4">
+          {STEPS.slice(0, 4).map((s) => (
+            <StepCard key={s.id} form={form} step={s} />
+          ))}
+        </div>
+        <div className="print:break-before-page" />
+        {/* Steps 5–6 */}
+        <div className="p-4 pt-0 print:pt-4 grid md:grid-cols-2 gap-4">
+          {STEPS.slice(4).map((s) => (
+            <StepCard key={s.id} form={form} step={s} />
           ))}
         </div>
 
-        {/* Session info */}
-        <div className="flex bg-[#f8f9fa] border-b-2 border-[#e5e5e5] p-3">
-          <div className="grid grid-cols-4 gap-4 flex-1 text-xs">
-            {[
-              { label: "Motståndare", placeholder: "Lagnamn..." },
-              { label: "Datum / Omgång", placeholder: "ÅÅÅÅ-MM-DD" },
-              { label: "Vårt Lag", placeholder: "T.ex. U17 / Herr" },
-              { label: "Analytiker", placeholder: "Ditt namn..." },
-            ].map((item, i) => (
-              <div key={i} className="flex flex-col">
-                <label className="font-bold uppercase text-[11px] mb-1 text-[#1e3a8a]">{item.label}</label>
-                <div contentEditable suppressContentEditableWarning data-placeholder={item.placeholder}
-                  className="bg-white text-black px-2 py-1 rounded min-h-[26px] border border-dashed border-[#ccc] outline-none empty:before:content-[attr(data-placeholder)] empty:before:text-[#999] empty:before:italic" />
-              </div>
-            ))}
-          </div>
+        {/* Static analysis principles */}
+        <div className="border-t border-gray-200">
+          <Collapsible title="Analysprinciper" icon={<BookOpen className="w-3.5 h-3.5" />}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2 pb-2">
+              {PRINCIPLES.map((box) => (
+                <div key={box.title} className="bg-gray-50 rounded-lg p-2.5 border border-gray-200">
+                  <h3 className="text-[11px] font-bold uppercase text-[#1e3a8a] border-b border-[#1e3a8a]/15 pb-1 mb-1.5">{box.title}</h3>
+                  <ul className="text-[11px] text-gray-600 leading-relaxed list-disc pl-3.5 space-y-0.5">
+                    {box.items.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Collapsible>
         </div>
 
-        {/* Main content - page 1 */}
-        <div className="grid grid-cols-2 gap-4 p-4">
-          {/* Steg 1 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#FFD700] text-[#1e3a8a] px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 1: Observera innan du analyserar</span>
-              <span className="text-[11px] font-normal italic">Första 10 min. Skriv inget då.</span>
-            </div>
-            <SectionTitle>Matchbild, Tempo & Energi</SectionTitle>
-            <EditableField placeholder="Vem styr? Är spelet direkt eller uppbyggande? Intentioner?" />
-            <SectionTitle>Tydliga anfallsvägar</SectionTitle>
-            <EditableField placeholder="Anfaller de via specifik sida? Centralt?" />
-            <SectionTitle>Bollinnehav vs Omställning</SectionTitle>
-            <EditableField placeholder="Vill motståndaren dominera bollen eller spelet utan boll?" />
-          </div>
-
-          {/* Steg 2 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#FFD700] text-[#1e3a8a] px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 2: Identifiera Struktur</span>
-              <span className="text-[11px] font-normal italic">Formationer i rörelse.</span>
-            </div>
-            <SectionTitle>Startformation & Övergångar</SectionTitle>
-            <EditableField placeholder="T.ex. 3-4-3 försvar -> 3-2-5 anfall." />
-            <DiagramArea />
-          </div>
-
-          {/* Steg 3 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#FFD700] text-[#1e3a8a] px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 3: Spelets 3 Faser</span>
-              <span className="text-[11px] font-normal italic">Hur tar de sig framåt?</span>
-            </div>
-            <SectionTitle>1. Uppbyggnadsfas</SectionTitle>
-            <EditableField placeholder="Kort eller långt från målvakt? Struktur vid speluppbyggnad?" />
-            <SectionTitle>2. Mellanfas</SectionTitle>
-            <EditableField placeholder="Mittfältets rotationer? Hur skapar de bredd/djup? Vilka ytor attackeras?" />
-            <SectionTitle>3. Slutfas</SectionTitle>
-            <EditableField placeholder="Typ av löpningar (överlapp, diagonal)? Hur går de in i box (cross, cutback)?" />
-          </div>
-
-          {/* Steg 4 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#FFD700] text-[#1e3a8a] px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 4: Identifiera Mönster</span>
-              <span className="text-[11px] font-normal italic">Vad upprepas?</span>
-            </div>
-            <SectionTitle>Nyckelspelare (Nav) & Överbelastning</SectionTitle>
-            <EditableField placeholder="Vilka spelare går spelet genom? Vilka ytor överbelastas?" />
-            <DiagramArea half />
-          </div>
-        </div>
-
-        {/* Page break */}
-        <div className="print:break-before-page print:mt-5" />
-
-        {/* Main content - page 2 */}
-        <div className="grid grid-cols-2 gap-4 p-4">
-          {/* Steg 5 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#eab308] text-black px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 5: Förstå Justeringar</span>
-              <span className="text-[11px] font-normal italic">Andra halvlek (Problem → Justering)</span>
-            </div>
-            <SectionTitle>Förändrad Press/Försvar</SectionTitle>
-            <EditableField placeholder="Står de högre/lägre? Ny formation?" />
-            <SectionTitle>Förändrad Uppbyggnad/Anfall</SectionTitle>
-            <EditableField placeholder="Började de slå längre? Byten som ändrade matchbild?" />
-            <SectionTitle>Varför skedde förändringen?</SectionTitle>
-            <EditableField placeholder="Vilket problem försökte de lösa? Vilken effekt fick det?" />
-          </div>
-
-          {/* Steg 6 */}
-          <div className="border-2 border-[#e5e5e5] rounded-lg p-3 min-h-[380px] flex flex-col">
-            <div className="bg-[#22c55e] text-white px-2.5 py-1.5 font-bold text-sm rounded mb-3 tracking-wider uppercase flex justify-between">
-              <span contentEditable suppressContentEditableWarning className="outline-none">STEG 6: Dra Slutsatser</span>
-              <span className="text-[11px] font-normal italic">Analys blir beslutsunderlag</span>
-            </div>
-            <SectionTitle>Största Styrka</SectionTitle>
-            <EditableField placeholder="Vad är motståndaren bäst på? Hur hotar de oss mest?" />
-            <SectionTitle>Tydligaste Svaghet</SectionTitle>
-            <EditableField placeholder="Var finns ytorna att såra dem? (Ex. i omställning, bakom ytterback)." />
-            <SectionTitle>Våra Åtgärder / Gameplan</SectionTitle>
-            <EditableField placeholder="Hur justerar vi nästa gång vi möts?" />
-          </div>
-        </div>
-
-        {/* Footer */}
         <div className="bg-[#FFD700] text-[#1e3a8a] py-2.5 px-5 text-center text-[13px] font-bold">
-          Analysens grund: Observera helheten → Bryt ner mönster → Skapa handlingsalternativ.
+          Analysens grund: observera helheten → bryt ner mönster → skapa handlingsalternativ
         </div>
       </div>
     </div>
