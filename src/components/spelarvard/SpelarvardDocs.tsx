@@ -110,7 +110,7 @@ function DocCard({
         </div>
       </button>
 
-      {isAdmin && (
+      {isAdmin && !doc.builtin && (
         <button
           type="button"
           onClick={onDelete}

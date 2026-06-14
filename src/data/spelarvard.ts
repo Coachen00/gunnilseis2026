@@ -15,12 +15,38 @@
  * Råden är generella forskningsrön, inte individuell medicinsk rådgivning.
  */
 
+import type { DocKind } from "@/hooks/useSpelarvardDocs";
+
+/**
+ * Inbyggt material — ligger som statisk asset i public/ och visas i samma
+ * galleri som admin-uppladdat. Kräver ingen Supabase, ingen uppladdning:
+ * materialet finns direkt för spelaren. Admin kan inte ta bort inbyggt
+ * material via UI:t (det hör till bygget) men kan komplettera med eget.
+ */
+export type BuiltinDoc = {
+  id: string; // stabil, unik
+  title: string;
+  kind: DocKind;
+  url: string; // publik sökväg, t.ex. /spelarvard/gymmet.pdf
+  caption?: string;
+};
+
 export type SpelarvardSection = {
   id: string; // kebab-case, unik
   title: string; // rubrik
   question: string; // spelarens fråga
   bullets: string[]; // 4–6 korta punkter
   proposal?: boolean; // true endast för sommartävlingen-delen, renderas som "Förslag"-badge
+  builtinDocs?: BuiltinDoc[]; // material som följer med bygget
+};
+
+/** Område = grupp av avsnitt, valbart i rullgardinen högst upp på sidan. */
+export type SpelarvardArea = {
+  id: string;
+  emoji: string;
+  label: string;
+  blurb: string; // kort beskrivning under rullgardinen
+  sectionIds: string[];
 };
 
 export const SPELARVARD_TITLE = "Ta hand om dig själv";
@@ -39,6 +65,22 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
       "Matchdag: rejäl måltid 3–4 h före avspark, sen ett lätt kolhydratsnack 1–2 h före (banan, smörgås).",
       "Efter match och träning: kolhydrat + protein inom en timme — det är då tanken fylls.",
       "Vätska: ljus urin = du ligger rätt. Drick ca en halv liter sista timmen före avspark.",
+    ],
+    builtinDocs: [
+      {
+        id: "kost-for-motorn",
+        title: "Kost för motorn",
+        kind: "pdf",
+        url: "/spelarvard/kost-for-motorn.pdf",
+        caption: "Presentation — så fyller du tanken inför match och träning.",
+      },
+      {
+        id: "kost-bransle",
+        title: "Kost & bränsle",
+        kind: "pdf",
+        url: "/spelarvard/kost-bransle.pdf",
+        caption: "Presentation — bränslet som håller dig igång hela matchen.",
+      },
     ],
   },
   {
@@ -76,6 +118,15 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
       "Under säsong räcker 1–2 pass i veckan på 30–45 min.",
       "Lägg inte ett tungt benpass de sista 48 h före match.",
     ],
+    builtinDocs: [
+      {
+        id: "gymmet",
+        title: "Gymmet",
+        kind: "pdf",
+        url: "/spelarvard/gymmet.pdf",
+        caption: "Presentation — så tränar du smart på gymmet.",
+      },
+    ],
   },
   {
     id: "gymovningar",
@@ -106,3 +157,38 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
 
 export const SPELARVARD_SOURCE_NOTE =
   "Råden bygger på etablerad idrottsforskning. Fråga tränarstaben om du vill ha källorna.";
+
+/**
+ * Områden för rullgardinen. Ordningen styr listan; första området visas
+ * som standard. Varje sectionId måste finnas i SPELARVARD_SECTIONS.
+ */
+export const SPELARVARD_AREAS: SpelarvardArea[] = [
+  {
+    id: "kost",
+    emoji: "🍽️",
+    label: "Kost & bränsle",
+    blurb: "Vad du äter och dricker — och vilka tillskott som faktiskt är bevisade.",
+    sectionIds: ["kostlara", "kosttillskott"],
+  },
+  {
+    id: "somn",
+    emoji: "😴",
+    label: "Sömn & återhämtning",
+    blurb: "Den viktigaste återhämtningen som finns — viktigare än alla tillskott ihop.",
+    sectionIds: ["somn"],
+  },
+  {
+    id: "gym",
+    emoji: "🏋️",
+    label: "Gym & styrka",
+    blurb: "Komplettera fotbollen med styrka: starkare kropp, färre skador, snabbare spel.",
+    sectionIds: ["gym", "gymovningar"],
+  },
+  {
+    id: "sommar",
+    emoji: "☀️",
+    label: "Sommar",
+    blurb: "Håll formen under uppehållet — sommaren är där serier vinns.",
+    sectionIds: ["sommarschema"],
+  },
+];

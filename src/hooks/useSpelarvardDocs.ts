@@ -27,6 +27,7 @@ export interface SpelarvardDoc {
   storage_path: string | null;
   caption: string | null;
   sort_order: number;
+  builtin?: boolean; // true för material som följer med bygget (ej Supabase, ej raderbart i UI)
 }
 
 const TABLE = "spelarvard_docs";

@@ -1,12 +1,12 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Spelarvard from "./Spelarvard";
 import { inferDocKind } from "@/hooks/useSpelarvardDocs";
-import { SPELARVARD_SECTIONS, SPELARVARD_TITLE } from "@/data/spelarvard";
+import { SPELARVARD_AREAS, SPELARVARD_SECTIONS, SPELARVARD_TITLE } from "@/data/spelarvard";
 
-// Permissiv supabase-mock → ingen admin, inga dokument (allt tomt).
+// Permissiv supabase-mock → ingen admin, inga uppladdade dokument (allt tomt).
 vi.mock("@/integrations/supabase/client", async () => {
   const m = await import("@/test/mocks/supabase");
   return m.createSupabaseMock();
@@ -23,7 +23,9 @@ const renderPage = () => {
   );
 };
 
-describe("Spelarvard — egen sida med dokumentgalleri", () => {
+const sectionTitle = (id: string) => SPELARVARD_SECTIONS.find((s) => s.id === id)!.title;
+
+describe("Spelarvard — områden + dokumentgalleri", () => {
   afterEach(cleanup);
 
   it("visar sidrubriken 'Ta hand om dig själv'", () => {
@@ -31,18 +33,41 @@ describe("Spelarvard — egen sida med dokumentgalleri", () => {
     expect(screen.getByRole("heading", { level: 1, name: SPELARVARD_TITLE })).toBeInTheDocument();
   });
 
-  it("renderar alla 6 avsnitt som egna rubriker", () => {
+  it("har en rullgardin med alla områden", () => {
     renderPage();
-    SPELARVARD_SECTIONS.forEach((s) => {
-      expect(screen.getByRole("heading", { level: 2, name: s.title })).toBeInTheDocument();
+    const select = screen.getByLabelText(/välj område/i);
+    expect(select).toBeInTheDocument();
+    SPELARVARD_AREAS.forEach((a) => {
+      expect(within(select).getByRole("option", { name: new RegExp(a.label, "i") })).toBeInTheDocument();
     });
   });
 
-  it("visar tomt-tillstånd per avsnitt när inga dokument finns", async () => {
+  it("visar första områdets avsnitt som standard — och döljer andra områdens", () => {
     renderPage();
-    await waitFor(() => {
-      expect(screen.getAllByText(/inget material än/i)).toHaveLength(SPELARVARD_SECTIONS.length);
+    const first = SPELARVARD_AREAS[0];
+    first.sectionIds.forEach((id) => {
+      expect(screen.getByRole("heading", { level: 2, name: sectionTitle(id) })).toBeInTheDocument();
     });
+    const hidden = SPELARVARD_SECTIONS.find((s) => !first.sectionIds.includes(s.id))!;
+    expect(screen.queryByRole("heading", { level: 2, name: hidden.title })).toBeNull();
+  });
+
+  it("byter visat område när man väljer i rullgardinen", () => {
+    renderPage();
+    fireEvent.change(screen.getByLabelText(/välj område/i), { target: { value: "gym" } });
+    const gym = SPELARVARD_AREAS.find((a) => a.id === "gym")!;
+    gym.sectionIds.forEach((id) => {
+      expect(screen.getByRole("heading", { level: 2, name: sectionTitle(id) })).toBeInTheDocument();
+    });
+  });
+
+  it("visar inbyggt material direkt (utan inloggning/uppladdning)", () => {
+    renderPage();
+    // Standardområdet (kost) har de inbyggda kost-presentationerna.
+    expect(screen.getByText("Kost för motorn")).toBeInTheDocument();
+    // Byt till gym → Gymmet-presentationen syns.
+    fireEvent.change(screen.getByLabelText(/välj område/i), { target: { value: "gym" } });
+    expect(screen.getByText("Gymmet")).toBeInTheDocument();
   });
 
   it("icke-admin ser inte uppladdningsknappen", () => {
