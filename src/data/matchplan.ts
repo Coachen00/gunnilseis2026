@@ -251,13 +251,30 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Ytterby IS (ons 17 juni, borta). Truppen kallas av
- * ledarstaben närmare match — tills dess är listorna tomma och sidan visar
- * "Kallelse kommer". Adnan Hadzialic är lagkapten. Fyll på `bench` (och vid
- * spikad startelva `starting`) när kallelsen är satt. */
+/* Kallad trupp inför Ytterby IS (ons 17 juni, borta). 16 spelare kallade —
+ * startelvan är ännu inte spikad, så alla ligger i `bench` och sidan visar dem
+ * som en numrerad "Kallade spelare"-lista. Adnan Hadzialic är lagkapten. När
+ * startelvan är satt: flytta 11 till `starting`. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Rinor Zenullah",
+    "Vedad Dzambegovic",
+    "Ahmad Aljafari",
+    "Ayub Ahmed",
+    "Benjamin Arapovic",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Leodon Johansson",
+    "Mostafa Ayoub",
+  ],
 };
 
 export const FOCUS: string[] = [

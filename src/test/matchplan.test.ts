@@ -55,11 +55,12 @@ describe("matchplan", () => {
     expect(new Set(ids).size).toBe(FORMATION.length);
   });
 
-  it("kallad trupp: pending inför Ytterby (kallelse ej satt än)", () => {
-    // Inför Ytterby IS är truppen ännu inte kallad → båda listor tomma och
-    // UI visar "Kallelse kommer". Fylls på när ledarstaben spikat truppen.
+  it("kallad trupp: 16 spelare kallade inför Ytterby (startelva ej spikad)", () => {
+    // 16 spelare kallade men startelvan är inte satt → alla i bench, UI visar
+    // en numrerad "Kallade spelare"-lista. Flyttas till starting när elvan spikas.
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toContain("Adnan Hadzialic");
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Adnan Hadzialic"]])
     );
