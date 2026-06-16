@@ -212,7 +212,7 @@ function OwnerOnlySystem() {
         <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center border border-emerald-400 bg-emerald-50 font-mono text-[11px] font-black text-emerald-700">
-              02
+              03
             </span>
             <span>
               <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
@@ -409,6 +409,67 @@ const UnderProcess = () => (
             </div>
           </AccordionContent>
         </AccordionItem>
+
+        <AccordionItem value="formularet" className="border-t border-border">
+          <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
+            <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
+              <span className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center border border-sky-400 bg-sky-50 font-mono text-[11px] font-black text-sky-700">
+                  02
+                </span>
+                <span>
+                  <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
+                    Formuläret
+                  </span>
+                  <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    Återkoppling · vad ni ser
+                  </span>
+                </span>
+              </span>
+              <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
+                Skriv konkret — det styr vad vi tränar på.
+              </span>
+            </span>
+          </AccordionTrigger>
+
+          <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
+            <div className="grid gap-5 lg:grid-cols-[0.95fr_1.45fr]">
+              <div className="border border-sky-300/70 bg-sky-50 p-5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-sky-700">
+                  Varför
+                </p>
+                <p className="mt-4 text-base font-semibold leading-relaxed text-foreground">
+                  Formuläret är inte bara en kontroll. Det hjälper oss ledare att
+                  förstå vad ni ser, vad ni kan och vad vi behöver träna mer på.
+                </p>
+                <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                  Skriv konkret: vad såg du, vad gjorde vi bra och vad behöver bli bättre?
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <article className="border border-rose-300/80 bg-rose-50 p-5">
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-rose-700">
+                    Svagt svar
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+                    &ldquo;Det gick bra.&rdquo;
+                  </p>
+                </article>
+                <article className="border border-emerald-300/80 bg-emerald-50 p-5">
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">
+                    Bra svar
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+                    &ldquo;Vi lyckades vända spelet till högerkanten flera gånger, men
+                    när vi ledde blev vi för långa i laget och tappade kontroll.&rdquo;
+                  </p>
+                </article>
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
         <OwnerOnlySystem />
       </Accordion>
     </SectionReveal>
