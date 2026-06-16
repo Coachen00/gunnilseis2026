@@ -330,10 +330,11 @@ export const COHERENCE: CoherenceSection[] = [
       "Bortamatch på Ytterns IP 1 Konstgräs — håll vårt tempo, egen rytm och röst trots bortaplan.",
       "Vi vann 3–1 hemma mot Ytterby i premiären (2 apr) — räkna med att de vill revansch.",
       "Onsdag kväll borta — vakna start, första duellen direkt, var igång i andrabollarna.",
+      "Första 15 minuterna blir intensiva — de vill trycka upp tempo och känna att de kan hota oss. Håller vi ihop laget, vinner duellerna, följer pressen och spelar enkelt när det behövs tar vi kontrollen.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Nyckeln: följ planen, håll laget kompakt, ta ansvar för din roll, gör jobbet tillsammans. Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",

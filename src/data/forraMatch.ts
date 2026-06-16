@@ -96,11 +96,55 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
   },
   "2026-06-13-floda": {
     summary:
-      "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål.",
+      "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål. När vi följde matchplanen var vi klart bättre: vi styrde matchen, vann boll högt och höll dem borta från farliga lägen.",
     truppen: [],
     ejTillgangliga: [],
-    blocks: STANDARD_BLOCKS,
-    larDomar: [],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "När vi följde matchplanen var vi klart bättre — vi styrde matchen, vann boll högt och skapade chanser.",
+          "Spelvändningar: vi vågade locka motståndaren åt ett håll och vände sedan snabbt ut till fri kant.",
+          "Aggressivt försvarsspel: vi pressade tillsammans och stängde de ytor vi hade bestämt — ingen pressade ensam.",
+          "Löpningar in i box: vi blev farliga när fler spelare fyllde på i straffområdet, inte bara en att slå inlägget på.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: [
+          "Kontrollera matchen vid klar ledning. När vi leder 4–0 ska vi inte göra matchen öppen igen — vi ska inte försöka vinna den en gång till.",
+          "Tvinga inte fram svåra passningar framåt när vi leder klart. Håll bollen, spela enkelt, flytta laget tillsammans och välj rätt läge att attackera — ge dem inte energi genom våra misstag.",
+          "Roll och matchplan: alla ska veta sin uppgift. Är du osäker — fråga. Kommer du in från bänken — följ planen direkt.",
+        ],
+      },
+      {
+        badge: "Anfall",
+        title: "Anfall — så blev det",
+        bullets: [
+          "Spelvändningar öppnade spelet: vi spelade fast bollen på en sida, lockade över deras spelare, spelade hem/in centralt och vände snabbt ut till motsatt kant där yttern fick tid att attackera framåt.",
+          "Box-löpningar gav flera hot: när yttern kom runt gick forwarden mot första ytan, tia/åtta fyllde på centralt och bortre ytter attackerade bortre stolpen.",
+        ],
+      },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: [
+          "Samlad press fungerade: när deras mittback fick bollen felvänd eller med dålig touch gick forwarden direkt i press, närmaste mittfältare klev upp och ytterbacken tryckte in bakom — ingen enkel väg ut.",
+          "En spelare pressar aldrig ensam. När en går, går laget med.",
+        ],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "När matchen är vår ska vi stänga den med kontroll, tålamod och disciplin.",
+      "Våga locka motståndaren åt ett håll och byt sedan sida snabbt.",
+      "När en pressar går laget med — vi pressar aldrig ensamma.",
+      "När vi kommer runt på kanten ska boxen fyllas med tydliga löpningar.",
+      "Alla kan sin roll i matchplanen. Inbytare gör rätt sak först — fråga om du är osäker.",
+    ],
   },
 };
 
