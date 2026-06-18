@@ -5,10 +5,13 @@ import {
   BookOpen,
   CheckCircle2,
   ClipboardList,
+  Compass,
   Eye,
   GitBranch,
+  HeartPulse,
   Layers,
   Lock,
+  type LucideIcon,
   MessageSquare,
   MonitorPlay,
   RefreshCcw,
@@ -174,6 +177,80 @@ const everydayLoop = [
   "Efter match: koppla lärdomar tillbaka till principerna.",
 ];
 
+type SpelideLevel = {
+  no: string;
+  kicker: string;
+  title: string;
+  text: string;
+  next: string;
+  icon: LucideIcon;
+  tone: Tone;
+  funkade?: string;
+  funkadeEj?: string;
+};
+
+const nySpelideCore = {
+  kicker: "Värdeord",
+  word: "Vi är förberedda.",
+  text:
+    "Det egna tränarspåret. Ett värdeord som allt annat hänger på — spelidé, spelmodell, matchcase och din egen närvaro. Frågan före varje val: är vi förberedda?",
+};
+
+const nySpelideLevels: SpelideLevel[] = [
+  {
+    no: "01",
+    kicker: "Värdeord",
+    title: "Vi är förberedda",
+    text:
+      "Icke förhandlingsbart. Allt vi gör ska gå att spåra tillbaka hit. Förberedelse före allt annat — i planering, i ansvar och i känsla.",
+    next: "Formulera värdeordet i en mening alla kan upprepa.",
+    icon: ShieldCheck,
+    tone: "yellow",
+  },
+  {
+    no: "02",
+    kicker: "Spelidé",
+    title: "Så vill vi spela",
+    text:
+      "Hur vi vill spela med boll, utan boll och i båda omställningarna. Kort nog att rymmas på en sida och tydligt nog att en spelare kan upprepa det.",
+    next: "Skriv spelidén på 1 sida.",
+    icon: Compass,
+    tone: "blue",
+  },
+  {
+    no: "03",
+    kicker: "Spelmodell · 5⁵",
+    title: "Förutsättningar och principer",
+    text:
+      "5 upphöjt i fem är grunden till egen spelmodell och tränarskap. Lista vad som krävs för att modellen ska fungera och koppla varje krav till en princip per spelfas.",
+    next: "Lista förutsättningarna och koppla dem till spelmodellens principer.",
+    icon: Layers,
+    tone: "green",
+  },
+  {
+    no: "04",
+    kicker: "Matchcase · Flora / Floden",
+    title: "Vad fungerade?",
+    text:
+      "Spelarna fick mer ansvar tidigare än förr. Skriv både det som höll och det som inte höll — annars blir caset bara en bekräftelse.",
+    funkade: "Alla i tid · fördelat ansvar före match · lättsam känsla · bättre förberedda.",
+    funkadeEj: "Fyll i: vad höll inte, och vilken lärdom om ansvar tar vi med?",
+    next: "Gör matchcaset: vad fungerade, vad fungerade inte, vilken lärdom om ansvar?",
+    icon: BarChart3,
+    tone: "blue",
+  },
+  {
+    no: "05",
+    kicker: "Tränaren själv",
+    title: "Närvaro under anspänning",
+    text:
+      "Lära sig älska känslan av nervositet och full närvaro. En personlig rutin som tar dig till full närvaro varje match.",
+    next: "Skapa en personlig matchrutin.",
+    icon: HeartPulse,
+    tone: "red",
+  },
+];
+
 function OwnerOnlySystem() {
   const { session, loading } = useAuthSession();
   const isOwner = isOwnerEmail(session?.user?.email);
@@ -329,6 +406,121 @@ function StepCell({ label, text, tone }: { label: string; text: string; tone: To
   );
 }
 
+function OwnerNySpelide() {
+  const { session, loading } = useAuthSession();
+  const isOwner = isOwnerEmail(session?.user?.email);
+
+  if (loading || !isOwner) {
+    return null;
+  }
+
+  return (
+    <AccordionItem value="ny-spelide" className="border-t border-border">
+      <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
+        <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
+          <span className="flex items-center gap-3">
+            <span className="flex h-9 w-9 items-center justify-center border border-violet-400 bg-violet-50 font-mono text-[11px] font-black text-violet-700">
+              04
+            </span>
+            <span>
+              <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
+                Ny spelidé – Vi är förberedda
+              </span>
+              <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                Låst · värdeord → spelmodell → match
+              </span>
+            </span>
+          </span>
+          <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
+            Eget tränarspår: från värdeord till matchrutin.
+          </span>
+        </span>
+      </AccordionTrigger>
+
+      <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
+        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.5fr]">
+          <aside className="space-y-4">
+            <div className="border border-violet-300/70 bg-violet-50 p-5">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-violet-700">
+                {nySpelideCore.kicker}
+              </p>
+              <h2 className="mt-3 text-3xl font-black leading-tight text-foreground">
+                {nySpelideCore.word}
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                {nySpelideCore.text}
+              </p>
+            </div>
+
+            <div className="border border-border bg-card p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <Compass className="h-4 w-4 text-violet-700" strokeWidth={2.3} />
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-violet-700">
+                  Spårets fem steg
+                </p>
+              </div>
+              <ol className="space-y-2.5">
+                {nySpelideLevels.map((level) => (
+                  <li key={level.no} className="grid grid-cols-[24px_1fr] gap-2 text-sm leading-relaxed text-foreground/80">
+                    <span className="font-mono text-[10px] font-black text-violet-700">
+                      {level.no}
+                    </span>
+                    <span>{level.title}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </aside>
+
+          <div className="space-y-3">
+            {nySpelideLevels.map((level) => {
+              const Icon = level.icon;
+              return (
+                <article key={level.no} className="border border-border bg-card p-4 md:p-5">
+                  <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className={["grid h-9 w-9 place-items-center border font-mono text-[10px] font-black", TONE_BG[level.tone], TONE_TEXT[level.tone]].join(" ")}>
+                        {level.no}
+                      </span>
+                      <div>
+                        <p className={["font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_TEXT[level.tone]].join(" ")}>
+                          {level.kicker}
+                        </p>
+                        <h3 className="text-lg font-black uppercase leading-tight text-foreground">
+                          {level.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <Icon className={["h-5 w-5", TONE_TEXT[level.tone]].join(" ")} strokeWidth={2.2} />
+                  </div>
+
+                  <p className="text-sm leading-relaxed text-foreground/76">{level.text}</p>
+
+                  {level.funkade ? (
+                    <div className="mt-3 grid gap-3 md:grid-cols-2">
+                      <StepCell label="Fungerade" text={level.funkade} tone="green" />
+                      <StepCell label="Att fylla i" text={level.funkadeEj ?? ""} tone="red" />
+                    </div>
+                  ) : null}
+
+                  <div className="mt-4 flex flex-wrap items-start gap-2 border-t border-border pt-3">
+                    <span className="font-mono text-[9px] font-black uppercase tracking-[0.18em] text-violet-700">
+                      Nästa handling
+                    </span>
+                    <span className="text-sm font-semibold leading-snug text-foreground/85">
+                      {level.next}
+                    </span>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </AccordionContent>
+    </AccordionItem>
+  );
+}
+
 const UnderProcess = () => (
   <>
     <PageHero
@@ -471,6 +663,7 @@ const UnderProcess = () => (
         </AccordionItem>
 
         <OwnerOnlySystem />
+        <OwnerNySpelide />
       </Accordion>
     </SectionReveal>
   </>
