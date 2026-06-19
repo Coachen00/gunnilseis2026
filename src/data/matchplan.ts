@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-06-13 inför Ytterby IS
- * (borta · Ytterns IP 1 Konstgräs · onsdag 17 juni 19:30).
- * Förra match: Floda BoIF (hemma · 2026-06-13 · 5–1).
+ * Senast uppdaterad 2026-06-19 inför Stenkullen GoIK
+ * (hemma · Hjällbovallen 1 Gräs · lördag 27 juni 13:00).
+ * Förra match: Ytterby IS (borta · 2026-06-17 · 1–4 vinst).
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -44,10 +44,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Ytterby IS",
-  venue: "Ytterns IP 1 Konstgräs",
-  home: false,
-  kickoff: "Ons 17 jun · 19:30",
+  opponent: "Stenkullen GoIK",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 27 jun · 13:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -178,10 +178,10 @@ export const SAMLING_TIME = computeSamlingTime();
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
   { time: "Före uppvärmning", label: "Genomgång" },
-  { time: "18:50 – 19:20", label: "Aktivering" },
-  { time: "19:20 – 19:27", label: "Ner + sista instruktion" },
-  { time: "19:27", label: "Upp + sista löpningar" },
-  { time: "19:30", label: "Avspark" },
+  { time: "12:20 – 12:50", label: "Aktivering" },
+  { time: "12:50 – 12:57", label: "Ner + sista instruktion" },
+  { time: "12:57", label: "Upp + sista löpningar" },
+  { time: "13:00", label: "Avspark" },
 ];
 
 /* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
@@ -200,7 +200,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Borta — vi håller vårt tempo, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
+      "Hemma — vi sätter tempot, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -251,36 +251,20 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Ytterby IS (ons 17 juni, borta). 16 spelare kallade —
- * startelvan är ännu inte spikad, så alla ligger i `bench` och sidan visar dem
- * som en numrerad "Kallade spelare"-lista. Adnan Hadzialic är lagkapten. När
- * startelvan är satt: flytta 11 till `starting`. */
+/* Kallad trupp inför Stenkullen GoIK (lör 27 juni, hemma). Truppen är rensad —
+ * matchen spelas först nästa vecka, så listan fylls på när ledarstaben kallar.
+ * Adnan Hadzialic är lagkapten. Tomt bench/starting → sidan visar
+ * "Truppen kallas inför match". Fyll bench när kallelsen är klar, flytta sedan
+ * 11 till `starting` när startelvan spikas. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Rinor Zenullah",
-    "Vedad Dzambegovic",
-    "Ahmad Aljafari",
-    "Ayub Ahmed",
-    "Benjamin Arapovic",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Leodon Johansson",
-    "Mostafa Ayoub",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Borta mot Ytterby: stå i matchen från första sekund — vårt tempo, korta avstånd och första duellen direkt.",
-  "Skydda mitten och tvinga Ytterby utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
-  "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på innan de hinner samla sig.",
+  "Hemma mot Stenkullen: vi sätter tempot och äger initiativet från första sekund — egen rytm, korta avstånd, första duellen direkt.",
+  "Skydda mitten och tvinga Stenkullen utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
+  "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på i box innan de hinner samla sig.",
 ];
 
 export const FORMATION: FormationSlot[] = [];
@@ -292,8 +276,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Veckans match",
     eyebrow: "Kontext",
     bullets: [
-      "Ytterby IS borta · Ytterns IP 1 Konstgräs · onsdag 17 juni 19:30.",
-      `Samling ${SAMLING_TIME} på Hjällbovallen för avresa (1h45 före avspark, bortamatchsregel).`,
+      "Stenkullen GoIK hemma · Hjällbovallen 1 Gräs · lördag 27 juni 13:00.",
+      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark, hemmamatchsregel).`,
       "Startelva och roller bekräftas på genomgång.",
     ],
   },
@@ -312,29 +296,30 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — Floda BoIF 5–1",
-    eyebrow: "Vad vi tar med till Ytterby",
+    title: "Förra match — Ytterby IS 4–1",
+    eyebrow: "Vad vi tar med till Stenkullen",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål.",
+      "Vi vann 4–1 borta mot Ytterby IS (1–1 i halvtid) — Mustafa Ayoub två mål och utsedd till matchens lirare, Måns Orwén kanon från 25 m som inbytt, Haris Avdiu satte 4–1 i slutsekunderna.",
+      "Haris toppar nu seriens skytteliga med 12 mål — och segern tog oss upp i serieledning.",
       "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Ytterby IS borta.",
+      "Nu flyttar vi fokus direkt till nästa prestation: Stenkullen GoIK hemma.",
     ],
   },
   {
-    id: "ytterby",
+    id: "stenkullen",
     num: "04",
-    title: "Vad vi vet om Ytterby IS",
+    title: "Vad vi vet om Stenkullen GoIK",
     eyebrow: "Motståndaren",
     bullets: [
-      "Bortamatch på Ytterns IP 1 Konstgräs — håll vårt tempo, egen rytm och röst trots bortaplan.",
-      "Vi vann 3–1 hemma mot Ytterby i premiären (2 apr) — räkna med att de vill revansch.",
-      "Onsdag kväll borta — vakna start, första duellen direkt, var igång i andrabollarna.",
+      "Hemmamatch på Hjällbovallen 1 Gräs — vi sätter tempot, äger initiativet och styr matchen från start.",
+      "Vi vann 4–2 borta mot Stenkullen i premiärmötet (10 apr) — räkna med att de vill revansch.",
+      "Lördag eftermiddag hemma — vakna start, första duellen direkt, var igång i andrabollarna.",
       "Första 15 minuterna blir intensiva — de vill trycka upp tempo och känna att de kan hota oss. Håller vi ihop laget, vinner duellerna, följer pressen och spelar enkelt när det behövs tar vi kontrollen.",
       "Stäng mitten först. Låt dem inte spela mellan två av oss.",
       "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
     ],
-    note: "Nyckeln: följ planen, håll laget kompakt, ta ansvar för din roll, gör jobbet tillsammans. Ytterby-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Nyckeln: följ planen, håll laget kompakt, ta ansvar för din roll, gör jobbet tillsammans. Stenkullen-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
   },
   {
     id: "identitet",
@@ -343,7 +328,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Borta = vi tar med oss rytmen, höjer rösten och äger intensiteten oavsett plan.",
+      "Hemma = vi sätter rytmen, höjer rösten och äger intensiteten på vår plan.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -420,8 +405,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "19:30"],
-      ["Bortaplan", "Ytterns IP 1 Konstgräs"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

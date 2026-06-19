@@ -3,7 +3,7 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-06-13 (efter Floda BoIF 5–1, inför Ytterby IS borta).
+ * Senast uppdaterad: 2026-06-19 (efter Ytterby IS 1–4 borta, inför Stenkullen GoIK hemma).
  */
 
 export type MatchScorer = {
@@ -168,6 +168,13 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Ytterns IP 1 Konstgräs",
+    ourScore: 4,
+    theirScore: 1,
+    scorers: [
+      { name: "Mustafa Ayoub", goals: 2, note: "nyförvärv från IF Warta · Man of the Match" },
+      { name: "Måns Orwén", goals: 1, note: "inbytt · kanon från 25 m" },
+      { name: "Haris Avdiu", goals: 1, note: "slutsekunderna · skyttekung 12 mål" },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901104/ytterby-is",
   },
   {

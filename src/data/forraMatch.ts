@@ -94,6 +94,14 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
     blocks: STANDARD_BLOCKS,
     larDomar: [],
   },
+  "2026-06-17-ytterby": {
+    summary:
+      "Vi vann 4–1 borta mot Ytterby IS (1–1 i halvtid). Nyförvärvet Mustafa \"Musti\" Ayoub gjorde två mål och utsågs till matchens lirare, Måns Orwén dunkade in 1–3 som inbytt och Haris Avdiu satte 4–1 i slutsekunderna. Haris toppar nu seriens skytteliga på 12 mål och segern tog oss upp i serieledning.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
   "2026-06-13-floda": {
     summary:
       "Vi vann 5–1 hemma mot Floda BoIF — Haris Avdiu nytt hattrick (andra raka), Idris Abdi två mål. När vi följde matchplanen var vi klart bättre: vi styrde matchen, vann boll högt och höll dem borta från farliga lägen.",
