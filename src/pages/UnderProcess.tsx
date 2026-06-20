@@ -61,7 +61,7 @@ const hierarchy = [
       "Identiteten gör visionen observerbar. Det är här abstrakt riktning blir fem beteenden som spelare kan bära.",
     connects:
       "Identiteten avgör vilka standards vi håller, vilka principer vi tränar och hur vi pratar i pressade lägen.",
-    output: "Dueller, andrabollsspel, ta ytan, prata med passningen och scanning.",
+    output: "Duellspel, andrabollspel, scanning, rättvänd spelare och prata med passning.",
     tone: "green" as Tone,
   },
   {
@@ -218,7 +218,7 @@ const researchLoop = [
     case:
       "England DNA delar upp helheten i who we are, how we play, future player, how we coach och how we support. Det gör identitet till styrning, inte pynt.",
     translation:
-      "Gunnilse: 'Vi är förberedda' blir inte ett motto. Det blir filter för närvaro, passupplägg, matchplan, ansvar och kroppsspråk.",
+      "Gunnilse: 'Vi kommer förberedda' blir inte ett motto. Det blir filter för närvaro, passupplägg, matchplan, ansvar och kroppsspråk.",
     tone: "yellow" as Tone,
   },
   {
@@ -424,64 +424,155 @@ type SpelideLevel = {
 
 const nySpelideCore = {
   kicker: "Värdeord",
-  word: "Vi är förberedda.",
+  word: "Vi kommer förberedda.",
   text:
-    "Det egna tränarspåret. Ett värdeord som allt annat hänger på — spelidé, spelmodell, matchcase och din egen närvaro. Frågan före varje val: är vi förberedda?",
+    "Det egna tränarspåret. Ett värdeord som allt annat hänger på — spelidé, spelmodell, matchcase och din egen närvaro. Frågan före varje val: kommer vi förberedda?",
 };
 
 const nySpelideLevels: SpelideLevel[] = [
   {
     no: "01",
     kicker: "Värdeord",
-    title: "Vi är förberedda",
+    title: "Vi kommer förberedda",
     text:
-      "Icke förhandlingsbart. Allt vi gör ska gå att spåra tillbaka hit. Förberedelse före allt annat — i planering, i ansvar och i känsla.",
+      "Icke förhandlingsbart. Allt vi gör ska gå att spåra tillbaka hit. Förberedelse före allt annat — i planering, i ansvar, i kommunikation och i första aktionen.",
     next: "Formulera värdeordet i en mening alla kan upprepa.",
     icon: ShieldCheck,
     tone: "yellow",
   },
   {
     no: "02",
-    kicker: "Spelidé",
-    title: "Så vill vi spela",
+    kicker: "Identitet",
+    title: "Fem beteenden som visar förberedelse",
     text:
-      "Hur vi vill spela med boll, utan boll och i båda omställningarna. Kort nog att rymmas på en sida och tydligt nog att en spelare kan upprepa det.",
-    next: "Skriv spelidén på 1 sida.",
+      "Duellspel, andrabollspel, scanning, rättvänd spelare och prata med passning. Identiteten är vår spelidé i vardagsform: den ska synas i varje övning, match och korrigering.",
+    next: "Gör varje identitetsord till godkänt/icke godkänt beteende.",
     icon: Compass,
     tone: "blue",
   },
   {
     no: "03",
-    kicker: "Spelmodell · 5⁵",
-    title: "Förutsättningar och principer",
+    kicker: "Spelidé",
+    title: "Vi ser först, vinner nästa kamp och spelar framåt",
     text:
-      "5 upphöjt i fem är grunden till egen spelmodell och tränarskap. Lista vad som krävs för att modellen ska fungera och koppla varje krav till en princip per spelfas.",
-    next: "Lista förutsättningarna och koppla dem till spelmodellens principer.",
+      "Vi vill vara laget som är redo innan situationen händer: ser ytan före touchen, pratar passningen före bollen går, blir rättvända för att spela framåt och vinner kampen direkt efter varje lös boll.",
+    next: "Skriv spelidén som en sida: med boll, utan boll och i båda omställningarna.",
     icon: Layers,
     tone: "green",
     to: "/under-process/5-upphojt-i-fem",
   },
   {
     no: "04",
-    kicker: "Matchcase · Flora / Floden",
-    title: "Vad fungerade?",
+    kicker: "Spelmodell · första utkast",
+    title: "Fem faser, samma identitet",
     text:
-      "Spelarna fick mer ansvar tidigare än förr. Skriv både det som höll och det som inte höll — annars blir caset bara en bekräftelse.",
-    funkade: "Alla i tid · fördelat ansvar före match · lättsam känsla · bättre förberedda.",
-    funkadeEj: "Fyll i: vad höll inte, och vilken lärdom om ansvar tar vi med?",
-    next: "Gör matchcaset: vad fungerade, vad fungerade inte, vilken lärdom om ansvar?",
+      "Anfall, försvar, omställning anfall, omställning försvar och fasta situationer ska alla kunna spåras till samma fem identitetsbeteenden.",
+    next: "Välj en huvudprincip per fas och två cue-ord som spelaren kan bära.",
     icon: BarChart3,
     tone: "blue",
   },
   {
     no: "05",
+    kicker: "Träning och feedback",
+    title: "Förberedelse mäts i beteenden",
+    text:
+      "Varje pass behöver tema, identitetsbeteende, constraint, cue och återkoppling. Formuläret blir användbart först när svaret kopplas till vilket beteende vi försökte skapa.",
+    funkade: "Bra svar: vi vann fler andrabollar efter återstart, men tappade scanning när vi blev trötta.",
+    funkadeEj: "Svagt svar: det gick bra. Det går inte att koppla till nästa träning.",
+    next: "Efter varje pass: vad ville vi se, vad såg vi, vilket beteende behöver nästa repetition?",
+    icon: BarChart3,
+    tone: "green",
+  },
+  {
+    no: "06",
     kicker: "Tränaren själv",
     title: "Närvaro under anspänning",
     text:
-      "Lära sig älska känslan av nervositet och full närvaro. En personlig rutin som tar dig till full närvaro varje match.",
+      "Coachens personliga taktik är att komma förberedd nog att vara närvarande. När nervositeten kommer ska rutinen göra dig skarp, lugn och tydlig.",
     next: "Skapa en personlig matchrutin.",
     icon: HeartPulse,
     tone: "red",
+  },
+];
+
+const identityBehaviors = [
+  {
+    title: "Duellspel",
+    why: "Förberedelse syns först i modet att gå in i kampen med rätt kropp, rätt timing och nästa aktion redo.",
+    training: "Poängsätt vunnen duell plus kontrollerad nästa passning.",
+    cue: "Vinn kampen, spela nästa.",
+    tone: "red" as Tone,
+  },
+  {
+    title: "Andrabollspel",
+    why: "Laget som är förberett förstår att första bollen sällan avgör. Nästa boll gör det.",
+    training: "Starta om varje block med lös boll, retur eller avskärmad passning.",
+    cue: "Först på fri boll.",
+    tone: "yellow" as Tone,
+  },
+  {
+    title: "Scanning",
+    why: "Vi kommer förberedda när vi har sett yta, motståndare och medspelare innan bollen kommer.",
+    training: "Belöna spelare som scannar före mottagning och kan spela på ett tillslag.",
+    cue: "Se före touch.",
+    tone: "blue" as Tone,
+  },
+  {
+    title: "Rättvänd spelare",
+    why: "Rättvänd kropp gör nästa aktion snabbare. Det är förberedelse i position, vinkel och första touch.",
+    training: "Skapa regler där poäng bara räknas efter rättvänd mottagning eller tredje man.",
+    cue: "Vänd mot spelet.",
+    tone: "green" as Tone,
+  },
+  {
+    title: "Prata med passning",
+    why: "Passningen ska ge mottagaren information: fart, fot, riktning och vad nästa aktion bör bli.",
+    training: "Kravställ passning på rätt fot och låt mottagaren bedöma om passningen hjälpte nästa aktion.",
+    cue: "Säg det med bollen.",
+    tone: "yellow" as Tone,
+  },
+];
+
+const spelmodellDraft = [
+  {
+    phase: "Anfall",
+    principle: "Spela framåt när vi kan, förbered nästa passning när vi inte kan.",
+    identity: "Scanning · rättvänd spelare · prata med passning",
+    training: "Positionsspel med poäng för rättvänd mottagning, tredje man och passning som sätter fart framåt.",
+    measure: "Antal rättvända mottagningar, passningar genom linje och aktioner efter scanning.",
+    tone: "blue" as Tone,
+  },
+  {
+    phase: "Omställning försvar",
+    principle: "Första reaktionen efter bolltapp är jakt, skydd och andraboll.",
+    identity: "Duellspel · andrabollspel · scanning",
+    training: "Smålagsspel där bolltapp direkt ger fem sekunder återerövringschans med extra poäng.",
+    measure: "Bollvinster inom fem sekunder, stoppade kontringar och närmaste spelares reaktionstid.",
+    tone: "red" as Tone,
+  },
+  {
+    phase: "Försvar",
+    principle: "Skydda mitten, pressa tillsammans och vinn nästa kamp.",
+    identity: "Duellspel · scanning · prata med passning",
+    training: "Zonspel med pressignaler: felvänd motståndare, dålig touch, passning mot kant.",
+    measure: "Stängda centrala passningar, vunna dueller och bollvinster i önskad yta.",
+    tone: "green" as Tone,
+  },
+  {
+    phase: "Omställning anfall",
+    principle: "Första blicken framåt, första passningen med mening.",
+    identity: "Scanning · rättvänd spelare · prata med passning",
+    training: "Vinn boll och attackera mini-mål eller fri yta inom tre passningar.",
+    measure: "Första passning framåt, spelare rättvänd efter bollvinst och avslut efter återerövring.",
+    tone: "yellow" as Tone,
+  },
+  {
+    phase: "Fasta situationer",
+    principle: "Vi är förberedda innan bollen ligger still.",
+    identity: "Duellspel · andrabollspel · prata med passning",
+    training: "Repetera startposition, signal, yta två och andrabollsberedskap.",
+    measure: "Första kontakt, andraboll efter fast situation och tydlighet i ansvar.",
+    tone: "blue" as Tone,
   },
 ];
 
@@ -704,6 +795,27 @@ function OwnerNySpelide() {
                 ))}
               </ol>
             </div>
+
+            <div className="border border-border bg-card p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-violet-700" strokeWidth={2.3} />
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-violet-700">
+                  Identitet
+                </p>
+              </div>
+              <div className="grid gap-2">
+                {identityBehaviors.map((behavior) => (
+                  <div key={behavior.title} className="flex items-start justify-between gap-3 border-b border-border pb-2 last:border-b-0 last:pb-0">
+                    <span className="text-sm font-black uppercase leading-tight text-foreground">
+                      {behavior.title}
+                    </span>
+                    <span className={["max-w-[160px] text-right text-xs font-black leading-snug", TONE_TEXT[behavior.tone]].join(" ")}>
+                      {behavior.cue}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </aside>
 
           <div className="space-y-3">
@@ -758,6 +870,67 @@ function OwnerNySpelide() {
                 </article>
               );
             })}
+
+            <div className="grid gap-3 md:grid-cols-2">
+              {identityBehaviors.map((behavior) => (
+                <article key={behavior.title} className="border border-border bg-card p-4 md:p-5">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div>
+                      <p className={["font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_TEXT[behavior.tone]].join(" ")}>
+                        Identitet
+                      </p>
+                      <h3 className="mt-1 text-lg font-black uppercase leading-tight text-foreground">
+                        {behavior.title}
+                      </h3>
+                    </div>
+                    <span className={["border px-2.5 py-1 text-xs font-black leading-none", TONE_BG[behavior.tone], TONE_TEXT[behavior.tone]].join(" ")}>
+                      {behavior.cue}
+                    </span>
+                  </div>
+                  <div className="grid gap-3">
+                    <StepCell label="Varför" text={behavior.why} tone={behavior.tone} />
+                    <StepCell label="Tränas genom" text={behavior.training} tone={behavior.tone} />
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="border border-violet-300/70 bg-violet-50 p-5">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-violet-700">
+                Första spelmodellutkast
+              </p>
+              <h2 className="mt-3 text-2xl font-black leading-tight text-foreground">
+                Vi kommer förberedda i varje fas.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/75">
+                Modellen ska vara enkel nog att coacha under press: en huvudprincip per fas, tydliga cue-ord och mätpunkter som visar om identiteten faktiskt syns.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {spelmodellDraft.map((phase) => (
+                <article key={phase.phase} className="border border-border bg-card p-4 md:p-5">
+                  <div className="mb-3 flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                    <div>
+                      <p className={["font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_TEXT[phase.tone]].join(" ")}>
+                        Spelfas
+                      </p>
+                      <h3 className="mt-1 text-lg font-black uppercase leading-tight text-foreground">
+                        {phase.phase}
+                      </h3>
+                    </div>
+                    <p className="max-w-md text-sm font-black leading-relaxed text-foreground/80 md:text-right">
+                      {phase.principle}
+                    </p>
+                  </div>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    <StepCell label="Identitet i fasen" text={phase.identity} tone={phase.tone} />
+                    <StepCell label="Träning" text={phase.training} tone={phase.tone} />
+                    <StepCell label="Mätpunkt" text={phase.measure} tone={phase.tone} />
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </AccordionContent>
@@ -1048,15 +1221,15 @@ const UnderProcess = () => (
                 </span>
                 <span>
                   <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
-                    Formuläret
+                    Återkoppling
                   </span>
                   <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                    Återkoppling · vad ni ser
+                    Formulär · beteende · nästa träning
                   </span>
                 </span>
               </span>
               <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
-                Skriv konkret — det styr vad vi tränar på.
+                Skriv konkret så svaret kan kopplas till identitet och nästa pass.
               </span>
             </span>
           </AccordionTrigger>
@@ -1068,11 +1241,11 @@ const UnderProcess = () => (
                   Varför
                 </p>
                 <p className="mt-4 text-base font-semibold leading-relaxed text-foreground">
-                  Formuläret är inte bara en kontroll. Det hjälper oss ledare att
-                  förstå vad ni ser, vad ni kan och vad vi behöver träna mer på.
+                  Återkoppling är sista delen av spelmodellen. Den ska visa om duellspel,
+                  andrabollspel, scanning, rättvänd spelare och prata med passning faktiskt syns.
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-foreground/75">
-                  Skriv konkret: vad såg du, vad gjorde vi bra och vad behöver bli bättre?
+                  Skriv konkret: vilket beteende såg du, i vilken situation, och vad behöver nästa träning förstärka?
                 </p>
               </div>
 
@@ -1090,8 +1263,8 @@ const UnderProcess = () => (
                     Bra svar
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-foreground/80">
-                    &ldquo;Vi lyckades vända spelet till högerkanten flera gånger, men
-                    när vi ledde blev vi för långa i laget och tappade kontroll.&rdquo;
+                    &ldquo;Vi vann fler andrabollar efter återstart, men när vi blev trötta
+                    scannade vi för sent och fick felvända mottagningar.&rdquo;
                   </p>
                 </article>
               </div>
