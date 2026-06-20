@@ -37,7 +37,7 @@ const UnderProcessDeck = () => {
         className="absolute left-4 top-4 z-10 flex items-center gap-2 border border-cyan-400/60 bg-black/70 px-3 py-2 font-mono text-[11px] font-black uppercase tracking-[0.18em] text-cyan-200 backdrop-blur transition-colors hover:bg-cyan-400/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
       >
         <ArrowLeft className="h-4 w-4" strokeWidth={2.4} />
-        Under process
+        Prisma 2026
       </Link>
       <span className="absolute right-4 top-4 z-10 flex items-center gap-1.5 border border-amber-400/50 bg-black/70 px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-300 backdrop-blur">
         <Lock className="h-3.5 w-3.5" strokeWidth={2.4} />

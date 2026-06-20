@@ -101,7 +101,7 @@ const FemUpphojtFem = () => {
   return (
     <>
       <PageHero
-        eyebrow="Under process · Tränarspår"
+        eyebrow="Prisma 2026 · Tränarspår"
         title="5⁵ — Fem upphöjt till fem"
         description="Allt börjar med att komma förberedd. Var du än tittar i idén möter du fem — ett minnesskelett, inte exakt matematik."
       />

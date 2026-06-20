@@ -147,7 +147,7 @@ const navItems: NavItem[] = [
   { kind: "link", to: "/tavlingar", label: "Tävlingar" },
   { kind: "link", to: "/truppen", label: "Trupp" },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
-  { kind: "link", to: "/under-process", label: "Under process" },
+  { kind: "link", to: "/under-process", label: "Prisma 2026" },
 ];
 
 const TopNav = () => {

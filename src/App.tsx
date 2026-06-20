@@ -122,7 +122,7 @@ const App = () => (
           <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
-          <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
+          <Route path="/under-process" element={<Protected routeName="Prisma 2026"><UnderProcess /></Protected>} />
           <Route path="/under-process/5-upphojt-i-fem" element={<Protected routeName="5 upphöjt i fem"><FemUpphojtFem /></Protected>} />
           {/* Helskärms-deck (owner-only, gate i sidan) — utan Layout-chrome */}
           <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodell Neon"><UnderProcessDeck /></PrintRoute>} />
