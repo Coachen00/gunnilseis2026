@@ -41,12 +41,81 @@ const TONE_TEXT: Record<Tone, string> = {
   green: "text-emerald-700",
 };
 
+const hierarchy = [
+  {
+    no: "01",
+    title: "Vision och riktning",
+    weight: "Viktigast",
+    why:
+      "Den svarar på varför laget finns och vilken sorts fotboll vi vill stå för. Utan vision blir allt annat bara aktiviteter.",
+    connects:
+      "Visionen blir identitet när den går att se i beteenden. Den sätter riktningen för ledarskap, standards och spelmodell.",
+    output: "En mening som styr varje val: vad ska Gunnilse vara när det blåser?",
+    tone: "yellow" as Tone,
+  },
+  {
+    no: "02",
+    title: "Identitet",
+    weight: "Översta synliga lagret",
+    why:
+      "Identiteten gör visionen observerbar. Det är här abstrakt riktning blir fem beteenden som spelare kan bära.",
+    connects:
+      "Identiteten avgör vilka standards vi håller, vilka principer vi tränar och hur vi pratar i pressade lägen.",
+    output: "Dueller, andrabollsspel, ta ytan, prata med passningen och scanning.",
+    tone: "green" as Tone,
+  },
+  {
+    no: "03",
+    title: "Ledarskap och standards",
+    weight: "Daglig motor",
+    why:
+      "När identiteten är tydlig måste den få en lägstanivå. Annars blir orden fina, men beteendet valfritt.",
+    connects:
+      "Ledarskapet översätter identitet till krav på träning: tempo, kommunikation, ansvar, kroppsspråk och korrigering.",
+    output: "Alla vet vad som gäller före, under och efter träning.",
+    tone: "red" as Tone,
+  },
+  {
+    no: "04",
+    title: "Spelmodell",
+    weight: "Beslutsstruktur",
+    why:
+      "Först när kravbilden finns kan spelet organiseras. Modellen ska hjälpa spelaren att veta vad nästa aktion är.",
+    connects:
+      "Spelmodellen tar identiteten in i anfall, försvar, omställningar, målvaktsspel och fasta situationer.",
+    output: "Få principer per skede, tydliga triggers och roller som går att träna.",
+    tone: "blue" as Tone,
+  },
+  {
+    no: "05",
+    title: "Träningsdesign",
+    weight: "Leverans",
+    why:
+      "Träningen kommer efter modellen eftersom varje övning måste bära ett syfte. Annars tränar vi hårt men inte rätt.",
+    connects:
+      "Träningen pressar principerna med constraints, poängsystem, tidskrav, ytor, roller och cue-ord.",
+    output: "Pass där intensitet, beslut och spelmodell repeteras samtidigt.",
+    tone: "red" as Tone,
+  },
+  {
+    no: "06",
+    title: "Analys och återkoppling",
+    weight: "Minst stabil, men nödvändig",
+    why:
+      "Feedback kommer sist eftersom vi först måste veta vad vi letar efter. Då kan vi justera utan att tappa riktning.",
+    connects:
+      "Analysen går tillbaka till början: stämmer beteendet med identiteten, standarden och spelmodellen?",
+    output: "Nästa träningsfokus, nästa coachpunkt och nästa matchjustering.",
+    tone: "green" as Tone,
+  },
+];
+
 const principles = [
   {
     title: "Intensitet på träning",
     command: "Träna snabbare än matchen.",
     text:
-      "Träningens tempo ska vara högre än matchens tempo. Då blir matchen tydligare, besluten snabbare och spelaren mer redo när pressen kommer.",
+      "Intensitet är inte bara löpning. Det är kort väntetid, hög beslutstäthet, tydliga regler, snabb återstart och krav på nästa aktion direkt efter misstag.",
     icon: Activity,
     tone: "red" as Tone,
   },
@@ -76,92 +145,254 @@ const principles = [
   },
 ];
 
+const relationMap = [
+  {
+    from: "Vision",
+    to: "Identitet · ledarskap · modell",
+    text:
+      "Visionen väljer vad som är viktigast. Därför kan den inte ligga efter övningar, formation eller matchplan.",
+  },
+  {
+    from: "Identitet",
+    to: "Standards · språk · beteenden",
+    text:
+      "Identiteten är bron mellan idé och vardag. Om ett beteende inte syns på träning finns det inte i modellen.",
+  },
+  {
+    from: "Standards",
+    to: "Träningsintensitet · ansvar · kultur",
+    text:
+      "Standards gör att spelarna vet vad som är normalt. De skyddar intensiteten när energin, vädret eller resultatet stör.",
+  },
+  {
+    from: "Spelmodell",
+    to: "Principer · roller · övningar",
+    text:
+      "Modellen gör identiteten spelbar. Varje princip ska kunna bli en rollcue, en övning och ett matchbeteende.",
+  },
+  {
+    from: "Analys",
+    to: "Nästa fokus · ny standard · ny träning",
+    text:
+      "Analysen får inte bli en sidogren. Den ska peka tillbaka på kedjan och säga vilket led som behöver skärpas.",
+  },
+];
+
+const usageAreas = [
+  {
+    title: "När vi sätter standards",
+    text:
+      "Börja i identiteten. En standard är giltig först när den hjälper oss visa vilka vi är: tid, tempo, kommunikation, kroppsspråk och ansvar.",
+    tone: "red" as Tone,
+  },
+  {
+    title: "När vi pratar ledarskap på träning",
+    text:
+      "Ledarskap är översättning: idé till cue, cue till beteende, beteende till feedback. Få ord, skarp korrigering, samma språk varje vecka.",
+    tone: "yellow" as Tone,
+  },
+  {
+    title: "När vi jagar maximal intensitet",
+    text:
+      "Använd små ytor, korta block, poäng för rätt beteende, omedelbar återstart, numerära över-/underlägen och stopp bara när nästa aktion blir tydligare.",
+    tone: "green" as Tone,
+  },
+  {
+    title: "När vi bygger matchplan",
+    text:
+      "Matchplanen är sista filtret. Den får anpassa triggers och ytor, men aldrig byta ut identiteten eller spelmodellens huvudprinciper.",
+    tone: "blue" as Tone,
+  },
+];
+
+const researchLoop = [
+  {
+    no: "01",
+    title: "Identitet och kontext före metod",
+    source: "England DNA · FA 4 Corner Model · SvFF spelarutbildningsplan",
+    sourceUrl: "https://www.thefa.com/bootroom/resources/coaching/understanding-the-core-elements-of-the-england-dna",
+    applies:
+      "Börja med vilka vi är, hur vi vill spela, vilken spelare vi vill utveckla och vilken miljö spelaren behöver.",
+    extent:
+      "En sida räcker: 3-5 identitetsbeteenden, 3 standards, 1 mening om ledarskap. Revideras sällan.",
+    case:
+      "England DNA delar upp helheten i who we are, how we play, future player, how we coach och how we support. Det gör identitet till styrning, inte pynt.",
+    translation:
+      "Gunnilse: 'Vi är förberedda' blir inte ett motto. Det blir filter för närvaro, passupplägg, matchplan, ansvar och kroppsspråk.",
+    tone: "yellow" as Tone,
+  },
+  {
+    no: "02",
+    title: "Spelvision före formation",
+    source: "DFB Spielvision · England Football style of play",
+    sourceUrl: "https://www.dfb-akademie.de/spielvision/-/id-11008585",
+    applies:
+      "Formationen är bara startposition. Spelvisionen beskriver kvaliteterna i anfall, försvar och omställningar.",
+    extent:
+      "4-6 huvudprinciper totalt. Per skede: 1 huvudprincip, 2-3 subprinciper, 2 cue-ord.",
+    case:
+      "DFB:s Spielvision beskriver övergripande, offensiva och defensiva riktlinjer som ska påverka allt från landslag till barnfotboll.",
+    translation:
+      "Gunnilse: skriv modellen som beteenden: var vi vill vinna boll, hur vi tar yta, hur vi skyddar oss när vi anfaller.",
+    tone: "blue" as Tone,
+  },
+  {
+    no: "03",
+    title: "Principer och subprinciper före övningsbank",
+    source: "Tactical Periodization · UEFA/RFEF coach education",
+    sourceUrl: "https://spielverlagerung.com/2020/05/23/understanding-the-tactical-periodization-methodology/",
+    applies:
+      "Varje övning ska representera ett beteende i spelmodellen. Fysik, teknik och psykologi tränas genom det taktiska syftet.",
+    extent:
+      "Bygg passet runt ett tema. Max 1 huvudprincip, 1-2 subprinciper och 3 observerbara beteenden per träning.",
+    case:
+      "Mourinho/Porto-spåret gjorde spelidén till veckans organisatoriska centrum: träna som du vill spela, inte först fys och sedan fotboll.",
+    translation:
+      "Gunnilse: om temat är återerövring ska yta, regler, poäng och coachning tvinga fram direkt jakt efter bolltapp.",
+    tone: "green" as Tone,
+  },
+  {
+    no: "04",
+    title: "Matchlik träning före isolerad instruktion",
+    source: "Constraints-led approach · Representative learning design · SSG-forskning",
+    sourceUrl: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7880470/",
+    applies:
+      "Spelare lär sig beslut i miljöer som liknar matchen: motståndare, riktning, yta, tid, mål, risk och konsekvens.",
+    extent:
+      "Minst halva passet i spel eller matchlika former. DFB anger nettotid i smålagsspel som veckomått; SvFF-checklistor anger minst 50 procent spel.",
+    case:
+      "Smålagsspel ger många aktioner per spelare och kan påverka både aerob kapacitet och teknisk-taktiska beteenden.",
+    translation:
+      "Gunnilse: maximal intensitet skapas med små ytor, korta block, återstart, poäng för rätt beteende och få stopp.",
+    tone: "red" as Tone,
+  },
+  {
+    no: "05",
+    title: "Ledarskap som översättning",
+    source: "RFEF · Del Bosque · Arteta · FA coach education",
+    sourceUrl: "https://rfef.es/es/noticias/vicente-del-bosque-clausura-jornadas-metodologia-seleccion-espanola",
+    applies:
+      "Ledaren ska göra modellen begriplig, lyssna på laget, välja få ord och korrigera det som hotar identiteten.",
+    extent:
+      "Varje pass: 60 sekunder syfte, 3 cue-ord, korta stopp, en konkret efterfråga efter passet.",
+    case:
+      "Del Bosques landslagsmetodik betonade kommunikation, lyssnande och delad kunskap. Arteta betonar relation och tävlingsmodell.",
+    translation:
+      "Gunnilse: ledarskapet på träning är inte föreläsning. Det är att koppla varje stopp till beteendet vi jagar.",
+    tone: "yellow" as Tone,
+  },
+  {
+    no: "06",
+    title: "Case först när principen är tydlig",
+    source: "Guardiola · Klopp/Bielsa · De Zerbi · Coaches' Voice",
+    sourceUrl: "https://learning.coachesvoice.com/cv/positional-play-football-tactics-explained-guardiola-cruyff-manchester-city/",
+    applies:
+      "Studera elitcase för att se principen levande, inte för att kopiera formationen rakt av.",
+    extent:
+      "Ett case per problem. Beskriv situation, princip, constraint, cue och mätpunkt. Allt annat bort.",
+    case:
+      "Guardiola visar positionsspel och zonlogik. Klopp/Bielsa visar omedelbar återerövring. De Zerbi visar hur uppbyggnad kan locka press.",
+    translation:
+      "Gunnilse: välj bara det case som förstärker nästa steg i kedjan. Case utan koppling blir inspiration utan effekt.",
+    tone: "green" as Tone,
+  },
+];
+
 const systemSteps = [
   {
     no: "01",
-    title: "Identitet och syfte",
-    before: "Starta inte med övningar, formation eller matchplan.",
-    do: "Skriv ner vilka vi är, varför laget finns och vilka beteenden som ska synas när det blåser.",
-    output: "En gemensam självbild: detta är Gunnilse, detta accepterar vi, detta accepterar vi inte.",
+    title: "Vision och syfte",
+    before: "Kommer först eftersom den bestämmer vad allt annat ska tjäna.",
+    do: "Sätt riktningen: vilket lag vill vi vara, varför spelar vi så och vad får aldrig försvinna?",
+    output: "Alla senare val kan spåras tillbaka till samma varför.",
     icon: ShieldCheck,
     tone: "yellow" as Tone,
   },
   {
     no: "02",
-    title: "Ledarskap och standarder",
-    before: "Gör detta först när identiteten är tydlig nog att styra val.",
-    do: "Sätt lägstanivån: närvaro, intensitet, kommunikation, kroppsspråk, återerövring och ansvar.",
-    output: "Spelarna vet vad som krävs varje dag, inte bara vad som sägs inför match.",
+    title: "Identitet",
+    before: "Kommer efter visionen eftersom den gör riktningen synlig i beteenden.",
+    do: "Välj få identitetsbeteenden och definiera hur de ser ut som godkänt och icke godkänt.",
+    output: "Spelaren vet vad laget ska visa även utan lång taktisk förklaring.",
     icon: Users,
-    tone: "red" as Tone,
+    tone: "green" as Tone,
   },
   {
     no: "03",
+    title: "Ledarskap och standarder",
+    before: "Kommer efter identiteten eftersom ledaren måste veta vilka beteenden som ska skyddas.",
+    do: "Sätt lägstanivån för närvaro, tempo, ansvar, kommunikation, kroppsspråk och återerövring.",
+    output: "Kraven blir dagliga och konkreta, inte bara något vi säger inför match.",
+    icon: GitBranch,
+    tone: "red" as Tone,
+  },
+  {
+    no: "04",
     title: "Kultur",
-    before: "Gör detta först när standarderna är uttalade och möjliga att följa upp.",
-    do: "Fira rätt beteenden, korrigera avvikelser och låt spelarna hjälpa varandra att hålla nivån.",
-    output: "En miljö där gruppen bär kraven även när tränaren inte tittar.",
+    before: "Kommer efter standards eftersom kultur är vad gruppen upprepar utan att ledaren tjatar.",
+    do: "Fira rätt beteenden, korrigera avvikelser och låt spelarna bära nivån tillsammans.",
+    output: "Miljön förstärker modellen även när träningen blir stressig.",
     icon: GitBranch,
     tone: "green" as Tone,
   },
   {
-    no: "04",
+    no: "05",
     title: "Spelmodell",
-    before: "Gör detta först när identitet, krav och kultur pekar åt samma håll.",
-    do: "Översätt idén till fyra faser: försvar, omställning anfall, anfall och omställning försvar.",
-    output: "Spelarna vet var de ska stå, vad de ska se och vad nästa aktion är.",
+    before: "Kommer när identitet, krav och kultur pekar åt samma håll.",
+    do: "Översätt idén till skeden: anfall, försvar, omställningar, målvaktsspel och fasta situationer.",
+    output: "Spelarna vet var de ska stå, vad de ska se och vilken nästa aktion som prioriteras.",
     icon: Layers,
     tone: "blue" as Tone,
   },
   {
-    no: "05",
+    no: "06",
     title: "Principer och koncept",
-    before: "Gör detta först när spelmodellen är enkel nog att förklara för en spelare på 30 sekunder.",
-    do: "Gör principerna till korta beslut: stäng mitten, spela framåt, fyll boxen, jaga direkt.",
-    output: "Ett gemensamt språk som gör besluten snabbare på planen.",
+    before: "Kommer efter modellen eftersom principerna ska vara modellens korta beslutsspråk.",
+    do: "Gör principerna till cue-ord: stäng, vrid, ta ytan, prata med passningen, jaga direkt.",
+    output: "Spelaren får få ord som går att agera på i fart.",
     icon: BookOpen,
     tone: "yellow" as Tone,
   },
   {
-    no: "06",
+    no: "07",
     title: "Roller och truppbygge",
-    before: "Gör detta först när principerna är tydliga nog att kopplas till positioner.",
-    do: "Beskriv vad varje roll gör i varje fas och vilka egenskaper som behövs för rollen.",
-    output: "Rätt spelare på rätt plats, med ansvar som går att förstå och träna.",
+    before: "Kommer efter principerna eftersom varje roll måste bära samma modell på sin plats.",
+    do: "Beskriv vad varje roll gör i varje skede och vilka egenskaper som krävs för rollen.",
+    output: "Rätt spelare får rätt ansvar och rätt träningsfeedback.",
     icon: ClipboardList,
     tone: "green" as Tone,
   },
   {
-    no: "07",
+    no: "08",
     title: "Fysik och hälsa",
-    before: "Gör detta först när spelmodellens löpkrav, duellkrav och intensitet är tydliga.",
-    do: "Koppla fys, återhämtning, skadeprevention och livsstil till hur laget faktiskt spelar.",
+    before: "Kommer efter rollerna eftersom belastningen ska följa hur vi faktiskt spelar.",
+    do: "Koppla fys, återhämtning, skadeprevention och livsstil till löpkrav, duellkrav och intensitet.",
     output: "Spelare som orkar utföra modellen i minut 90 och håller över tid.",
     icon: Activity,
     tone: "red" as Tone,
   },
   {
-    no: "08",
+    no: "09",
     title: "Träningsdesign",
-    before: "Gör detta först när principerna, rollerna och fysiska kraven är klara.",
-    do: "Planera pass med tema, nyckelbeteenden, progressiv svårighet och matchlika beslut.",
-    output: "Träningen blir en repetition av vår modell, inte lösryckta övningar.",
+    before: "Kommer efter kraven eftersom övningen ska träna rätt beteende i rätt belastning.",
+    do: "Planera pass med tema, nyckelbeteenden, constraints, poängsystem och matchlika beslut.",
+    output: "Träningen blir en repetition av modellen, inte lösryckta övningar.",
     icon: CheckCircle2,
     tone: "blue" as Tone,
   },
   {
-    no: "09",
+    no: "10",
     title: "Analys och lärandeloop",
-    before: "Gör detta först när vi vet exakt vilka beteenden vi vill mäta.",
+    before: "Kommer efter träningsdesignen eftersom vi först måste veta vilka beteenden vi försökte skapa.",
     do: "Följ upp video och data: bollvinster, spelvändningar, attacker i assistytan, spelare i boxen och bolltapp.",
-    output: "Vi justerar utifrån vad som faktiskt händer, inte bara magkänsla.",
+    output: "Vi justerar utifrån vad som faktiskt händer och kopplar lärdomarna tillbaka till kedjan.",
     icon: BarChart3,
     tone: "green" as Tone,
   },
   {
-    no: "10",
+    no: "11",
     title: "Matchplan och kommunikation",
-    before: "Gör detta sist. Matchplanen får aldrig ersätta identiteten.",
+    before: "Kommer sist eftersom matchplanen är en anpassning av systemet, inte systemet självt.",
     do: "Anpassa triggers, fällor, fasta och cue-ord till motståndaren utan att tappa vår modell.",
     output: "Spelarna får få ord, tydliga handlingar och en plan de kan bära under press.",
     icon: MessageSquare,
@@ -170,11 +401,12 @@ const systemSteps = [
 ];
 
 const everydayLoop = [
-  "Före träning: välj ett tema och tre beteenden vi vill se.",
-  "Under träning: coacha cue-ord, inte föreläsningar.",
-  "Efter träning: skriv vad vi ville se, vad vi såg och vad vi ändrar.",
+  "Före träning: välj vilken del av kedjan passet ska stärka.",
+  "Start av träning: säg temat, beteendet och varför det hänger ihop med identiteten.",
+  "Under träning: höj intensiteten med yta, tid, poäng, återstart och numerär.",
+  "Efter träning: skriv vad vi ville se, vad vi såg och vilket led som behöver skärpas.",
   "Inför match: ta bara med det som hjälper spelaren att agera snabbare.",
-  "Efter match: koppla lärdomar tillbaka till principerna.",
+  "Efter match: koppla lärdomar tillbaka till identitet, standard och modell.",
 ];
 
 type SpelideLevel = {
@@ -291,7 +523,7 @@ function OwnerOnlySystem() {
         <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center border border-emerald-400 bg-emerald-50 font-mono text-[11px] font-black text-emerald-700">
-              03
+              05
             </span>
             <span>
               <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
@@ -303,7 +535,7 @@ function OwnerOnlySystem() {
             </span>
           </span>
           <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
-            Coachens arbetsmodell från identitet till matchplan.
+            Coachens arbetsmodell från vision till matchplan.
           </span>
         </span>
       </AccordionTrigger>
@@ -340,7 +572,7 @@ function OwnerOnlySystem() {
                 Ett system, inte en checklista.
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-foreground/75">
-                Modellen kopplar ihop identitet, ledarskap, kultur, spelmodell,
+                Modellen kopplar ihop vision, identitet, ledarskap, kultur, spelmodell,
                 principer, roller, fysik, träning, analys och matchplan. Varje del
                 ska göra nästa del enklare att förstå och lättare att utföra.
               </p>
@@ -383,9 +615,9 @@ function OwnerOnlySystem() {
                     <Icon className={["h-5 w-5", TONE_TEXT[step.tone]].join(" ")} strokeWidth={2.2} />
                   </div>
                   <div className="grid gap-3 md:grid-cols-3">
-                    <StepCell label="Gör först" text={step.before} tone={step.tone} />
-                    <StepCell label="Gör nu" text={step.do} tone={step.tone} />
-                    <StepCell label="Klart när" text={step.output} tone={step.tone} />
+                    <StepCell label="Varför här" text={step.before} tone={step.tone} />
+                    <StepCell label="Insats" text={step.do} tone={step.tone} />
+                    <StepCell label="Påverkar nästa led" text={step.output} tone={step.tone} />
                   </div>
                 </article>
               );
@@ -422,7 +654,7 @@ function OwnerNySpelide() {
         <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center border border-violet-400 bg-violet-50 font-mono text-[11px] font-black text-violet-700">
-              04
+              06
             </span>
             <span>
               <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
@@ -545,10 +777,10 @@ const UnderProcess = () => (
       <Accordion
         type="single"
         collapsible
-        defaultValue="huvudprinciper"
+        defaultValue="rod-trad"
         className="overflow-hidden rounded-md border border-border bg-card"
       >
-        <AccordionItem value="huvudprinciper" className="border-0">
+        <AccordionItem value="rod-trad" className="border-0">
           <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
             <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
               <span className="flex items-center gap-3">
@@ -557,32 +789,225 @@ const UnderProcess = () => (
                 </span>
                 <span>
                   <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
-                    Huvudprinciper
+                    Start här: röd tråd
                   </span>
                   <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                    Matchrytm · utbildning · kollektiv
+                    Vision · identitet · standards · spelmodell
                   </span>
                 </span>
               </span>
               <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
-                Fyra saker som ska synas i varje träning och varje match.
+                Ordningen från viktigast till minst viktigt, och varför allt hänger ihop.
+              </span>
+            </span>
+          </AccordionTrigger>
+
+          <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
+            <div className="grid grid-cols-1 gap-5 xl:grid-cols-[0.85fr_1.55fr]">
+              <div className="border border-amber-400/60 bg-amber-50 p-5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
+                  Kärnregel
+                </p>
+                <p className="mt-4 text-base font-semibold leading-relaxed text-foreground md:text-lg">
+                  Vi börjar aldrig med övningar. Vi börjar med varför laget finns, vad vi ska visa, och vilka beteenden som måste hålla när pressen kommer.
+                </p>
+                <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                  Kedjan går från mest stabilt till mest konkret: visionen styr identiteten, identiteten styr standarderna,
+                  standarderna bär kulturen, kulturen gör spelmodellen möjlig, och träningsdesignen levererar modellen varje vecka.
+                </p>
+                <div className="mt-5 border-t border-amber-400/40 pt-4">
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">
+                    Läseriktning
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-relaxed text-foreground/80">
+                    Uppifrån och ned för att bygga. Nedifrån och upp för att felsöka.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {hierarchy.map((level) => (
+                  <article key={level.no} className="border border-border bg-card p-4 md:p-5">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                      <div className="flex min-w-0 items-start gap-3">
+                        <span className={["grid h-9 w-9 flex-shrink-0 place-items-center border font-mono text-[10px] font-black", TONE_BG[level.tone], TONE_TEXT[level.tone]].join(" ")}>
+                          {level.no}
+                        </span>
+                        <div className="min-w-0">
+                          <p className={["font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_TEXT[level.tone]].join(" ")}>
+                            {level.weight}
+                          </p>
+                          <h2 className="mt-1 text-lg font-black uppercase leading-tight text-foreground">
+                            {level.title}
+                          </h2>
+                        </div>
+                      </div>
+                      <p className="max-w-sm text-sm font-semibold leading-relaxed text-foreground/70 md:text-right">
+                        {level.output}
+                      </p>
+                    </div>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                      <StepCell label="Varför här" text={level.why} tone={level.tone} />
+                      <StepCell label="Sitter ihop med" text={level.connects} tone={level.tone} />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="border border-border bg-card p-5">
+                <div className="mb-4 flex items-center gap-2">
+                  <GitBranch className="h-4 w-4 text-emerald-700" strokeWidth={2.3} />
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">
+                    Påverkanskarta
+                  </p>
+                </div>
+                <div className="grid gap-3">
+                  {relationMap.map((relation) => (
+                    <div key={relation.from} className="border-l-2 border-emerald-400 pl-4">
+                      <p className="text-sm font-black uppercase leading-tight text-foreground">
+                        {relation.from} → {relation.to}
+                      </p>
+                      <p className="mt-1 text-sm leading-relaxed text-foreground/72">{relation.text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid gap-3">
+                {usageAreas.map((area) => (
+                  <article key={area.title} className={["border p-4", TONE_BG[area.tone]].join(" ")}>
+                    <p className={["font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_TEXT[area.tone]].join(" ")}>
+                      Används när
+                    </p>
+                    <h3 className="mt-2 text-base font-black uppercase leading-tight text-foreground">
+                      {area.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/75">{area.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="kallbild-case" className="border-t border-border">
+          <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
+            <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
+              <span className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center border border-emerald-400 bg-emerald-50 font-mono text-[11px] font-black text-emerald-700">
+                  02
+                </span>
+                <span>
+                  <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
+                    Källbild och case
+                  </span>
+                  <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    Forskning · förbund · tränare · omfattning
+                  </span>
+                </span>
+              </span>
+              <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
+                Vad som gäller, i vilken ordning, och hur det ser ut i praktiken.
+              </span>
+            </span>
+          </AccordionTrigger>
+
+          <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
+            <div className="grid gap-5 lg:grid-cols-[0.82fr_1.58fr]">
+              <div className="border border-emerald-400/60 bg-emerald-50 p-5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">
+                  Syntes
+                </p>
+                <p className="mt-4 text-base font-semibold leading-relaxed text-foreground md:text-lg">
+                  Den starkaste gemensamma linjen är: identitet och kontext först, spelmodell sedan, träning som matchlik leverans, analys sist som återkoppling.
+                </p>
+                <p className="mt-4 text-sm leading-relaxed text-foreground/75">
+                  Det skiljer i språk mellan Sverige, England, Tyskland och Spanien, men riktningen är densamma:
+                  spelaren ska förstå spelet i situationer, inte bara utföra isolerade instruktioner.
+                </p>
+                <div className="mt-5 border-t border-emerald-400/40 pt-4">
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                    Praktisk regel
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-relaxed text-foreground/80">
+                    En källa eller ett elitcase får bara komma in om det hjälper oss förklara nästa led i Gunnilses kedja.
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {researchLoop.map((item) => (
+                  <article key={item.no} className="border border-border bg-card p-4 md:p-5">
+                    <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                      <div className="flex min-w-0 items-start gap-3">
+                        <span className={["grid h-9 w-9 flex-shrink-0 place-items-center border font-mono text-[10px] font-black", TONE_BG[item.tone], TONE_TEXT[item.tone]].join(" ")}>
+                          {item.no}
+                        </span>
+                        <div className="min-w-0">
+                          <h2 className="text-lg font-black uppercase leading-tight text-foreground">
+                            {item.title}
+                          </h2>
+                          <a
+                            href={item.sourceUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className={["mt-1 inline-flex items-center gap-1 text-xs font-black leading-snug underline-offset-4 hover:underline", TONE_TEXT[item.tone]].join(" ")}
+                          >
+                            {item.source}
+                            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2.3} />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                      <StepCell label="Gäller" text={item.applies} tone={item.tone} />
+                      <StepCell label="Omfattning" text={item.extent} tone={item.tone} />
+                      <StepCell label="Case" text={item.case} tone={item.tone} />
+                      <StepCell label="Gunnilse" text={item.translation} tone={item.tone} />
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="huvudprinciper" className="border-t border-border">
+          <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
+            <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
+              <span className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center border border-red-400 bg-red-50 font-mono text-[11px] font-black text-red-700">
+                  03
+                </span>
+                <span>
+                  <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
+                    Träningsprinciper
+                  </span>
+                  <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                    Intensitet · scanning · rättvänd · förståelse
+                  </span>
+                </span>
+              </span>
+              <span className="hidden max-w-xs text-right text-xs font-semibold leading-relaxed text-foreground/60 md:block">
+                Verktygen som gör spelidén synlig i varje pass.
               </span>
             </span>
           </AccordionTrigger>
 
           <AccordionContent className="border-t border-border bg-background px-4 pb-6 pt-5 md:px-6">
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.95fr_1.45fr]">
-              <div className="border border-amber-400/60 bg-amber-50 p-5">
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">
+              <div className="border border-red-300/70 bg-red-50 p-5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-red-700">
                   Varför
                 </p>
                 <p className="mt-4 text-base font-semibold leading-relaxed text-foreground md:text-lg">
-                  Här är våra huvudprinciper för att få matchens rytm, momentum och tempo dit vi vill.
+                  Träningsprinciperna kommer efter den röda tråden. De är inte visionen, men de är verktygen som får visionen att hända i tempo.
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-foreground/75">
-                  Vi använder dem för att utveckla och utbilda spelare till att bli sitt bästa jag, eller redo för nästa steg.
-                  Spelarna ska bli bättre rustade, bättre atleter och bättre beslutsfattare. Målet är ett kollektiv där helheten
-                  är större än summan av delarna.
+                  Varje pass ska kunna svara på tre frågor: vilket beteende tränar vi, vilken princip hör det till, och hur höjer vi intensiteten utan att tappa kvalitet?
                 </p>
               </div>
 
@@ -619,7 +1044,7 @@ const UnderProcess = () => (
             <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
               <span className="flex items-center gap-3">
                 <span className="flex h-9 w-9 items-center justify-center border border-sky-400 bg-sky-50 font-mono text-[11px] font-black text-sky-700">
-                  02
+                  04
                 </span>
                 <span>
                   <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
