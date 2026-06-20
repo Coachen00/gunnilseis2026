@@ -26,6 +26,7 @@ const Identitet = lazy(() => import("./pages/Identitet"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
 const UnderProcess = lazy(() => import("./pages/UnderProcess"));
 const UnderProcessDeck = lazy(() => import("./pages/UnderProcessDeck"));
+const FemUpphojtFem = lazy(() => import("./pages/FemUpphojtFem"));
 const SpelmodellLab = lazy(() => import("./pages/SpelmodellLab"));
 const OmstallningForsvar = lazy(() => import("./pages/OmstallningForsvar"));
 const OmstallningAnfall = lazy(() => import("./pages/OmstallningAnfall"));
@@ -122,6 +123,7 @@ const App = () => (
           <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
           <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
+          <Route path="/under-process/5-upphojt-i-fem" element={<Protected routeName="5 upphöjt i fem"><FemUpphojtFem /></Protected>} />
           {/* Helskärms-deck (owner-only, gate i sidan) — utan Layout-chrome */}
           <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodell Neon"><UnderProcessDeck /></PrintRoute>} />
 

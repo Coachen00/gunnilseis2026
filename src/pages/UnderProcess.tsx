@@ -187,6 +187,7 @@ type SpelideLevel = {
   tone: Tone;
   funkade?: string;
   funkadeEj?: string;
+  to?: string;
 };
 
 const nySpelideCore = {
@@ -226,6 +227,7 @@ const nySpelideLevels: SpelideLevel[] = [
     next: "Lista förutsättningarna och koppla dem till spelmodellens principer.",
     icon: Layers,
     tone: "green",
+    to: "/under-process/5-upphojt-i-fem",
   },
   {
     no: "04",
@@ -511,6 +513,16 @@ function OwnerNySpelide() {
                       {level.next}
                     </span>
                   </div>
+
+                  {level.to ? (
+                    <Link
+                      to={level.to}
+                      className="group mt-3 inline-flex items-center gap-1.5 border border-violet-400 bg-violet-50 px-3 py-2 text-sm font-black text-violet-700 transition-colors hover:bg-violet-100"
+                    >
+                      Öppna 5⁵
+                      <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
+                    </Link>
+                  ) : null}
                 </article>
               );
             })}
