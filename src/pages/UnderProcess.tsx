@@ -499,35 +499,50 @@ const identityBehaviors = [
   {
     title: "Duellspel",
     why: "Förberedelse syns först i modet att gå in i kampen med rätt kropp, rätt timing och nästa aktion redo.",
+    looksLike: "Vi går in i duellen med balans, riktning och beredskap för nästa boll. Vi söker kroppskontakt när situationen kräver det och backar inte ur kampen.",
+    notEnough: "Vi hamnar bredvid, väntar på att någon annan agerar eller vinner duellen men tappar nästa aktion.",
     training: "Poängsätt vunnen duell plus kontrollerad nästa passning.",
+    matchCase: "Lång boll mot vår ytterback: första spelaren stör, närmaste mittfältare säkrar andrabollen och laget trycker upp direkt.",
     cue: "Vinn kampen, spela nästa.",
     tone: "red" as Tone,
   },
   {
     title: "Andrabollspel",
     why: "Laget som är förberett förstår att första bollen sällan avgör. Nästa boll gör det.",
+    looksLike: "Vi läser var bollen kan landa innan första duellen är avgjord och har minst en spelare som attackerar yta två.",
+    notEnough: "Vi tittar på duellen, står platt eller reagerar först när bollen redan är fri.",
     training: "Starta om varje block med lös boll, retur eller avskärmad passning.",
+    matchCase: "Efter rensning från motståndaren är vår sexa redan under bollen, vinner fri boll och spelar rättvänd spelare på första eller andra touch.",
     cue: "Först på fri boll.",
     tone: "yellow" as Tone,
   },
   {
     title: "Scanning",
     why: "Vi kommer förberedda när vi har sett yta, motståndare och medspelare innan bollen kommer.",
+    looksLike: "Spelaren tittar över axeln före passning, justerar kroppsvinkel och vet om nästa aktion ska vara framåt, bakåt eller vägg.",
+    notEnough: "Spelaren upptäcker pressen efter mottagning, tar extra touch och gör passningen långsam.",
     training: "Belöna spelare som scannar före mottagning och kan spela på ett tillslag.",
+    matchCase: "Innermittfältaren scannar innan boll från mittback, tar emot halvt rättvänd och hittar tredje spelare mellan linjer.",
     cue: "Se före touch.",
     tone: "blue" as Tone,
   },
   {
     title: "Rättvänd spelare",
     why: "Rättvänd kropp gör nästa aktion snabbare. Det är förberedelse i position, vinkel och första touch.",
+    looksLike: "Vi söker spelare som kan ta första touch framåt eller spela vidare med kroppen mot motståndarens mål.",
+    notEnough: "Vi spelar ofta på felvänd spelare utan stöd, vilket gör att nästa passning blir bakåt eller att vi tappar tempo.",
     training: "Skapa regler där poäng bara räknas efter rättvänd mottagning eller tredje man.",
+    matchCase: "Ytterback spelar inte på täckt nia, utan hittar rättvänd sexa som kan byta sida innan pressen kommer.",
     cue: "Vänd mot spelet.",
     tone: "green" as Tone,
   },
   {
     title: "Prata med passning",
     why: "Passningen ska ge mottagaren information: fart, fot, riktning och vad nästa aktion bör bli.",
+    looksLike: "Passningen spelas på rätt fot, med rätt fart och i en riktning som hjälper mottagaren att ta nästa beslut snabbare.",
+    notEnough: "Passningen träffar medspelaren men gör situationen svårare: fel fot, för lös, bakom kroppen eller utan nästa yta.",
     training: "Kravställ passning på rätt fot och låt mottagaren bedöma om passningen hjälpte nästa aktion.",
+    matchCase: "Mittback spelar hårt på ytters fot så första touchen tar oss förbi pressen i stället för att låsa oss mot linjen.",
     cue: "Säg det med bollen.",
     tone: "yellow" as Tone,
   },
@@ -537,41 +552,56 @@ const spelmodellDraft = [
   {
     phase: "Anfall",
     principle: "Spela framåt när vi kan, förbered nästa passning när vi inte kan.",
+    gamePicture: "Vi vill skapa rättvänd spelare bakom eller bredvid första pressen. Om framåtpassningen inte finns ska nästa passning göra den möjlig.",
     identity: "Scanning · rättvänd spelare · prata med passning",
-    training: "Positionsspel med poäng för rättvänd mottagning, tredje man och passning som sätter fart framåt.",
+    playerAction: "Mittback söker rättvänd sexa, sexa söker tredje spelare, ytter hotar yta bakom och bollhållare pratar med passningens fart/fot.",
+    training: "Positionsspel 6v4 eller 7v5 med poäng för rättvänd mottagning, tredje man och passning som sätter fart framåt.",
     measure: "Antal rättvända mottagningar, passningar genom linje och aktioner efter scanning.",
+    nextStep: "Bestäm vilka ytor vi prioriterar: central rättvänd spelare, yttre korridor eller tredje spelare mellan linjer.",
     tone: "blue" as Tone,
   },
   {
     phase: "Omställning försvar",
     principle: "Första reaktionen efter bolltapp är jakt, skydd och andraboll.",
+    gamePicture: "När vi tappar bollen ska närmaste spelare bromsa, näst närmaste stänga framåtpassning och resten samla yta två.",
     identity: "Duellspel · andrabollspel · scanning",
-    training: "Smålagsspel där bolltapp direkt ger fem sekunder återerövringschans med extra poäng.",
+    playerAction: "Första spelaren pressar boll, andra säkrar passningsväg, tredje plockar andraboll. Alla vet sin första reaktion innan tappet händer.",
+    training: "Smålagsspel där bolltapp direkt ger fem sekunder återerövringschans med extra poäng och omedelbar återstart vid passiv reaktion.",
     measure: "Bollvinster inom fem sekunder, stoppade kontringar och närmaste spelares reaktionstid.",
+    nextStep: "Definiera vår trigger: dålig touch, felvänd motståndare eller passning in centralt.",
     tone: "red" as Tone,
   },
   {
     phase: "Försvar",
     principle: "Skydda mitten, pressa tillsammans och vinn nästa kamp.",
+    gamePicture: "Vi vill göra motståndaren förutsägbar: bort från centrum, in i vår pressfälla och sedan vinna duell eller andraboll.",
     identity: "Duellspel · scanning · prata med passning",
-    training: "Zonspel med pressignaler: felvänd motståndare, dålig touch, passning mot kant.",
+    playerAction: "Bollnära spelare styr, bakomvarande spelare scannar hotet, laget kommunicerar vem som pressar, täcker och säkrar.",
+    training: "Zonspel 8v8 med pressignaler: felvänd motståndare, dålig touch, passning mot kant. Poäng för bollvinst i vald yta.",
     measure: "Stängda centrala passningar, vunna dueller och bollvinster i önskad yta.",
+    nextStep: "Välj om vår grundpress ska styra utåt mot kant eller inåt mot central fälla.",
     tone: "green" as Tone,
   },
   {
     phase: "Omställning anfall",
     principle: "Första blicken framåt, första passningen med mening.",
+    gamePicture: "När vi vinner boll vill vi direkt se om motståndaren är öppen. Om inte, säkrar vi första passningen och blir rättvända.",
     identity: "Scanning · rättvänd spelare · prata med passning",
-    training: "Vinn boll och attackera mini-mål eller fri yta inom tre passningar.",
+    playerAction: "Bollvinnare scannar före första touch, närmaste spelare erbjuder rättvänd vinkel och passningen visar om vi ska attackera eller vila.",
+    training: "Vinn boll och attackera mini-mål eller fri yta inom tre passningar. Extra poäng om första passning hjälper mottagaren framåt.",
     measure: "Första passning framåt, spelare rättvänd efter bollvinst och avslut efter återerövring.",
+    nextStep: "Bestäm våra tre första alternativ efter bollvinst: djupled, rättvänd mittfältare eller säkra och flytta upp.",
     tone: "yellow" as Tone,
   },
   {
     phase: "Fasta situationer",
     principle: "Vi är förberedda innan bollen ligger still.",
+    gamePicture: "Fasta ska visa samma identitet: vinna första duellen, vara först på andra bollen och kommunicera ansvar innan signalen.",
     identity: "Duellspel · andrabollspel · prata med passning",
-    training: "Repetera startposition, signal, yta två och andrabollsberedskap.",
+    playerAction: "Alla vet zon, markering, screen, löpning och andrabollsroll. Ingen väntar på att bollen ska slås innan rollen startar.",
+    training: "Repetera startposition, signal, yta två och andrabollsberedskap. Kör korta block med direkt returspel efter första boll.",
     measure: "Första kontakt, andraboll efter fast situation och tydlighet i ansvar.",
+    nextStep: "Skapa två offensiva och två defensiva fasta med samma språk: signal, attackyta, skydd, andraboll.",
     tone: "blue" as Tone,
   },
 ];
@@ -614,7 +644,7 @@ function OwnerOnlySystem() {
         <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center border border-emerald-400 bg-emerald-50 font-mono text-[11px] font-black text-emerald-700">
-              05
+              06
             </span>
             <span>
               <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
@@ -731,28 +761,21 @@ function StepCell({ label, text, tone }: { label: string; text: string; tone: To
   );
 }
 
-function OwnerNySpelide() {
-  const { session, loading } = useAuthSession();
-  const isOwner = isOwnerEmail(session?.user?.email);
-
-  if (loading || !isOwner) {
-    return null;
-  }
-
+function NySpelideSection() {
   return (
     <AccordionItem value="ny-spelide" className="border-t border-border">
       <AccordionTrigger className="px-4 py-4 text-left hover:no-underline md:px-6">
         <span className="flex w-full flex-col gap-2 pr-4 md:flex-row md:items-center md:justify-between">
           <span className="flex items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center border border-violet-400 bg-violet-50 font-mono text-[11px] font-black text-violet-700">
-              06
+              05
             </span>
             <span>
               <span className="block text-xl font-black uppercase text-foreground md:text-2xl">
-                Ny spelidé – Vi är förberedda
+                Ny spelidé – Vi kommer förberedda
               </span>
               <span className="mt-1 block font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                Låst · värdeord → spelmodell → match
+                Vision → identitet → spelmodell → träning
               </span>
             </span>
           </span>
@@ -889,7 +912,10 @@ function OwnerNySpelide() {
                   </div>
                   <div className="grid gap-3">
                     <StepCell label="Varför" text={behavior.why} tone={behavior.tone} />
+                    <StepCell label="Godkänt" text={behavior.looksLike} tone={behavior.tone} />
+                    <StepCell label="Inte nog" text={behavior.notEnough} tone={behavior.tone} />
                     <StepCell label="Tränas genom" text={behavior.training} tone={behavior.tone} />
+                    <StepCell label="Matchcase" text={behavior.matchCase} tone={behavior.tone} />
                   </div>
                 </article>
               ))}
@@ -923,10 +949,13 @@ function OwnerNySpelide() {
                       {phase.principle}
                     </p>
                   </div>
-                  <div className="grid gap-3 md:grid-cols-3">
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <StepCell label="Spelbild" text={phase.gamePicture} tone={phase.tone} />
                     <StepCell label="Identitet i fasen" text={phase.identity} tone={phase.tone} />
+                    <StepCell label="Spelarhandling" text={phase.playerAction} tone={phase.tone} />
                     <StepCell label="Träning" text={phase.training} tone={phase.tone} />
                     <StepCell label="Mätpunkt" text={phase.measure} tone={phase.tone} />
+                    <StepCell label="Nästa beslut" text={phase.nextStep} tone={phase.tone} />
                   </div>
                 </article>
               ))}
@@ -950,7 +979,7 @@ const UnderProcess = () => (
       <Accordion
         type="single"
         collapsible
-        defaultValue="rod-trad"
+        defaultValue="ny-spelide"
         className="overflow-hidden rounded-md border border-border bg-card"
       >
         <AccordionItem value="rod-trad" className="border-0">
@@ -1272,8 +1301,8 @@ const UnderProcess = () => (
           </AccordionContent>
         </AccordionItem>
 
+        <NySpelideSection />
         <OwnerOnlySystem />
-        <OwnerNySpelide />
       </Accordion>
     </SectionReveal>
   </>
