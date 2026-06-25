@@ -117,6 +117,13 @@ const majGroups: NavGroup[] = [
       { label: "Fasta situationer", to: "/maj-2026#fasta-situationer" },
     ],
   },
+  {
+    label: "Sommaruppstart · Vägen till 8/8",
+    to: "/maj-2026/uppstart",
+    children: [
+      { label: "Truppbilden inför 8/8", to: "/maj-2026/uppstart#tavla", hint: "Spelartavla — fyra grupper" },
+    ],
+  },
 ];
 
 const navItems: NavItem[] = [

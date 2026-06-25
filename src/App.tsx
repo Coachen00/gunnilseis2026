@@ -18,6 +18,7 @@ const Hem = lazy(() => import("./pages/Hem"));
 const Period1 = lazy(() => import("./pages/Period1"));
 const Spelide = lazy(() => import("./pages/Spelide"));
 const MajSpelmodell = lazy(() => import("./pages/MajSpelmodell"));
+const SommarUppstart = lazy(() => import("./pages/SommarUppstart"));
 const Forsvar = lazy(() => import("./pages/Forsvar"));
 const Anfall = lazy(() => import("./pages/Anfall"));
 const Fasta = lazy(() => import("./pages/Fasta"));
@@ -102,6 +103,7 @@ const App = () => (
           <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
           <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
           <Route path="/maj-2026" element={<Protected routeName="Sommaren 2026"><MajSpelmodell /></Protected>} />
+          <Route path="/maj-2026/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />
           <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
