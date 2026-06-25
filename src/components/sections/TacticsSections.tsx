@@ -144,7 +144,7 @@ export const IdentitetSection = () => (
               <div className={`w-8 h-8 rounded-lg ${item.accent ? "bg-accent/15" : "bg-primary/8"} flex items-center justify-center`}>
                 <span className="text-sm">{item.emoji}</span>
               </div>
-              <h4 className={`text-xs font-bold uppercase tracking-[0.15em] ${item.accent ? "text-accent-foreground" : "text-primary"}`}>{item.title}</h4>
+              <h4 className={`text-xs font-bold uppercase tracking-[0.15em] ${item.accent ? "text-accent" : "text-primary"}`}>{item.title}</h4>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               <strong className="text-foreground font-medium">{item.text.split("–")[0]}</strong>
@@ -341,7 +341,7 @@ export const AnfallsspelSection = () => (
         </Link>
         <div className="space-y-4">
           <div className="bg-card/85 backdrop-blur-sm rounded-xl p-5 border border-accent/20 shadow-sm card-hover">
-            <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-accent-foreground mb-3">Anfallssekvens</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">Anfallssekvens</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li>1. Rättvänd spelare centralt slår spelvändning</li>
               <li>2. Full fart i inre/yttre korridor</li>

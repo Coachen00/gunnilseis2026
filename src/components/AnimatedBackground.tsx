@@ -55,16 +55,16 @@ const AnimatedBackground = () => {
         className="absolute top-0 inset-x-0 h-64"
         style={{
           background:
-            "linear-gradient(180deg, hsl(42 90% 48% / 0.04) 0%, transparent 100%)",
+            "linear-gradient(180deg, hsl(var(--accent) / 0.05) 0%, transparent 100%)",
         }}
       />
 
-      {/* Soft bottom navy wash */}
+      {/* Soft bottom brand wash */}
       <div
         className="absolute bottom-0 inset-x-0 h-72"
         style={{
           background:
-            "linear-gradient(0deg, hsl(215 70% 16% / 0.04) 0%, transparent 100%)",
+            "linear-gradient(0deg, hsl(var(--primary) / 0.04) 0%, transparent 100%)",
         }}
       />
     </div>

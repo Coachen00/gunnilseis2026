@@ -75,7 +75,7 @@ const MatchSquad = () => {
       <div className="bg-card rounded-xl border border-border shadow-sm overflow-hidden">
         <div className="px-5 py-3 bg-accent/10 border-b border-border flex items-center gap-2">
           <Shield className="w-4 h-4 text-accent" />
-          <h4 className="text-sm font-bold uppercase tracking-wider text-accent-foreground">Ansvarsområden</h4>
+          <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Ansvarsområden</h4>
         </div>
         <div className="p-4 space-y-3">
           {[

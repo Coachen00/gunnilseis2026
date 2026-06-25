@@ -13,7 +13,7 @@ const Matetal = ({ className }: MatetalProps) => {
       </div>
       <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/20">
         <span className="w-2 h-2 rounded-full bg-accent" />
-        <span className="text-xs font-bold uppercase tracking-wider text-accent-foreground">Spelvändningar</span>
+        <span className="text-xs font-bold uppercase tracking-wider text-accent">Spelvändningar</span>
       </div>
       <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
         <span className="w-2 h-2 rounded-full bg-primary" />

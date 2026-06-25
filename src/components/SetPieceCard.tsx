@@ -23,7 +23,7 @@ const SetPieceCard = ({ title, roles, variant = "hybrid" }: SetPieceCardProps) =
             ? "bg-zone-defense/20 text-zone-defense" 
             : variant === "zone"
             ? "bg-secondary/20 text-secondary"
-            : "bg-accent/20 text-accent-foreground"
+            : "bg-accent/20 text-accent"
         )}>
           {variant === "man" ? "Man" : variant === "zone" ? "Zon" : "Hybrid"}
         </div>
