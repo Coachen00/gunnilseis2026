@@ -49,19 +49,20 @@ describe("matchplan", () => {
     FOCUS.forEach((f) => expect(f.trim().length).toBeGreaterThan(0));
   });
 
-  it("FORMATION är tom tills Stenkullen-startelvan är satt", () => {
+  it("FORMATION är tom tills en startelva spikas (ingen XI utsatt)", () => {
     expect(FORMATION).toHaveLength(0);
-    const ids = FORMATION.map((s) => s.id);
-    expect(new Set(ids).size).toBe(FORMATION.length);
+    // Formationsplan får aldrig visas utan utsatt startelva
+    expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallad trupp är rensad inför Stenkullen (matchen spelas nästa vecka)", () => {
-    // Truppen rensas mellan matcher → tom bench/starting tills ledarstaben
-    // kallar inför Stenkullen. UI visar "Truppen kallas inför match".
+  it("16 spelare kallade inför Stenkullen, ingen startelva utsatt, Idris kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    // Inga dubbletter i kallad trupp
+    const all = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
+    expect(new Set(all).size).toBe(all.length);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
-      expect.arrayContaining([["Kapten", "Adnan Hadzialic"]])
+      expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
   });
 

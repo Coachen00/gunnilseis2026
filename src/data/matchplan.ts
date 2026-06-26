@@ -1,6 +1,6 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-06-19 inför Stenkullen GoIK
+ * Senast uppdaterad 2026-06-26 — trupp kallad inför Stenkullen GoIK
  * (hemma · Hjällbovallen 1 Gräs · lördag 27 juni 13:00).
  * Förra match: Ytterby IS (borta · 2026-06-17 · 1–4 vinst).
  *
@@ -243,7 +243,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
   responsibilities: [
-    ["Kapten", "Adnan Hadzialic"],
+    ["Kapten", "Idris Abdi"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -251,14 +251,30 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Stenkullen GoIK (lör 27 juni, hemma). Truppen är rensad —
- * matchen spelas först nästa vecka, så listan fylls på när ledarstaben kallar.
- * Adnan Hadzialic är lagkapten. Tomt bench/starting → sidan visar
- * "Truppen kallas inför match". Fyll bench när kallelsen är klar, flytta sedan
- * 11 till `starting` när startelvan spikas. */
+/* Kallad trupp inför Stenkullen GoIK (lör 27 juni, hemma). 16 spelare kallade,
+ * ingen startelva utsatt — listan visas som en samlad "Kallade spelare"-grid och
+ * startelva/roller bekräftas på genomgång. Idris Abdi är lagkapten. När/om en
+ * startelva spikas: flytta 11 till `starting` och fyll FORMATION. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Vedad Dzambegovic",
+    "Rinor Zenullah",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Idris Abdi",
+    "Benjamin Arapovic",
+    "Ihab Naser",
+    "Ayub Ahmed",
+    "Leodon Johansson",
+    "Yosef Ismail",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Aldin Zeljkovic",
+    "Galvan Ayoub",
+    "Meysam Hoseni",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -267,6 +283,8 @@ export const FOCUS: string[] = [
   "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på i box innan de hinner samla sig.",
 ];
 
+/* Tom tills en startelva spikas. Ingen XI utsatt inför Stenkullen → sidan visar
+ * samlad kallad trupp utan formationsplan. Fyll i 4-2-3-1-positioner när XI är klar. */
 export const FORMATION: FormationSlot[] = [];
 
 export const COHERENCE: CoherenceSection[] = [
@@ -288,8 +306,8 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["Kallad", "Kapten", "Startelva"],
     bullets: [
-      "Truppen kallas inför match — listan fylls på när ledarstaben spikat den. Adnan Hadzialic är lagkapten.",
-      "Startelva och avbytare bekräftas på genomgång.",
+      "16 spelare kallade. Hela truppen finns på Veckans match.",
+      "Ingen startelva utsatt än — startelva och roller bekräftas på genomgången. Idris Abdi är lagkapten.",
       "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
     ],
   },
@@ -401,7 +419,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Adnan Hadzialic"],
+      ["Kapten", "Idris Abdi"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
