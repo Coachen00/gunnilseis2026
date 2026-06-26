@@ -270,7 +270,7 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
     "Leodon Johansson",
     "Yosef Ismail",
     "Haris Avdiu",
-    "Kamal Mustafa",
+    "Mustafa Ayoub",
     "Aldin Zeljkovic",
     "Galvan Ayoub",
     "Meysam Hoseni",
