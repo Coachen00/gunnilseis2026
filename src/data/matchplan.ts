@@ -278,9 +278,9 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
 };
 
 export const FOCUS: string[] = [
-  "Hemma mot Stenkullen: vi sätter tempot och äger initiativet från första sekund — egen rytm, korta avstånd, första duellen direkt.",
-  "Skydda mitten och tvinga Stenkullen utåt — låt dem inte hitta rättvänd spelare mellan våra lagdelar.",
-  "Vid bollvinst: första blicken framåt, hota diagonalt och fyll på i box innan de hinner samla sig.",
+  "Värmen — anpassa spelet efter hettan. Drick, spara kraft, jobba smart.",
+  "Ödmjukhet — ta uppgiften på allvar. Det står 0–0, inget är gratis.",
+  "Roller & start — håll din roll och se till att vi startar matchen på bästa sätt.",
 ];
 
 /* Tom tills en startelva spikas. Ingen XI utsatt inför Stenkullen → sidan visar
