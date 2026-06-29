@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { useRealtimeChannel } from "./useRealtimeChannel";
+
+// content_blocks saknas i de genererade Database-typerna → otypad klient.
+const db = supabase as unknown as SupabaseClient;
 
 /**
  * Reflektioner som JSON-blob via content_blocks-tabellen.
@@ -59,7 +63,7 @@ export function useReflections(matchId?: string) {
   const query = useQuery<ReflectionsData>({
     queryKey: REFLECTIONS_KEY,
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from("content_blocks")
         .select("data")
         .eq("key", "match-reflections")
@@ -84,7 +88,7 @@ export function useReflections(matchId?: string) {
   });
 
   const save = async (next: ReflectionsData) => {
-    const { error } = await (supabase as any)
+    const { error } = await db
       .from("content_blocks")
       .upsert({ key: "match-reflections", data: next }, { onConflict: "key" });
     if (error) throw new Error(error.message);

@@ -1,9 +1,12 @@
 import {
+  ArrowRight,
   ArrowUpRight,
   Compass,
   Eye,
   Footprints,
+  GitBranch,
   Layers,
+  Library,
   Lock,
   type LucideIcon,
   MessageSquare,
@@ -11,10 +14,13 @@ import {
   ShieldCheck,
   Swords,
   Target,
+  Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
+import SegmentNav, { type SegmentItem } from "@/components/SegmentNav";
+import SystemMap, { type SystemMapColumn } from "@/components/SystemMap";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { isOwnerEmail } from "@/lib/owner";
 
@@ -72,6 +78,60 @@ const forberedelse: { no: string; step: string; text: string }[] = [
   { no: "05", step: "Agera i rätt riktning", text: "Utför med fart och börja om — bollen rör sig hela tiden." },
 ];
 
+/* Sticky internnav — samma ordning som sidans sektioner. */
+const SEGMENTS: SegmentItem[] = [
+  { id: "oversikt", label: "Översikt" },
+  { id: "karta", label: "Karta" },
+  { id: "skeden", label: "Skeden" },
+  { id: "identitet", label: "Identitet" },
+  { id: "forberedelse", label: "Förberedelse" },
+  { id: "bibliotek", label: "Bibliotek" },
+];
+
+/* Systemkartan — taket vilar på tre pelare. Spelbar karta, inte akademi. */
+const mapColumns: SystemMapColumn[] = [
+  {
+    heading: "Människan & kulturen",
+    Icon: Users,
+    rows: [
+      { label: "Identitet", to: "/identitet" },
+      { label: "Spelarvård", to: "/spelarvard" },
+      { label: "Standard" },
+    ],
+  },
+  {
+    heading: "Spelet",
+    Icon: Compass,
+    rows: [
+      { label: "Skeden", to: "/spelmodell" },
+      { label: "Principer", to: "/anfall" },
+      { label: "Koncept" },
+    ],
+  },
+  {
+    heading: "Ledarskapet",
+    Icon: GitBranch,
+    rows: [
+      { label: "Kaskad", to: "/under-process" },
+      { label: "Match → träning", to: "/verktyg" },
+      { label: "Ledarkort" },
+    ],
+  },
+];
+
+/* Bibliotek — snabba ingångar till allt material 5⁵ pekar på. */
+const bibliotek: { label: string; to: string }[] = [
+  { label: "Anfall", to: "/anfall" },
+  { label: "Försvar", to: "/forsvar" },
+  { label: "Omställning anfall", to: "/omstallning-anfall" },
+  { label: "Omställning försvar", to: "/omstallning-forsvar" },
+  { label: "Fasta situationer", to: "/fasta" },
+  { label: "Identitet", to: "/identitet" },
+  { label: "Roller", to: "/roller" },
+  { label: "Planens ytor", to: "/spelmodell/planens-ytor" },
+  { label: "Prisma 2026", to: "/under-process" },
+];
+
 function Locked() {
   return (
     <div className="container pb-section">
@@ -112,101 +172,151 @@ const FemUpphojtFem = () => {
         <Locked />
       ) : (
         <>
-          {/* De fem femmorna */}
-          <SectionReveal as="section" className="container pb-section">
-            <div className="mb-5 flex items-center gap-2">
-              <Layers className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
-              <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
-                De fem femmorna
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {femmor.map((f) => (
-                <article key={f.no} className="border border-border bg-card p-5">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <span className={["grid h-9 w-9 place-items-center border font-mono text-[10px] font-black", TONE_BG[f.tone], TONE_TEXT[f.tone]].join(" ")}>
-                      {f.no}
-                    </span>
-                    <span className={["border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_BG[f.tone], TONE_TEXT[f.tone]].join(" ")}>
-                      {f.status}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-black uppercase leading-tight text-foreground">{f.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/72">{f.items}</p>
-                </article>
-              ))}
-            </div>
-          </SectionReveal>
+          <SegmentNav items={SEGMENTS} ariaLabel="På 5⁵-sidan" className="mb-8" />
 
-          {/* Identitet */}
-          <SectionReveal as="section" className="container pb-section">
-            <div className="mb-5 flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
-              <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
-                Identitet · fem beteenden i varje match
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {identitet.map((id) => {
-                const Icon = id.icon;
-                return (
-                  <article key={id.title} className="border border-border bg-card p-5">
-                    <div className="mb-3 flex items-start justify-between gap-3">
-                      <h3 className="text-lg font-black uppercase leading-tight text-foreground">{id.title}</h3>
-                      <Icon className={["h-5 w-5 flex-shrink-0", TONE_TEXT[id.tone]].join(" ")} strokeWidth={2.2} />
+          {/* Översikt — de fem femmorna */}
+          <section id="oversikt" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <Layers className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Översikt · de fem femmorna
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {femmor.map((f) => (
+                  <article key={f.no} className="border border-border bg-card p-5">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className={["grid h-9 w-9 place-items-center border font-mono text-[10px] font-black", TONE_BG[f.tone], TONE_TEXT[f.tone]].join(" ")}>
+                        {f.no}
+                      </span>
+                      <span className={["border px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em]", TONE_BG[f.tone], TONE_TEXT[f.tone]].join(" ")}>
+                        {f.status}
+                      </span>
                     </div>
-                    <p className={["text-sm font-black leading-snug", TONE_TEXT[id.tone]].join(" ")}>{id.command}</p>
-                    <p className="mt-3 border-t border-border pt-3 text-xs leading-relaxed text-foreground/70">
-                      <span className="font-mono font-black uppercase tracking-[0.18em] text-emerald-700">G:</span> {id.g}
-                    </p>
+                    <h3 className="text-lg font-black uppercase leading-tight text-foreground">{f.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/72">{f.items}</p>
                   </article>
-                );
-              })}
-            </div>
-          </SectionReveal>
+                ))}
+              </div>
+            </SectionReveal>
+          </section>
+
+          {/* Karta — systemkartan */}
+          <section id="karta" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <Compass className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Karta · taket vilar på tre pelare
+                </h2>
+              </div>
+              <SystemMap
+                capstone={{ label: "Var förberedd", sub: "Taket — allt börjar med att komma förberedd." }}
+                columns={mapColumns}
+              />
+            </SectionReveal>
+          </section>
 
           {/* Skeden */}
-          <SectionReveal as="section" className="container pb-section">
-            <div className="mb-5 flex items-center gap-2">
-              <Compass className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
-              <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
-                Skeden · 4-3-3
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {skeden.map((s) => (
-                <Link key={s.no} to={s.to} className="group border border-border bg-card p-5 transition-colors hover:bg-background">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <span className={["grid h-9 w-9 place-items-center border font-mono text-[10px] font-black", TONE_BG[s.tone], TONE_TEXT[s.tone]].join(" ")}>
-                      {s.no}
-                    </span>
-                    <ArrowUpRight className="h-4 w-4 text-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
-                  </div>
-                  <h3 className="text-lg font-black uppercase leading-tight text-foreground">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-foreground/72">{s.one}</p>
-                </Link>
-              ))}
-            </div>
-          </SectionReveal>
+          <section id="skeden" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <Swords className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Skeden · 4-3-3
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {skeden.map((s) => (
+                  <Link key={s.no} to={s.to} className="group border border-border bg-card p-5 transition-colors hover:bg-background">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className={["grid h-9 w-9 place-items-center border font-mono text-[10px] font-black", TONE_BG[s.tone], TONE_TEXT[s.tone]].join(" ")}>
+                        {s.no}
+                      </span>
+                      <ArrowUpRight className="h-4 w-4 text-foreground/40 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={2.4} />
+                    </div>
+                    <h3 className="text-lg font-black uppercase leading-tight text-foreground">{s.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-foreground/72">{s.one}</p>
+                  </Link>
+                ))}
+              </div>
+            </SectionReveal>
+          </section>
+
+          {/* Identitet */}
+          <section id="identitet" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Identitet · fem beteenden i varje match
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {identitet.map((id) => {
+                  const Icon = id.icon;
+                  return (
+                    <article key={id.title} className="border border-border bg-card p-5">
+                      <div className="mb-3 flex items-start justify-between gap-3">
+                        <h3 className="text-lg font-black uppercase leading-tight text-foreground">{id.title}</h3>
+                        <Icon className={["h-5 w-5 flex-shrink-0", TONE_TEXT[id.tone]].join(" ")} strokeWidth={2.2} />
+                      </div>
+                      <p className={["text-sm font-black leading-snug", TONE_TEXT[id.tone]].join(" ")}>{id.command}</p>
+                      <p className="mt-3 border-t border-border pt-3 text-xs leading-relaxed text-foreground/70">
+                        <span className="font-mono font-black uppercase tracking-[0.18em] text-emerald-700">G:</span> {id.g}
+                      </p>
+                    </article>
+                  );
+                })}
+              </div>
+            </SectionReveal>
+          </section>
 
           {/* Förberedelse */}
-          <SectionReveal as="section" className="container pb-section">
-            <div className="mb-5 flex items-center gap-2">
-              <MessageSquare className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
-              <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
-                Förberedelse · &ldquo;upphöjt&rdquo;
-              </h2>
-            </div>
-            <ol className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
-              {forberedelse.map((f) => (
-                <li key={f.no} className="border border-border bg-card p-4">
-                  <span className="font-mono text-[10px] font-black text-amber-700">{f.no}</span>
-                  <p className="mt-2 text-sm font-black uppercase leading-tight text-foreground">{f.step}</p>
-                  <p className="mt-2 text-xs leading-relaxed text-foreground/70">{f.text}</p>
-                </li>
-              ))}
-            </ol>
-          </SectionReveal>
+          <section id="forberedelse" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <MessageSquare className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Förberedelse · &ldquo;upphöjt&rdquo;
+                </h2>
+              </div>
+              <ol className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-5">
+                {forberedelse.map((f) => (
+                  <li key={f.no} className="border border-border bg-card p-4">
+                    <span className="font-mono text-[10px] font-black text-amber-700">{f.no}</span>
+                    <p className="mt-2 text-sm font-black uppercase leading-tight text-foreground">{f.step}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-foreground/70">{f.text}</p>
+                  </li>
+                ))}
+              </ol>
+            </SectionReveal>
+          </section>
+
+          {/* Bibliotek */}
+          <section id="bibliotek" className="container scroll-mt-32 pb-section">
+            <SectionReveal>
+              <div className="mb-5 flex items-center gap-2">
+                <Library className="h-4 w-4 text-foreground/70" strokeWidth={2.3} />
+                <h2 className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/70">
+                  Bibliotek · allt 5⁵ pekar på
+                </h2>
+              </div>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {bibliotek.map((b) => (
+                  <Link
+                    key={b.to}
+                    to={b.to}
+                    className="group flex min-h-[44px] items-center justify-between gap-2 border border-border bg-card px-4 py-3 text-sm font-semibold text-foreground/80 transition-colors hover:bg-background hover:text-foreground"
+                  >
+                    {b.label}
+                    <ArrowRight className="h-4 w-4 text-foreground/40 transition-transform group-hover:translate-x-0.5" strokeWidth={2.2} aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </SectionReveal>
+          </section>
         </>
       )}
     </>

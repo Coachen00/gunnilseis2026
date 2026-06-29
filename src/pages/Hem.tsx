@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from "react";
 import MagicalPitchHero from "@/components/home/MagicalPitchHero";
 import LastMatchResult from "@/components/home/LastMatchResult";
 import NextActionsStrip from "@/components/home/NextActionsStrip";
+import HomeWorlds from "@/components/home/HomeWorlds";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { ZONES_INTRO_SEEN_KEY } from "@/components/zones/ZonesIntroOverlay";
 
@@ -39,6 +40,7 @@ const Hem = () => (
     <MagicalPitchHero />
     <LastMatchResult />
     <NextActionsStrip />
+    <HomeWorlds />
   </>
 );
 

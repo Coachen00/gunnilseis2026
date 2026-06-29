@@ -63,9 +63,9 @@ const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [] 
   };
 
   const colsClass = variant === "wide"
-    ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
     : "grid-cols-1";
-  const widthClass = variant === "wide" ? "w-[min(96vw,1100px)]" : "w-72";
+  const widthClass = variant === "wide" ? "w-[min(92vw,760px)]" : "w-72";
 
   return (
     <div

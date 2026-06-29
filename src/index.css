@@ -243,6 +243,15 @@
     background-size: 200% 200%;
     background-position: 0% 0%;
   }
+
+  /* Dölj scrollbar men behåll scroll (sticky segment-nav på mobil) */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @keyframes fadeIn {

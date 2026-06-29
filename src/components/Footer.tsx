@@ -45,7 +45,8 @@ const Footer = () => {
         </div>
         {isLoggedIn && (
           <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
-            <Link to="/maj-2026" className="hover:text-foreground transition-colors duration-200">Så spelar vi</Link>
+            <Link to="/spelmodell" className="hover:text-foreground transition-colors duration-200">Spelmodell</Link>
+            <Link to="/laget" className="hover:text-foreground transition-colors duration-200">Laget</Link>
             <Link to="/verktyg" className="hover:text-foreground transition-colors duration-200">Verktyg</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

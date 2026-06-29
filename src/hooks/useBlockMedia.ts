@@ -1,8 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { useRealtimeChannel } from "./useRealtimeChannel";
+
+// principle_media saknas i de genererade Database-typerna → otypad klient.
+const db = supabase as unknown as SupabaseClient;
 
 /**
  * useBlockMedia — hämtar alla principle_media-rader för ett block i en query.
@@ -36,7 +40,7 @@ export function useBlockMedia(blockId: string) {
   const query = useQuery<MediaRow[]>({
     queryKey: ["principle_media", "block", blockId],
     queryFn: async () => {
-      const { data, error } = await (supabase as any)
+      const { data, error } = await db
         .from("principle_media")
         .select("block_id, principle_id, media_type, source_kind, url, storage_path, text_title, text_body, caption")
         .eq("block_id", blockId);

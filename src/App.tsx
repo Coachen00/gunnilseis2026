@@ -41,6 +41,12 @@ const Truppen = lazy(() => import("./pages/Truppen"));
 const Matcher = lazy(() => import("./pages/Matcher"));
 const Tavlingar = lazy(() => import("./pages/Tavlingar"));
 
+// Hubbar — landningssidor per värld i den nya informationsarkitekturen.
+const Spelmodell = lazy(() => import("./pages/Spelmodell"));
+const Laget = lazy(() => import("./pages/Laget"));
+const Coach = lazy(() => import("./pages/Coach"));
+const PlanensYtor = lazy(() => import("./pages/PlanensYtor"));
+
 // Print-optimerade verktygsidor — egna chunks; sällan besökta men tunga.
 const TrainingPlan = lazy(() => import("./pages/TrainingPlan"));
 const Matchblad = lazy(() => import("./pages/Matchblad"));
@@ -101,6 +107,13 @@ const App = () => (
 
           {/* Förstasidan är publik — alla andra innehållsidor kräver inloggning */}
           <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
+
+          {/* Hubbar — en landningssida per värld */}
+          <Route path="/spelmodell" element={<Protected routeName="Spelmodell"><Spelmodell /></Protected>} />
+          <Route path="/spelmodell/planens-ytor" element={<Protected routeName="Planens ytor"><PlanensYtor /></Protected>} />
+          <Route path="/laget" element={<Protected routeName="Laget"><Laget /></Protected>} />
+          <Route path="/coach" element={<Protected routeName="Coach"><Coach /></Protected>} />
+
           <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
           <Route path="/maj-2026" element={<Protected routeName="Sommaren 2026"><MajSpelmodell /></Protected>} />
           <Route path="/maj-2026/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />

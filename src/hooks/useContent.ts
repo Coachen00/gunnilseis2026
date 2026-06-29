@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { logger } from "@/lib/logger";
 import { useRealtimeChannel } from "./useRealtimeChannel";
+
+// content_blocks saknas i de genererade Database-typerna → otypad klient.
+const db = supabase as unknown as SupabaseClient;
 
 /**
  * useContent — JSON-blob editor via content_blocks-tabellen.
@@ -29,7 +33,7 @@ export function useContent<T>(key: string, fallback: T): UseContentResult<T> {
   const query = useQuery<{ value: T; source: "fallback" | "remote" }>({
     queryKey: ["content", key],
     queryFn: async () => {
-      const { data: row, error } = await (supabase as any)
+      const { data: row, error } = await db
         .from("content_blocks")
         .select("data")
         .eq("key", key)
@@ -80,7 +84,7 @@ export function useContent<T>(key: string, fallback: T): UseContentResult<T> {
  * ContentEditor, men `useContentMutation` är att föredra i nytt komponentkod.
  */
 export async function saveContent<T>(key: string, data: T) {
-  const { error } = await (supabase as any)
+  const { error } = await db
     .from("content_blocks")
     .upsert({ key, data }, { onConflict: "key" });
   if (error) throw new Error(error.message);

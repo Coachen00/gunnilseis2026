@@ -73,7 +73,6 @@ function emit(level: LogLevel, message: unknown, context?: LogContext) {
   if (env === "production" && (level === "debug" || level === "info")) {
     // intentionally empty
   } else {
-    // eslint-disable-next-line no-console
     const fn = level === "error" ? console.error : level === "warn" ? console.warn : console.log;
     fn(`[${level}]`, payload);
   }
