@@ -14,7 +14,7 @@
  */
 
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, HeartPulse, Star } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, HeartPulse, Star, Sun } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
@@ -26,6 +26,7 @@ import {
   MATCH_PRESENTATION_URL,
   MATCH_SCHEDULE,
   PRACTICAL_INFO,
+  SEASON_BREAK,
   type PlanCard,
 } from "@/data/matchplan";
 import { SPELARVARD_INTRO, SPELARVARD_TITLE } from "@/data/spelarvard";
@@ -42,17 +43,56 @@ const ACCENT: Record<PlanCard["accent"], { bar: string; text: string; bg: string
    SECTIONS
    ================================================================= */
 
+function SasongsuppehallCard() {
+  return (
+    <article className="overflow-hidden rounded-2xl border border-amber-400/60 bg-gradient-to-br from-amber-50 via-card to-card p-6 md:p-8">
+      <div className="flex items-start gap-4">
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-amber-100 text-amber-700">
+          <Sun className="h-6 w-6" strokeWidth={2.2} aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+            Säsongsuppehåll
+          </p>
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-foreground md:text-4xl">
+            Sommaruppehåll
+          </h2>
+          <p className="mt-2 text-sm font-bold leading-relaxed text-muted-foreground md:text-base">
+            Vårsäsongen är slut — vi avslutade med {SEASON_BREAK.lastResult}. Vi laddar om och
+            drar igång igen {SEASON_BREAK.trainingResumes.toLowerCase()}.
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="rounded-lg border border-border bg-background px-4 py-3">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
+                Träning åter
+              </p>
+              <p className="mt-1 text-base font-black text-foreground">{SEASON_BREAK.trainingResumes}</p>
+            </div>
+            <div className="rounded-lg border border-border bg-background px-4 py-3">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
+                Höstpremiär
+              </p>
+              <p className="mt-1 text-base font-black text-foreground">{SEASON_BREAK.nextMatchLabel}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function MatchInfoCard() {
   const gathering = MATCH_SCHEDULE[0];
   const totalPlayers = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
   const kickoffTime = MATCH_META.kickoff.split("·").at(-1)?.trim() ?? MATCH_META.kickoff;
+  const onBreak = SEASON_BREAK.active;
 
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="grid gap-0 border-b border-border md:grid-cols-[minmax(0,1fr)_340px]">
         <div className="bg-gradient-to-br from-amber-50 via-card to-card px-5 py-5 md:px-8 md:py-7">
           <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
-            Veckans match
+            {onBreak ? "Nästa match" : "Veckans match"}
           </p>
           <h1 className="mt-1 text-3xl font-black tracking-tight text-foreground md:text-5xl">
             {MATCH_META.opponent}
@@ -63,7 +103,7 @@ function MatchInfoCard() {
         </div>
         <div className="grid grid-cols-2 border-t border-border bg-card md:border-l md:border-t-0">
           <BigFact label="Avspark" value={kickoffTime} icon={<Clock className="h-4 w-4" />} strong />
-          <BigFact label="Samling" value={gathering?.time ?? "Se kallelse"} icon={<Users className="h-4 w-4" />} />
+          <BigFact label="Samling" value={onBreak ? "Inför premiären" : (gathering?.time ?? "Se kallelse")} icon={<Users className="h-4 w-4" />} />
           <BigFact label="Plats" value={MATCH_META.venue} icon={<MapPin className="h-4 w-4" />} wide />
           <BigFact label="Trupp" value={totalPlayers > 0 ? `${totalPlayers} spelare` : "Ej publicerad"} icon={<Calendar className="h-4 w-4" />} wide />
         </div>
@@ -72,19 +112,28 @@ function MatchInfoCard() {
       <div className="grid gap-5 px-5 py-5 md:grid-cols-[minmax(0,1fr)_auto] md:px-8">
         <div>
           <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-muted-foreground">
-            Matchdag i ordning
+            {onBreak ? "Inför premiären" : "Matchdag i ordning"}
           </p>
-          <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {MATCH_SCHEDULE.map((step) => (
-              <li key={`${step.time}-${step.label}`} className="rounded-lg border border-border bg-background px-3 py-2">
-                <div className="flex items-baseline gap-2">
-                  <span className="font-mono text-xs font-black text-amber-700">{step.time}</span>
-                  <span className="text-sm font-black text-foreground">{step.label}</span>
-                </div>
-                {step.note && <p className="mt-0.5 text-xs font-medium text-muted-foreground">{step.note}</p>}
-              </li>
-            ))}
-          </ol>
+          {onBreak ? (
+            <div className="rounded-lg border border-dashed border-amber-500/60 bg-amber-50 px-4 py-3">
+              <p className="text-sm font-bold leading-relaxed text-foreground">
+                Matchdagsschema, samling och kallelse sätts när vi närmar oss höstpremiären. Håll
+                igång genom uppehållet — vi samlas igen {SEASON_BREAK.trainingResumes.toLowerCase()}.
+              </p>
+            </div>
+          ) : (
+            <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {MATCH_SCHEDULE.map((step) => (
+                <li key={`${step.time}-${step.label}`} className="rounded-lg border border-border bg-background px-3 py-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-mono text-xs font-black text-amber-700">{step.time}</span>
+                    <span className="text-sm font-black text-foreground">{step.label}</span>
+                  </div>
+                  {step.note && <p className="mt-0.5 text-xs font-medium text-muted-foreground">{step.note}</p>}
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
 
         <div className="flex flex-wrap content-start gap-2 md:w-56">
@@ -407,11 +456,21 @@ const MatchKommande = () => (
   <>
     <PageHero
       eyebrow="Match · Veckans"
-      title={`${MATCH_META.opponent} — ${MATCH_META.home ? "hemma" : "borta"}`}
-      description={`${MATCH_META.venue} · ${MATCH_META.kickoff}. Allt du behöver veta inför avspark — scrolla igenom på resan till planen.`}
+      title={SEASON_BREAK.active ? "Säsongsuppehåll" : `${MATCH_META.opponent} — ${MATCH_META.home ? "hemma" : "borta"}`}
+      description={
+        SEASON_BREAK.active
+          ? `Träning åter ${SEASON_BREAK.trainingResumes.toLowerCase()}. Nästa match: ${SEASON_BREAK.nextMatchLabel}.`
+          : `${MATCH_META.venue} · ${MATCH_META.kickoff}. Allt du behöver veta inför avspark — scrolla igenom på resan till planen.`
+      }
     />
 
     <div className="container space-y-8 pb-section md:space-y-10">
+      {SEASON_BREAK.active && (
+        <SectionReveal>
+          <SasongsuppehallCard />
+        </SectionReveal>
+      )}
+
       <SectionReveal>
         <MatchInfoCard />
       </SectionReveal>
@@ -420,9 +479,11 @@ const MatchKommande = () => (
         <KalladTrupp />
       </SectionReveal>
 
-      <SectionReveal>
-        <TreViktigaste />
-      </SectionReveal>
+      {!SEASON_BREAK.active && (
+        <SectionReveal>
+          <TreViktigaste />
+        </SectionReveal>
+      )}
 
       <SectionReveal>
         <MatchplanIKorthet />

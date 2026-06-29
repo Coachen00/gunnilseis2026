@@ -14,6 +14,7 @@ import {
   MATCH_KICKOFF_ISO,
   PAST_OPPONENT_NAMES,
   resolveWeeklyMatch,
+  SEASON_BREAK,
 } from "@/data/matchplan";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
@@ -30,12 +31,18 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META har Stenkullen GoIK + avspark + plats", () => {
-    expect(MATCH_META.opponent).toBe("Stenkullen GoIK");
-    expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toContain("Hjällbovallen");
+  it("MATCH_META pekar på nästa match Partille IF FK (höstpremiär borta) under uppehållet", () => {
+    expect(MATCH_META.opponent).toBe("Partille IF FK");
+    expect(MATCH_META.kickoff).toMatch(/15:00/);
+    expect(MATCH_META.venue).toContain("Lexby");
     expect(MATCH_META.competition).toContain("Division 4A");
-    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.home).toBe(false);
+  });
+
+  it("SEASON_BREAK är aktivt under sommaruppehållet", () => {
+    expect(SEASON_BREAK.active).toBe(true);
+    expect(SEASON_BREAK.lastResult).toContain("6–0");
+    expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
   it("veckans match har redigerbar presentationslänk", () => {
@@ -55,9 +62,9 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("16 spelare kallade inför Stenkullen, ingen startelva utsatt, Idris kapten", () => {
+  it("ingen trupp kallad under uppehållet, Idris fortsatt kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     // Inga dubbletter i kallad trupp
     const all = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
     expect(new Set(all).size).toBe(all.length);
@@ -66,8 +73,8 @@ describe("matchplan", () => {
     );
   });
 
-  it("SAMLING_TIME är 11:30 för Stenkullen (hemma 13:00 → 1h30 före)", () => {
-    expect(SAMLING_TIME).toBe("11:30");
+  it("SAMLING_TIME är 13:15 för Partille (borta 15:00 → 1h45 före)", () => {
+    expect(SAMLING_TIME).toBe("13:15");
   });
 
   it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
@@ -140,7 +147,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Partille 8 aug) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
@@ -148,17 +155,18 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
-    // Ytterby (17 juni) ligger nu före veckans match (Stenkullen 27 juni) → past opponent.
     expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(true);
-    // Men INTE Stenkullen själv — trots att vi mötte dem borta i premiären (10 apr).
+    // Stenkullen (27 juni) ligger nu före veckans match (Partille 8 aug) → past opponent.
+    expect(PAST_OPPONENT_NAMES.has("stenkullen goik")).toBe(true);
+    // Men INTE Partille själv — trots att vi mötte dem hemma i premiären (18 apr).
     // Veckans egna motståndare får aldrig flaggas som stale.
-    expect(PAST_OPPONENT_NAMES.has("stenkullen goik")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(false);
   });
 
-  it("resolveWeeklyMatch väljer retur-Stenkullen (27 jun), inte premiären (10 apr)", () => {
+  it("resolveWeeklyMatch väljer höstpremiären mot Partille (8 aug), inte premiären (18 apr)", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Stenkullen GoIK");
-    expect(wm?.id).toBe("2026-06-27-stenkullen");
+    expect(wm?.opponent).toBe("Partille IF FK");
+    expect(wm?.id).toBe("2026-08-08-partille");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -167,7 +175,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "stenkullen",
+      "partille",
       "identitet",
       "anfall",
       "forsvar",
@@ -184,7 +192,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte Stenkullen som veckans match", () => {
+  it("stale Vardar-rad i framtiden blockerar inte veckans match (Partille)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -200,7 +208,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Stenkullen GoIK");
+    expect(matches[0].opponent).toBe("Partille IF FK");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -218,7 +226,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Stenkullen GoIK");
+    expect(matches[0].opponent).toBe("Partille IF FK");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

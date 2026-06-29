@@ -1,8 +1,10 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-06-26 — trupp kallad inför Stenkullen GoIK
- * (hemma · Hjällbovallen 1 Gräs · lördag 27 juni 13:00).
- * Förra match: Ytterby IS (borta · 2026-06-17 · 1–4 vinst).
+ * Senast uppdaterad 2026-06-29 — SÄSONGSUPPEHÅLL. Vårsäsongen avslutad med
+ * 6–0 hemma mot Stenkullen GoIK (27 juni). Träning åter måndag 28 juli,
+ * höstpremiär borta mot Partille IF FK (lördag 8 aug 15:00 · Lexby 1 Gräs).
+ * MATCH_META pekar på nästa match (Partille). Uppehålls-läget styrs av
+ * SEASON_BREAK — Veckans match visar uppehålls-kort istället för matchdag.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -44,14 +46,33 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Stenkullen GoIK",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 27 jun · 13:00",
+  opponent: "Partille IF FK",
+  venue: "Lexby 1 Gräs",
+  home: false,
+  kickoff: "Lör 8 aug · 15:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
 };
+
+/**
+ * Säsongsuppehåll mellan vår- och höstsäsong.
+ *
+ * När `active` är true visar Veckans match ett uppehålls-läge i stället för
+ * matchdagsdetaljer (samlingsschema, "tre saker idag" m.m. är inte relevanta
+ * förrän kallelsen inför höstpremiären sätts). MATCH_META pekar ändå på nästa
+ * match (Partille) så hero, nästa-match-block och MatchdayBanner får rätt
+ * fakta. Sätt `active: false` när truppen kallas inför höstpremiären.
+ */
+export const SEASON_BREAK = {
+  active: true,
+  /** Sista spelade matchen — vårsäsongens avslutning. */
+  lastResult: "Stenkullen GoIK 6–0 (hemma, 27 juni)",
+  /** När laget drar igång igen efter sommaruppehållet. */
+  trainingResumes: "Måndag 28 juli",
+  /** Nästa match efter uppehållet (= MATCH_META). */
+  nextMatchLabel: "Partille IF FK · borta · lör 8 aug 15:00",
+} as const;
 
 export const MATCH_PRESENTATION_URL =
   "https://claude.ai/design/p/faf88e6c-cc30-4de1-83a3-2914a1267e48?file=veckans-match%2FMatchgenomg%C3%A5ng+-+Mall.html&via=share";
@@ -251,52 +272,35 @@ export const PRACTICAL_INFO = {
   gatheringNote: "Samling och avresa bekräftas i kallelsen. Mental start före uppvärmning.",
 } as const;
 
-/* Kallad trupp inför Stenkullen GoIK (lör 27 juni, hemma). 16 spelare kallade,
- * ingen startelva utsatt — listan visas som en samlad "Kallade spelare"-grid och
- * startelva/roller bekräftas på genomgång. Idris Abdi är lagkapten. När/om en
- * startelva spikas: flytta 11 till `starting` och fyll FORMATION. */
+/* Säsongsuppehåll — ingen trupp kallad. Kallelse sätts inför höstpremiären
+ * (Partille borta, 8 aug). Tom trupp → Veckans match visar "Kallelse kommer".
+ * När truppen kallas: fyll bench (+ ev. starting/FORMATION) och sätt
+ * SEASON_BREAK.active = false. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Vedad Dzambegovic",
-    "Rinor Zenullah",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Idris Abdi",
-    "Benjamin Arapovic",
-    "Ihab Naser",
-    "Ayub Ahmed",
-    "Leodon Johansson",
-    "Yosef Ismail",
-    "Haris Avdiu",
-    "Mustafa Ayoub",
-    "Aldin Zeljkovic",
-    "Galvan Ayoub",
-    "Meysam Hoseni",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Värmen — anpassa spelet efter hettan. Drick, spara kraft, jobba smart.",
-  "Ödmjukhet — ta uppgiften på allvar. Det står 0–0, inget är gratis.",
-  "Roller & start — håll din roll och se till att vi startar matchen på bästa sätt.",
+  "Håll igång — egen träning genom uppehållet så vi kommer tillbaka i form 28 juli.",
+  "Ladda för hösten — vi ligger tvåa (obesegrade), två poäng bakom Lerum. Allt att spela för.",
+  "Vila rätt — sköt kropp, sömn och kost så vi är pigga till höstpremiären borta mot Partille.",
 ];
 
-/* Tom tills en startelva spikas. Ingen XI utsatt inför Stenkullen → sidan visar
- * samlad kallad trupp utan formationsplan. Fyll i 4-2-3-1-positioner när XI är klar. */
+/* Tom under uppehållet — ingen startelva spikad. Fyll i 4-2-3-1-positioner när
+ * en XI sätts inför höstpremiären. */
 export const FORMATION: FormationSlot[] = [];
 
 export const COHERENCE: CoherenceSection[] = [
   {
     id: "forutsattningar",
     num: "01",
-    title: "Veckans match",
+    title: "Säsongsuppehåll",
     eyebrow: "Kontext",
     bullets: [
-      "Stenkullen GoIK hemma · Hjällbovallen 1 Gräs · lördag 27 juni 13:00.",
-      `Samling ${SAMLING_TIME} på Hjällbovallen (1h30 före avspark, hemmamatchsregel).`,
-      "Startelva och roller bekräftas på genomgång.",
+      "Vårsäsongen är slut — vi avslutade med 6–0 hemma mot Stenkullen GoIK (27 juni).",
+      "Sommaruppehåll nu. Träning drar igång igen måndag 28 juli.",
+      "Höstpremiär: Partille IF FK borta · Lexby 1 Gräs · lördag 8 aug 15:00. Kallelse och matchplan sätts när vi närmar oss.",
     ],
   },
   {
@@ -304,40 +308,38 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallad", "Kapten", "Startelva"],
+    principles: ["Uppehåll", "Kapten", "Kallelse"],
     bullets: [
-      "16 spelare kallade. Hela truppen finns på Veckans match.",
-      "Ingen startelva utsatt än — startelva och roller bekräftas på genomgången. Idris Abdi är lagkapten.",
-      "Alla ska veta sin första uppgift innan uppvärmningen börjar.",
+      "Ingen trupp kallad under uppehållet — kallelsen sätts inför höstpremiären.",
+      "Idris Abdi är fortsatt lagkapten.",
+      "Håll igång på egen hand så vi är i form när vi samlas 28 juli.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Förra match — Ytterby IS 4–1",
-    eyebrow: "Vad vi tar med till Stenkullen",
+    title: "Vårsäsongens sista — Stenkullen GoIK 6–0",
+    eyebrow: "Så avslutade vi våren",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi vann 4–1 borta mot Ytterby IS (1–1 i halvtid) — Mustafa Ayoub två mål och utsedd till matchens lirare, Måns Orwén kanon från 25 m som inbytt, Haris Avdiu satte 4–1 i slutsekunderna.",
-      "Haris toppar nu seriens skytteliga med 12 mål — och segern tog oss upp i serieledning.",
+      "Vi vann 6–0 hemma mot Stenkullen GoIK (3–0 i halvtid) — Ali Carneil höll nollan och vi avslutade våren på bästa sätt.",
+      "13 matcher, 0 förluster i vårserien. Vi ligger tvåa, två poäng bakom Lerum.",
       "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Nu flyttar vi fokus direkt till nästa prestation: Stenkullen GoIK hemma.",
+      "Nu laddar vi för hösten: höstpremiär borta mot Partille IF FK.",
     ],
   },
   {
-    id: "stenkullen",
+    id: "partille",
     num: "04",
-    title: "Vad vi vet om Stenkullen GoIK",
-    eyebrow: "Motståndaren",
+    title: "Nästa motståndare — Partille IF FK",
+    eyebrow: "Höstpremiären",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs — vi sätter tempot, äger initiativet och styr matchen från start.",
-      "Vi vann 4–2 borta mot Stenkullen i premiärmötet (10 apr) — räkna med att de vill revansch.",
-      "Lördag eftermiddag hemma — vakna start, första duellen direkt, var igång i andrabollarna.",
-      "Första 15 minuterna blir intensiva — de vill trycka upp tempo och känna att de kan hota oss. Håller vi ihop laget, vinner duellerna, följer pressen och spelar enkelt när det behövs tar vi kontrollen.",
-      "Stäng mitten först. Låt dem inte spela mellan två av oss.",
-      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den.",
+      "Bortamatch på Lexby 1 Gräs · lördag 8 aug 15:00 — första matchen efter uppehållet.",
+      "Vi vann 3–2 hemma mot Partille i premiärmötet (18 apr) — räkna med en tajt match igen.",
+      "Borta: ta med energin från vården, var samlade från start och styr matchen tillsammans.",
+      "Detaljerad scoutning + formation/hot/svagheter: se /motstandaranalys när tränarstaben har fyllt i den inför premiären.",
     ],
-    note: "Nyckeln: följ planen, håll laget kompakt, ta ansvar för din roll, gör jobbet tillsammans. Stenkullen-specifika anpassningar (formation, hot, var vi pressar) fylls i på /motstandaranalys.",
+    note: "Nyckeln under uppehållet: håll igång, vila rätt och kom tillbaka i form 28 juli. Partille-specifika anpassningar fylls i på /motstandaranalys inför 8 aug.",
   },
   {
     id: "identitet",
@@ -346,7 +348,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Veckans krav",
     principles: ["Dueller", "Andrabollar", "Djupled"],
     bullets: [
-      "Hemma = vi sätter rytmen, höjer rösten och äger intensiteten på vår plan.",
+      "Vi sätter rytmen, höjer rösten och äger intensiteten — hemma som borta.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",
       "Nästa aktion är viktigare än förra situationen.",
     ],
@@ -373,7 +375,7 @@ export const COHERENCE: CoherenceSection[] = [
     principles: ["Samla först", "Höga linjer", "Tre korridorer"],
     bullets: [
       "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt sida mot Ytterby).",
+      "Styr pressen åt en sida (kolla motståndaranalys för rätt presssida inför matchen).",
       "YB på YB — lås bollsida, stoppa spelvändning.",
     ],
   },
@@ -423,8 +425,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Matchstart", "15:00"],
+      ["Bortaplan", "Lexby 1 Gräs"],
     ],
   },
 ];

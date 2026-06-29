@@ -20,6 +20,11 @@ import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
 import ScanningScene from "@/components/home/ScanningScene";
 
+/** Välkomstfoto (laget på morgonträning) — full-cover bakgrund i heron, tonar
+ *  in mjukt på mount. Filen ligger i public/media/hem/. Saknas filen visas den
+ *  varma mörka sektionsbakgrunden som fallback (ingen trasig bild-ikon). */
+const WELCOME_IMAGE = "/media/hem/valkomst.jpg";
+
 type Principle = {
   id: string;
   label: string;
@@ -78,6 +83,36 @@ export default function MagicalPitchHero() {
           "radial-gradient(circle at 20% 18%, rgba(217,119,6,0.18), transparent 55%), radial-gradient(circle at 78% 82%, rgba(21,128,61,0.16), transparent 55%), linear-gradient(180deg, #1a1108 0%, #0f0a05 100%)",
       }}
     >
+      {/* Välkomstfoto — tonar in mjukt och täcker hela heron, bakom animeringen.
+          backgroundImage (inte <img>) → saknad fil ger ingen trasig bild-ikon. */}
+      <motion.div
+        aria-hidden="true"
+        initial={reduced ? false : { opacity: 0, scale: 1.06 }}
+        animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+        transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
+        style={{ backgroundImage: `url('${WELCOME_IMAGE}')` }}
+      />
+      {/* Mörk varm scrim — vänstertung så amber/cream-texten håller kontrast (WCAG) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-[#140d06]/92 via-[#1a1108]/72 to-[#1a1108]/40"
+      />
+      {/* Botten- och topp-vinjett så heron smälter ihop med resten av sidan */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-[#140d06]/55 via-transparent to-[#0f0a05]/85"
+      />
+      {/* Varm glöd kvar ovanpå fotot — behåller äventyrsbok-känslan */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 18% 22%, rgba(217,119,6,0.18), transparent 55%), radial-gradient(circle at 80% 82%, rgba(21,128,61,0.14), transparent 55%)",
+        }}
+      />
+
       {/* Grain / paper texture overlay */}
       <div
         aria-hidden="true"
@@ -88,8 +123,9 @@ export default function MagicalPitchHero() {
         }}
       />
 
-      {/* Vertical scroll volume — sätt höjd så parallax har plats att verka */}
-      <div className="relative min-h-[110svh]">
+      {/* Vertical scroll volume — sätt höjd så parallax har plats att verka.
+          z-10 håller text + animering ovanför välkomstfotot (z-0). */}
+      <div className="relative z-10 min-h-[110svh]">
         <div className="sticky top-0 flex min-h-[100svh] items-center">
           <div className="container relative grid gap-10 py-16 md:py-24 lg:grid-cols-[1.05fr_1.2fr] lg:gap-16 lg:py-28">
 

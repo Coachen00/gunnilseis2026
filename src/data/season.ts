@@ -3,7 +3,8 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-06-19 (efter Ytterby IS 1–4 borta, inför Stenkullen GoIK hemma).
+ * Senast uppdaterad: 2026-06-29 (Stenkullen GoIK 6–0 hemma — vårsäsongens sista match.
+ *                    Sommaruppehåll, träning åter 28 juli, höstpremiär Partille IF FK borta 8 aug).
  */
 
 export type MatchScorer = {
@@ -184,7 +185,27 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 6,
+    theirScore: 0,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901105/stenkullen-goik",
+  },
+  {
+    id: "2026-08-08-partille",
+    date: "2026-08-08T15:00:00+02:00",
+    opponent: "Partille IF FK",
+    homeAway: "away",
+    competition: "Division 4A Herr",
+    venue: "Lexby 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901106/partille-if-fk",
+  },
+  {
+    id: "2026-08-15-lerum",
+    date: "2026-08-15T13:00:00+02:00",
+    opponent: "Lerums IS",
+    homeAway: "home",
+    competition: "Division 4A Herr",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901107/lerums-is",
   },
 ];
 
