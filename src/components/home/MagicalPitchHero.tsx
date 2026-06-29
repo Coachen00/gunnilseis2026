@@ -18,8 +18,6 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "fr
 import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
-import ScanningScene from "@/components/home/ScanningScene";
-
 /** Välkomstfoto (laget på morgonträning) — full-cover bakgrund i heron, tonar
  *  in mjukt på mount. Filen ligger i public/media/hem/. Saknas filen visas den
  *  varma mörka sektionsbakgrunden som fallback (ingen trasig bild-ikon). */
@@ -69,8 +67,6 @@ export default function MagicalPitchHero() {
   });
   const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.4 });
   const titleY = useTransform(smooth, [0, 1], [0, -80]);
-  const pitchY = useTransform(smooth, [0, 1], [0, 60]);
-  const pitchScale = useTransform(smooth, [0, 1], [1, 1.08]);
   const overlayOpacity = useTransform(smooth, [0, 0.6, 1], [0, 0.35, 0.7]);
 
   return (
@@ -124,10 +120,10 @@ export default function MagicalPitchHero() {
       />
 
       {/* Vertical scroll volume — sätt höjd så parallax har plats att verka.
-          z-10 håller text + animering ovanför välkomstfotot (z-0). */}
+          z-10 håller texten ovanför välkomstfotot (z-0). */}
       <div className="relative z-10 min-h-[110svh]">
         <div className="sticky top-0 flex min-h-[100svh] items-center">
-          <div className="container relative grid gap-10 py-16 md:py-24 lg:grid-cols-[1.05fr_1.2fr] lg:gap-16 lg:py-28">
+          <div className="container relative py-16 md:py-24 lg:py-28">
 
             {/* === Vänster: text + CTAs === */}
             <motion.div style={reduced ? undefined : { y: titleY }} className="relative z-10 max-w-2xl">
@@ -248,14 +244,6 @@ export default function MagicalPitchHero() {
                   </li>
                 ))}
               </motion.ul>
-            </motion.div>
-
-            {/* === Höger: animerad plan med markörer === */}
-            <motion.div
-              style={reduced ? undefined : { y: pitchY, scale: pitchScale }}
-              className="relative isolate"
-            >
-              <ScanningScene reduced={reduced} />
             </motion.div>
 
             {/* Mjuk vinjettering nedåt (övergång till nästa sektion) */}
