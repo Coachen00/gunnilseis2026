@@ -1,33 +1,47 @@
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import { useSeasonMatches } from "@/hooks/useSeasonMatches";
-import { groupByMonth, MONTH_LABELS, nextMatch, type SeasonMatch } from "@/data/season";
-import { ExternalLink, Loader2, MapPin, ArrowDownRight, ArrowUpRight } from "lucide-react";
+import { MONTH_LABELS, nextMatch, type SeasonMatch } from "@/data/season";
+import { CALENDAR_TRAININGS, type CalendarTraining } from "@/data/teamCalendar";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  CalendarClock,
+  Dumbbell,
+  ExternalLink,
+  Loader2,
+  MapPin,
+  Trophy,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SHORT_DAY } from "@/lib/dateUtils";
+
+type CalendarActivity =
+  | { id: string; date: string; kind: "training"; training: CalendarTraining }
+  | { id: string; date: string; kind: "match"; match: SeasonMatch };
 
 const Matcher = () => {
   const { matches, loading, usingFallback } = useSeasonMatches();
   const now = new Date();
   const upcoming = nextMatch(matches, now);
-  const played = matches.filter((m) => new Date(m.date) < now);
-  const remaining = matches.filter((m) => new Date(m.date) >= now);
-  const months = Array.from(groupByMonth(matches).entries()).sort((a, b) =>
-    a[0].localeCompare(b[0])
-  );
+  const playedMatches = matches.filter((m) => new Date(m.date) < now);
+  const activities = buildCalendarActivities(matches);
+  const remainingActivities = activities.filter((activity) => new Date(activity.date) >= now);
+  const nextActivity = remainingActivities[0] ?? null;
+  const months = Array.from(groupActivitiesByMonth(activities).entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
     <>
       <PageHero
         eyebrow="Säsong"
-        title="Årets matcher"
-        description={`${played.length} spelade · ${remaining.length} kvar · auto-uppdateras från svenskalag.se`}
+        title="Kalender"
+        description={`${matches.length} matcher · ${CALENDAR_TRAININGS.length} träningar · allt i datumordning`}
       />
 
       <div className="container pb-section">
         {loading && (
           <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
-            <Loader2 className="h-3 w-3 animate-spin" /> Hämtar matcher…
+            <Loader2 className="h-3 w-3 animate-spin" /> Hämtar kalender…
           </div>
         )}
 
@@ -37,8 +51,14 @@ const Matcher = () => {
           </div>
         )}
 
+        <div className="mb-8 grid gap-3 md:grid-cols-3">
+          <SummaryTile label="Spelade matcher" value={playedMatches.length} tone="red" />
+          <SummaryTile label="Kommande aktiviteter" value={remainingActivities.length} tone="green" />
+          <SummaryTile label="Nästa aktivitet" value={nextActivity ? formatShortDate(nextActivity.date) : "—"} tone="amber" />
+        </div>
+
         <div className="space-y-12">
-          {months.map(([key, monthMatches]) => {
+          {months.map(([key, monthActivities]) => {
             const [year, monthIdx] = key.split("-").map(Number);
             const label = `${MONTH_LABELS[monthIdx - 1]} ${year}`;
             return (
@@ -50,12 +70,13 @@ const Matcher = () => {
                   <span className="text-xl font-black tracking-tight text-foreground">{label}</span>
                 </h2>
                 <ul className="space-y-2">
-                  {monthMatches.map((m) => (
-                    <MatchRow
-                      key={m.id}
-                      match={m}
-                      isUpcoming={upcoming?.id === m.id}
-                      isPast={new Date(m.date) < now}
+                  {monthActivities.map((activity) => (
+                    <CalendarActivityRow
+                      key={activity.id}
+                      activity={activity}
+                      isNext={nextActivity?.id === activity.id}
+                      isUpcomingMatch={activity.kind === "match" && upcoming?.id === activity.match.id}
+                      isPast={new Date(activity.date) < now}
                     />
                   ))}
                 </ul>
@@ -65,12 +86,12 @@ const Matcher = () => {
         </div>
 
         <a
-          href="https://www.svenskalag.se/gunnilseis-herr/matcher"
+          href="https://www.svenskalag.se/gunnilseis-herr/kalender"
           target="_blank"
           rel="noopener noreferrer"
           className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
         >
-          Källa · svenskalag.se
+          Källa · svenskalag.se kalender
           <ExternalLink className="h-3 w-3" />
         </a>
       </div>
@@ -78,34 +99,161 @@ const Matcher = () => {
   );
 };
 
+function buildCalendarActivities(matches: SeasonMatch[]): CalendarActivity[] {
+  return [
+    ...CALENDAR_TRAININGS.map((training) => ({
+      id: training.id,
+      date: training.date,
+      kind: "training" as const,
+      training,
+    })),
+    ...matches.map((match) => ({
+      id: `match-${match.id}`,
+      date: match.date,
+      kind: "match" as const,
+      match,
+    })),
+  ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+}
+
+function groupActivitiesByMonth(activities: CalendarActivity[]): Map<string, CalendarActivity[]> {
+  const groups = new Map<string, CalendarActivity[]>();
+  for (const activity of activities) {
+    const date = new Date(activity.date);
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key)!.push(activity);
+  }
+  return groups;
+}
+
+function formatShortDate(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "—";
+  return new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "numeric" }).format(date);
+}
+
+const SummaryTile = ({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: number | string;
+  tone: "red" | "green" | "amber";
+}) => {
+  const toneClass =
+    tone === "red"
+      ? "border-primary/30 bg-primary/5 text-primary"
+      : tone === "green"
+        ? "border-accent/30 bg-accent/5 text-accent"
+        : "border-amber-500/30 bg-amber-500/10 text-amber-700";
+
+  return (
+    <div className={cn("rounded-md border p-4", toneClass)}>
+      <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] opacity-75">{label}</p>
+      <p className="mt-1 text-3xl font-black tabular-nums tracking-tight">{value}</p>
+    </div>
+  );
+};
+
+const CalendarActivityRow = ({
+  activity,
+  isNext,
+  isUpcomingMatch,
+  isPast,
+}: {
+  activity: CalendarActivity;
+  isNext: boolean;
+  isUpcomingMatch: boolean;
+  isPast: boolean;
+}) => {
+  if (activity.kind === "training") {
+    return <TrainingRow training={activity.training} isNext={isNext} isPast={isPast} />;
+  }
+
+  return (
+    <MatchRow
+      match={activity.match}
+      isNext={isNext}
+      isUpcoming={isUpcomingMatch}
+      isPast={isPast}
+    />
+  );
+};
+
+const TrainingRow = ({
+  training,
+  isNext,
+  isPast,
+}: {
+  training: CalendarTraining;
+  isNext: boolean;
+  isPast: boolean;
+}) => {
+  const rowClassName = cn(
+    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-card px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
+    isNext
+      ? "border-accent/60 shadow-[0_0_0_1px_hsl(var(--accent)/0.3)]"
+      : "border-border/70 hover:border-accent/40",
+    isPast && !isNext && "opacity-70 hover:opacity-100"
+  );
+
+  return (
+    <li>
+      <div className={rowClassName}>
+        <DateStamp iso={training.date} />
+        <div className="min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border border-accent/40 bg-accent/10 text-accent">
+              <Dumbbell className="h-3 w-3" strokeWidth={2.2} aria-hidden="true" />
+            </span>
+            <p className="truncate text-base font-semibold tracking-tight text-foreground">{training.title}</p>
+          </div>
+          <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+            <span className="font-mono font-bold uppercase tracking-[0.16em]">{training.focus}</span>
+            <span className="inline-flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              {training.venue}
+            </span>
+          </div>
+        </div>
+        <StatusBadge isNext={isNext} label={isPast ? "Genomförd" : "Träning"} />
+      </div>
+    </li>
+  );
+};
+
 const MatchRow = ({
   match,
+  isNext,
   isUpcoming,
   isPast,
 }: {
   match: SeasonMatch;
+  isNext: boolean;
   isUpcoming: boolean;
   isPast: boolean;
 }) => {
   const result = resultOf(match);
   const rowClassName = cn(
-    "group grid grid-cols-[64px_1fr_auto] items-center gap-4 rounded-md border bg-card px-4 py-3 transition",
+    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-card px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
     match.sourceUrl && "cursor-pointer",
-    isUpcoming
-      ? "border-accent/60 shadow-[0_0_0_1px_hsl(var(--accent)/0.3)] hover:border-accent"
-      : "border-border/70 hover:border-accent/40",
-    isPast && !isUpcoming && "opacity-70 hover:opacity-100"
+    isNext || isUpcoming
+      ? "border-primary/60 shadow-[0_0_0_1px_hsl(var(--primary)/0.25)] hover:border-primary"
+      : "border-border/70 hover:border-primary/40",
+    isPast && !isNext && !isUpcoming && "opacity-70 hover:opacity-100"
   );
 
   return (
     <li>
       {match.sourceUrl ? (
         <a href={match.sourceUrl} target="_blank" rel="noopener noreferrer" className={rowClassName}>
-          <MatchRowContent match={match} isUpcoming={isUpcoming} isPast={isPast} result={result} />
+          <MatchRowContent match={match} isNext={isNext} isUpcoming={isUpcoming} isPast={isPast} result={result} />
         </a>
       ) : (
         <div className={rowClassName}>
-          <MatchRowContent match={match} isUpcoming={isUpcoming} isPast={isPast} result={result} />
+          <MatchRowContent match={match} isNext={isNext} isUpcoming={isUpcoming} isPast={isPast} result={result} />
         </div>
       )}
     </li>
@@ -114,41 +262,28 @@ const MatchRow = ({
 
 const MatchRowContent = ({
   match,
+  isNext,
   isUpcoming,
   isPast,
   result,
 }: {
   match: SeasonMatch;
+  isNext: boolean;
   isUpcoming: boolean;
   isPast: boolean;
   result: { outcome: "W" | "D" | "L"; us: number; them: number } | null;
 }) => {
-  const date = new Date(match.date);
-  const day = String(date.getDate()).padStart(2, "0");
-  const weekday = SHORT_DAY[date.getDay()];
-  const time = date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-
   return (
     <>
-      {/* Date stamp */}
-      <div className="flex flex-col items-center justify-center border-r border-border/60 pr-4">
-        <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-          {weekday}
-        </span>
-        <span className="text-2xl font-black leading-none tracking-tight text-foreground">{day}</span>
-        <span className="mt-0.5 font-mono text-[9px] font-bold tracking-wider text-muted-foreground">
-          {time}
-        </span>
-      </div>
+      <DateStamp iso={match.date} />
 
-      {/* Opponent + meta */}
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span
             className={cn(
               "grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border font-mono text-[9px] font-black uppercase",
               match.homeAway === "home"
-                ? "border-accent/40 bg-accent/10 text-accent"
+                ? "border-primary/40 bg-primary/10 text-primary"
                 : "border-border bg-background/60 text-muted-foreground"
             )}
             title={match.homeAway === "home" ? "Hemmamatch" : "Bortamatch"}
@@ -163,11 +298,16 @@ const MatchRowContent = ({
             {match.homeAway === "home" ? "Gunnilse — " : ""}
             {match.opponent}
             {match.homeAway === "away" ? " — Gunnilse" : ""}
-            {match.sourceUrl && <ExternalLink className="ml-1.5 inline h-3 w-3 text-muted-foreground transition group-hover:text-accent" />}
+            {match.sourceUrl && (
+              <ExternalLink className="ml-1.5 hidden h-3 w-3 text-muted-foreground transition group-hover:text-primary sm:inline" />
+            )}
           </p>
         </div>
-        <div className="mt-1 flex items-center gap-3 text-[11px] text-muted-foreground">
-          <span className="font-mono font-bold uppercase tracking-[0.16em]">{match.competition}</span>
+        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+          <span className="inline-flex items-center gap-1 font-mono font-bold uppercase tracking-[0.16em]">
+            <Trophy className="h-3 w-3" />
+            {match.competition}
+          </span>
           {match.venue && (
             <span className="inline-flex items-center gap-1">
               <MapPin className="h-3 w-3" />
@@ -177,38 +317,68 @@ const MatchRowContent = ({
         </div>
       </div>
 
-      {/* Result / status */}
-      <div className="flex flex-col items-end gap-0.5">
-        {isUpcoming && (
-          <span className="font-mono text-[9px] font-bold uppercase tracking-[0.22em] text-accent">
-            Veckans
-          </span>
-        )}
-        {result ? (
-          <div
-            className={cn(
-              "flex items-center gap-1.5 rounded-sm border px-2 py-1",
-              result.outcome === "W" && "border-zone-attack/40 bg-zone-attack/10 text-zone-attack",
-              result.outcome === "D" && "border-border bg-muted/30 text-muted-foreground",
-              result.outcome === "L" && "border-destructive/40 bg-destructive/10 text-destructive"
-            )}
-          >
-            <span className="font-mono text-[10px] font-black uppercase tracking-wider">
-              {result.outcome === "W" ? "Vinst" : result.outcome === "D" ? "Oavgjort" : "Förlust"}
-            </span>
-            <span className="font-mono text-sm font-black">
-              {result.us}–{result.them}
-            </span>
-          </div>
-        ) : !isUpcoming ? (
-          <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
-            {isPast ? "Spelad" : "Kommande"}
-          </span>
-        ) : null}
-      </div>
+      {result ? (
+        <ResultBadge result={result} />
+      ) : (
+        <StatusBadge isNext={isNext || isUpcoming} label={isNext ? "Nästa" : isPast ? "Spelad" : "Match"} />
+      )}
     </>
   );
 };
+
+const DateStamp = ({ iso }: { iso: string }) => {
+  const date = new Date(iso);
+  const day = String(date.getDate()).padStart(2, "0");
+  const weekday = SHORT_DAY[date.getDay()];
+  const time = date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+
+  return (
+    <div className="flex flex-col items-center justify-center border-r border-border/60 pr-4">
+      <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+        {weekday}
+      </span>
+      <span className="text-2xl font-black leading-none tracking-tight text-foreground">{day}</span>
+      <span className="mt-0.5 font-mono text-[9px] font-bold tracking-wider text-muted-foreground">
+        {time}
+      </span>
+    </div>
+  );
+};
+
+const StatusBadge = ({ isNext, label }: { isNext: boolean; label: string }) => (
+  <div className="col-span-2 flex justify-end sm:col-span-1">
+    <span
+      className={cn(
+        "rounded-sm border px-2 py-1 font-mono text-[10px] font-black uppercase tracking-wider",
+        isNext
+          ? "border-accent/40 bg-accent/10 text-accent"
+          : "border-border bg-muted/30 text-muted-foreground"
+      )}
+    >
+      {label}
+    </span>
+  </div>
+);
+
+const ResultBadge = ({ result }: { result: { outcome: "W" | "D" | "L"; us: number; them: number } }) => (
+  <div className="col-span-2 flex justify-end sm:col-span-1">
+    <div
+      className={cn(
+        "flex items-center gap-1.5 rounded-sm border px-2 py-1",
+        result.outcome === "W" && "border-zone-attack/40 bg-zone-attack/10 text-zone-attack",
+        result.outcome === "D" && "border-border bg-muted/30 text-muted-foreground",
+        result.outcome === "L" && "border-destructive/40 bg-destructive/10 text-destructive"
+      )}
+    >
+      <span className="font-mono text-[10px] font-black uppercase tracking-wider">
+        {result.outcome === "W" ? "Vinst" : result.outcome === "D" ? "Oavgjort" : "Förlust"}
+      </span>
+      <span className="font-mono text-sm font-black">
+        {result.us}–{result.them}
+      </span>
+    </div>
+  </div>
+);
 
 export function resultOf(match: SeasonMatch): { outcome: "W" | "D" | "L"; us: number; them: number } | null {
   if (typeof match.ourScore !== "number" || typeof match.theirScore !== "number") return null;

@@ -3,6 +3,7 @@ import { ArrowRight, CalendarDays, Clock3, LockKeyhole, MapPin, Shield, Zap } fr
 import { motion, useReducedMotion } from "framer-motion";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useSeasonMatches } from "@/hooks/useSeasonMatches";
+import { HERO_CALENDAR_TRAININGS } from "@/data/teamCalendar";
 import { cn } from "@/lib/utils";
 
 type TrainingEvent = {
@@ -15,35 +16,18 @@ type TrainingEvent = {
   tone: "green" | "amber" | "red";
 };
 
-const TRAINING_EVENTS: TrainingEvent[] = [
-  {
-    id: "start",
-    date: "27/7",
-    day: "Mån",
-    time: "18:30",
-    title: "Första träningen",
-    venue: "Hjällbovallen gräs",
-    tone: "green",
-  },
-  {
-    id: "matchtempo",
-    date: "29/7",
-    day: "Ons",
-    time: "18:30",
-    title: "Matchtempo",
-    venue: "Hjällbovallen",
-    tone: "amber",
-  },
-  {
-    id: "matchforberedande",
-    date: "30/7",
-    day: "Tor",
-    time: "18:30",
-    title: "Matchförberedande",
-    venue: "Hjällbovallen",
-    tone: "red",
-  },
-];
+const TRAINING_EVENTS: TrainingEvent[] = HERO_CALENDAR_TRAININGS.map((event, index) => {
+  const date = new Date(event.date);
+  return {
+    id: event.id,
+    date: new Intl.DateTimeFormat("sv-SE", { day: "numeric", month: "numeric" }).format(date),
+    day: new Intl.DateTimeFormat("sv-SE", { weekday: "short" }).format(date).replace(".", ""),
+    time: new Intl.DateTimeFormat("sv-SE", { hour: "2-digit", minute: "2-digit" }).format(date),
+    title: event.title,
+    venue: event.venue,
+    tone: index === 0 ? "green" : index === 1 ? "amber" : "red",
+  };
+});
 
 const TONE = {
   green: "border-emerald-300/40 bg-emerald-300/10 text-emerald-200",
