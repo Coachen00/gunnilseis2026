@@ -18,6 +18,7 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "fr
 import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
+import HomeCalendarBoard from "./HomeCalendarBoard";
 /** Välkomstfoto (laget på morgonträning) — full-cover bakgrund i heron, tonar
  *  in mjukt på mount. Filen ligger i public/media/hem/. Saknas filen visas den
  *  varma mörka sektionsbakgrunden som fallback (ingen trasig bild-ikon). */
@@ -124,9 +125,10 @@ export default function MagicalPitchHero() {
       <div className="relative z-10 min-h-[110svh]">
         <div className="sticky top-0 flex min-h-[100svh] items-center">
           <div className="container relative py-16 md:py-24 lg:py-28">
+            <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,480px)]">
 
-            {/* === Vänster: text + CTAs === */}
-            <motion.div style={reduced ? undefined : { y: titleY }} className="relative z-10 max-w-2xl">
+              {/* === Vänster: text + CTAs === */}
+              <motion.div style={reduced ? undefined : { y: titleY }} className="relative z-10 max-w-2xl">
               {/* Eyebrow — som en ornamental rubrik i en gammal äventyrsbok */}
               <motion.div
                 initial={reduced ? undefined : { opacity: 0, y: 14 }}
@@ -164,6 +166,14 @@ export default function MagicalPitchHero() {
                   </>
                 )}
               </motion.h1>
+              </motion.div>
+
+              <HomeCalendarBoard />
+
+              <motion.div
+                style={reduced ? undefined : { y: titleY }}
+                className="relative z-10 max-w-2xl lg:col-start-1"
+              >
 
               {/* Underrubrik — match-detaljer endast för inloggade */}
               <motion.p
@@ -244,7 +254,8 @@ export default function MagicalPitchHero() {
                   </li>
                 ))}
               </motion.ul>
-            </motion.div>
+              </motion.div>
+            </div>
 
             {/* Mjuk vinjettering nedåt (övergång till nästa sektion) */}
             <motion.div
