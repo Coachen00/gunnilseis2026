@@ -1,4 +1,4 @@
-import { HeartPulse, Trophy, Users, type LucideIcon } from "lucide-react";
+import { Dumbbell, HeartPulse, Trophy, Users, type LucideIcon } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import HubCard from "@/components/HubCard";
@@ -22,6 +22,13 @@ const cards: Card[] = [
     Icon: HeartPulse,
   },
   {
+    to: "/semestern-2026",
+    label: "Sommar",
+    title: "Semestern 2026",
+    description: "Gå inte upp i vikt — personliga löpscheman fram till 26/7.",
+    Icon: Dumbbell,
+  },
+  {
     to: "/tavlingar",
     label: "Säsong",
     title: "Tävlingar",
@@ -39,7 +46,7 @@ const Laget = () => (
       description="Allt runt truppen — vilka vi är, hur vi håller oss i form och vad vi spelar."
     />
     <SectionReveal as="section" className="container pb-section">
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         {cards.map((c) => (
           <HubCard
             key={c.to}
