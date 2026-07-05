@@ -8,11 +8,11 @@
  *
  * Versionera cachenamnet när formatet ändras så aktiva SWs städas.
  */
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 
-const PRECACHE_URLS = ["/", "/index.html", "/manifest.webmanifest"];
+const PRECACHE_URLS = ["/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -90,7 +90,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (["script", "style", "font", "image"].includes(request.destination)) {
+  if (["script", "style"].includes(request.destination)) {
+    event.respondWith(networkFirst(request, 1500));
+    return;
+  }
+
+  if (["font", "image"].includes(request.destination)) {
     event.respondWith(cacheFirst(request));
   }
 });
