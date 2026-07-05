@@ -54,7 +54,7 @@ const spelmodellGroups: NavGroup[] = [
   },
 ];
 
-/* Laget — Trupp, Spelarvård, Tävlingar samlat under en värld. */
+/* Laget — Trupp, spelarvård, sommarfys och tävlingar samlat under en värld. */
 const lagetGroups: NavGroup[] = [
   {
     label: "Laget",
@@ -62,6 +62,7 @@ const lagetGroups: NavGroup[] = [
     children: [
       { label: "Trupp", to: "/truppen", hint: "Namn, nummer, position" },
       { label: "Spelarvård", to: "/spelarvard", hint: "Ta hand om dig själv" },
+      { label: "Semestern 2026", to: "/semestern-2026", hint: "Gå inte upp i vikt" },
       { label: "Tävlingar", to: "/tavlingar", hint: "Serier & cuper 2026" },
     ],
   },
@@ -113,7 +114,7 @@ const navItems: NavItem[] = [
     label: "Laget",
     groups: lagetGroups,
     variant: "narrow",
-    activePathPrefixes: ["/laget", "/truppen", "/spelarvard", "/tavlingar"],
+    activePathPrefixes: ["/laget", "/truppen", "/spelarvard", "/semestern-2026", "/tavlingar"],
   },
   { kind: "link", to: "/verktyg", label: "Verktyg" },
   {

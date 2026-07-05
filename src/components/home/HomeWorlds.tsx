@@ -27,6 +27,7 @@ const spelmodell: Entry[] = [
 const laget: Entry[] = [
   { label: "Trupp", to: "/truppen" },
   { label: "Spelarvård", to: "/spelarvard" },
+  { label: "Semestern 2026", to: "/semestern-2026" },
   { label: "Tävlingar", to: "/tavlingar" },
 ];
 
