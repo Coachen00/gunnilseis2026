@@ -23,6 +23,7 @@ import HomeCalendarBoard from "./HomeCalendarBoard";
  *  in mjukt på mount. Filen ligger i public/media/hem/. Saknas filen visas den
  *  varma mörka sektionsbakgrunden som fallback (ingen trasig bild-ikon). */
 const WELCOME_IMAGE = "/media/hem/valkomst.jpg";
+const SUMMER_BODY_MESSAGE_END = new Date("2026-07-25T23:59:59+02:00");
 
 type Principle = {
   id: string;
@@ -60,6 +61,7 @@ export default function MagicalPitchHero() {
   // Visa inloggad-CTA-set bara när vi vet säkert. Annars showar vi
   // gäst-CTAs (säkrare default — ingen läcker session-info).
   const authed = !authLoading && isAuthed;
+  const showSummerBodyMessage = authed && new Date() <= SUMMER_BODY_MESSAGE_END;
 
   // Mjuk parallax — endast när användaren scrollar förbi intro.
   const { scrollYProgress } = useScroll({
@@ -148,7 +150,15 @@ export default function MagicalPitchHero() {
                 transition={{ duration: 0.9, delay: 0.1, ease: "easeOut" }}
                 className="text-[2.6rem] font-black leading-[0.96] tracking-tight text-[#fef3e2] sm:text-6xl md:text-7xl lg:text-[5.2rem]"
               >
-                {authed ? (
+                {showSummerBodyMessage ? (
+                  <>
+                    Ta hand om din kropp
+                    <br />
+                    <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400 bg-clip-text text-transparent">
+                      under sommaren!
+                    </span>
+                  </>
+                ) : authed ? (
                   <>
                     Nästa match
                     <br />
@@ -182,7 +192,9 @@ export default function MagicalPitchHero() {
                 transition={{ duration: 0.7, delay: 0.65 }}
                 className="mt-7 max-w-xl text-base leading-relaxed text-amber-100/85 md:text-lg"
               >
-                {authed
+                {showSummerBodyMessage
+                  ? "Gå inte upp i vikt! Håll igång, sov ordentligt och kom tillbaka redo när vi startar igen."
+                  : authed
                   ? `${MATCH_META.kickoff} · ${MATCH_META.venue}. Samling ${SAMLING_TIME} på Hjällbovallen. Kallelse och matchplan ligger under Veckans match.`
                   : "Gunnilse IS Division 4A Herrar — vår spelmodell, vår taktik och våra matcher. Logga in för att se veckans matchplan, kallad trupp och hela säsongens material."}
               </motion.p>
@@ -203,7 +215,24 @@ export default function MagicalPitchHero() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.4} />
                 </Link>
 
-                {authed ? (
+                {showSummerBodyMessage ? (
+                  <>
+                    <Link
+                      to="/maj-2026"
+                      className="inline-flex h-12 items-center justify-center gap-2 border border-amber-300/30 bg-amber-300/5 px-6 text-sm font-bold uppercase tracking-[0.12em] text-amber-100 backdrop-blur-sm transition hover:border-amber-300/70 hover:text-amber-300"
+                    >
+                      <CalendarClock className="h-4 w-4" strokeWidth={2.3} />
+                      Sommar 2026
+                    </Link>
+                    <Link
+                      to="/maj-2026#filmbibliotek"
+                      className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/80 transition hover:text-amber-200"
+                    >
+                      <Film className="h-3.5 w-3.5" strokeWidth={2.3} />
+                      Filmbibliotek
+                    </Link>
+                  </>
+                ) : authed ? (
                   <>
                     <Link
                       to="/match/kommande"
