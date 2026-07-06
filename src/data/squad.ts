@@ -30,7 +30,7 @@ export const POSITION_LABELS: Record<Position, { short: string; long: string }> 
 export const SQUAD: Player[] = [
   // Målvakter
   { name: "Ali Carneil", position: "GK" },
-  { name: "Josef Abdmasih", position: "GK" },
+  { name: "Kamal Fekhouri", position: "GK" },
   { name: "Parsa Ahang", position: "GK" },
 
   // Backar
@@ -54,6 +54,7 @@ export const SQUAD: Player[] = [
   { name: "Hosam Aiesh", position: "MID" },
   { name: "Idris Abdi", position: "MID" },
   { name: "Ihab Naser", position: "MID" },
+  { name: "Mostafa Ayoub", position: "MID" },
   { name: "Måns Orwén", position: "MID" },
 
   // Anfallare
