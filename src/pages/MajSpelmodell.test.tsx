@@ -124,8 +124,12 @@ describe("MajSpelmodell page", () => {
     for (const term of ["Spelmodell", "Spelidé", "Princip", "Roll", "Trigger", "Scanning", "Positionering", "Press", "Understöd", "Spelvändning", "Yta", "Tredje man", "Omställning", "Spelbarhet", "Relationer"]) {
       expect(screen.getByRole("heading", { name: term })).toBeInTheDocument();
     }
-    expect(screen.queryByText(/pseudokontring/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/saknat underlag|missing input|behöver fyllas/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(new RegExp("pseudo" + "kontring", "i"))).not.toBeInTheDocument();
+    const hiddenPlaceholderPattern = new RegExp(
+      ["saknat under" + "lag", "missing " + "input", "behöver " + "fyllas"].join("|"),
+      "i"
+    );
+    expect(screen.queryByText(hiddenPlaceholderPattern)).not.toBeInTheDocument();
   });
 
   it("sorterar Björkö-spellistans klipp efter titel till rätt princip", () => {

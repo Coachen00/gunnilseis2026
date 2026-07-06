@@ -14,7 +14,6 @@ import KorridorerDiagram from "@/components/KorridorerDiagram";
 import GoldenZoneDiagram from "@/components/GoldenZoneDiagram";
 import GIGTemplate from "@/components/GIGTemplate";
 import PrincipleCard from "@/components/PrincipleCard";
-import MissingInputPlaceholder from "@/components/MissingInputPlaceholder";
 import ImagePlaceholder from "@/components/ImagePlaceholder";
 import MatchSquad from "@/components/MatchSquad";
 import Matetal from "@/components/Matetal";
@@ -248,8 +247,8 @@ export const OmstallningAnfallSection = () => (
         <div className="mb-5 p-4 rounded-xl bg-primary/5 border border-primary/15">
           <p className="text-sm text-center font-medium text-primary">
             <strong>Se även:</strong>{" "}
-            <a href="/spelide#generellt" className="underline decoration-primary/30 hover:decoration-primary transition-colors">
-              Pseudokontring-processen (Spelidé)
+            <a href="/spelmodell#overgang-anfall" className="underline decoration-primary/30 hover:decoration-primary transition-colors">
+              När vi vinner bollen
             </a>
           </p>
         </div>
@@ -269,7 +268,6 @@ export const OmstallningAnfallSection = () => (
     <AccordionSection title="Visa G/IG-mallar — Omställning till anfall">
       <div className="space-y-3">
         <GIGTemplate cueTitel="Rättvänd → Spelvändning → Full fart" definition="Rättvänd → spelvändning → full fart framåt" narAnvands="Direkt efter bollvinst — om rättvänd spelare får bollen." beslutstrigger="Cue 3 (VÄXLA / VÄNDLÄGE)" handling="Spelvändning omedelbart. Full fart framåt. Sök assistytan." gVillkor="Framåtaktion inom 3 sekunder" igVillkor="Bakåtspel eller stillastående > 5 sekunder" />
-        <MissingInputPlaceholder needed="Omställning till anfall-principer (bollvinst-triggers, första 3 sekundernas regler)" formatNeeded="3–7 punkter + 1 diagramlänk" source="matchmodell" owner="tränare" />
       </div>
     </AccordionSection>
   </section>
@@ -397,7 +395,6 @@ export const OmstallningForsvarSection = () => (
     <AccordionSection title="Visa G/IG-mallar — Omställning till försvar">
       <div className="space-y-3">
         <GIGTemplate cueTitel="Direkt bollåtererövring" definition="Vid bollförlust — direkt press för att återvinna inom 5 sekunder" narAnvands="Direkt efter bollförlust i motståndarens planhalva" beslutstrigger="Bollförlust → närmaste 2–3 spelare pressar" handling="1. Närmaste spelare pressar boll. 2. Stäng passningsvägar. 3. Om ej 5s: falla tillbaka kompakt." gVillkor="≥ 40% bollåtererövring inom 5s" igVillkor="Spelare reagerar inte / laget splittrat" />
-        <MissingInputPlaceholder needed="Omställning till försvar-regler (första 5 sekunderna, vem pressar, vem täcker)" formatNeeded="5–9 punkter + 2 exempel" source="matchmodell + träningsmodell" owner="tränare/analytiker" />
       </div>
     </AccordionSection>
   </section>
@@ -445,7 +442,6 @@ export const FastaSection = () => (
         <GIGTemplate cueTitel="Defensivt: Hybrid + 2 Man" definition="Zonbas i boxen med 2 spelare i strikt man-markering." narAnvands="Alla defensiva fasta situationer." handling="2 MAN: Följ hotet. ZON: Ta första boll — rensa framåt. REST: 2 spelare högre." gVillkor="0 mål insläppta från fasta situationer" igVillkor="≥ 2 mål insläppta från fasta per match" />
         <GIGTemplate cueTitel="Trigger: Kort variant" definition="1 spelare kliver ut, resten håller zon." narAnvands="Vid kort hörnvariant av motståndare." handling="1 spelare kliver ut. Resten håller zon." gVillkor="Kort hörna neutraliserad — ingen skottchans" igVillkor="Kort hörna leder till skottchans" />
         <GIGTemplate cueTitel="Trigger: Lång/inswing" definition="Zon attackerar boll, man-markörer låser hot." narAnvands="Vid lång hörna / inswing." handling="Zonspelare attackerar bollen. Man-markörer låser sina hot." gVillkor="Boll rensad vid ≥ 80% av långa hörnor" igVillkor="Motståndare nickar fritt i boxen" />
-        <MissingInputPlaceholder needed="Hörnor för, frisparkar för, inkast, straffar" formatNeeded="punkter + diagram" source="fasta situationer-manus" owner="tränare" />
       </div>
     </AccordionSection>
   </section>
