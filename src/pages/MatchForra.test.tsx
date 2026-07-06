@@ -3,10 +3,11 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import MatchForra from "./MatchForra";
 import { getForraMatch } from "@/data/forraMatch";
+import { routerFuture } from "@/test/test-utils";
 
 const renderPage = () =>
   render(
-    <MemoryRouter initialEntries={["/match/forra"]}>
+    <MemoryRouter initialEntries={["/match/forra"]} future={routerFuture}>
       <MatchForra />
     </MemoryRouter>,
   );

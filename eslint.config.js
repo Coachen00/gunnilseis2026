@@ -23,4 +23,15 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: [
+      "src/components/ui/**/*.{ts,tsx}",
+      "src/lib/printForm.tsx",
+      "src/pages/Matcher.tsx",
+      "src/test/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "react-refresh/only-export-components": "off",
+    },
+  },
 );

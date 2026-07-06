@@ -1,4 +1,4 @@
-import { Activity, Apple, CalendarDays, Dumbbell, HeartPulse, Shield, Timer, Utensils, Waves } from "lucide-react";
+import { Activity, Apple, CalendarDays, Dumbbell, HeartPulse, Shield, Timer, Utensils, Zap } from "lucide-react";
 import BreadcrumbTrail from "@/components/BreadcrumbTrail";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
@@ -8,16 +8,38 @@ import type { Player } from "@/data/squad";
 import { cn } from "@/lib/utils";
 
 type TrainingRole = "GK" | "CB" | "FB" | "MID" | "FWD";
+type AmbitionId = 1 | 2 | 3;
 
 type RolePlan = {
   title: string;
   short: string;
-  focus: string;
-  personal: string;
-  sessions: string[];
+  evidence: string;
+  personalFocus: string;
+  runA: string;
+  runB: string;
+  runC: string;
+  freshA: string;
+  freshB: string;
+  minimumA: string;
+  minimumB: string;
+  gymA: string;
+  gymB: string;
 };
 
-const EXCLUDED_PLAYERS = new Set(["josef abdmasih"]);
+type AmbitionLevel = {
+  id: AmbitionId;
+  title: string;
+  badge: string;
+  tempo: string;
+  promise: string;
+  className: string;
+};
+
+type ScheduleItem = {
+  day: string;
+  time: string;
+  work: string;
+};
 
 const FULLBACKS = new Set([
   "rayan fedaila",
@@ -30,16 +52,17 @@ const FULLBACKS = new Set([
 const CENTER_BACKS = new Set([
   "rinor zenullah",
   "adnan hadzialic",
-  "vedad dzambegovic",
   "sabarr janneh",
   "daniel matin",
+  "meysam hoseni",
+  "nayef mohammad",
 ]);
 
 const ROLE_ORDER: TrainingRole[] = ["GK", "CB", "FB", "MID", "FWD"];
 
 const ROLE_LABELS: Record<TrainingRole, string> = {
   GK: "Målvakt",
-  CB: "Back",
+  CB: "Mittback",
   FB: "Ytterback",
   MID: "Mittfältare",
   FWD: "Forward",
@@ -48,70 +71,115 @@ const ROLE_LABELS: Record<TrainingRole, string> = {
 const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
   GK: {
     title: "Målvakter",
-    short: "Snabba fötter, stark bål, explosiva första steg.",
-    focus: "Du ska komma tillbaka lätt i kroppen och redo att flytta dig snabbt.",
-    personal:
-      "Din viktigaste uppgift är att hålla fötterna igång. Kör kort, explosivt och noggrant. Hellre kvalitet i varje aktion än ett långt pass där du blir seg.",
-    sessions: [
-      "Pass 1: 25 min lugn löpning + 8 x 10 sek snabba fötter på stället.",
-      "Pass 2: 10 x 20 sek sidledsförflyttning, 40 sek vila + 3 varv bål.",
-      "Pass 3: 6 x 60 m progressiv löpning, gå tillbaka som vila.",
-      "Pass 4 valfritt: 20 min promenad/jogg + rörlighet för höft, ljumske och vad.",
-    ],
+    short: "Kort acceleration, sidled, stark bål och pigga fötter.",
+    evidence:
+      "Målvaktens belastning handlar mindre om total löpmängd och mer om explosiva starter, sidledsförflyttning, landning och reaktion.",
+    personalFocus: "första steget, bålstyrkan och känslan av att kunna flytta dig igen direkt efter en aktion",
+    runA: "10 x 10 m acceleration från mage, rygg eller sidostart, 50 sek vila",
+    runB: "8 x 15 sek snabba fötter + sidledsförflyttning, 45 sek vila",
+    runC: "25 min lugn löpning och 8 min rörlighet för höft, ljumske och vad",
+    freshA: "20 min lugn jogg + 6 x 10 sek snabba fötter",
+    freshB: "6 x 20 sek sidledsförflyttning, 60 sek vila + 8 min bål",
+    minimumA: "18 min jogg/gång + 4 x 10 sek snabba fötter",
+    minimumB: "12 min rörlighet + 3 varv plankor, höftlyft och tåhävningar",
+    gymA: "knäböj 4 x 5, chins eller latsdrag 4 x 6, bänkpress 3 x 6",
+    gymB: "marklyft 4 x 4, utfall bakåt 3 x 8/ben, sidoplanka 3 x 30 sek/sida",
   },
   CB: {
-    title: "Backar",
-    short: "Stabilitet, acceleration och löpningar med kontroll.",
-    focus: "Du ska orka försvara yta, vinna duellen och vara pigg i sista löpningen.",
-    personal:
-      "Din roll kräver lugn kropp och starka första meter. Prioritera enkla löppass, kort acceleration och bålstyrka. Kom tillbaka med känslan att du kan försvara direkt.",
-    sessions: [
-      "Pass 1: 30 min lugn löpning i prattempo.",
-      "Pass 2: 8 x 15 sek backe eller lätt uppför, gå ner som vila + 3 varv styrka.",
-      "Pass 3: 4 x 4 min kontrollerat tempo, 2 min gång/jogg mellan.",
-      "Pass 4 valfritt: 20 min rörlighet + 3 x 12 knäböj, utfall och armhävningar.",
-    ],
+    title: "Mittbackar",
+    short: "Stabilitet, duellstyrka, acceleration och broms.",
+    evidence:
+      "Mittbackar har ofta lägre total högfartsvolym än kantspelare, men behöver vinna korta ytor, bromsa hårt och tåla dueller.",
+    personalFocus: "första fem meterna, stark kropp i duellen och kontroll när du måste vända hemåt",
+    runA: "8 x 20 m acceleration, gå tillbaka som vila",
+    runB: "4 x 4 min kontrollerat hårt tempo, 2 min jogg/gång mellan",
+    runC: "30 min lugn löpning i prattempo + 6 stegringslopp",
+    freshA: "25 min lugn löpning + 6 x 15 sek backe",
+    freshB: "3 x 5 min jämnt tempo, 2 min lugnt mellan",
+    minimumA: "20 min jogg/gång + 5 x 15 sek backe",
+    minimumB: "12 min rörlighet + 3 varv knäböj, armhävningar och planka",
+    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, bänkpress 3 x 6",
+    gymB: "marklyft 4 x 4, split squat 3 x 8/ben, farmers walk 4 x 30 m",
   },
   FB: {
     title: "Ytterbackar",
-    short: "Upprepad löpning, riktningsförändring och sista meter hem.",
-    focus: "Du ska orka gå framåt och ändå komma hem med fart.",
-    personal:
-      "Din roll kräver mest upprepade löpningar. Håll passen enkla men gör dem ordentligt: spring, vila kort, spring igen. Det är där du bygger kanten.",
-    sessions: [
-      "Pass 1: 35 min lugn löpning, sista 5 min lite snabbare.",
-      "Pass 2: 10 x 30 sek snabbt, 60 sek lugnt mellan.",
-      "Pass 3: 12 x 40 m sprint med riktningsbyte efter 20 m, gå tillbaka som vila.",
-      "Pass 4 valfritt: 25 min lätt jogg eller cykel + rörlighet vader/höft.",
-    ],
+    short: "Upprepad hög fart, riktningsförändring och sista meter hem.",
+    evidence:
+      "Ytterbackar hamnar ofta högt i högintensiv löpning: överlapp, återhämtning hemåt och upprepade aktioner längs kanten.",
+    personalFocus: "upprepad fart längs kanten, förmågan att komma hem igen och att orka nästa maxlöpning",
+    runA: "12 x 30 sek snabbt, 60 sek lugn jogg mellan",
+    runB: "10 x 40 m med riktningsbyte efter 20 m, gå tillbaka som vila",
+    runC: "35 min lugn löpning, sista 6 min lite snabbare",
+    freshA: "28 min lugn löpning + 6 x 20 sek snabbt",
+    freshB: "8 x 30 sek snabbt, 75 sek lugnt mellan",
+    minimumA: "22 min jogg/gång + 4 x 20 sek snabbt",
+    minimumB: "12 min rörlighet vader/höft + 3 varv utfall, tåhävningar och planka",
+    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, rumänska marklyft 3 x 6",
+    gymB: "marklyft 4 x 4, step-up 3 x 8/ben, hoppande utfall 3 x 6/ben",
   },
   MID: {
     title: "Mittfältare",
-    short: "Motor, tempo och återhämtning mellan aktioner.",
-    focus: "Du ska kunna jobba igen, igen och igen utan att tappa beslutskraft.",
-    personal:
-      "Din roll handlar om motor och rytm. Du behöver inte maxa varje pass, men du ska hålla igång hjärtat flera gånger i veckan och vänja kroppen vid många aktioner.",
-    sessions: [
-      "Pass 1: 35 min lugn löpning i jämnt tempo.",
-      "Pass 2: 5 x 3 min högt tempo, 90 sek lugn jogg mellan.",
-      "Pass 3: Fartlek 25 min: växla 1 min snabb, 1 min lugn.",
-      "Pass 4 valfritt: 20 min bolltouch eller lätt jogg + 10 min rörlighet.",
-    ],
+    short: "Motor, återhämtning och många aktioner utan tappad skärpa.",
+    evidence:
+      "Mittfältare ligger ofta högt i total distans och upprepade accelerationer/decelerationer, särskilt i de mest intensiva matchperioderna.",
+    personalFocus: "motorn, återhämtningen mellan aktioner och förmågan att fatta bra beslut även när pulsen är hög",
+    runA: "5 x 3 min högt tempo, 90 sek lugn jogg mellan",
+    runB: "fartlek 30 min: 1 min snabb, 1 min lugn hela vägen",
+    runC: "38 min lugn löpning i jämnt tempo + 6 stegringslopp",
+    freshA: "30 min lugn löpning + 5 x 30 sek snabbare",
+    freshB: "4 x 3 min bra tempo, 90 sek lugnt mellan",
+    minimumA: "22 min jogg/gång + 6 x 20 sek snabbare",
+    minimumB: "12 min rörlighet + 3 varv knäböj, höftlyft och planka",
+    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, utfall 3 x 8/ben",
+    gymB: "marklyft 4 x 4, frontböj eller goblet squat 3 x 6, bålrotation 3 x 10/sida",
   },
   FWD: {
     title: "Forwards",
     short: "Explosivitet, djupled och upprepade maxlöpningar.",
-    focus: "Du ska komma tillbaka med tryck i första steget och ork att hota bakom.",
-    personal:
-      "Din roll avgörs ofta i de första stegen. Kör enkelt: sprinta med kvalitet, vila tillräckligt och bygg upp löpningen så kroppen håller när vi startar igen.",
-    sessions: [
-      "Pass 1: 25-30 min lugn löpning + 6 stegringslopp.",
-      "Pass 2: 8 x 20 sek snabbt, 90 sek vila mellan.",
-      "Pass 3: 10 x 50 m djupledssprint, gå tillbaka som vila.",
-      "Pass 4 valfritt: 20 min lätt jogg + höft, baksida lår och vad.",
-    ],
+    evidence:
+      "Forwards behöver mycket hög fart i avgörande aktioner: hota bakom, trycka första steget och kunna sprinta igen efter kort vila.",
+    personalFocus: "första steget, djupledshotet och förmågan att sprinta med kvalitet även i slutet",
+    runA: "10 x 50 m djupledssprint, gå tillbaka som vila",
+    runB: "8 x 20 sek snabbt, 90 sek vila mellan",
+    runC: "28 min lugn löpning + 8 stegringslopp",
+    freshA: "25 min lugn löpning + 6 x 15 sek acceleration",
+    freshB: "8 x 20 sek snabbt, 90 sek vila mellan",
+    minimumA: "20 min jogg/gång + 5 x 15 sek acceleration",
+    minimumB: "12 min rörlighet baksida lår/höft + 3 varv höftlyft, tåhävningar och planka",
+    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, höftlyft 3 x 8",
+    gymB: "marklyft 4 x 4, bulgarian split squat 3 x 8/ben, vadpress 3 x 12",
   },
 };
+
+const AMBITION_LEVELS: AmbitionLevel[] = [
+  {
+    id: 1,
+    title: "Hög ambitionsnivå",
+    badge: "Gym + löpning",
+    tempo: "Högst tempo. Fyra pass per vecka. Två gympass och två löppass.",
+    promise:
+      "Det här är nivån att sträva mot. Inte för tränarens skull, utan för att du ska komma tillbaka lätt, stark och redo att konkurrera.",
+    className: "border-emerald-600/40 bg-emerald-600/5",
+  },
+  {
+    id: 2,
+    title: "Gillar att hålla mig fräsch",
+    badge: "Tre pass",
+    tempo: "Bra tempo. Tre pass per vecka. Tillräckligt för att kroppen inte ska tappa rytm.",
+    promise:
+      "Det här är respekt för dig själv. Du behöver inte maxa semestern, men du låter inte kroppen börja om från noll.",
+    className: "border-sky-600/35 bg-sky-600/5",
+  },
+  {
+    id: 3,
+    title: "Chipstuttar",
+    badge: "Minimum",
+    tempo: "Lägsta nivå. Två korta pass per vecka. Det räddar dig från total startsträcka, men inte mycket mer.",
+    promise:
+      "Skarpt sagt: väljer du den här nivån väljer du också att andra kan springa ifrån dig. Det är ditt beslut, men kroppen kommer visa valet.",
+    className: "border-rose-600/35 bg-rose-600/5",
+  },
+];
 
 const FOOD_RULES = [
   "Ät riktig mat först: protein, kolhydrater och grönsaker.",
@@ -129,30 +197,75 @@ const normalizeName = (name: string) =>
 function getTrainingRole(player: Player): TrainingRole {
   const name = normalizeName(player.name);
   if (FULLBACKS.has(name)) return "FB";
-  if (CENTER_BACKS.has(name)) return name === "vedad dzambegovic" ? "FB" : "CB";
+  if (CENTER_BACKS.has(name)) return "CB";
   if (player.position === "GK") return "GK";
   if (player.position === "DEF") return "CB";
   if (player.position === "MID") return "MID";
   return "FWD";
 }
 
-function getRoleNote(player: Player, role: TrainingRole) {
-  const firstName = player.name.split(" ")[0];
-  if (normalizeName(player.name) === "vedad dzambegovic") {
-    return `${firstName}, du finns både som back och ytterback. Kör ytterbacksschemat som grund, och lägg extra fokus på bålstyrkan från backarnas pass.`;
-  }
-
-  return `${firstName}, du kör ${ROLE_LABELS[role].toLowerCase()}-schemat. Det viktigaste är inte att göra mest, utan att göra 3-4 pass varje vecka fram till söndag 26/7.`;
+function firstName(player: Player) {
+  return player.name.split(" ")[0];
 }
 
 function groupPlayers(players: Player[]) {
   return players
-    .filter((player) => !EXCLUDED_PLAYERS.has(normalizeName(player.name)))
     .map((player) => ({ player, role: getTrainingRole(player) }))
     .sort((a, b) => {
       const roleSort = ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role);
       return roleSort || a.player.name.localeCompare(b.player.name, "sv");
     });
+}
+
+function getRoleNote(player: Player, role: TrainingRole) {
+  const name = firstName(player);
+  const plan = ROLE_PLANS[role];
+  if (normalizeName(player.name) === "vedad dzambegovic") {
+    return `${name}, du finns både som mittback och ytterback. Därför får ${name} ytterbackstempot som grund, men med extra respekt för duellstyrka och bål. ${player.name}, du ska komma tillbaka med ben som orkar kanten och kropp som klarar duellen.`;
+  }
+
+  return `${name}, du tränar som ${ROLE_LABELS[role].toLowerCase()}. För ${player.name} betyder det fokus på ${plan.personalFocus}. ${name}, välj nivå med ärlighet: målet är inte att imponera på någon annan, målet är att ${player.name} ska må bättre och spela bättre när vi ses igen.`;
+}
+
+function getPersonalLevelText(player: Player, level: AmbitionLevel, role: TrainingRole) {
+  const name = firstName(player);
+  const roleLabel = ROLE_LABELS[role].toLowerCase();
+
+  if (level.id === 1) {
+    return `${name}, kategori 1 är valet när ${player.name} vill komma tillbaka före många andra. Som ${roleLabel} behöver ${name} både löpningen och gymmet. ${player.name}, gör du detta ordentligt får du lättare steg, starkare kropp och mer självrespekt i första träningen.`;
+  }
+
+  if (level.id === 2) {
+    return `${name}, kategori 2 håller ${player.name} fräsch. Det är inte toppnivån, men det är ett moget beslut. ${name}, du skyddar kroppen från att tappa för mycket och du ger dig själv en ärlig chans när tempot går upp igen.`;
+  }
+
+  return `${name}, det här är chipstuttar-nivån. ${player.name} gör minimum och inget mer. Det är bättre än noll, men ${name}, välj inte detta och låtsas att kroppen ska kännas som kategori 1. ${player.name} äger valet och konsekvensen.`;
+}
+
+function getSchedule(role: TrainingRole, level: AmbitionId): ScheduleItem[] {
+  const plan = ROLE_PLANS[role];
+
+  if (level === 1) {
+    return [
+      { day: "Måndag", time: "09:00", work: `Löpning: ${plan.runA}. Gym: ${plan.gymA}.` },
+      { day: "Onsdag", time: "18:30", work: `Löpning: ${plan.runB}. Avsluta med 8 min bål.` },
+      { day: "Fredag", time: "09:00", work: `Gym: ${plan.gymB}. Löpning: 6 stegringslopp på 60 m.` },
+      { day: "Söndag", time: "10:00", work: plan.runC },
+    ];
+  }
+
+  if (level === 2) {
+    return [
+      { day: "Tisdag", time: "09:00", work: plan.freshA },
+      { day: "Torsdag", time: "18:30", work: plan.freshB },
+      { day: "Söndag", time: "10:00", work: "25 min lugn promenad/jogg + 10 min rörlighet." },
+    ];
+  }
+
+  return [
+    { day: "Onsdag", time: "19:00", work: plan.minimumA },
+    { day: "Söndag", time: "11:00", work: plan.minimumB },
+  ];
 }
 
 const BodyComparison = () => (
@@ -236,11 +349,11 @@ const Semestern2026 = () => {
       />
       <PageHero
         eyebrow="Laget · Semestern 2026"
-        title="Gå inte upp i vikt"
-        description="Ta hand om din kropp under sommaren. Det här är enkelt: 3-4 pass i veckan, mycket löpning, inga ursäkter och tillbaka redo söndag 26/7."
+        title="Personliga träningsscheman"
+        description="Tre nivåer fram till söndag 26/7. Du väljer själv, men välj med öppna ögon: kategori 1 bygger kroppen du vill spela med."
       >
         <div className="flex flex-wrap gap-2">
-          {["3-4 pass/vecka", "Utan gym", "Fram till 26/7", "Egen roll"].map((item) => (
+          {["1. Hög ambitionsnivå", "2. Håller mig fräsch", "3. Chipstuttar", "Fram till 26/7"].map((item) => (
             <span
               key={item}
               className="inline-flex min-h-9 items-center border border-emerald-600/25 bg-emerald-600/10 px-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-emerald-800"
@@ -261,11 +374,33 @@ const Semestern2026 = () => {
               Sommaren avgör hur tung första veckan känns.
             </h2>
             <p className="max-w-prose text-base leading-relaxed text-foreground/70">
-              Du behöver inte träna som ett proffs varje dag. Men du kan inte släppa kroppen helt och tro att första träningen blir gratis.
-              Håller du igång nu kommer du tillbaka lättare, piggare och mer redo att konkurrera direkt.
+              Det här är inte straffträning. Det är egen respekt. Håller du igång nu kommer du tillbaka lättare,
+              piggare och mer redo att konkurrera direkt. Släpper du allt blir vägen tillbaka längre.
             </p>
           </div>
           <BodyComparison />
+        </SectionReveal>
+
+        <SectionReveal as="section" className="mt-12">
+          <div className="mb-5">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Välj nivå</p>
+            <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground">Kategori 1 är riktmärket.</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+              Varje kategori är ett ärligt val. Skillnaden är tempo, krav och hur mycket du hjälper framtida dig.
+            </p>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-3">
+            {AMBITION_LEVELS.map((level) => (
+              <article key={level.id} className={cn("border p-5", level.className)}>
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">{level.badge}</p>
+                <h2 className="mt-2 text-2xl font-black text-foreground">
+                  {level.id}. {level.title}
+                </h2>
+                <p className="mt-3 text-sm font-semibold leading-relaxed text-foreground/80">{level.tempo}</p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{level.promise}</p>
+              </article>
+            ))}
+          </div>
         </SectionReveal>
 
         <SectionReveal as="section" className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
@@ -296,18 +431,18 @@ const Semestern2026 = () => {
         <SectionReveal as="section" className="mt-12">
           <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Positionsschema</p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground">Välj ditt schema och genomför.</h2>
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Positionskrav</p>
+              <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground">Schemat styrs av din roll.</h2>
             </div>
             <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              Kör pass 1-3 varje vecka. Pass 4 är bonus om kroppen känns bra.
+              Forskningen om matchkrav visar att positioner belastas olika. Därför ska inte alla springa exakt samma pass.
             </p>
           </div>
           <div className="grid gap-4 lg:grid-cols-5">
             {ROLE_ORDER.map((role) => {
               const plan = ROLE_PLANS[role];
               return (
-                <article key={role} className="flex min-h-[24rem] flex-col border border-border bg-card p-4">
+                <article key={role} className="flex min-h-[20rem] flex-col border border-border bg-card p-4">
                   <div className="mb-4 flex items-start justify-between gap-3">
                     <div>
                       <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">
@@ -322,14 +457,7 @@ const Semestern2026 = () => {
                     )}
                   </div>
                   <p className="text-sm font-semibold leading-relaxed text-foreground/80">{plan.short}</p>
-                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{plan.focus}</p>
-                  <ul className="mt-5 space-y-3">
-                    {plan.sessions.map((session) => (
-                      <li key={session} className="border-l-2 border-accent/50 pl-3 text-xs font-semibold leading-relaxed text-foreground/75">
-                        {session}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{plan.evidence}</p>
                 </article>
               );
             })}
@@ -360,26 +488,64 @@ const Semestern2026 = () => {
                       </span>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5">
-                    <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.8fr)]">
-                      <div className="space-y-3">
-                        <p className="text-sm font-semibold leading-relaxed text-foreground/80">
-                          {getRoleNote(player, role)}
-                        </p>
-                        <p className="text-sm leading-relaxed text-muted-foreground">{plan.personal}</p>
+                  <AccordionContent className="pb-6">
+                    <div className="space-y-5">
+                      <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(16rem,0.72fr)]">
+                        <div className="space-y-3">
+                          <p className="text-sm font-semibold leading-relaxed text-foreground/85">
+                            {getRoleNote(player, role)}
+                          </p>
+                          <p className="text-sm leading-relaxed text-muted-foreground">
+                            Positionsfokus: {plan.evidence}
+                          </p>
+                        </div>
+                        <div className={cn("border border-border bg-background p-4", role === "FB" && "border-emerald-500/40 bg-emerald-500/5")}>
+                          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                            Period
+                          </p>
+                          <p className="text-sm font-semibold leading-relaxed text-foreground/80">
+                            Upprepa valt veckoschema varje vecka fram till söndag 26/7.
+                          </p>
+                        </div>
                       </div>
-                      <div className={cn("border border-border bg-background p-4", role === "FB" && "border-emerald-500/40 bg-emerald-500/5")}>
-                        <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
-                          Din vecka
-                        </p>
-                        <ul className="space-y-2">
-                          {plan.sessions.slice(0, 3).map((session) => (
-                            <li key={session} className="flex gap-2 text-xs font-semibold leading-relaxed text-foreground/75">
-                              <Activity className="mt-0.5 h-3.5 w-3.5 shrink-0 text-accent" aria-hidden="true" />
-                              {session}
-                            </li>
-                          ))}
-                        </ul>
+
+                      <div className="grid gap-4 xl:grid-cols-3">
+                        {AMBITION_LEVELS.map((level) => (
+                          <article key={level.id} className={cn("border p-4", level.className)}>
+                            <div className="mb-3 flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                                  {level.badge}
+                                </p>
+                                <h3 className="mt-1 text-xl font-black text-foreground">
+                                  {level.id}. {level.title}
+                                </h3>
+                              </div>
+                              {level.id === 1 ? (
+                                <Dumbbell className="h-5 w-5 shrink-0 text-emerald-700" aria-hidden="true" />
+                              ) : level.id === 2 ? (
+                                <Activity className="h-5 w-5 shrink-0 text-sky-700" aria-hidden="true" />
+                              ) : (
+                                <Zap className="h-5 w-5 shrink-0 text-rose-700" aria-hidden="true" />
+                              )}
+                            </div>
+                            <p className="text-sm leading-relaxed text-foreground/80">
+                              {getPersonalLevelText(player, level, role)}
+                            </p>
+                            <ul className="mt-4 space-y-3">
+                              {getSchedule(role, level.id).map((item) => (
+                                <li key={`${item.day}-${item.time}`} className="border-l-2 border-accent/50 pl-3">
+                                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                                    {item.day} · {item.time}
+                                  </p>
+                                  <p className="mt-1 text-xs font-semibold leading-relaxed text-foreground/75">
+                                    {item.work}
+                                  </p>
+                                </li>
+                              ))}
+                            </ul>
+                          </article>
+                        ))}
                       </div>
                     </div>
                   </AccordionContent>
@@ -396,8 +562,8 @@ const Semestern2026 = () => {
           <div>
             <h2 className="text-2xl font-black text-foreground">Regeln är enkel.</h2>
             <p className="mt-2 max-w-3xl text-sm leading-relaxed text-foreground/75">
-              Gör 3 pass varje vecka fram till söndag 26/7. Har du energi gör du ett fjärde lugnt pass. Inget gym behövs:
-              skor, vatten, lite disciplin och kroppen du ska ta hand om.
+              Välj en nivå och gör passen varje vecka fram till söndag 26/7. Kategori 1 är målet. Kategori 2 håller dig fräsch.
+              Kategori 3 är minsta möjliga. Beslutet är ditt, effekten är också din.
             </p>
           </div>
         </SectionReveal>

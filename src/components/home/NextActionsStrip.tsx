@@ -12,7 +12,7 @@
 
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, CalendarClock, Film, PlayCircle } from "lucide-react";
+import { ArrowRight, CalendarClock, Dumbbell, Film, PlayCircle } from "lucide-react";
 import { MATCH_META } from "@/data/matchplan";
 import { useAuthSession } from "@/hooks/useAuthSession";
 
@@ -24,12 +24,13 @@ type Action = {
   description: string;
   meta: string;
   Icon: typeof CalendarClock;
-  accent: "amber" | "blue" | "violet";
+  accent: "amber" | "blue" | "green" | "violet";
 };
 
 const ACCENT = {
   amber:  { bar: "bg-amber-500",  iconBg: "bg-amber-500/15",  iconText: "text-amber-700",  ring: "hover:border-amber-500/70 hover:bg-amber-50/40" },
   blue:   { bar: "bg-sky-500",    iconBg: "bg-sky-500/15",    iconText: "text-sky-700",    ring: "hover:border-sky-500/70 hover:bg-sky-50/40" },
+  green:  { bar: "bg-emerald-500", iconBg: "bg-emerald-500/15", iconText: "text-emerald-700", ring: "hover:border-emerald-500/70 hover:bg-emerald-50/40" },
   violet: { bar: "bg-violet-500", iconBg: "bg-violet-500/15", iconText: "text-violet-700", ring: "hover:border-violet-500/70 hover:bg-violet-50/40" },
 } as const;
 
@@ -42,6 +43,15 @@ export default function NextActionsStrip() {
   if (authLoading || !isAuthed) return null;
 
   const actions: Action[] = [
+    {
+      to: "/semestern-2026",
+      eyebrow: "Semester 2026",
+      title: "Personliga träningsscheman",
+      description: "Välj nivå: hög ambition, hålla dig fräsch eller minsta möjliga. Löpning och gym fram till 26/7.",
+      meta: "Laget · spelare · position",
+      Icon: Dumbbell,
+      accent: "green",
+    },
     {
       to: "/match/kommande",
       eyebrow: "Veckans match",
@@ -84,12 +94,12 @@ export default function NextActionsStrip() {
               Nästa steg
             </p>
             <h2 className="mt-1 text-xl font-black tracking-tight text-foreground md:text-2xl">
-              Tre vägar in
+              Fyra vägar in
             </h2>
           </div>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {actions.map((a, i) => {
             const tone = ACCENT[a.accent];
             const href = a.hash ? `${a.to}${a.hash}` : a.to;

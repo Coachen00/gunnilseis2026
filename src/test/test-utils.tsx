@@ -3,6 +3,11 @@ import { render, type RenderOptions } from "@testing-library/react";
 import { MemoryRouter, type MemoryRouterProps } from "react-router-dom";
 import type { ReactElement, ReactNode } from "react";
 
+export const routerFuture: MemoryRouterProps["future"] = {
+  v7_relativeSplatPath: true,
+  v7_startTransition: true,
+};
+
 /**
  * Skapa en isolerad QueryClient per test för att undvika cache-läckage.
  * `retry: false` så att fejkade fel inte triggar autoretry under test.
@@ -23,9 +28,12 @@ interface ProvidersProps {
 
 export function TestProviders({ children, routerProps }: ProvidersProps) {
   const client = makeTestQueryClient();
+  const { future, ...restRouterProps } = routerProps ?? {};
   return (
     <QueryClientProvider client={client}>
-      <MemoryRouter {...routerProps}>{children}</MemoryRouter>
+      <MemoryRouter {...restRouterProps} future={{ ...routerFuture, ...future }}>
+        {children}
+      </MemoryRouter>
     </QueryClientProvider>
   );
 }

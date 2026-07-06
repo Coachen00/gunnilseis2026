@@ -8,7 +8,7 @@ import LogoutButton from "@/components/LogoutButton";
 import NavDropdown, { NavGroup } from "@/components/NavDropdown";
 import { getSharedAccessUser, subscribeSharedAccess, type SharedAccessUser } from "@/lib/sharedAccess";
 
-type SimpleItem = { kind: "link"; to: string; label: string };
+type SimpleItem = { kind: "link"; to: string; label: string; featured?: boolean };
 type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
 type NavItem = SimpleItem | DropdownItem;
 
@@ -83,6 +83,7 @@ const coachGroups: NavGroup[] = [
 ];
 
 const navItems: NavItem[] = [
+  { kind: "link", to: "/semestern-2026", label: "Personliga träningsscheman", featured: true },
   { kind: "link", to: "/", label: "Hem" },
   {
     kind: "dropdown",
@@ -242,8 +243,10 @@ const TopNav = () => {
                 className={({ isActive }) =>
                   cn(
                     "relative px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
-                    "text-muted-foreground hover:text-foreground",
-                    isActive && "text-foreground"
+                    item.featured
+                      ? "bg-emerald-600 text-white font-black shadow-sm hover:bg-emerald-700 hover:text-white"
+                      : "text-muted-foreground hover:text-foreground",
+                    isActive && (item.featured ? "bg-emerald-700 text-white" : "text-foreground")
                   )
                 }
               >
@@ -253,6 +256,7 @@ const TopNav = () => {
                     <span
                       className={cn(
                         "absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-accent transition-all duration-300",
+                        item.featured && "bg-white",
                         isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
                       )}
                     />
@@ -374,9 +378,11 @@ const TopNav = () => {
                 className={({ isActive }) =>
                   cn(
                     "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
-                    isActive
-                      ? "bg-card text-accent border-l-2 border-accent"
-                      : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
+                    item.featured
+                      ? "bg-emerald-600 text-white font-black border-l-2 border-emerald-800"
+                      : isActive
+                        ? "bg-card text-accent border-l-2 border-accent"
+                        : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
                   )
                 }
               >

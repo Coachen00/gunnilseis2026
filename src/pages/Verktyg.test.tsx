@@ -2,10 +2,11 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import Verktyg from "./Verktyg";
+import { routerFuture } from "@/test/test-utils";
 
 const renderPage = () =>
   render(
-    <MemoryRouter initialEntries={["/verktyg"]}>
+    <MemoryRouter initialEntries={["/verktyg"]} future={routerFuture}>
       <Verktyg />
     </MemoryRouter>
   );

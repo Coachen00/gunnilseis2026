@@ -24,8 +24,8 @@ const cards: Card[] = [
   {
     to: "/semestern-2026",
     label: "Sommar",
-    title: "Semestern 2026",
-    description: "Gå inte upp i vikt — personliga löpscheman fram till 26/7.",
+    title: "Personliga träningsscheman - Semester 2026",
+    description: "Tre ambitionsnivåer per spelare: gym, löpning och tydligt schema fram till 26/7.",
     Icon: Dumbbell,
   },
   {

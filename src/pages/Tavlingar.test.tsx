@@ -3,10 +3,11 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import Tavlingar from "./Tavlingar";
 import { DUMLE_CUP_PLAYERS, rankPlayers } from "@/data/tavlingar";
+import { routerFuture } from "@/test/test-utils";
 
 const renderPage = () =>
   render(
-    <MemoryRouter initialEntries={["/tavlingar"]}>
+    <MemoryRouter initialEntries={["/tavlingar"]} future={routerFuture}>
       <Tavlingar />
     </MemoryRouter>
   );

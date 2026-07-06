@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import Spelarvard from "./Spelarvard";
 import { inferDocKind } from "@/hooks/useSpelarvardDocs";
 import { SPELARVARD_AREAS, SPELARVARD_SECTIONS, SPELARVARD_TITLE } from "@/data/spelarvard";
+import { routerFuture } from "@/test/test-utils";
 
 // Permissiv supabase-mock → ingen admin, inga uppladdade dokument (allt tomt).
 vi.mock("@/integrations/supabase/client", async () => {
@@ -12,11 +13,32 @@ vi.mock("@/integrations/supabase/client", async () => {
   return m.createSupabaseMock();
 });
 
+vi.mock("@/hooks/useIsAdmin", () => ({
+  useIsAdmin: () => ({ isAdmin: false, loading: false, user: null }),
+}));
+
+vi.mock("@/hooks/useSpelarvardDocs", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/hooks/useSpelarvardDocs")>();
+  return {
+    ...actual,
+    useSpelarvardDocs: () => ({
+      addLink: vi.fn(),
+      bySection: new Map(),
+      deleteDoc: vi.fn(),
+      isLoading: false,
+      refresh: vi.fn(),
+      rows: [],
+      uploadDoc: vi.fn(),
+    }),
+    useSpelarvardSignedUrl: () => ({ data: null, isLoading: false }),
+  };
+});
+
 const renderPage = () => {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
     <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={["/spelarvard"]}>
+      <MemoryRouter initialEntries={["/spelarvard"]} future={routerFuture}>
         <Spelarvard />
       </MemoryRouter>
     </QueryClientProvider>

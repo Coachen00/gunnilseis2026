@@ -2,6 +2,7 @@ import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import Taktiktavla from "./Taktiktavla";
+import { routerFuture } from "@/test/test-utils";
 
 declare global {
   interface Window {
@@ -25,7 +26,7 @@ describe("Taktiktavla", () => {
     window.html2canvas = vi.fn();
 
     const { unmount } = render(
-      <MemoryRouter>
+      <MemoryRouter future={routerFuture}>
         <Taktiktavla />
       </MemoryRouter>
     );

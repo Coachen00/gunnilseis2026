@@ -3,10 +3,11 @@ import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import Period1 from "./Period1";
 import { PERIOD_1, PERIOD_1_PRINCIPLES, PERIOD_1_REFERENCES } from "@/data/period1";
+import { routerFuture } from "@/test/test-utils";
 
 const renderAt = (path = "/period/1") =>
   render(
-    <MemoryRouter initialEntries={[path]}>
+    <MemoryRouter initialEntries={[path]} future={routerFuture}>
       <Period1 />
     </MemoryRouter>
   );

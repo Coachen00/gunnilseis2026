@@ -15,7 +15,7 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
-import { ArrowRight, CalendarClock, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
+import { ArrowRight, CalendarClock, Dumbbell, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
 import HomeCalendarBoard from "./HomeCalendarBoard";
@@ -207,18 +207,22 @@ export default function MagicalPitchHero() {
                 className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
               >
                 <Link
-                  to="/maj-2026"
+                  to={showSummerBodyMessage ? "/semestern-2026" : "/maj-2026"}
                   className="group inline-flex h-12 items-center justify-center gap-2 bg-amber-400 px-7 text-sm font-black uppercase tracking-[0.12em] text-[#1a1108] transition hover:bg-amber-300"
                 >
-                  <PlayCircle className="h-4 w-4" strokeWidth={2.3} />
-                  Så spelar vi
+                  {showSummerBodyMessage ? (
+                    <Dumbbell className="h-4 w-4" strokeWidth={2.3} />
+                  ) : (
+                    <PlayCircle className="h-4 w-4" strokeWidth={2.3} />
+                  )}
+                  {showSummerBodyMessage ? "Personliga träningsscheman" : "Så spelar vi"}
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" strokeWidth={2.4} />
                 </Link>
 
                 {showSummerBodyMessage ? (
                   <>
                     <Link
-                      to="/maj-2026"
+                      to="/semestern-2026"
                       className="inline-flex h-12 items-center justify-center gap-2 border border-amber-300/30 bg-amber-300/5 px-6 text-sm font-bold uppercase tracking-[0.12em] text-amber-100 backdrop-blur-sm transition hover:border-amber-300/70 hover:text-amber-300"
                     >
                       <CalendarClock className="h-4 w-4" strokeWidth={2.3} />

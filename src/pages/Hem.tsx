@@ -4,7 +4,7 @@ import LastMatchResult from "@/components/home/LastMatchResult";
 import NextActionsStrip from "@/components/home/NextActionsStrip";
 import HomeWorlds from "@/components/home/HomeWorlds";
 import { useAuthSession } from "@/hooks/useAuthSession";
-import { ZONES_INTRO_SEEN_KEY } from "@/components/zones/ZonesIntroOverlay";
+import { ZONES_INTRO_SEEN_KEY } from "@/components/zones/zonesIntroConstants";
 
 // Lazy: gäster och återbesök i samma session ska aldrig betala för chunken.
 const ZonesIntroOverlay = lazy(() => import("@/components/zones/ZonesIntroOverlay"));

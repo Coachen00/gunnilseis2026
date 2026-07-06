@@ -16,8 +16,6 @@ import { X } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import PitchZonesAnimation from "./PitchZonesAnimation";
 
-export const ZONES_INTRO_SEEN_KEY = "zones_intro_seen_v1";
-
 export default function ZonesIntroOverlay({ onClose }: { onClose: () => void }) {
   const reduced = Boolean(useReducedMotion());
   const [leaving, setLeaving] = useState(false);

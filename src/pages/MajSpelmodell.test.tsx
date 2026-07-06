@@ -2,6 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import MajSpelmodell from "./MajSpelmodell";
+import { routerFuture } from "@/test/test-utils";
 import {
   MAJ_2026_BLOCKS,
   MAJ_2026_HERO,
@@ -11,7 +12,7 @@ import {
 
 const renderPage = () =>
   render(
-    <MemoryRouter initialEntries={["/maj-2026"]}>
+    <MemoryRouter initialEntries={["/maj-2026"]} future={routerFuture}>
       <MajSpelmodell />
     </MemoryRouter>
   );
