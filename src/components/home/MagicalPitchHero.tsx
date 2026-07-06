@@ -207,7 +207,7 @@ export default function MagicalPitchHero() {
                 className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
               >
                 <Link
-                  to={showSummerBodyMessage ? "/semestern-2026" : "/maj-2026"}
+                  to={showSummerBodyMessage ? "/semestern-2026" : "/spelmodell"}
                   className="group inline-flex h-12 items-center justify-center gap-2 bg-amber-400 px-7 text-sm font-black uppercase tracking-[0.12em] text-[#1a1108] transition hover:bg-amber-300"
                 >
                   {showSummerBodyMessage ? (
@@ -229,7 +229,7 @@ export default function MagicalPitchHero() {
                       Sommar 2026
                     </Link>
                     <Link
-                      to="/maj-2026#filmbibliotek"
+                      to="/spelmodell#filmbibliotek"
                       className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/80 transition hover:text-amber-200"
                     >
                       <Film className="h-3.5 w-3.5" strokeWidth={2.3} />
@@ -246,7 +246,7 @@ export default function MagicalPitchHero() {
                       Veckans match
                     </Link>
                     <Link
-                      to="/maj-2026#filmbibliotek"
+                      to="/spelmodell#filmbibliotek"
                       className="inline-flex h-12 items-center justify-center gap-2 px-3 text-xs font-bold uppercase tracking-[0.18em] text-amber-200/80 transition hover:text-amber-200"
                     >
                       <Film className="h-3.5 w-3.5" strokeWidth={2.3} />

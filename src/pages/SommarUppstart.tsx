@@ -915,7 +915,7 @@ const SommarUppstart = () => {
               Nollställ arbetsytan
             </button>
             <Link
-              to="/maj-2026"
+              to="/spelmodell"
               className="inline-flex items-center gap-2 rounded-md border border-amber-500 bg-amber-500 px-4 py-2.5 font-mono text-[11px] font-black uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-amber-400"
             >
               <Target className="h-4 w-4" strokeWidth={2.2} />

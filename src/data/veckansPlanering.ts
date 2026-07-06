@@ -1,5 +1,5 @@
 /**
- * Veckans planering på /maj-2026 — vad vi tränar på + nästa match.
+ * Veckans planering på /spelmodell — vad vi tränar på + nästa match.
  *
  * Editera detta för att uppdatera "Veckans planering"-sektionen.
  * Renderas av <VeckansPlanering /> i src/components/maj2026/VeckansPlanering.tsx.
@@ -138,7 +138,7 @@ export const VECKANS_PLANERING = {
         "Förstart: matchblad + uppvärmning enligt vår rutin.",
         "Halvlek: snabb återkoppling på trianglarna + tempo, inga monologer.",
         "Efter slutsignal: kort lagsamling — vad såg vi av temana? Kollektiv reflektion innan individuell.",
-        "Klipp filmas — används till nästa veckas reflektion på /maj-2026.",
+        "Klipp filmas — används till nästa veckas reflektion på /spelmodell.",
       ],
     },
   ] as SessionItem[],

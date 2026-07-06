@@ -212,7 +212,7 @@ const FemUpphojtFem = () => {
                 </h2>
               </div>
               <SystemMap
-                capstone={{ label: "Var förberedd", sub: "Taket — allt börjar med att komma förberedd." }}
+                capstone={{ label: "Vi vet vad vi ska göra innan situationen händer", sub: "Taket — allt börjar med att komma förberedd." }}
                 columns={mapColumns}
               />
             </SectionReveal>

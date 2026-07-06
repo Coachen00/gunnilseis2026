@@ -36,6 +36,7 @@ import {
   type BlockColor,
   type MajBlock,
   type MediaAsset,
+  type PrincipleDef,
 } from "@/data/majSpelmodell";
 import PrincipleMediaSlot from "@/components/PrincipleMediaSlot";
 import FilmLibrary from "@/components/maj/FilmLibrary";
@@ -51,6 +52,61 @@ const AdminOnly = ({ children }: { children: React.ReactNode }) => {
   if (loading || !isAdmin) return null;
   return <>{children}</>;
 };
+
+const MODEL_INTRO = [
+  {
+    title: "Vad är en spelmodell?",
+    text: "En spelmodell är våra gemensamma beslut före, under och efter match. Den gör att elva spelare kan känna igen samma situation och agera ihop.",
+  },
+  {
+    title: "Varför vi behöver den",
+    text: "För att spelaren inte ska behöva gissa. När matchen blir stressig ska modellen ge nästa handling: pressa, säkra, spela framåt eller falla hem.",
+  },
+  {
+    title: "Vår identitet i en mening",
+    text: "Vi är ett lag som skyddar mitten, spelar framåt när läget finns, fyller boxen och reagerar direkt när bollen byter ägare.",
+  },
+  {
+    title: "De sex delarna",
+    text: "Försvar, vinna boll, anfall, tappa boll, identitet och fasta situationer. Det är matchens karta.",
+  },
+  {
+    title: "Vad gör spelaren först?",
+    text: "Känn igen skedet: försvarar vi, vinner vi bollen, anfaller vi, tappar vi bollen eller står bollen still? Välj sedan handlingen som hör till skedet.",
+  },
+  {
+    title: "Hur detta tränas",
+    text: "Varje princip tränas med matchsignal, spelarhandling och laghandling. Övningen ska likna situationen vi vill se i match.",
+  },
+  {
+    title: "Hur detta syns i match",
+    text: "Vi letar efter tydliga matchtecken: press, spelbarhet, löpningar, fyll boxen, återerövring och kontroll efter bolltapp.",
+  },
+  {
+    title: "Hur vi följer upp",
+    text: "Efter träning och match jämför vi beteenden mot principerna. Först språk, sedan klipp, sedan nästa justering.",
+  },
+] as const;
+
+const MODEL_FLOW = ["Skede", "Matchsignal", "Spelarhandling", "Laghandling", "Träning", "Matchtecken"] as const;
+
+const GLOSSARY = [
+  { term: "Spelmodell", definition: "Vårt gemensamma språk för matchens olika lägen.", match: "Matchen byter läge hela tiden.", action: "Använd modellen för att veta nästa beslut." },
+  { term: "Spelidé", definition: "Vår övergripande tanke om hur vi vill spela.", match: "Vårt sätt att vinna matchens vanligaste situationer.", action: "Välj lösningen som passar vår idé, inte bara första impulsen." },
+  { term: "Princip", definition: "En regel för ett återkommande fotbollsproblem.", match: "En återkommande situation dyker upp.", action: "Gör samma kloka beslut oftare." },
+  { term: "Roll", definition: "Ditt ansvar i laget när skedet ändras.", match: "Din position hamnar i ett skede.", action: "Ta ansvaret som hör till din plats." },
+  { term: "Trigger", definition: "En signal som säger att vi ska agera nu.", match: "En signal startar nästa beteende.", action: "Reagera direkt när signalen kommer." },
+  { term: "Scanning", definition: "Att titta runt innan bollen kommer.", match: "Du ska få eller vinna bollen.", action: "Titta före mottagning så du vet nästa passning." },
+  { term: "Positionering", definition: "Att placera kroppen där du hjälper laget mest.", match: "Bollen, mål och motståndare flyttar sig.", action: "Stå där du hjälper laget mest just nu." },
+  { term: "Press", definition: "Att störa bollhållaren så nästa pass blir sämre.", match: "Motståndaren kan spela framåt.", action: "Gå på bollhållaren och styr bort från farlig yta." },
+  { term: "Understöd", definition: "Hjälpen nära spelaren som agerar först.", match: "Lagkamrat pressar eller har boll.", action: "Ge hjälp bakom, bredvid eller framför." },
+  { term: "Spelvändning", definition: "Att flytta bollen från trång sida till fri sida.", match: "En sida är låst.", action: "Flytta bollen till fri sida med tempo." },
+  { term: "Yta", definition: "Platsen där vi kan vinna tid, meter eller fördel.", match: "Motståndaren lämnar plats mellan spelare eller lagdelar.", action: "Ta ytan innan den stängs." },
+  { term: "Tredje man", definition: "Spelaren som blir fri efter två andra har bundit press.", match: "Två spelare binder press.", action: "Bli nästa fria spelare." },
+  { term: "Omställning", definition: "Sekunden när bollen byter lag.", match: "Bollen byter ägare.", action: "Byt beteende direkt: framåt eller återerövra." },
+  { term: "Spelbarhet", definition: "Att vara ett bra passningsalternativ.", match: "Lagkamrat har boll.", action: "Ge minst ett tryggt och ett framåtriktat alternativ." },
+  { term: "Relationer", definition: "Hur närliggande spelare hjälper varandra.", match: "Två eller tre spelare löser ytan ihop.", action: "Håll avstånd, vinkel och tajming till spelarna runt dig." },
+] as const;
 
 /* =========================================================================
    COLOR TOKENS — light palette (matchar sajtens default-tema)
@@ -249,6 +305,101 @@ function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
       </div>
       <MediaGrid items={items} columns={items.length >= 3 ? 3 : 2} />
     </div>
+  );
+}
+
+function ModelIntro() {
+  return (
+    <section id="vad-ar-spelmodellen" className="scroll-mt-24 border-b border-border bg-background py-14 md:py-18">
+      <div className="container">
+        <div className="mb-6 flex items-center gap-3">
+          <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+            Vi vet vad vi ska göra innan situationen händer
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {MODEL_INTRO.map((item) => (
+            <article key={item.title} className="border border-border bg-card p-5">
+              <h2 className="text-lg font-black tracking-tight text-foreground">{item.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/72">{item.text}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-6 border border-amber-500/40 bg-amber-50 p-5">
+          <h2 className="text-xl font-black tracking-tight text-foreground">Så används den</h2>
+          <ol className="mt-3 grid gap-2 text-sm font-semibold text-foreground/78 md:grid-cols-3 xl:grid-cols-6">
+            {MODEL_FLOW.map((step, i) => (
+              <li key={step} className="flex items-center gap-2">
+                <span className="font-mono text-[10px] font-black text-amber-700">{String(i + 1).padStart(2, "0")}</span>
+                {step}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PrincipleLearningCard({ principle }: { principle: PrincipleDef }) {
+  const rows = [
+    ["Definition", principle.definition],
+    ["Matchsignal", principle.matchSignal],
+    ["Spelaren gör", principle.playerAction],
+    ["Laget gör", principle.teamAction],
+    ["Träna så här", principle.trainingAction],
+    ["Matchtecken", principle.matchMetric],
+  ] as const;
+
+  return (
+    <dl className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {rows.map(([label, text]) => (
+        <div key={label} className="border border-border bg-card p-3">
+          <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">{label}</dt>
+          <dd className="mt-1 text-sm leading-relaxed text-foreground/78">{text}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function GlossarySection() {
+  return (
+    <section id="ordlista" className="scroll-mt-24 border-t border-border bg-muted/30 py-16 md:py-20">
+      <div className="container">
+        <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div className="mb-3 flex items-center gap-3">
+              <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
+              <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Ordlista</p>
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
+              Begrepp som måste betyda samma sak för alla
+            </h2>
+          </div>
+          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+            Varje ord ska kunna kopplas till matchbild och spelarhandling. Om ordet inte hjälper nästa aktion ska det inte styra spelaren.
+          </p>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {GLOSSARY.map((item) => (
+            <article key={item.term} className="border border-border bg-background p-4">
+              <h3 className="text-base font-black text-foreground">{item.term}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/70">
+                <span className="font-bold text-foreground">Enkelt:</span> {item.definition}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-foreground/70">
+                <span className="font-bold text-foreground">I match:</span> {item.match}
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-foreground/70">
+                <span className="font-bold text-foreground">Spelaren:</span> {item.action}
+              </p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -851,6 +1002,9 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
                           </div>
                         ) : null;
                       })()}
+                      <div className="mb-5">
+                        <PrincipleLearningCard principle={p} />
+                      </div>
                       <AdminOnly>
                         <PrincipleMediaSlot
                           blockId={block.id}
@@ -907,11 +1061,7 @@ function Hero() {
         </h1>
 
         <p className="mt-8 max-w-3xl text-base leading-relaxed text-foreground/78 md:text-lg">
-          Vi <span className="font-bold text-rose-700">försvarar tillsammans</span>, ställer om{" "}
-          <span className="font-bold text-amber-700">framåt</span>, attackerar{" "}
-          <span className="font-bold text-sky-700">assistytan</span>,{" "}
-          <span className="font-bold text-rose-700">återerövrar direkt</span> och visar{" "}
-          <span className="font-bold text-amber-700">identitet</span> i varje sekund. Sex block. Inga ursäkter.
+          {MAJ_2026_HERO.description}
         </p>
 
         {/* Nav cards — anchor links matching the test by name */}
@@ -1126,6 +1276,7 @@ const MajSpelmodell = () => {
   return (
   <div className="relative -mt-px bg-background text-foreground">
     <Hero />
+    <ModelIntro />
     {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
         nivå 2 (blocken) → nivå 3 (filmbibliotek + övrigt). */}
     <GrundenSection />
@@ -1163,6 +1314,7 @@ const MajSpelmodell = () => {
       </div>
     </div>
     <FilmLibrary />
+    <GlossarySection />
 
     {/* Övrigt — filmer/bilder utan koppling till specifik princip */}
     {MAJ_2026_OVRIGT_MEDIA.length > 0 && (

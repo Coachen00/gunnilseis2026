@@ -10,9 +10,18 @@ import {
   MAJ_2026_PRINCIPLE_MEDIA,
 } from "@/data/majSpelmodell";
 
-const renderPage = () =>
+const REQUIRED_PRINCIPLE_FIELDS = [
+  "definition",
+  "matchSignal",
+  "playerAction",
+  "teamAction",
+  "trainingAction",
+  "matchMetric",
+] as const;
+
+const renderPage = (route = "/spelmodell") =>
   render(
-    <MemoryRouter initialEntries={["/maj-2026"]} future={routerFuture}>
+    <MemoryRouter initialEntries={[route]} future={routerFuture}>
       <MajSpelmodell />
     </MemoryRouter>
   );
@@ -20,9 +29,35 @@ const renderPage = () =>
 describe("MajSpelmodell page", () => {
   afterEach(cleanup);
 
-  it("renderar hero med rubriken SÅ SPELAR VI FOTBOLL", () => {
+  it("renderar hero med canonical rubrik för spelmodellen", () => {
     renderPage();
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(MAJ_2026_HERO.title);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");
+  });
+
+  it("förklarar vad modellen är, varför den finns och hur den används", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { name: /vad är en spelmodell/i })).toBeInTheDocument();
+    expect(screen.getAllByText(/vårt gemensamma språk för matchen/i).length).toBeGreaterThan(0);
+    for (const heading of [
+      /varför vi behöver den/i,
+      /vår identitet i en mening/i,
+      /de sex delarna/i,
+      /vad gör spelaren först/i,
+      /hur detta tränas/i,
+      /hur detta syns i match/i,
+      /hur vi följer upp/i,
+    ]) {
+      expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
+    }
+    for (const step of ["Skede", "Matchsignal", "Spelarhandling", "Laghandling", "Träning", "Matchtecken"]) {
+      expect(screen.getAllByText(step).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("legacy-url /maj-2026 renderar samma huvudmodell utan krasch", () => {
+    renderPage("/maj-2026");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");
   });
 
   it("renderar alla sex navkort som ankarlänkar", () => {
@@ -77,8 +112,20 @@ describe("MajSpelmodell page", () => {
         expect(p.id).toMatch(/^[a-z0-9-]+$/);
         expect(p.label.length).toBeGreaterThan(0);
         expect(p.oneLiner.length).toBeGreaterThan(0);
+        for (const field of REQUIRED_PRINCIPLE_FIELDS) {
+          expect(p[field].length).toBeGreaterThan(0);
+        }
       }
     }
+  });
+
+  it("visar ordlista och håller störande interncopy borta från huvudmodellen", () => {
+    renderPage();
+    for (const term of ["Spelmodell", "Spelidé", "Princip", "Roll", "Trigger", "Scanning", "Positionering", "Press", "Understöd", "Spelvändning", "Yta", "Tredje man", "Omställning", "Spelbarhet", "Relationer"]) {
+      expect(screen.getByRole("heading", { name: term })).toBeInTheDocument();
+    }
+    expect(screen.queryByText(/pseudokontring/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/saknat underlag|missing input|behöver fyllas/i)).not.toBeInTheDocument();
   });
 
   it("sorterar Björkö-spellistans klipp efter titel till rätt princip", () => {

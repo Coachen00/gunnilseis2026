@@ -23,8 +23,8 @@ type Card = { to: string; label: string; title: string; description: string; Ico
 /* Vår idé — ingången till hela modellen. */
 const ide: Card[] = [
   {
-    to: "/maj-2026",
-    label: "Idé · Var förberedd",
+    to: "/spelmodell",
+    label: "Idé · Förberedelse",
     title: "Så spelar vi",
     description: "Hela spelmodellen i översikt — sex faser, ett lag, en idé.",
     Icon: Compass,
@@ -121,7 +121,7 @@ const Spelmodell = () => (
     />
 
     <SectionReveal as="section" className="container pb-section">
-      <SectionHeader badge="Vår idé" title="Var förberedd" number={1} />
+      <SectionHeader badge="Vår idé" title="Vi vet vad vi ska göra innan situationen händer" number={1} />
       <Grid cards={ide} />
     </SectionReveal>
 
@@ -131,7 +131,7 @@ const Spelmodell = () => (
     </SectionReveal>
 
     <SectionReveal as="section" className="container pb-section">
-      <SectionHeader badge="Spelaren" title="Det du bär in i varje skede" number={3} />
+      <SectionHeader badge="Spelaren" title="Beteenden som gäller alltid" number={3} />
       <Grid cards={spelaren} />
     </SectionReveal>
 

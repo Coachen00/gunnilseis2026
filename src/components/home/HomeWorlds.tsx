@@ -32,7 +32,7 @@ const laget: Entry[] = [
 ];
 
 const traning: Entry[] = [
-  { label: "Sommaruppstart — vägen till 8/8", to: "/maj-2026/uppstart" },
+  { label: "Sommaruppstart — vägen till 8/8", to: "/spelmodell/uppstart" },
   { label: "Träningsplan (A4)", to: "/traningsplan" },
   { label: "Alla verktyg", to: "/verktyg" },
 ];

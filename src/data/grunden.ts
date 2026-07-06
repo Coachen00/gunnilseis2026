@@ -21,10 +21,10 @@ export interface Mantra {
 }
 
 export const MANTRAN: Mantra[] = [
-  { word: "Pressa", line: "Pressa direkt. Vinn tillbaka.", to: "/maj-2026#overgang-forsvar" },
-  { word: "Rättvänd", line: "Titta framåt. Spela framåt.", to: "/maj-2026#anfallsspel" },
-  { word: "Assistytan", line: "Sista passningen före avslut.", to: "/maj-2026#anfallsspel" },
-  { word: "Gyllene zonen", line: "Bästa avslutsytan. Avsluta där.", to: "/maj-2026#anfallsspel" },
+  { word: "Pressa", line: "Pressa direkt. Vinn tillbaka.", to: "/spelmodell#overgang-forsvar" },
+  { word: "Rättvänd", line: "Titta framåt. Spela framåt.", to: "/spelmodell#anfallsspel" },
+  { word: "Assistytan", line: "Sista passningen före avslut.", to: "/spelmodell#anfallsspel" },
+  { word: "Gyllene zonen", line: "Bästa avslutsytan. Avsluta där.", to: "/spelmodell#anfallsspel" },
 ];
 
 /** Nivå 0-meningen — finns redan som sluttext i planindelnings-intron. */

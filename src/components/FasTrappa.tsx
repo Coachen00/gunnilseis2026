@@ -34,7 +34,7 @@ export default function FasTrappa({ blockId }: { blockId: string }) {
         <div className="flex shrink-0 items-center gap-3">
           <LevelBadge level={2} />
           <Link
-            to="/maj-2026#grunden"
+            to="/spelmodell#grunden"
             className="inline-flex items-center gap-1.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700 transition-colors hover:text-amber-600"
           >
             Hela trappan

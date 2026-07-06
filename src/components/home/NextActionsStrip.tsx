@@ -62,7 +62,7 @@ export default function NextActionsStrip() {
       accent: "amber",
     },
     {
-      to: "/maj-2026",
+      to: "/spelmodell",
       eyebrow: "Spelmodellen 2026",
       title: "Så spelar vi fotboll",
       description: "Sex spelfaser, ett lag och en idé. Försvar, omställning, anfall, identitet, fasta.",
@@ -71,7 +71,7 @@ export default function NextActionsStrip() {
       accent: "blue",
     },
     {
-      to: "/maj-2026",
+      to: "/spelmodell",
       hash: "#filmbibliotek",
       eyebrow: "Filmbibliotek",
       title: "Hitta rätt film direkt",
