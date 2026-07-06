@@ -1,4 +1,4 @@
-import { Activity, Apple, CalendarDays, Dumbbell, HeartPulse, Shield, Timer, Utensils, Zap } from "lucide-react";
+import { Activity, Apple, CalendarDays, Dumbbell, Shield, Timer, Utensils, Zap } from "lucide-react";
 import BreadcrumbTrail from "@/components/BreadcrumbTrail";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
@@ -188,6 +188,21 @@ const FOOD_RULES = [
   "Ät efter träning. Kroppen behöver fylla på för att bli starkare.",
 ];
 
+const STANDARD_SIGNALS = [
+  { label: "Standard", value: "Nivå 1", text: "Det är måttet. Allt annat är en nedväxling." },
+  { label: "Vecka", value: "6 pass", text: "Två gym, två hårda löp, ett fartpass, ett distanspass." },
+  { label: "Deadline", value: "26/7", text: "Upprepa veckorytmen fram till söndag 26 juli." },
+];
+
+const LEVEL_ONE_RHYTHM = [
+  { day: "Mån", tag: "Gym tungt A + acceleration", tone: "bg-emerald-500 text-emerald-950" },
+  { day: "Tis", tag: "Hårt löppass", tone: "bg-lime-300 text-lime-950" },
+  { day: "Ons", tag: "Återhämtning + rörlighet", tone: "bg-sky-300 text-sky-950" },
+  { day: "Tors", tag: "Fart, teknik, reaktion", tone: "bg-amber-300 text-amber-950" },
+  { day: "Fre", tag: "Gym tungt B + stegring", tone: "bg-emerald-500 text-emerald-950" },
+  { day: "Sön", tag: "Distans + kvalitet", tone: "bg-zinc-100 text-zinc-950" },
+];
+
 const normalizeName = (name: string) =>
   name
     .toLowerCase()
@@ -294,48 +309,66 @@ function getSchedule(role: TrainingRole, level: AmbitionId): ScheduleItem[] {
   ];
 }
 
-const BodyComparison = () => (
-  <div className="grid gap-3 md:grid-cols-2" aria-label="Skillnad mellan att släppa kroppen och att hålla igång">
-    <figure className="min-h-[17rem] border border-rose-200 bg-rose-50 p-5 text-rose-950">
-      <div className="flex h-40 items-end justify-center">
-        <svg viewBox="0 0 220 150" role="img" aria-label="Trött spelare som har släppt träningen">
-          <circle cx="108" cy="28" r="17" fill="#f4b183" />
-          <path d="M92 53c10-13 36-11 47 4 13 18 12 45-3 57-14 11-45 11-58-4-13-15-3-39 14-57Z" fill="#f97373" />
-          <path d="M84 71c-20 7-29 18-35 36" stroke="#78350f" strokeWidth="9" strokeLinecap="round" />
-          <path d="M141 72c16 8 25 20 31 35" stroke="#78350f" strokeWidth="9" strokeLinecap="round" />
-          <path d="M91 115l-18 25" stroke="#1f2937" strokeWidth="10" strokeLinecap="round" />
-          <path d="M128 116l18 24" stroke="#1f2937" strokeWidth="10" strokeLinecap="round" />
-          <path d="M99 32c7 5 16 5 23 0" stroke="#3f2a1d" strokeWidth="4" strokeLinecap="round" />
-          <path d="M156 26c18-4 29 6 30 21" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" fill="none" />
-          <path d="M178 22l8 25 16-21" stroke="#94a3b8" strokeWidth="5" strokeLinecap="round" fill="none" />
-        </svg>
+const StandardBoard = () => (
+  <section className="relative overflow-hidden border border-zinc-900 bg-zinc-950 text-white">
+    <div className="absolute inset-y-0 left-0 w-2 bg-lime-300" aria-hidden="true" />
+    <div
+      className="absolute inset-0 opacity-[0.08]"
+      aria-hidden="true"
+      style={{
+        backgroundImage:
+          "linear-gradient(90deg, white 1px, transparent 1px), linear-gradient(0deg, white 1px, transparent 1px)",
+        backgroundSize: "28px 28px",
+      }}
+    />
+    <div className="relative grid gap-6 p-5 md:p-7 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+      <div className="flex flex-col justify-between gap-8">
+        <div>
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-lime-300">
+            Viktigast på sidan
+          </p>
+          <h2 className="mt-3 max-w-xl text-4xl font-black leading-[0.95] tracking-tight md:text-6xl">
+            Nivå 1 är standarden.
+          </h2>
+          <p className="mt-4 max-w-prose text-sm font-semibold leading-relaxed text-zinc-300 md:text-base">
+            Sidan har mycket text, men detta är kärnan: välj spelare, öppna namnet, följ veckorytmen. Vill du komma
+            tillbaka redo att konkurrera är kategori 1 den nivån du mäter dig mot.
+          </p>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {STANDARD_SIGNALS.map((signal) => (
+            <div key={signal.label} className="border border-white/15 bg-white/5 p-4">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-lime-300">
+                {signal.label}
+              </p>
+              <p className="mt-2 text-3xl font-black tracking-tight">{signal.value}</p>
+              <p className="mt-2 text-xs font-semibold leading-relaxed text-zinc-300">{signal.text}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <figcaption className="mt-3">
-        <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-rose-700">Släpper du helt</p>
-        <p className="mt-1 text-lg font-black">Tung kropp, sega ben, längre väg tillbaka.</p>
-      </figcaption>
-    </figure>
 
-    <figure className="min-h-[17rem] border border-emerald-200 bg-emerald-50 p-5 text-emerald-950">
-      <div className="flex h-40 items-end justify-center">
-        <svg viewBox="0 0 220 150" role="img" aria-label="Vältränad spelare som orkar springa">
-          <circle cx="112" cy="25" r="16" fill="#c98b5a" />
-          <path d="M91 50c13-16 39-16 51 0 10 14 5 47-8 60-10 10-34 10-44 0-13-13-10-46 1-60Z" fill="#16a34a" />
-          <path d="M98 60h36M95 75h42M98 90h36" stroke="#ecfdf5" strokeWidth="4" strokeLinecap="round" />
-          <path d="M83 66c-20 12-29 25-35 45" stroke="#78350f" strokeWidth="8" strokeLinecap="round" />
-          <path d="M144 66c21 7 33 18 42 35" stroke="#78350f" strokeWidth="8" strokeLinecap="round" />
-          <path d="M96 111l-31 26" stroke="#1f2937" strokeWidth="9" strokeLinecap="round" />
-          <path d="M129 111l35 16" stroke="#1f2937" strokeWidth="9" strokeLinecap="round" />
-          <circle cx="178" cy="126" r="11" fill="#f8fafc" stroke="#0f172a" strokeWidth="4" />
-          <path d="M100 29c7 5 16 5 24 0" stroke="#3f2a1d" strokeWidth="4" strokeLinecap="round" />
-        </svg>
+      <div className="border border-white/15 bg-zinc-900/85 p-4 md:p-5">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div>
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-zinc-400">Veckorytm</p>
+            <h3 className="text-2xl font-black tracking-tight text-white">Sex dagar. Ingen dimma.</h3>
+          </div>
+          <Dumbbell className="h-7 w-7 text-lime-300" aria-hidden="true" />
+        </div>
+        <div className="grid gap-2">
+          {LEVEL_ONE_RHYTHM.map((item) => (
+            <div key={item.day} className="grid grid-cols-[4.25rem_minmax(0,1fr)] items-stretch border border-white/10">
+              <div className={cn("grid place-items-center font-mono text-sm font-black uppercase", item.tone)}>
+                {item.day}
+              </div>
+              <div className="bg-black/35 px-4 py-3 text-sm font-black leading-tight text-white">{item.tag}</div>
+            </div>
+          ))}
+        </div>
       </div>
-      <figcaption className="mt-3">
-        <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-emerald-700">Håller du igång</p>
-        <p className="mt-1 text-lg font-black">Lättare steg, bättre ork, snabbare start efter semestern.</p>
-      </figcaption>
-    </figure>
-  </div>
+    </div>
+  </section>
 );
 
 const FoodIllustration = () => (
@@ -376,13 +409,13 @@ const Semestern2026 = () => {
       <PageHero
         eyebrow="Laget · Semestern 2026"
         title="Personliga träningsscheman"
-        description="Tre nivåer fram till söndag 26/7. Du väljer själv, men välj med öppna ögon: kategori 1 bygger kroppen du vill spela med."
+        description="Öppna ditt namn. Välj nivå. Gör jobbet varje vecka fram till söndag 26/7. Kategori 1 är inte mysig. Den är standarden för spelare som vill komma tillbaka redo."
       >
-        <div className="flex flex-wrap gap-2">
-          {["1. Hög ambitionsnivå", "2. Håller mig fräsch", "3. Chipstuttar", "Fram till 26/7"].map((item) => (
+        <div className="grid gap-2 sm:grid-cols-4">
+          {["1. Hög ambitionsnivå", "Sex pass/vecka", "Tunga baslyft", "Fram till 26/7"].map((item) => (
             <span
               key={item}
-              className="inline-flex min-h-9 items-center border border-emerald-600/25 bg-emerald-600/10 px-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-emerald-800"
+              className="inline-flex min-h-10 items-center justify-center border border-emerald-600/25 bg-emerald-600/10 px-3 text-center font-mono text-[10px] font-black uppercase tracking-[0.16em] text-emerald-900"
             >
               {item}
             </span>
@@ -391,39 +424,54 @@ const Semestern2026 = () => {
       </PageHero>
 
       <main className="container pb-section">
-        <SectionReveal as="section" className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-          <div className="space-y-4">
-            <div className="inline-flex h-11 w-11 items-center justify-center border border-emerald-600/30 bg-emerald-600/10 text-emerald-800">
-              <HeartPulse className="h-5 w-5" aria-hidden="true" />
-            </div>
-            <h2 className="max-w-xl text-3xl font-black tracking-tight text-foreground md:text-4xl">
-              Sommaren avgör hur tung första veckan känns.
-            </h2>
-            <p className="max-w-prose text-base leading-relaxed text-foreground/70">
-              Det här är inte straffträning. Det är egen respekt. Håller du igång nu kommer du tillbaka lättare,
-              piggare och mer redo att konkurrera direkt. Släpper du allt blir vägen tillbaka längre.
-            </p>
-          </div>
-          <BodyComparison />
+        <SectionReveal as="section">
+          <StandardBoard />
         </SectionReveal>
 
         <SectionReveal as="section" className="mt-12">
-          <div className="mb-5">
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Välj nivå</p>
-            <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground">Kategori 1 är riktmärket.</h2>
-            <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              Varje kategori är ett ärligt val. Skillnaden är tempo, krav och hur mycket du hjälper framtida dig.
+          <div className="mb-5 grid gap-4 border-y border-border py-5 md:grid-cols-[minmax(0,0.72fr)_minmax(0,1fr)] md:items-end">
+            <div>
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Välj nivå</p>
+              <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground md:text-5xl">
+                Tre val. En standard.
+              </h2>
+            </div>
+            <p className="max-w-3xl text-sm font-semibold leading-relaxed text-foreground/70 md:text-base">
+              Kategori 1 är byggd för spelare som vill tåla tempo direkt. Kategori 2 håller kroppen igång. Kategori 3
+              är bara miniminivå. Skillnaden ska synas i benen när vi startar igen.
             </p>
           </div>
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid gap-4 lg:grid-cols-[1.25fr_0.88fr_0.88fr]">
             {AMBITION_LEVELS.map((level) => (
-              <article key={level.id} className={cn("border p-5", level.className)}>
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">{level.badge}</p>
-                <h2 className="mt-2 text-2xl font-black text-foreground">
+              <article
+                key={level.id}
+                className={cn(
+                  "relative min-h-[16rem] border p-5 md:p-6",
+                  level.id === 1
+                    ? "border-zinc-950 bg-zinc-950 text-white"
+                    : level.id === 2
+                      ? "border-sky-700/25 bg-sky-50 text-sky-950"
+                      : "border-rose-700/25 bg-rose-50 text-rose-950"
+                )}
+              >
+                {level.id === 1 && <div className="absolute inset-x-0 top-0 h-1.5 bg-lime-300" aria-hidden="true" />}
+                <p
+                  className={cn(
+                    "font-mono text-[10px] font-black uppercase tracking-[0.2em]",
+                    level.id === 1 ? "text-lime-300" : "text-accent"
+                  )}
+                >
+                  {level.badge}
+                </p>
+                <h2 className={cn("mt-2 font-black tracking-tight", level.id === 1 ? "text-4xl text-white md:text-5xl" : "text-2xl")}>
                   {level.id}. {level.title}
                 </h2>
-                <p className="mt-3 text-sm font-semibold leading-relaxed text-foreground/80">{level.tempo}</p>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{level.promise}</p>
+                <p className={cn("mt-4 text-sm font-black leading-relaxed", level.id === 1 ? "text-white" : "text-foreground/85")}>
+                  {level.tempo}
+                </p>
+                <p className={cn("mt-3 text-sm leading-relaxed", level.id === 1 ? "text-zinc-300" : "text-muted-foreground")}>
+                  {level.promise}
+                </p>
               </article>
             ))}
           </div>
@@ -491,26 +539,47 @@ const Semestern2026 = () => {
         </SectionReveal>
 
         <SectionReveal as="section" className="mt-12">
-          <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">Din text</p>
-              <h2 className="mt-1 text-3xl font-black tracking-tight text-foreground">Tryck på ditt namn.</h2>
+          <div className="mb-5 border border-zinc-900 bg-zinc-950 p-5 text-white md:p-6">
+            <div className="grid gap-5 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)] lg:items-end">
+              <div>
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-lime-300">
+                  Spelarkort
+                </p>
+                <h2 className="mt-1 text-3xl font-black tracking-tight md:text-5xl">Öppna ditt namn.</h2>
+                <p className="mt-3 max-w-md text-sm font-semibold leading-relaxed text-zinc-300">
+                  {loading ? "Hämtar truppen..." : `${playerPlans.length} spelare. Varje namn har tre nivåer, men nivå 1 är riktmärket.`}
+                </p>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-3">
+                {[
+                  ["01", "Hitta ditt namn"],
+                  ["02", "Läs din positionsroll"],
+                  ["03", "Kör veckorytmen"],
+                ].map(([number, label]) => (
+                  <div key={number} className="border border-white/15 bg-white/5 p-3">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-lime-300">{number}</p>
+                    <p className="mt-2 text-sm font-black leading-tight text-white">{label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              {loading ? "Hämtar truppen..." : `${playerPlans.length} spelare visas i semesterlistan.`}
-            </p>
           </div>
 
-          <Accordion type="single" collapsible className="border border-border bg-card">
+          <Accordion type="single" collapsible className="border border-zinc-900 bg-card">
             {playerPlans.map(({ player, role }) => {
               const plan = ROLE_PLANS[role];
               return (
-                <AccordionItem key={player.name} value={player.name} className="border-border/70 px-4 md:px-5">
-                  <AccordionTrigger className="min-h-16 gap-4 text-left hover:no-underline">
+                <AccordionItem key={player.name} value={player.name} className="border-border/80 px-4 md:px-5">
+                  <AccordionTrigger className="min-h-16 gap-4 text-left hover:no-underline data-[state=open]:text-emerald-800">
                     <span className="flex min-w-0 flex-1 flex-col gap-1">
                       <span className="text-base font-black text-foreground">{player.name}</span>
-                      <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
-                        {ROLE_LABELS[role]}
+                      <span className="flex flex-wrap gap-2">
+                        <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">
+                          {ROLE_LABELS[role]}
+                        </span>
+                        <span className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-emerald-700">
+                          Nivå 1: sex pass
+                        </span>
                       </span>
                     </span>
                   </AccordionTrigger>
@@ -525,46 +594,69 @@ const Semestern2026 = () => {
                             Positionsfokus: {plan.evidence}
                           </p>
                         </div>
-                        <div className={cn("border border-border bg-background p-4", role === "FB" && "border-emerald-500/40 bg-emerald-500/5")}>
-                          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                        <div className={cn("border border-zinc-900 bg-zinc-950 p-4 text-white", role === "FB" && "border-lime-300/70")}>
+                          <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-lime-300">
                             Period
                           </p>
-                          <p className="text-sm font-semibold leading-relaxed text-foreground/80">
+                          <p className="text-sm font-semibold leading-relaxed text-zinc-200">
                             Upprepa valt veckoschema varje vecka fram till söndag 26/7.
                           </p>
                         </div>
                       </div>
 
-                      <div className="grid gap-4 xl:grid-cols-3">
+                      <div className="grid gap-4 xl:grid-cols-[1.35fr_0.82fr_0.82fr]">
                         {AMBITION_LEVELS.map((level) => (
-                          <article key={level.id} className={cn("border p-4", level.className)}>
+                          <article
+                            key={level.id}
+                            className={cn(
+                              "border p-4",
+                              level.id === 1
+                                ? "border-zinc-950 bg-zinc-950 text-white"
+                                : level.id === 2
+                                  ? "border-sky-700/25 bg-sky-50"
+                                  : "border-rose-700/25 bg-rose-50"
+                            )}
+                          >
                             <div className="mb-3 flex items-start justify-between gap-3">
                               <div>
-                                <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                                <p
+                                  className={cn(
+                                    "font-mono text-[10px] font-black uppercase tracking-[0.18em]",
+                                    level.id === 1 ? "text-lime-300" : "text-accent"
+                                  )}
+                                >
                                   {level.badge}
                                 </p>
-                                <h3 className="mt-1 text-xl font-black text-foreground">
+                                <h3 className={cn("mt-1 font-black", level.id === 1 ? "text-2xl text-white" : "text-xl text-foreground")}>
                                   {level.id}. {level.title}
                                 </h3>
                               </div>
                               {level.id === 1 ? (
-                                <Dumbbell className="h-5 w-5 shrink-0 text-emerald-700" aria-hidden="true" />
+                                <Dumbbell className="h-5 w-5 shrink-0 text-lime-300" aria-hidden="true" />
                               ) : level.id === 2 ? (
                                 <Activity className="h-5 w-5 shrink-0 text-sky-700" aria-hidden="true" />
                               ) : (
                                 <Zap className="h-5 w-5 shrink-0 text-rose-700" aria-hidden="true" />
                               )}
                             </div>
-                            <p className="text-sm leading-relaxed text-foreground/80">
+                            <p className={cn("text-sm leading-relaxed", level.id === 1 ? "font-semibold text-zinc-200" : "text-foreground/80")}>
                               {getPersonalLevelText(player, level, role)}
                             </p>
                             <ul className="mt-4 space-y-3">
                               {getSchedule(role, level.id).map((item) => (
-                                <li key={`${item.day}-${item.time}`} className="border-l-2 border-accent/50 pl-3">
-                                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">
+                                <li
+                                  key={`${item.day}-${item.time}`}
+                                  className={cn("border-l-2 pl-3", level.id === 1 ? "border-lime-300" : "border-accent/50")}
+                                >
+                                  <p
+                                    className={cn(
+                                      "font-mono text-[10px] font-black uppercase tracking-[0.18em]",
+                                      level.id === 1 ? "text-lime-300" : "text-accent"
+                                    )}
+                                  >
                                     {item.day} · {item.time}
                                   </p>
-                                  <p className="mt-1 text-xs font-semibold leading-relaxed text-foreground/75">
+                                  <p className={cn("mt-1 text-xs font-semibold leading-relaxed", level.id === 1 ? "text-zinc-200" : "text-foreground/75")}>
                                     {item.work}
                                   </p>
                                 </li>

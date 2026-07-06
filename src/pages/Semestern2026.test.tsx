@@ -20,7 +20,7 @@ describe("Semestern2026 personliga scheman", () => {
       (button) => button.textContent ?? ""
     );
 
-    expect(screen.getByText(`${SQUAD.length} spelare visas i semesterlistan.`)).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(`${SQUAD.length} spelare\\. Varje namn`, "i"))).toBeInTheDocument();
     for (const player of SQUAD) {
       expect(playerButtons.some((text) => text.includes(player.name))).toBe(true);
     }
