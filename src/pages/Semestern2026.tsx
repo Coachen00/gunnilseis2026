@@ -75,15 +75,15 @@ const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
     evidence:
       "Målvaktens belastning handlar mindre om total löpmängd och mer om explosiva starter, sidledsförflyttning, landning och reaktion.",
     personalFocus: "första steget, bålstyrkan och känslan av att kunna flytta dig igen direkt efter en aktion",
-    runA: "10 x 10 m acceleration från mage, rygg eller sidostart, 50 sek vila",
-    runB: "8 x 15 sek snabba fötter + sidledsförflyttning, 45 sek vila",
-    runC: "25 min lugn löpning och 8 min rörlighet för höft, ljumske och vad",
+    runA: "3 block: 5 x 10 m explosiv start från mage/rygg/sidostart, 40 sek vila, 3 min mellan blocken",
+    runB: "4 x 4 min målvaktsshuttle: sidled 5 m, fram 5 m, bak 5 m i högt tempo, 2 min vila",
+    runC: "40 min lugn löpning + 10 x 60 m stegring där sista 20 m går nära max",
     freshA: "20 min lugn jogg + 6 x 10 sek snabba fötter",
     freshB: "6 x 20 sek sidledsförflyttning, 60 sek vila + 8 min bål",
     minimumA: "18 min jogg/gång + 4 x 10 sek snabba fötter",
     minimumB: "12 min rörlighet + 3 varv plankor, höftlyft och tåhävningar",
-    gymA: "knäböj 4 x 5, chins eller latsdrag 4 x 6, bänkpress 3 x 6",
-    gymB: "marklyft 4 x 4, utfall bakåt 3 x 8/ben, sidoplanka 3 x 30 sek/sida",
+    gymA: "knäböj 5 x 5 tungt, chins 5 x max eller latsdrag 5 x 6, bänkpress 4 x 5, boxhopp 5 x 3",
+    gymB: "marklyft 5 x 4 tungt, bulgarian split squat 4 x 8/ben, nordic hamstring 4 x 5, sidoplanka med vikt 4 x 35 sek/sida",
   },
   CB: {
     title: "Mittbackar",
@@ -91,15 +91,15 @@ const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
     evidence:
       "Mittbackar har ofta lägre total högfartsvolym än kantspelare, men behöver vinna korta ytor, bromsa hårt och tåla dueller.",
     personalFocus: "första fem meterna, stark kropp i duellen och kontroll när du måste vända hemåt",
-    runA: "8 x 20 m acceleration, gå tillbaka som vila",
-    runB: "4 x 4 min kontrollerat hårt tempo, 2 min jogg/gång mellan",
-    runC: "30 min lugn löpning i prattempo + 6 stegringslopp",
+    runA: "2 block: 6 x 20 m acceleration + hård inbromsning, 45 sek vila, 3 min mellan blocken",
+    runB: "5 x 4 min kontrollerat hårt tempo, 90 sek joggvila mellan",
+    runC: "42 min lugn löpning i jämnt tempo + 8 x 80 m stegringslopp",
     freshA: "25 min lugn löpning + 6 x 15 sek backe",
     freshB: "3 x 5 min jämnt tempo, 2 min lugnt mellan",
     minimumA: "20 min jogg/gång + 5 x 15 sek backe",
     minimumB: "12 min rörlighet + 3 varv knäböj, armhävningar och planka",
-    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, bänkpress 3 x 6",
-    gymB: "marklyft 4 x 4, split squat 3 x 8/ben, farmers walk 4 x 30 m",
+    gymA: "knäböj 5 x 5 tungt, viktade chins eller tung rodd 5 x 5, bänkpress 4 x 5, Copenhagen plank 4 x 25 sek/sida",
+    gymB: "marklyft 5 x 4 tungt, split squat 4 x 8/ben, farmers walk tungt 5 x 35 m, vadpress 4 x 12",
   },
   FB: {
     title: "Ytterbackar",
@@ -107,15 +107,15 @@ const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
     evidence:
       "Ytterbackar hamnar ofta högt i högintensiv löpning: överlapp, återhämtning hemåt och upprepade aktioner längs kanten.",
     personalFocus: "upprepad fart längs kanten, förmågan att komma hem igen och att orka nästa maxlöpning",
-    runA: "12 x 30 sek snabbt, 60 sek lugn jogg mellan",
-    runB: "10 x 40 m med riktningsbyte efter 20 m, gå tillbaka som vila",
-    runC: "35 min lugn löpning, sista 6 min lite snabbare",
+    runA: "3 block: 6 x 30 sek hårt längs kanten, 30 sek jogg, 3 min mellan blocken",
+    runB: "2 block: 8 x 40 m med riktningsbyte efter 20 m, 35 sek vila, 4 min mellan blocken",
+    runC: "45 min lugn löpning, sista 10 min progressivt snabbare",
     freshA: "28 min lugn löpning + 6 x 20 sek snabbt",
     freshB: "8 x 30 sek snabbt, 75 sek lugnt mellan",
     minimumA: "22 min jogg/gång + 4 x 20 sek snabbt",
     minimumB: "12 min rörlighet vader/höft + 3 varv utfall, tåhävningar och planka",
-    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, rumänska marklyft 3 x 6",
-    gymB: "marklyft 4 x 4, step-up 3 x 8/ben, hoppande utfall 3 x 6/ben",
+    gymA: "knäböj 5 x 5 tungt, chins eller tung rodd 5 x 6, rumänska marklyft 4 x 6, boxhopp 5 x 3",
+    gymB: "marklyft 5 x 4 tungt, step-up tungt 4 x 8/ben, hoppande utfall 4 x 6/ben, tåhävningar 5 x 12",
   },
   MID: {
     title: "Mittfältare",
@@ -123,15 +123,15 @@ const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
     evidence:
       "Mittfältare ligger ofta högt i total distans och upprepade accelerationer/decelerationer, särskilt i de mest intensiva matchperioderna.",
     personalFocus: "motorn, återhämtningen mellan aktioner och förmågan att fatta bra beslut även när pulsen är hög",
-    runA: "5 x 3 min högt tempo, 90 sek lugn jogg mellan",
-    runB: "fartlek 30 min: 1 min snabb, 1 min lugn hela vägen",
-    runC: "38 min lugn löpning i jämnt tempo + 6 stegringslopp",
+    runA: "6 x 4 min högt tempo, 90 sek joggvila mellan",
+    runB: "36 min fartlek: 2 min snabb, 1 min lugn hela vägen",
+    runC: "50 min lugn löpning i jämnt tempo + 8 stegringslopp",
     freshA: "30 min lugn löpning + 5 x 30 sek snabbare",
     freshB: "4 x 3 min bra tempo, 90 sek lugnt mellan",
     minimumA: "22 min jogg/gång + 6 x 20 sek snabbare",
     minimumB: "12 min rörlighet + 3 varv knäböj, höftlyft och planka",
-    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, utfall 3 x 8/ben",
-    gymB: "marklyft 4 x 4, frontböj eller goblet squat 3 x 6, bålrotation 3 x 10/sida",
+    gymA: "knäböj 5 x 5 tungt, viktade chins eller tung rodd 5 x 5, utfall framåt 4 x 8/ben, sled push eller step-up 5 x 20 m",
+    gymB: "marklyft 5 x 4 tungt, frontböj 4 x 5, enbens rumänska marklyft 4 x 8/ben, bålrotation tungt 4 x 10/sida",
   },
   FWD: {
     title: "Forwards",
@@ -139,15 +139,15 @@ const ROLE_PLANS: Record<TrainingRole, RolePlan> = {
     evidence:
       "Forwards behöver mycket hög fart i avgörande aktioner: hota bakom, trycka första steget och kunna sprinta igen efter kort vila.",
     personalFocus: "första steget, djupledshotet och förmågan att sprinta med kvalitet även i slutet",
-    runA: "10 x 50 m djupledssprint, gå tillbaka som vila",
-    runB: "8 x 20 sek snabbt, 90 sek vila mellan",
-    runC: "28 min lugn löpning + 8 stegringslopp",
+    runA: "2 block: 8 x 50 m djupledssprint, 45 sek vila, 4 min mellan blocken",
+    runB: "12 x 20 sek maxnära löpning, 70 sek vila mellan",
+    runC: "38 min lugn löpning + 10 stegringslopp där sista 30 m går hårt",
     freshA: "25 min lugn löpning + 6 x 15 sek acceleration",
     freshB: "8 x 20 sek snabbt, 90 sek vila mellan",
     minimumA: "20 min jogg/gång + 5 x 15 sek acceleration",
     minimumB: "12 min rörlighet baksida lår/höft + 3 varv höftlyft, tåhävningar och planka",
-    gymA: "knäböj 4 x 5, chins eller rodd 4 x 6, höftlyft 3 x 8",
-    gymB: "marklyft 4 x 4, bulgarian split squat 3 x 8/ben, vadpress 3 x 12",
+    gymA: "knäböj 5 x 5 tungt, chins eller tung rodd 5 x 6, hip thrust 5 x 5, boxhopp 5 x 3",
+    gymB: "marklyft 5 x 4 tungt, bulgarian split squat 4 x 8/ben, nordic hamstring 4 x 5, vadpress 5 x 12",
   },
 };
 
@@ -155,10 +155,10 @@ const AMBITION_LEVELS: AmbitionLevel[] = [
   {
     id: 1,
     title: "Hög ambitionsnivå",
-    badge: "Gym + löpning",
-    tempo: "Högst tempo. Fyra pass per vecka. Två gympass och två löppass.",
+    badge: "Sex pass",
+    tempo: "Högst tempo. Sex träningsdagar per vecka. Två tunga gympass, två hårda löppass, ett fartpass och ett distans/återhämtningspass.",
     promise:
-      "Det här är nivån att sträva mot. Inte för tränarens skull, utan för att du ska komma tillbaka lätt, stark och redo att konkurrera.",
+      "Det här är nivån att sträva mot. Den är obekväm, tung och tydlig. Inte för tränarens skull, utan för att du ska komma tillbaka stark nog att konkurrera direkt.",
     className: "border-emerald-600/40 bg-emerald-600/5",
   },
   {
@@ -232,7 +232,7 @@ function getPersonalLevelText(player: Player, level: AmbitionLevel, role: Traini
   const roleLabel = ROLE_LABELS[role].toLowerCase();
 
   if (level.id === 1) {
-    return `${name}, kategori 1 är valet när ${player.name} vill komma tillbaka före många andra. Som ${roleLabel} behöver ${name} både löpningen och gymmet. ${player.name}, gör du detta ordentligt får du lättare steg, starkare kropp och mer självrespekt i första träningen.`;
+    return `${name}, kategori 1 är valet när ${player.name} menar allvar. Som ${roleLabel} behöver ${name} både hård löpning, tunga baslyft och disciplin nog att göra jobbet även när det är semester. ${player.name}, detta ska kännas som träning. Gör du det ordentligt kommer du tillbaka med starkare ben, bättre motor och ett mentalt övertag redan första veckan.`;
   }
 
   if (level.id === 2) {
@@ -247,10 +247,36 @@ function getSchedule(role: TrainingRole, level: AmbitionId): ScheduleItem[] {
 
   if (level === 1) {
     return [
-      { day: "Måndag", time: "09:00", work: `Löpning: ${plan.runA}. Gym: ${plan.gymA}.` },
-      { day: "Onsdag", time: "18:30", work: `Löpning: ${plan.runB}. Avsluta med 8 min bål.` },
-      { day: "Fredag", time: "09:00", work: `Gym: ${plan.gymB}. Löpning: 6 stegringslopp på 60 m.` },
-      { day: "Söndag", time: "10:00", work: plan.runC },
+      {
+        day: "Måndag",
+        time: "08:30",
+        work: `Gym tungt A: ${plan.gymA}. Direkt efter: ${plan.runA}. Avsluta med 10 min rörlighet.`,
+      },
+      {
+        day: "Tisdag",
+        time: "18:30",
+        work: `Hårt löppass: ${plan.runB}. Pulsen ska upp. Sista repetitionen ska fortfarande ha kvalitet.`,
+      },
+      {
+        day: "Onsdag",
+        time: "09:00",
+        work: "Återhämtningsjobb: 30 min cykel/jogg i lugnt tempo + 15 min rörlighet höft, ljumske, baksida lår och vader.",
+      },
+      {
+        day: "Torsdag",
+        time: "18:30",
+        work: `Fart/teknik: ${plan.runA}. Lägg till 8 x 5 m reaktionsstarter och 4 x 20 m med boll om du har yta.`,
+      },
+      {
+        day: "Fredag",
+        time: "08:30",
+        work: `Gym tungt B: ${plan.gymB}. Efter gymmet: 8 x 60 m stegringslopp, gå tillbaka som vila.`,
+      },
+      {
+        day: "Söndag",
+        time: "10:00",
+        work: `Distans + kvalitet: ${plan.runC}. Om benen känns bra: lägg till 6 min extra i kontrollerat hårt tempo.`,
+      },
     ];
   }
 
