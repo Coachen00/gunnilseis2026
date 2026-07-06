@@ -12,109 +12,52 @@ type SimpleItem = { kind: "link"; to: string; label: string };
 type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
 type NavItem = SimpleItem | DropdownItem;
 
-const skedenGroups: NavGroup[] = [
-  {
-    label: "Identitet",
-    to: "/identitet",
-    children: [
-      { label: "2a bollsspel", to: "/identitet#andrabollsspel" },
-      { label: "Duellspel", to: "/identitet#duellspel" },
-      { label: "Djupledsspel", to: "/identitet#djupledsspel" },
-      { label: "Värdigt kroppsspråk", to: "/identitet#vardigt-kroppssprak" },
-    ],
-  },
-  {
-    label: "Roller",
-    to: "/roller",
-    children: [
-      { label: "Roller & positioner", to: "/roller#roller-positioner" },
-      { label: "Målvakten", to: "/roller#malvakt" },
-      { label: "Matchtrupp", to: "/roller#matchtrupp" },
-      { label: "Kvalitetskontroll", to: "/roller#quality-control" },
-    ],
-  },
-  {
-    label: "Anfall",
-    to: "/anfall",
-    children: [
-      { label: "1 · Skydda mot kontring", to: "/anfall#skydda-mot-kontring" },
-      { label: "2 · Spela in bollen", to: "/anfall#spela-in" },
-      { label: "3 · Spela ut bollen", to: "/anfall#spela-ut" },
-      { label: "4 · Ta med den framåt", to: "/anfall#ta-med-framat" },
-      { label: "5 · Fyll på i och runt box", to: "/anfall#fyll-pa-box" },
-    ],
-  },
-  {
-    label: "Omställning → försvar",
-    to: "/omstallning-forsvar",
-    children: [
-      { label: "Direkt (motpress)", to: "/omstallning-forsvar#direkt" },
-      { label: "Tillbaka till kontroll", to: "/omstallning-forsvar#kontroll" },
-    ],
-  },
-  {
-    label: "Försvar",
-    to: "/forsvar",
-    children: [
-      { label: "Högt försvar", to: "/forsvar#hogt" },
-      { label: "Medelhögt försvar", to: "/forsvar#medel" },
-      { label: "Lågt försvar", to: "/forsvar#lagt" },
-    ],
-  },
-  {
-    label: "Omställning → anfall",
-    to: "/omstallning-anfall",
-    children: [
-      { label: "Kontring", to: "/omstallning-anfall#kontring" },
-      { label: "Starta speluppbyggnad", to: "/omstallning-anfall#uppbyggnad" },
-    ],
-  },
-  {
-    label: "Fasta — Försvar",
-    to: "/fasta/forsvar",
-    children: [
-      { label: "Hörnor", to: "/fasta/forsvar#hornor" },
-      { label: "Inläggsfrisparkar", to: "/fasta/forsvar#frisparkar" },
-      { label: "Inkast", to: "/fasta/forsvar#inkast" },
-      { label: "Avspark", to: "/fasta/forsvar#avspark" },
-    ],
-  },
-  {
-    label: "Fasta — Anfall",
-    to: "/fasta/anfall",
-    children: [
-      { label: "Hörnor", to: "/fasta/anfall#hornor" },
-      { label: "Inläggsfrisparkar", to: "/fasta/anfall#frisparkar" },
-      { label: "Inkast", to: "/fasta/anfall#inkast" },
-      { label: "Avspark", to: "/fasta/anfall#avspark" },
-    ],
-  },
-];
-
 const matchGroups: NavGroup[] = [
   {
     label: "Match",
     children: [
-      { label: "Förra matchen", to: "/match/forra", hint: "Resultat & lärdomar" },
       { label: "Veckans match", to: "/match/kommande", hint: "Motståndare & plan" },
-      { label: "Samlade tankar", to: "/match/reflektioner", hint: "Sista periodens trender" },
+      { label: "Förra matchen", to: "/match/forra", hint: "Resultat & lärdomar" },
       { label: "Årets matcher", to: "/match/matcher", hint: "Hela säsongen" },
+      { label: "Samlade tankar", to: "/match/reflektioner", hint: "Sista periodens trender" },
     ],
   },
 ];
 
-/* Maj 2026 dropdown — de sex spelmodellblocken utan separat filmlänk. */
-const majGroups: NavGroup[] = [
+const spelmodellGroups: NavGroup[] = [
   {
-    label: "Sommaren 2026 · Spelmodellen",
-    to: "/maj-2026",
+    label: "Spelmodellen",
     children: [
-      { label: "Försvarsspel", to: "/maj-2026#forsvarsspel" },
-      { label: "Omställning till anfall", to: "/maj-2026#overgang-anfall" },
-      { label: "Anfallsspel", to: "/maj-2026#anfallsspel" },
-      { label: "Omställning till försvar", to: "/maj-2026#overgang-forsvar" },
-      { label: "Identitet", to: "/maj-2026#identitet" },
-      { label: "Fasta situationer", to: "/maj-2026#fasta-situationer" },
+      { label: "Spelidé", to: "/spelide" },
+      { label: "Anfall", to: "/anfall" },
+      { label: "Omställning → försvar", to: "/omstallning-forsvar" },
+      { label: "Försvar", to: "/forsvar" },
+      { label: "Omställning → anfall", to: "/omstallning-anfall" },
+      { label: "Fasta situationer", to: "/fasta" },
+      { label: "Identitet", to: "/identitet" },
+      { label: "Roller", to: "/roller" },
+    ],
+  },
+];
+
+const truppenGroups: NavGroup[] = [
+  {
+    label: "Truppen",
+    children: [
+      { label: "Trupp", to: "/truppen" },
+      { label: "Tävlingar", to: "/tavlingar" },
+      { label: "Spelarvård", to: "/spelarvard" },
+    ],
+  },
+];
+
+const verktygGroups: NavGroup[] = [
+  {
+    label: "Verktyg",
+    children: [
+      { label: "Verktygshubben", to: "/verktyg" },
+      { label: "Spelmodell-labb", to: "/spelmodell-labb" },
+      { label: "Arkiv", to: "/arkiv" },
     ],
   },
 ];
@@ -123,31 +66,32 @@ const navItems: NavItem[] = [
   { kind: "link", to: "/", label: "Hem" },
   {
     kind: "dropdown",
-    label: "Sommaren 2026",
-    groups: majGroups,
-    variant: "narrow",
-    activePathPrefixes: ["/maj-2026"],
-  },
-  {
-    kind: "dropdown",
-    label: "Match",
+    label: "Matchen",
     groups: matchGroups,
     variant: "narrow",
     activePathPrefixes: ["/match"],
   },
   {
     kind: "dropdown",
-    label: "Spelet",
-    groups: skedenGroups,
-    variant: "wide",
-    // Roller är i Spelet — vi tar bort top-level-dubbletten
-    activePathPrefixes: ["/identitet", "/roller", "/anfall", "/forsvar", "/omstallning-forsvar", "/omstallning-anfall", "/fasta"],
+    label: "Spelmodellen",
+    groups: spelmodellGroups,
+    variant: "narrow",
+    activePathPrefixes: ["/spelide", "/anfall", "/omstallning-forsvar", "/forsvar", "/omstallning-anfall", "/fasta", "/identitet", "/roller"],
   },
-  { kind: "link", to: "/spelarvard", label: "Spelarvård" },
-  { kind: "link", to: "/tavlingar", label: "Tävlingar" },
-  { kind: "link", to: "/truppen", label: "Trupp" },
-  { kind: "link", to: "/verktyg", label: "Verktyg" },
-  { kind: "link", to: "/under-process", label: "Under process" },
+  {
+    kind: "dropdown",
+    label: "Truppen",
+    groups: truppenGroups,
+    variant: "narrow",
+    activePathPrefixes: ["/truppen", "/tavlingar", "/spelarvard"],
+  },
+  {
+    kind: "dropdown",
+    label: "Verktyg",
+    groups: verktygGroups,
+    variant: "narrow",
+    activePathPrefixes: ["/verktyg", "/spelmodell-labb", "/arkiv"],
+  },
 ];
 
 const TopNav = () => {

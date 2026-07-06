@@ -24,6 +24,7 @@ const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
+const Arkiv = lazy(() => import("./pages/Arkiv"));
 const UnderProcess = lazy(() => import("./pages/UnderProcess"));
 const UnderProcessDeck = lazy(() => import("./pages/UnderProcessDeck"));
 const SpelmodellLab = lazy(() => import("./pages/SpelmodellLab"));
@@ -121,6 +122,7 @@ const App = () => (
           <Route path="/identitet/:slug" element={<Protected routeName="Identitet"><Identitet /></Protected>} />
           <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
+          <Route path="/arkiv" element={<Protected routeName="Arkiv"><Arkiv /></Protected>} />
           <Route path="/under-process" element={<Protected routeName="Under process"><UnderProcess /></Protected>} />
           {/* Helskärms-deck (owner-only, gate i sidan) — utan Layout-chrome */}
           <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodell Neon"><UnderProcessDeck /></PrintRoute>} />

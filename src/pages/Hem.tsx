@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState } from "react";
+import NextMatchCard from "@/components/home/NextMatchCard";
 import MagicalPitchHero from "@/components/home/MagicalPitchHero";
 import LastMatchResult from "@/components/home/LastMatchResult";
 import NextActionsStrip from "@/components/home/NextActionsStrip";
@@ -36,6 +37,7 @@ function ZonesIntroGate() {
 const Hem = () => (
   <>
     <ZonesIntroGate />
+    <NextMatchCard />
     <MagicalPitchHero />
     <LastMatchResult />
     <NextActionsStrip />
