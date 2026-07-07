@@ -142,7 +142,7 @@ export default function ContentEditor<T>({
               Tabellen <code className="font-mono bg-muted px-1 rounded">content_blocks</code>{" "}
               hittas inte. Kör migrationen{" "}
               <code className="font-mono bg-muted px-1 rounded">
-                supabase/migrations/20260425113804_content_blocks.sql
+                supabase/migrations/20260706120000_reapply_content_blocks.sql
               </code>{" "}
               i Supabase Studio för att aktivera redigering.
             </p>
