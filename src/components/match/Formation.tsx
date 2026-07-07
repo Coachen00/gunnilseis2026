@@ -23,7 +23,7 @@ export default function Formation({ height = 360 }: Props) {
       <div className="absolute bottom-0 left-[22%] right-[22%] h-[14%] border-2 border-b-0 border-white/50" />
       {/* Gyllene zonen */}
       <div
-        className="absolute left-[28%] right-[28%] top-0 h-[22%] border border-dashed"
+        className="absolute left-[36.5%] right-[36.5%] top-0 h-[16%] border border-dashed"
         style={{ background: "hsl(47 78% 56% / 0.12)", borderColor: "hsl(47 78% 56% / 0.4)" }}
       />
       {/* Spelare */}

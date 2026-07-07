@@ -86,7 +86,7 @@ export const PERIOD_1: Period = {
   title: "Period 1 – Diagonalt spel från korridor till korridor",
   dateRange: "11/5–1/7",
   objective:
-    "Vi bygger ett anfallsspel där bollen flyttas diagonalt från målvakt, via ytterback och mittfält, till offensiv spelare och vidare ut mot ytter. Målet är att locka press, hitta rättvänd spelare, byta korridor och attackera yttre korridor, assistyta och box med fart.",
+    "Vi bygger ett anfallsspel där bollen flyttas diagonalt från målvakt, via ytterback och mittfält, till offensiv spelare och vidare ut mot ytter. Målet är att attrahera press, hitta rättvänd spelare, byta korridor och attackera yttre korridor, assistytan och box med fart.",
   effectLogic: [
     {
       label: "Resurser",
@@ -173,7 +173,7 @@ export const PERIOD_1: Period = {
           principle: "Spela ut bollen.",
           activation: "Rondo 4v2 med krav på öppen kropp.",
           exercise1: "YB → MF på bortre fot, MF vänder upp.",
-          exercise2: "6v4: locka press på ytterback och hitta central spelare.",
+          exercise2: "6v4: attrahera press på ytterback och hitta central spelare.",
           game: "8v8 med fem korridorer. Poäng för mottagning rättvänd i central/inre korridor.",
           coachingCues: ["Öppna kroppen.", "Locka först.", "Kom ur skuggan."],
           positiveReinforcement: ["Rätt att vänta in pressen.", "Bra kroppsvinkel."],
@@ -214,7 +214,7 @@ export const PERIOD_1: Period = {
         {
           day: "Måndag",
           date: "18/5",
-          title: "Vecka 2 – Måndag – Locka pressen",
+          title: "Vecka 2 – Måndag – Attrahera pressen",
           purpose: "Förstå när vi spelar in till 6/8 efter att YB lockat.",
           principle: "Spela ut bollen.",
           activation: "Rondo med press-trigger.",

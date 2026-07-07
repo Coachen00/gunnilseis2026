@@ -27,11 +27,15 @@ const SpelytorDiagram = ({ className }: SpelytorDiagramProps) => {
       <div className="mt-4 space-y-2">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-muted border border-border" />
-          <span className="text-xs text-muted-foreground">Utgångsyta – bakom motståndarens första press</span>
+          <span className="text-xs text-muted-foreground">Utgångsyta – framför motståndarnas första presslinje</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-primary/30 border border-primary/50" />
-          <span className="text-xs text-primary font-medium">Spelyta 1 & 2 – mellan deras lagdelar (uppbyggnad/progression)</span>
+          <span className="text-xs text-primary font-medium">Spelyta 1 – mellan deras forwards och mittfält</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded bg-primary/30 border border-primary/50" />
+          <span className="text-xs text-primary font-medium">Spelyta 2 – mellan deras mittfält och backlinje (mål: rättvänd här)</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded bg-accent/30 border border-accent/50" />

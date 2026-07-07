@@ -185,7 +185,7 @@ export const ForsvarsspelSection = () => (
         <PrincipleCardWrap n={1} title="Aldrig mellan, aldrig i oss" description="Ingen passning mellan våra linjer. Om de spelar i oss = 100% satsning." />
         <PrincipleCardWrap n={2} title="Trigger: deras vänsterback" description="Press startar när de spelar till sin VB. Kollektiv insats för att vinna bollen." />
         <PrincipleCardWrap n={3} title="Splitta planen vid sidval" description="När de valt sida, splitta planen. Bortre spelare säkrar central korridor." />
-        <PrincipleCardWrap n={4} title="Försvara i tre korridorer" description="Stäng inre korridorer, tryck motståndet mot yttre. Central korridor = prio." />
+        <PrincipleCardWrap n={4} title="Skydda 3 av 5 korridorer" description="Stäng inre korridorer, tryck motståndet mot yttre. Central korridor = prio." />
         <PrincipleCardWrap n={5} title="Om bollen är 'I' oss = maximal ansträngning" description="Se till att vinna 1, få den till bättre yta 2. Styr alltid mot yttre korridor." />
       </div>
       <div className="flex flex-col gap-3">
@@ -276,7 +276,7 @@ export const OmstallningAnfallSection = () => (
 /* ANFALLSSPEL */
 export const AnfallsspelSection = () => (
   <section id="anfallsspel">
-    <SectionHeader badge="Anfallsspel" title="3-2-2-3 Struktur" subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear." />
+    <SectionHeader badge="Anfallsspel" title="3-2-5 – anfallsstruktur" subtitle="Vi bygger upp, sedan accelererar vi — som att växla från lågt till högt gear." />
     <div className="grid md:grid-cols-[1fr_auto] gap-8 mb-10">
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <RoleCard line="3" players="2 MB + 1 YB" description="Första linjen i uppbyggnad. Den ytterback som inte inverterar stannar som tredje spelare bak." variant="defense" />
@@ -285,7 +285,7 @@ export const AnfallsspelSection = () => (
         <RoleCard line="3" players="2 Yttrar + 9:a" description="Högsta linjen. Yttrar håller bredd, 9:an hotar spelyta 3 och gyllene zonen." variant="attack" />
       </div>
       <div className="w-full md:w-64 flex-shrink-0">
-        <ExpandableImage src={formation433} alt="4-3-3 / 3-2-2-3 grunduppställning" />
+        <ExpandableImage src={formation433} alt="4-3-3 grundformation → 3-2-5 anfallsstruktur" />
       </div>
     </div>
 
@@ -357,7 +357,7 @@ export const AnfallsspelSection = () => (
 
     <AccordionSection title="Visa G/IG-mallar — Anfallsspel">
       <div className="space-y-3">
-        <GIGTemplate cueTitel="3-2-2-3 Struktur" definition="Varje linje har tydliga uppgifter. VM = 8:a, HM = 7:a." narAnvands="Alltid i anfallsspelet." handling="Backlinje (3): uppbyggnad. Bas (2): 6:a + inv. YB. Offensiva MF (2): 8:a + 7:a. Högsta (3): Yttrar + 9:a." gVillkor="Samtliga linjer besatta vid uppspel" igVillkor="Linjer saknar spelare → för stor distans" />
+        <GIGTemplate cueTitel="3-2-5 – anfallsstruktur" definition="Varje linje har tydliga uppgifter. VM = 8:a, HM = 7:a." narAnvands="Alltid i anfallsspelet." handling="Backlinje (3): uppbyggnad. Bas (2): 6:a + inv. YB. Offensiva MF (2): 8:a + 7:a. Högsta (3): Yttrar + 9:a." gVillkor="Samtliga linjer besatta vid uppspel" igVillkor="Linjer saknar spelare → för stor distans" />
         <GIGTemplate cueTitel="Inre & Yttre Korridorer" definition="Vi spelar alltid via inre korridor när möjligt." narAnvands="Alltid i anfallsspelet." handling="Prioritera passningar via inre korridor. Yttre = sista utväg." gVillkor="≥ 60% progressioner via inre korridor" igVillkor="Majoriteten av progressioner via yttre" />
         <GIGTemplate cueTitel="Spelvändning → acceleration" definition="Rättvänd spelare centralt vänder spelet och utlöser full fart mot gyllene zonen." narAnvands="När rättvänd mottagning skapats i progression." handling="1. Spelvändning. 2. Full fart. 3. Överlapp/underlapp. 4. Cutback till gyllene zonen." gVillkor="Cutback till gyllene zonen genomförd" igVillkor="Rättvänd spelare hittad men ingen acceleration" />
       </div>

@@ -603,17 +603,26 @@ function ForsvarPitch() {
   return (
     <PitchSurface label="Försvarsspel — tre korridorer, press på trigger">
       <g>
-        <rect x="70" y="70" width="287" height="1360" fill="#cf3a3a" opacity="0.10" />
-        <rect x="357" y="70" width="286" height="1360" fill="#f5c242" opacity="0.14" />
-        <rect x="643" y="70" width="287" height="1360" fill="#cf3a3a" opacity="0.10" />
-        <line x1="357" y1="70" x2="357" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
-        <line x1="643" y1="70" x2="643" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
+        <rect x="70" y="70" width="175" height="1360" fill="#cf3a3a" opacity="0.14" />
+        <rect x="245" y="70" width="139" height="1360" fill="#cf3a3a" opacity="0.14" />
+        <rect x="384" y="70" width="232" height="1360" fill="#cf3a3a" opacity="0.14" />
+        <rect x="616" y="70" width="139" height="1360" fill="#ffffff" opacity="0.05" />
+        <rect x="755" y="70" width="175" height="1360" fill="#ffffff" opacity="0.05" />
+        <line x1="245" y1="70" x2="245" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
+        <line x1="384" y1="70" x2="384" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
+        <line x1="616" y1="70" x2="616" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
+        <line x1="755" y1="70" x2="755" y2="1430" stroke="rgba(245,194,66,0.45)" strokeWidth="3" strokeDasharray="12 12" />
       </g>
 
-      <g fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="22" fill="rgba(255,255,255,0.5)" letterSpacing="6">
-        <text x="213" y="125" textAnchor="middle">YTTRE</text>
-        <text x="500" y="125" textAnchor="middle">CENTRUM</text>
-        <text x="787" y="125" textAnchor="middle">YTTRE</text>
+      <g fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="22" fill="#f5c242" letterSpacing="4">
+        <text x="500" y="110" textAnchor="middle">SKYDDA 3 AV 5 KORRIDORER</text>
+      </g>
+      <g fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="14" fill="rgba(255,255,255,0.4)" letterSpacing="2">
+        <text x="157" y="150" textAnchor="middle">YTTRE</text>
+        <text x="314" y="150" textAnchor="middle">INRE</text>
+        <text x="500" y="150" textAnchor="middle">CENTRAL</text>
+        <text x="685" y="150" textAnchor="middle">INRE</text>
+        <text x="842" y="150" textAnchor="middle">YTTRE</text>
       </g>
 
       <PlayerDot x={500} y={220} label="9" variant="opp" />
@@ -658,8 +667,8 @@ function OvergangAnfallPitch() {
       <Arrow id="ar-omsta-1" d="M 400 900 Q 600 700 820 360" color="#3a6fc6" width={12} />
       <Arrow id="ar-omsta-2" d="M 320 1080 Q 540 880 800 460" color="#3a6fc6" width={8} dashed />
 
-      <rect x="650" y="280" width="280" height="280" fill="#3a6fc6" opacity="0.18" stroke="#3a6fc6" strokeWidth="3" strokeDasharray="14 10" />
-      <text x="790" y="430" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="22" fill="#9cc1ff" letterSpacing="4">
+      <rect x="650" y="280" width="280" height="280" fill="#5ec98a" opacity="0.18" stroke="#5ec98a" strokeWidth="3" strokeDasharray="14 10" />
+      <text x="790" y="430" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="22" fill="#f5c242" letterSpacing="4">
         ASSISTYTA
       </text>
 
@@ -680,18 +689,18 @@ function OvergangAnfallPitch() {
 function AnfallsspelPitch() {
   return (
     <PitchSurface label="Anfallsspel — kontringsskydd, spela in, korridor, assistyta, box">
-      <rect x="70" y="1100" width="860" height="330" fill="#3a6fc6" opacity="0.14" />
-      <rect x="70" y="850" width="860" height="250" fill="#3a6fc6" opacity="0.12" />
-      <rect x="70" y="600" width="860" height="250" fill="#3a6fc6" opacity="0.10" />
+      <rect x="70" y="1100" width="860" height="330" fill="#5ec98a" opacity="0.14" />
+      <rect x="70" y="850" width="860" height="250" fill="#5ec98a" opacity="0.12" />
+      <rect x="70" y="600" width="860" height="250" fill="#5ec98a" opacity="0.10" />
       <rect x="650" y="280" width="280" height="320" fill="#f5c242" opacity="0.16" stroke="#f5c242" strokeWidth="3" strokeDasharray="14 10" />
-      <rect x="250" y="70" width="500" height="220" fill="#cf3a3a" opacity="0.16" stroke="#cf3a3a" strokeWidth="3" strokeDasharray="14 10" />
+      <rect x="250" y="70" width="500" height="220" fill="#f5c242" opacity="0.16" stroke="#f5c242" strokeWidth="3" strokeDasharray="14 10" />
 
       <g fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="20" letterSpacing="4">
-        <text x="90" y="1410" fill="#9cc1ff">1 · KONTRINGSSKYDD</text>
-        <text x="90" y="1160" fill="#9cc1ff">2 · SPELA IN</text>
-        <text x="90" y="900" fill="#9cc1ff">3 · SPELA UT</text>
+        <text x="90" y="1410" fill="#f5c242">1 · KONTRINGSSKYDD</text>
+        <text x="90" y="1160" fill="#f5c242">2 · SPELA IN</text>
+        <text x="90" y="900" fill="#f5c242">3 · SPELA UT</text>
         <text x="675" y="270" fill="#f5c242">4 · ASSISTYTA</text>
-        <text x="270" y="55" fill="#ff7a7a">5 · FYLL BOXEN</text>
+        <text x="270" y="55" fill="#f5c242">5 · FYLL BOXEN</text>
       </g>
 
       <Arrow id="ar-anfall-1" d="M 500 1270 L 500 1170" color="#3a6fc6" width={10} />
@@ -702,9 +711,11 @@ function AnfallsspelPitch() {
       <Arrow id="ar-anfall-r1" d="M 320 600 Q 380 380 460 240" color="#3a6fc6" width={6} dashed />
       <Arrow id="ar-anfall-r2" d="M 680 600 Q 620 380 540 240" color="#3a6fc6" width={6} dashed />
 
+      <PlayerDot x={500} y={1390} label="1" />
       <PlayerDot x={500} y={1300} label="3" />
       <PlayerDot x={300} y={1170} label="2" />
       <PlayerDot x={700} y={1170} label="4" />
+      <PlayerDot x={870} y={1300} label="5" />
       <PlayerDot x={500} y={950} label="6" />
       <PlayerDot x={320} y={780} label="8" />
       <PlayerDot x={680} y={780} label="10" />

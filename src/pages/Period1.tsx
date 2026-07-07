@@ -81,7 +81,7 @@ const Period1 = () => {
           Diagonalt spel från korridor till korridor
         </h1>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground/85 md:text-lg">
-          Vi flyttar bollen diagonalt från en korridor till en annan. Mål: locka press, hitta
+          Vi flyttar bollen diagonalt från en korridor till en annan. Mål: attrahera press, hitta
           rättvänd spelare, attackera kanten, fyll boxen.
         </p>
       </header>

@@ -15,7 +15,13 @@ interface Piece {
   name?: string;
 }
 
-type FormationKey = "4-3-3" | "4-4-2" | "3-5-2" | "4-2-3-1";
+type FormationKey = "4-3-3" | "3-4-3" | "4-2-1-3";
+
+const FORMATION_META: Record<FormationKey, { label: string }> = {
+  "4-3-3": { label: "Grundformation" },
+  "3-4-3": { label: "Variant · hög press" },
+  "4-2-1-3": { label: "Variant · matchgenomgång" },
+};
 
 // Positions are (x%, y%) where home attacks upward (y decreases)
 // y=92 = own goal line area, y=8 = opponent goal line
@@ -26,24 +32,18 @@ const FORMATIONS: Record<FormationKey, { x: number; y: number; label: string }[]
     { x: 30, y: 55, label: "VM" }, { x: 50, y: 58, label: "CM" }, { x: 70, y: 55, label: "HM" },
     { x: 20, y: 30, label: "VY" }, { x: 50, y: 25, label: "CF" }, { x: 80, y: 30, label: "HY" },
   ],
-  "4-4-2": [
-    { x: 50, y: 92, label: "MV" },
-    { x: 18, y: 75, label: "VB" }, { x: 38, y: 78, label: "MIB" }, { x: 62, y: 78, label: "YIB" }, { x: 82, y: 75, label: "HB" },
-    { x: 18, y: 52, label: "VM" }, { x: 40, y: 55, label: "CM1" }, { x: 60, y: 55, label: "CM2" }, { x: 82, y: 52, label: "HM" },
-    { x: 38, y: 28, label: "ST1" }, { x: 62, y: 28, label: "ST2" },
-  ],
-  "3-5-2": [
+  "3-4-3": [
     { x: 50, y: 92, label: "MV" },
     { x: 28, y: 78, label: "VIB" }, { x: 50, y: 80, label: "MIB" }, { x: 72, y: 78, label: "HIB" },
-    { x: 12, y: 55, label: "VWB" }, { x: 35, y: 58, label: "CM1" }, { x: 50, y: 55, label: "CM2" }, { x: 65, y: 58, label: "CM3" }, { x: 88, y: 55, label: "HWB" },
-    { x: 38, y: 28, label: "ST1" }, { x: 62, y: 28, label: "ST2" },
+    { x: 12, y: 55, label: "VM" }, { x: 38, y: 58, label: "CM1" }, { x: 62, y: 58, label: "CM2" }, { x: 88, y: 55, label: "HM" },
+    { x: 20, y: 30, label: "VY" }, { x: 50, y: 25, label: "CF" }, { x: 80, y: 30, label: "HY" },
   ],
-  "4-2-3-1": [
+  "4-2-1-3": [
     { x: 50, y: 92, label: "MV" },
     { x: 18, y: 75, label: "VB" }, { x: 38, y: 78, label: "MIB" }, { x: 62, y: 78, label: "YIB" }, { x: 82, y: 75, label: "HB" },
     { x: 38, y: 60, label: "DM1" }, { x: 62, y: 60, label: "DM2" },
-    { x: 22, y: 38, label: "VY" }, { x: 50, y: 40, label: "10" }, { x: 78, y: 38, label: "HY" },
-    { x: 50, y: 20, label: "CF" },
+    { x: 50, y: 42, label: "10" },
+    { x: 20, y: 30, label: "VY" }, { x: 50, y: 25, label: "CF" }, { x: 80, y: 30, label: "HY" },
   ],
 };
 
@@ -134,13 +134,16 @@ const SimpleTacticsBoard = () => {
             key={f}
             onClick={() => changeFormation(f)}
             className={cn(
-              "px-3 py-1.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider transition-all border",
+              "flex flex-col items-center px-3 py-1.5 rounded-md text-xs font-mono font-bold uppercase tracking-wider transition-all border",
               formation === f
                 ? "bg-accent text-accent-foreground border-accent"
                 : "bg-card text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
             )}
           >
-            {f}
+            <span>{f}</span>
+            <span className="text-[9px] font-normal normal-case tracking-normal opacity-80">
+              {FORMATION_META[f].label}
+            </span>
           </button>
         ))}
         <div className="ml-auto flex items-center gap-2">
@@ -176,20 +179,20 @@ const SimpleTacticsBoard = () => {
           {/* Center circle */}
           <circle cx="50" cy="66.5" r="10" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
           <circle cx="50" cy="66.5" r="0.6" fill="hsl(217 22% 35%)" />
-          {/* Top box (away goal) */}
-          <rect x="22" y="3" width="56" height="18" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
-          <rect x="34" y="3" width="32" height="7" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
+          {/* Top box (away goal): 59,3% bredd centrerad -> x=20.35 w=59.3, linjerar med korridorgräns */}
+          <rect x="20.35" y="3" width="59.3" height="18" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
+          <rect x="36.53" y="3" width="26.94" height="7" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
           {/* Bottom box (home goal) */}
-          <rect x="22" y="112" width="56" height="18" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
-          <rect x="34" y="123" width="32" height="7" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
+          <rect x="20.35" y="112" width="59.3" height="18" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
+          <rect x="36.53" y="123" width="26.94" height="7" fill="none" stroke="hsl(217 22% 25%)" strokeWidth="0.3" />
 
-          {/* Corridors */}
+          {/* Corridors: x = 20.35/36.53/63.47/79.65, linjerar med straffområdes-/målområdeskanter */}
           {showCorridors && (
             <g stroke="hsl(47 78% 56%)" strokeWidth="0.2" strokeDasharray="1 1" opacity="0.5">
-              <line x1="20" y1="3" x2="20" y2="130" />
-              <line x1="40" y1="3" x2="40" y2="130" />
-              <line x1="60" y1="3" x2="60" y2="130" />
-              <line x1="80" y1="3" x2="80" y2="130" />
+              <line x1="20.35" y1="3" x2="20.35" y2="130" />
+              <line x1="36.53" y1="3" x2="36.53" y2="130" />
+              <line x1="63.47" y1="3" x2="63.47" y2="130" />
+              <line x1="79.65" y1="3" x2="79.65" y2="130" />
             </g>
           )}
         </svg>

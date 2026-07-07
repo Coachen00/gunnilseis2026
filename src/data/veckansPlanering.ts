@@ -78,7 +78,7 @@ export const VECKANS_PLANERING = {
         "Färre touchbegränsningar i veckans pass — vi vill ha valet, inte tvånget.",
         "Lägg in övergångsfasen: bollvinst → 6 sekunder framåtspel → ny start. Matchens rytm.",
         "Tempo före perfektion: bättre att fela framåt med rätt idé än att spela säkert sidled.",
-        "Slutmoment alltid avslut. Inget pass utan att kedjan slutar i Golden zone eller Assistytan.",
+        "Slutmoment alltid avslut. Inget pass utan att kedjan slutar i gyllene zonen eller assistytan.",
       ],
       playerCue: "Stor yta. Hög rytm. Felet framåt är bättre än säker boll sidled.",
       accent: "yellow",

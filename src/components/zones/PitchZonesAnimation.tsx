@@ -41,7 +41,9 @@ import {
 } from "./zonesConfig";
 
 /* === Geometri: SVG-canvas 1600×900 (16:9), planen på högkant (anfall uppåt) ===
- * Plan 536×828 ≈ 68:105 m. Vänster panel (x 40–500) används för rubrik/captions. */
+ * Plan 536×828 ≈ 68:105 m. Vänster panel (x 40–500) används för rubrik/captions.
+ * Korridorgränser (spec, linjerar med straffområdes-/målområdeskant): yttre 0–20,35,
+ * inre 20,35–36,53, central 36,53–63,47, inre 63,47–79,65, yttre 79,65–100. */
 const PITCH = { x: 532, y: 30, w: 536, h: 828 } as const;
 /** Procent-x (0 = vänster sidlinje) → SVG-x. */
 const px = (x: number) => PITCH.x + (x / 100) * PITCH.w;
@@ -286,7 +288,7 @@ function AssistZoneLayer({ t, on, withText, tip }: LayerProps) {
   if (o <= 0.01) return null;
 
   const zones = [ASSIST_ZONES.left, ASSIST_ZONES.right];
-  const cutbacks = [ASSIST_ZONES.cutbackLeft, ASSIST_ZONES.cutbackRight];
+  const crossZones = [ASSIST_ZONES.crossLeft, ASSIST_ZONES.crossRight];
 
   // Tre typer av sista passning (spec): inspel, cutback, instick
   const arrows = [
@@ -303,13 +305,18 @@ function AssistZoneLayer({ t, on, withText, tip }: LayerProps) {
           <rect x={px(z.x0)} y={py(z.y1)} width={px(z.x1) - px(z.x0)} height={py(z.y0) - py(z.y1)} fill="none" stroke={ZC.assist} strokeOpacity={o * 0.85} strokeWidth={1.4} rx={6} filter="url(#zonesGlowSm)" />
         </g>
       ))}
-      {cutbacks.map((z, i) => (
+      {crossZones.map((z, i) => (
         <rect key={i} x={px(z.x0)} y={py(z.y1)} width={px(z.x1) - px(z.x0)} height={py(z.y0) - py(z.y1)} fill={ZC.assist} opacity={o * 0.12} rx={6} />
       ))}
       {withText && (
-        <text x={px(15)} y={py(96.5)} textAnchor="middle" fontFamily='"JetBrains Mono", ui-monospace, monospace' fontSize={12.5} fontWeight={700} letterSpacing={1.8} fill={ZC.assist} opacity={o}>
-          {ZL.assistLeft}
-        </text>
+        <>
+          <text x={(px(ASSIST_ZONES.left.x0) + px(ASSIST_ZONES.left.x1)) / 2} y={py(96.5)} textAnchor="middle" fontFamily='"JetBrains Mono", ui-monospace, monospace' fontSize={12.5} fontWeight={700} letterSpacing={1.8} fill={ZC.assist} opacity={o}>
+            {ZL.assistLeft}
+          </text>
+          <text x={(px(ASSIST_ZONES.right.x0) + px(ASSIST_ZONES.right.x1)) / 2} y={py(96.5)} textAnchor="middle" fontFamily='"JetBrains Mono", ui-monospace, monospace' fontSize={12.5} fontWeight={700} letterSpacing={1.8} fill={ZC.assist} opacity={o}>
+            {ZL.assistRight}
+          </text>
+        </>
       )}
       {arrows.map((a) => (
         <g key={a.id}>

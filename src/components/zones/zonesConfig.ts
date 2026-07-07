@@ -32,7 +32,9 @@ export const ZONE_COLORS = {
   textDim: "rgba(233,245,238,0.55)",
 } as const;
 
-/* === Korridorer (spec: yttre 0–18, inre 18–38, central 38–62, inre 62–82, yttre 82–100) === */
+/* === Korridorer (spec: gränser linjerar med straffområdeskant 20,35/79,65 och
+ * målområdesbredd 36,53/63,47, enligt 105×68 m plan): yttre 0–20,35,
+ * inre 20,35–36,53, central 36,53–63,47, inre 63,47–79,65, yttre 79,65–100 === */
 export interface CorridorDef {
   id: string;
   label: string;
@@ -40,11 +42,11 @@ export interface CorridorDef {
   x1: number;
 }
 export const CORRIDORS: CorridorDef[] = [
-  { id: "yttre-v", label: "YTTRE", x0: 0, x1: 18 },
-  { id: "inre-v", label: "INRE", x0: 18, x1: 38 },
-  { id: "central", label: "CENTRAL", x0: 38, x1: 62 },
-  { id: "inre-h", label: "INRE", x0: 62, x1: 82 },
-  { id: "yttre-h", label: "YTTRE", x0: 82, x1: 100 },
+  { id: "yttre-v", label: "YTTRE", x0: 0, x1: 20.35 },
+  { id: "inre-v", label: "INRE", x0: 20.35, x1: 36.53 },
+  { id: "central", label: "CENTRAL", x0: 36.53, x1: 63.47 },
+  { id: "inre-h", label: "INRE", x0: 63.47, x1: 79.65 },
+  { id: "yttre-h", label: "YTTRE", x0: 79.65, x1: 100 },
 ];
 
 /* === Motståndarens lagdelar (exempelpositioner; animeras i DynamicGameSpaceLayer) ===
@@ -59,17 +61,20 @@ export const OPPONENT_FORMATION = {
   exampleY: { forwards: 42, midfield: 58, backline: 76 },
 } as const;
 
-/* === Assistytan (spec) === */
+/* === Assistytan (spec): PRIMÄR = inre korridoren i sista tredjedelen,
+ * nära/i straffområdet, bredvid gyllene zonen. SEKUNDÄR = yttre korridoren
+ * nära straffområdet (inläggslägen). === */
 export const ASSIST_ZONES = {
-  left: { x0: 5, x1: 25, y0: 78, y1: 95 },
-  right: { x0: 75, x1: 95, y0: 78, y1: 95 },
-  /** Cutback-ytor — svagare komplement i inre korridor. */
-  cutbackLeft: { x0: 25, x1: 38, y0: 82, y1: 92 },
-  cutbackRight: { x0: 62, x1: 75, y0: 82, y1: 92 },
+  left: { x0: 20.35, x1: 36.53, y0: 78, y1: 95 },
+  right: { x0: 63.47, x1: 79.65, y0: 78, y1: 95 },
+  /** Inläggsytor — svagare komplement i yttre korridor. */
+  crossLeft: { x0: 5, x1: 20.35, y0: 82, y1: 92 },
+  crossRight: { x0: 79.65, x1: 95, y0: 82, y1: 92 },
 } as const;
 
-/* === Gyllene zonen (spec: x 38–62, y 84–97, centralt framför mål) === */
-export const GZ_ZONE = { x0: 38, x1: 62, y0: 84, y1: 97 } as const;
+/* === Gyllene zonen (spec: x linjerar med målområdesbredd 36,53/63,47;
+ * y0 = 100 − straffområdesdjup 15,71 → 84,29, y1 = 100 (når mållinjen)) === */
+export const GZ_ZONE = { x0: 36.53, x1: 63.47, y0: 84.29, y1: 100 } as const;
 
 /* === Etiketter & copy (kanonisk vokabulär: "gyllene zonen", "assistytan") === */
 export const ZONE_LABELS = {
