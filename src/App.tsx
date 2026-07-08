@@ -21,6 +21,7 @@ const MajSpelmodell = lazy(() => import("./pages/MajSpelmodell"));
 const SommarUppstart = lazy(() => import("./pages/SommarUppstart"));
 const Forsvar = lazy(() => import("./pages/Forsvar"));
 const Anfall = lazy(() => import("./pages/Anfall"));
+const SpelvandningarAnfall = lazy(() => import("./pages/SpelvandningarAnfall"));
 const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
@@ -121,6 +122,7 @@ const App = () => (
           <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
+          <Route path="/anfall/spelvandningar" element={<Protected routeName="Spelvändningar"><SpelvandningarAnfall /></Protected>} />
           <Route path="/omstallning-forsvar" element={<Protected routeName="Omställning försvar"><OmstallningForsvar /></Protected>} />
           <Route path="/omstallning-anfall" element={<Protected routeName="Omställning anfall"><OmstallningAnfall /></Protected>} />
           <Route path="/fasta" element={<Protected routeName="Fasta"><Fasta /></Protected>} />

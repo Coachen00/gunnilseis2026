@@ -39,6 +39,7 @@ const spelmodellGroups: NavGroup[] = [
     label: "Skeden",
     children: [
       { label: "Anfall", to: "/anfall" },
+      { label: "Spelvändningar", to: "/anfall/spelvandningar", hint: "Central → yttre yta" },
       { label: "Försvar", to: "/forsvar" },
       { label: "Omställning anfall", to: "/omstallning-anfall" },
       { label: "Omställning försvar", to: "/omstallning-forsvar" },

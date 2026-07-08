@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import PageHero from "@/components/PageHero";
 import FasTrappa from "@/components/FasTrappa";
 import CuesBlock from "@/components/CuesBlock";
@@ -83,6 +85,23 @@ const Anfall = () => (
             </a>
           ))}
         </StaggerList>
+      </SectionReveal>
+
+      <SectionReveal>
+        <Link
+          to="/anfall/spelvandningar"
+          className="group mb-12 flex items-center justify-between gap-4 rounded-sm border border-border bg-card p-5 hover:border-accent hover:-translate-y-px transition-all duration-200"
+        >
+          <div>
+            <div className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent mb-1.5">
+              Spelvändning · animation
+            </div>
+            <div className="text-sm md:text-base font-bold tracking-tight">
+              Central korridor till yttre yta
+            </div>
+          </div>
+          <ArrowUpRight className="h-5 w-5 flex-shrink-0 text-muted-foreground group-hover:text-accent transition-colors" strokeWidth={2.2} />
+        </Link>
       </SectionReveal>
     </div>
 
