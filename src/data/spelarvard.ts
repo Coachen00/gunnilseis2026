@@ -88,7 +88,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     title: "Kosttillskott",
     question: "Vilka är vetenskapligt bevisade?",
     bullets: [
-      "Stark evidens: kreatin monohydrat (3–5 g varje dag — mest beforskade tillskottet, ger styrka + upprepade sprinter).",
+      "Stark evidens: kreatin monohydrat (3–5 g varje dag) kan stödja styrka och kapacitet för upprepade sprinter — individuell effekt varierar.",
       "Koffein är valfritt — prova dos och timing individuellt på träning först och avstå om det påverkar sömnen.",
       "D-vitamin oktober–april i Sverige — brist är vanligt här. Proteinpulver är bekvämlighet när maten inte hinns med, inte magi.",
       "Svag eller ingen evidens: BCAA, fettförbrännare, pre-workout-blandningar — spara pengarna. Mat först, tillskott sen.",
@@ -114,7 +114,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Gym — är det något att ha?",
     bullets: [
       "Styrketräning bygger kapacitet och kan minska risken för både akuta skador och överbelastning — det är ingen garanti.",
-      "Starkare = snabbare sprint, högre hopp, vinner fler dueller och tål mer fotbollsträning.",
+      "Ökad styrka kan stödja sprint, hopp, dueller och kapaciteten att tåla fotbollsträning.",
       "Under säsong räcker 1–2 pass i veckan på 30–45 min.",
       "Lägg inte ett tungt benpass de sista 48 h före match.",
     ],
@@ -182,7 +182,7 @@ export const SPELARVARD_AREAS: SpelarvardArea[] = [
     id: "gym",
     emoji: "🏋️",
     label: "Gym & styrka",
-    blurb: "Komplettera fotbollen med styrka: starkare kropp, färre skador, snabbare spel.",
+    blurb: "Komplettera fotbollen med styrka för bättre kapacitet och möjlig riskminskning.",
     sectionIds: ["gym", "gymovningar"],
   },
   {

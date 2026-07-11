@@ -104,6 +104,19 @@ describe("spelarvard", () => {
     expect(text).toMatch(/minska risken|riskminskning|bygga kapacitet/);
     expect(text).not.toMatch(/skadeskydd/);
   });
+
+  it("undviker absoluta prestations- och skadelöften i all aktiv copy", () => {
+    const activeCopy = [
+      ...SPELARVARD_SECTIONS.flatMap((section) => section.bullets),
+      ...SPELARVARD_AREAS.map((area) => area.blurb),
+    ].join(" ");
+
+    expect(activeCopy).not.toMatch(/ger styrka \+ upprepade sprinter/i);
+    expect(activeCopy).not.toMatch(/starkare = snabbare sprint/i);
+    expect(activeCopy).not.toMatch(/färre skador/i);
+    expect(activeCopy).not.toMatch(/snabbare spel/i);
+    expect(activeCopy).toMatch(/individuell effekt varierar/i);
+  });
 });
 
 describe("spelarvard — områden (rullgardin)", () => {
