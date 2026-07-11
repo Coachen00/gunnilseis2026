@@ -61,7 +61,8 @@ function item(
 }
 
 export function getSchedule(role: TrainingRole, level: PlanLevel, week: number): ScheduleItem[] {
-  const progression = TRAINING_WEEKS.find((candidate) => candidate.id === week) ?? TRAINING_WEEKS[0];
+  const progression = TRAINING_WEEKS.find((candidate) => candidate.id === week);
+  if (!progression) throw new RangeError(`Okänd träningsvecka: ${week}`);
   const [accelerationDose, maxSpeedDose] = ROLE_PLANS[role].sprintDoses;
   const weekDose = progression.volumeRange;
 
@@ -83,14 +84,14 @@ export function getSchedule(role: TrainingRole, level: PlanLevel, week: number):
   }
 
   return [
-    item("Måndag", "strength", "Underkroppsstyrka", `3–4 × 4–6, ${weekDose}`, "high", "2–3 min", stopRules.strength),
     item("Måndag", "sprint", "Acceleration", accelerationDose, "high", "2 min", stopRules.sprint),
+    item("Måndag", "strength", "Underkroppsstyrka", `3–4 × 4–6, ${weekDose}`, "high", "2–3 min", stopRules.strength),
     item("Tisdag", "recovery", "Aktiv återhämtning", "20–30 min RPE 2–3", "low", "Kontinuerligt", "Avsluta vid ökad smärta."),
-    item("Onsdag", "conditioning", "HIIT / repeated sprint", "2 × 6 × 20 s / 40 s vila", "high", "3 min mellan set", stopRules.conditioning),
-    item("Torsdag", "rest", "Hel vilodag", "Ingen träning", "low", "Hela dagen", "Prioritera vila vid kvarstående trötthet."),
-    item("Fredag", "strength", "Helkroppsstyrka", `3–4 × 4–6, ${weekDose}`, "high", "2–3 min", stopRules.strength),
-    item("Fredag", "sprint", "Maxfart", maxSpeedDose, "high", "3–4 min", stopRules.sprint),
-    item("Lördag", "recovery", "Rörlighet och promenad", "15–30 min RPE 1–2", "low", "Kontinuerligt", "Avsluta vid ökad smärta."),
+    item("Onsdag", "rest", "Hel vilodag", "Ingen träning", "low", "Hela dagen", "Prioritera vila vid kvarstående trötthet."),
+    item("Torsdag", "sprint", "Maxfart", maxSpeedDose, "high", "3–4 min", stopRules.sprint),
+    item("Torsdag", "strength", "Helkroppsstyrka", `3–4 × 4–6, ${weekDose}`, "high", "2–3 min", stopRules.strength),
+    item("Fredag", "recovery", "Aktiv återhämtning", "15–30 min RPE 1–2", "low", "Kontinuerligt", "Avsluta vid ökad smärta."),
+    item("Lördag", "conditioning", "HIIT / repeated sprint", "2 × 6 × 20 s / 40 s vila", "high", "3 min mellan set", stopRules.conditioning),
     item("Söndag", "conditioning", "Lugn aerob och teknik", "30–45 min RPE 3–4", "low", "Kontinuerligt", "Sänk dosen om tröttheten ökar."),
   ];
 }

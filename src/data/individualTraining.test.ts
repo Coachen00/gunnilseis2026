@@ -47,17 +47,44 @@ describe("individual training model", () => {
 
       expect(trainingDays.size).toBeLessThanOrEqual(5);
       expect(schedule.some((item) => item.sessionType === "rest")).toBe(true);
-      expect(strength.map((item) => item.day)).toEqual(["Måndag", "Fredag"]);
+      expect(strength.map((item) => item.day)).toEqual(["Måndag", "Torsdag"]);
       expect(sprint).toHaveLength(2);
       expect(sprint.map((item) => item.dose)).toEqual(ROLE_PLANS[role].sprintDoses);
+      expect(schedule.filter((item) => item.sessionType === "conditioning" && item.intensity === "high")).toHaveLength(1);
+      expect(schedule.filter((item) => item.sessionType === "conditioning" && item.intensity === "low")).toHaveLength(1);
+
+      for (const day of ["Måndag", "Torsdag"]) {
+        const sessions = schedule.filter((item) => item.day === day);
+        expect(sessions.map((item) => item.sessionType)).toEqual(["sprint", "strength"]);
+      }
     },
   );
 
-  it("places two strength sessions on Monday and Friday with at least 48 hours recovery", () => {
+  it("places two strength sessions 72 hours apart", () => {
     const strengthDays = getSchedule("midfielder", "full", 1)
       .filter((item) => item.sessionType === "strength")
       .map((item) => item.day);
-    expect(strengthDays).toEqual(["Måndag", "Fredag"]);
+    expect(strengthDays).toEqual(["Måndag", "Torsdag"]);
+  });
+
+  it("uses the recommended full-plan week", () => {
+    const schedule = getSchedule("midfielder", "full", 1);
+    expect(schedule.map(({ day, title }) => `${day}: ${title}`)).toEqual([
+      "Måndag: Acceleration",
+      "Måndag: Underkroppsstyrka",
+      "Tisdag: Aktiv återhämtning",
+      "Onsdag: Hel vilodag",
+      "Torsdag: Maxfart",
+      "Torsdag: Helkroppsstyrka",
+      "Fredag: Aktiv återhämtning",
+      "Lördag: HIIT / repeated sprint",
+      "Söndag: Lugn aerob och teknik",
+    ]);
+  });
+
+  it("rejects an unknown training week", () => {
+    expect(() => getSchedule("forward", "full", 0)).toThrow(RangeError);
+    expect(() => getSchedule("forward", "full", 5)).toThrow(RangeError);
   });
 
   it("adds a stop rule to every high-intensity item", () => {

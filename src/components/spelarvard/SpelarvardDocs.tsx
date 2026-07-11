@@ -9,7 +9,7 @@
  * komponenten får sina rader + mutationer som props för att slippa N queries.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
   ExternalLink,
@@ -130,10 +130,33 @@ function DocCard({
 function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => void }) {
   const { url, loading } = useDocUrl(doc);
   const meta = KIND_META[doc.doc_kind];
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    closeRef.current?.focus();
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not([tabindex="-1"]), a[href], iframe, [tabindex]:not([tabindex="-1"])',
+      ) ?? []);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", handler);
     const prevOverflow = document.body.style.overflow;
@@ -141,6 +164,7 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
     return () => {
       document.removeEventListener("keydown", handler);
       document.body.style.overflow = prevOverflow;
+      openerRef.current?.focus();
     };
   }, [onClose]);
 
@@ -148,8 +172,8 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
   const canEmbed = doc.doc_kind === "pdf" || doc.doc_kind === "image";
 
   return createPortal(
-    <div role="dialog" aria-modal="true" aria-label={doc.title} className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
-      <button type="button" aria-label="Stäng" onClick={onClose} className="absolute inset-0 cursor-default bg-black/85 backdrop-blur-md" />
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={doc.title} className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
+      <button type="button" tabIndex={-1} aria-label="Stäng" onClick={onClose} className="absolute inset-0 cursor-default bg-black/85 backdrop-blur-md" />
 
       <div className="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col gap-3">
         <div className="flex items-center justify-between gap-3">
@@ -157,7 +181,7 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">{meta.label}</p>
             <h3 className="truncate text-lg font-bold leading-tight text-white md:text-xl">{doc.title}</h3>
           </div>
-          <button type="button" onClick={onClose} className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="Stäng (Esc)">
+          <button ref={closeRef} type="button" onClick={onClose} className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="Stäng (Esc)">
             <X className="h-5 w-5" strokeWidth={2.4} />
           </button>
         </div>

@@ -108,6 +108,27 @@ describe("Spelarvard — områden + dokumentgalleri", () => {
     expect(screen.queryByRole("dialog", { name: "Kost för motorn" })).not.toBeInTheDocument();
   });
 
+  it("fokuserar, fångar fokus och återställer exakt öppnarknapp", () => {
+    renderPage();
+    const opener = screen.getByRole("button", { name: /öppna kost för motorn/i });
+    opener.focus();
+    fireEvent.click(opener);
+
+    const dialog = screen.getByRole("dialog", { name: "Kost för motorn" });
+    const closeButton = within(dialog).getByRole("button", { name: "Stäng (Esc)" });
+    expect(closeButton).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
+    const lastLink = within(dialog).getAllByRole("link").at(-1)!;
+    expect(lastLink).toHaveFocus();
+    fireEvent.keyDown(document, { key: "Tab" });
+    expect(closeButton).toHaveFocus();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(screen.queryByRole("dialog", { name: "Kost för motorn" })).not.toBeInTheDocument();
+    expect(opener).toHaveFocus();
+  });
+
   it("icke-admin ser inte uppladdningsknappen", () => {
     renderPage();
     expect(screen.queryByText(/lägg till material/i)).toBeNull();

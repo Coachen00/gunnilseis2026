@@ -63,7 +63,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
       "Kolhydrater är bränslet — anpassa 3–8 g kolhydrat per kg kroppsvikt och dag efter belastning: pasta, ris, potatis, bröd.",
       "Protein 1,6–2,2 g protein per kg kroppsvikt och dag, spritt över dagen — 20–40 g per mål (ägg, kyckling, kvarg, bönor).",
       "Matchdag: rejäl måltid 3–4 h före avspark, sen ett lätt kolhydratsnack 1–2 h före (banan, smörgås).",
-      "Efter match och träning: kolhydrat + protein inom en timme — det är då tanken fylls.",
+      "Efter match och träning: få i dig kolhydrat + protein så snart det är praktiskt. 30 minuter kan vara ett bra riktmärke, men är inte en absolut gräns.",
       "Vätska är individuellt — följ din vikt före och efter pass med målet under 2 procent kroppsmassaförlust.",
     ],
     builtinDocs: [

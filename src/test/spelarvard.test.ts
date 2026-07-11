@@ -67,6 +67,14 @@ describe("spelarvard", () => {
     expect(text).toMatch(/under 2 procent kroppsmassaförlust/);
   });
 
+  it("beskriver återhämtning efter pass som flexibel och praktisk", () => {
+    const kost = SPELARVARD_SECTIONS.find((s) => s.id === "kostlara")!;
+    const text = kost.bullets.join(" ");
+    expect(text).toMatch(/så snart det är praktiskt/i);
+    expect(text).toMatch(/30 minuter.*inte.*absolut/i);
+    expect(text).not.toMatch(/inom en timme.*då tanken fylls/i);
+  });
+
   it("anger säkra ramar för tillskott och koffein", () => {
     const tillskott = SPELARVARD_SECTIONS.find((s) => s.id === "kosttillskott")!;
     const text = tillskott.bullets.join(" ");
