@@ -33,3 +33,17 @@ GREEN:
 ## Concerns
 
 Inga kända concerns.
+
+## Review-åtgärder
+
+- Regressionstestet för nedsättande copy och gamla riskdoser öppnar nu både försvararens och forwardens accordion innan frånvaro verifieras. Därmed renderas relevanta rollscheman i testet.
+- Full plan beskriver korrekt fyra belastnings-/huvudpassdagar, samtidigt som återhämtningsaktiviteterna ligger kvar i schemat.
+
+### Review-TDD
+
+RED: sidtestet föll på den gamla beskrivningen `Fyra träningsdagar med komplett dos.`. Det skärpta riskcopytestet öppnade relevanta accordions och verifierade befintlig korrekt frånvaro.
+
+GREEN:
+
+- `npm test -- src/pages/Semestern2026.test.tsx`: 1 fil, 4/4 tester godkända.
+- `npm test`: 30/30 testfiler och 353/353 tester godkända.

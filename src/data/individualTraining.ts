@@ -23,7 +23,7 @@ export interface ScheduleItem {
 }
 
 export const PLAN_LEVELS: Array<{ id: PlanLevel; label: string; description: string }> = [
-  { id: "full", label: "Full plan", description: "Fyra träningsdagar med komplett dos." },
+  { id: "full", label: "Full plan", description: "Fyra belastnings-/huvudpassdagar med komplett dos." },
   { id: "maintenance", label: "Underhåll", description: "Tre träningsdagar som bevarar kapacitet." },
   { id: "minimum", label: "Minsta effektiva dos", description: "Två kompakta helkroppspass." },
 ];

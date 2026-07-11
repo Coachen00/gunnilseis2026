@@ -30,6 +30,7 @@ describe("Semestern2026 personliga scheman", () => {
       expect(screen.getByRole("button", { name: `Vecka ${week}` })).toBeInTheDocument();
     }
     expect(screen.getByRole("heading", { name: "Full plan" })).toBeInTheDocument();
+    expect(screen.getByText("Fyra belastnings-/huvudpassdagar med komplett dos.")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Underhåll" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Minsta effektiva dos" })).toBeInTheDocument();
   });
@@ -65,6 +66,12 @@ describe("Semestern2026 personliga scheman", () => {
 
   it("tar bort nedsättande copy och gamla riskdoser", () => {
     renderPage();
+
+    fireEvent.click(screen.getByRole("button", { name: /Dani Försvarare/i }));
+    expect(screen.getByRole("article", { name: "Full plan" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /Frej Anfallare/i }));
+    expect(screen.getByText(/Frej, du tränar som forward/i)).toBeInTheDocument();
+
     expect(screen.queryByText(/Chipstuttar/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/12 x 20 sek maxnära/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/16 x 50 m/i)).not.toBeInTheDocument();
