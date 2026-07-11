@@ -12,9 +12,9 @@
  * Använder framer-motion (redan i bundle), inga nya deps.
  */
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, CalendarClock, Dumbbell, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
@@ -22,7 +22,14 @@ import HomeCalendarBoard from "./HomeCalendarBoard";
 /** Välkomstfoto (laget på morgonträning) — full-cover bakgrund i heron, tonar
  *  in mjukt på mount. Filen ligger i public/media/hem/. Saknas filen visas den
  *  varma mörka sektionsbakgrunden som fallback (ingen trasig bild-ikon). */
-const WELCOME_IMAGE = "/media/hem/valkomst.jpg";
+const WELCOME_IMAGES = [
+  "/media/hem/20260625_184936.jpg",
+  "/media/hem/20260625_184943.jpg",
+  "/media/hem/20260625_184945.jpg",
+  "/media/hem/20260625_184959.jpg",
+  "/media/hem/20260625_185002.jpg",
+  "/media/hem/20260625_185007.jpg",
+] as const;
 const SUMMER_BODY_MESSAGE_END = new Date("2026-07-25T23:59:59+02:00");
 
 type Principle = {
@@ -62,6 +69,17 @@ export default function MagicalPitchHero() {
   // gäst-CTAs (säkrare default — ingen läcker session-info).
   const authed = !authLoading && isAuthed;
   const showSummerBodyMessage = authed && new Date() <= SUMMER_BODY_MESSAGE_END;
+  const [welcomeImageIndex, setWelcomeImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (reduced) return;
+    const timer = window.setInterval(() => {
+      setWelcomeImageIndex((current) => (current + 1) % WELCOME_IMAGES.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [reduced]);
+
+  const activeWelcomeImage = WELCOME_IMAGES[welcomeImageIndex];
 
   // Mjuk parallax — endast när användaren scrollar förbi intro.
   const { scrollYProgress } = useScroll({
@@ -84,14 +102,18 @@ export default function MagicalPitchHero() {
     >
       {/* Välkomstfoto — tonar in mjukt och täcker hela heron, bakom animeringen.
           backgroundImage (inte <img>) → saknad fil ger ingen trasig bild-ikon. */}
-      <motion.div
-        aria-hidden="true"
-        initial={reduced ? false : { opacity: 0, scale: 1.06 }}
-        animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-        transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('${WELCOME_IMAGE}')` }}
-      />
+      <AnimatePresence initial={false} mode="sync">
+        <motion.div
+          key={activeWelcomeImage}
+          aria-hidden="true"
+          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 1.06 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={reduced ? undefined : { opacity: 0, scale: 1.02 }}
+          transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
+          className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
+          style={{ backgroundImage: `url('${activeWelcomeImage}')` }}
+        />
+      </AnimatePresence>
       {/* Mörk varm scrim — vänstertung så amber/cream-texten håller kontrast (WCAG) */}
       <div
         aria-hidden="true"
