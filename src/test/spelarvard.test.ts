@@ -56,6 +56,54 @@ describe("spelarvard", () => {
     const text = tillskott!.bullets.join(" ").toLowerCase();
     expect(text).toContain("kreatin");
   });
+  it("anger forskningsförankrade dosintervall för kost och vätska", () => {
+    const kost = SPELARVARD_SECTIONS.find((s) => s.id === "kostlara")!;
+    const text = kost.bullets.join(" ");
+
+    expect(text).toMatch(/1,6–2,2 g protein per kg kroppsvikt och dag/);
+    expect(text).toMatch(/3–8 g kolhydrat per kg kroppsvikt och dag/);
+    expect(text).toMatch(/belastning/);
+    expect(text).toMatch(/individuellt/);
+    expect(text).toMatch(/under 2 procent kroppsmassaförlust/);
+  });
+
+  it("anger säkra ramar för tillskott och koffein", () => {
+    const tillskott = SPELARVARD_SECTIONS.find((s) => s.id === "kosttillskott")!;
+    const text = tillskott.bullets.join(" ");
+
+    expect(text).toMatch(/kreatin monohydrat.*3–5 g varje dag/i);
+    expect(text).toMatch(/batch-testade produkter/i);
+    expect(text).toMatch(/Koffein är valfritt/i);
+    expect(text).toMatch(/individuellt/i);
+    expect(text).toMatch(/sömn/i);
+  });
+
+  it("anger 7–9 timmars sömn och RPE 7–9 för tung styrka", () => {
+    const somn = SPELARVARD_SECTIONS.find((s) => s.id === "somn")!;
+    const gymovningar = SPELARVARD_SECTIONS.find((s) => s.id === "gymovningar")!;
+
+    expect(somn.bullets.join(" ")).toMatch(/7–9 h/);
+    expect(gymovningar.bullets.join(" ")).toMatch(/RPE 7–9/);
+  });
+
+  it("ger tre träningsalternativ och minst en hel vilodag", () => {
+    const sommar = SPELARVARD_SECTIONS.find((s) => s.id === "sommarschema")!;
+    const text = sommar.bullets.join(" ");
+
+    expect(text).toMatch(/Full plan/);
+    expect(text).toMatch(/Underhåll/);
+    expect(text).toMatch(/Miniminivå/);
+    expect(text).toMatch(/minst en hel vilodag/i);
+    expect(text).not.toMatch(/underhålls med 2–3 pass i veckan/i);
+  });
+
+  it("beskriver skadeprevention som riskminskning, inte garanti", () => {
+    const gym = SPELARVARD_SECTIONS.find((s) => s.id === "gym")!;
+    const text = gym.bullets.join(" ").toLowerCase();
+
+    expect(text).toMatch(/minska risken|riskminskning|bygga kapacitet/);
+    expect(text).not.toMatch(/skadeskydd/);
+  });
 });
 
 describe("spelarvard — områden (rullgardin)", () => {

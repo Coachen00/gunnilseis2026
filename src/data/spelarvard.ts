@@ -60,11 +60,11 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     title: "Enkel kostlära",
     question: "Vad äter jag för att prestera?",
     bullets: [
-      "Kolhydrater är bränslet — fyll på dagarna före och på matchdag: pasta, ris, potatis, bröd.",
-      "Protein 1,6–2 g per kg kroppsvikt om dagen, spritt över dagen — 20–40 g per mål (ägg, kyckling, kvarg, bönor).",
+      "Kolhydrater är bränslet — anpassa 3–8 g kolhydrat per kg kroppsvikt och dag efter belastning: pasta, ris, potatis, bröd.",
+      "Protein 1,6–2,2 g protein per kg kroppsvikt och dag, spritt över dagen — 20–40 g per mål (ägg, kyckling, kvarg, bönor).",
       "Matchdag: rejäl måltid 3–4 h före avspark, sen ett lätt kolhydratsnack 1–2 h före (banan, smörgås).",
       "Efter match och träning: kolhydrat + protein inom en timme — det är då tanken fylls.",
-      "Vätska: ljus urin = du ligger rätt. Drick ca en halv liter sista timmen före avspark.",
+      "Vätska är individuellt — följ din vikt före och efter pass med målet under 2 procent kroppsmassaförlust.",
     ],
     builtinDocs: [
       {
@@ -89,7 +89,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Vilka är vetenskapligt bevisade?",
     bullets: [
       "Stark evidens: kreatin monohydrat (3–5 g varje dag — mest beforskade tillskottet, ger styrka + upprepade sprinter).",
-      "Koffein ca 3 mg per kg 45–60 min före — testa på träning först, aldrig nära läggdags.",
+      "Koffein är valfritt — prova dos och timing individuellt på träning först och avstå om det påverkar sömnen.",
       "D-vitamin oktober–april i Sverige — brist är vanligt här. Proteinpulver är bekvämlighet när maten inte hinns med, inte magi.",
       "Svag eller ingen evidens: BCAA, fettförbrännare, pre-workout-blandningar — spara pengarna. Mat först, tillskott sen.",
       "Under 18? Skippa tillskotten — maten räcker hela vägen.",
@@ -102,7 +102,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Hur viktigt är det egentligen?",
     bullets: [
       "Viktigaste återhämtningen som finns — viktigare än alla tillskott ihop.",
-      "Sikta på 8–9 h. Under 8 h ger tydligt ökad skaderisk hos unga idrottare (ca 1,7× enligt forskningen).",
+      "Sikta på 7–9 h. För lite sömn kan öka skaderisken hos unga idrottare.",
       "Sömnen styr sprint, beslut, inlärning av spelmoment och immunförsvar — allt vi vill ha på planen.",
       "Rutin: samma läggtid, mörkt och svalt rum, skärmen bort sista timmen, ingen koffein efter ca kl 15.",
       "Powernap 20–30 min funkar bra. Natten före match börjar kvällen innan — bygg vanan.",
@@ -113,7 +113,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     title: "Kompletterande träning",
     question: "Gym — är det något att ha?",
     bullets: [
-      "Ja, tydligt: styrketräning minskar akuta skador med ungefär en tredjedel och halverar överbelastningsskador (stor forskningsgenomgång).",
+      "Styrketräning bygger kapacitet och kan minska risken för både akuta skador och överbelastning — det är ingen garanti.",
       "Starkare = snabbare sprint, högre hopp, vinner fler dueller och tål mer fotbollsträning.",
       "Under säsong räcker 1–2 pass i veckan på 30–45 min.",
       "Lägg inte ett tungt benpass de sista 48 h före match.",
@@ -134,9 +134,9 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Vad ska jag köra — och tänka på?",
     bullets: [
       "Bas för fotbollsspelare: knäböj, rumänska marklyft (RDL), utfall/step-ups, höftlyft.",
-      "Skadeskydd alla borde köra: Nordic hamstring (baksida lår), Copenhagen (ljumskar) och enbenta vadpress.",
+      "För att bygga kapacitet: Nordic hamstring (baksida lår), Copenhagen (ljumskar) och enbenta vadpress.",
       "Överkropp och bål: press + drag + planka/sidoplanka.",
-      "Teknik före vikt — tungt = 3–4 set × 4–8 reps med kontroll, öka långsamt.",
+      "Teknik före vikt — tung styrka = RPE 7–9, 3–4 set × 4–8 reps med kontroll, öka långsamt.",
       "Ont ≠ bra. Fråga staben hellre än gissa.",
     ],
   },
@@ -146,9 +146,10 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Hur håller vi formen — och vinner serien?",
     proposal: true,
     bullets: [
-      "Sommaruppehållet är där serier vinns. Konditionen börjar tappas efter 2–3 veckor utan stimulans — men underhålls med 2–3 pass i veckan.",
-      "Enkel veckomall: 1× intervaller (t.ex. 4×4 min eller 10×30/30 sek), 1× styrka (gympasset ovan), 1× boll/teknik eller spel + valfri löptur.",
-      "Vill vi vinna serien? Sommaren är vår edge — use it or lose it.",
+      "Full plan: måndag styrka + acceleration, onsdag HIIT/RST, fredag styrka + maxfart och söndag lugn aerob träning/teknik.",
+      "Underhåll: träna måndag, onsdag och fredag med styrka, sprint och kondition enligt träningsplanen.",
+      "Miniminivå: två helkroppspass med en kort konditionsdos.",
+      "Planera minst en hel vilodag varje vecka och skala ned vid kvarstående trötthet eller smärta.",
       'Tävlingsförslag "Sommarkungen 👑" i Kungen-anda: varje genomfört pass = poäng (självrapport i gruppchatten), topp tre hyllas vid uppstarten.',
       "Förslag — bekräftas av staben innan det gäller.",
     ],
