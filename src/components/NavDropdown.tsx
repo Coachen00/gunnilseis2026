@@ -88,7 +88,7 @@ const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [] 
         <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", open && "rotate-180")} />
         <span
           className={cn(
-            "absolute left-3 right-6 -bottom-0.5 h-[2px] rounded-full bg-accent transition-all duration-300",
+            "absolute left-3 right-6 -bottom-0.5 h-[2px] rounded-full bg-kedja-lime transition-all duration-300",
             isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
           )}
         />
