@@ -1,91 +1,154 @@
 /**
  * Identitetsord — fem beteenden vi visar i varje match.
- * Varje punkt har en undersida på /identitet/<slug>.
+ * Läses som en kedja på /identitet, ett beteende i taget.
  */
 
+export interface IdentityStep {
+  label: string;
+  headline: string;
+  support: string;
+}
+
 export interface IdentityItem {
-  slug: "dueller" | "andrabollsspel" | "djupled" | "felvant" | "kommunicera";
+  slug: "scanning" | "yta" | "prata-med-passningen" | "duellspel" | "andrabollsspel";
   title: string;
-  short: string;
-  /** En enda mening som sammanfattar — ett barn ska förstå. */
-  oneLiner: string;
-  /** Konkreta situationer/handlingar — punktlista. */
-  practice: string[];
-  /** Vad som räknas som G (godkänt) respektive IG (inte godkänt). */
-  gVillkor: string;
-  igVillkor: string;
+  /** Sammanfattande mening — nyckelfrasen (highlight) gulmarkeras. */
+  definition: string;
+  highlight: string;
+  steps: [IdentityStep, IdentityStep, IdentityStep];
+  /** Klimax-ropet som visas i KedjaClimax. */
+  rop: string;
+  /** Kort underrad i hero-navigationen. */
+  navShort: string;
 }
 
 export const IDENTITY: IdentityItem[] = [
   {
-    slug: "dueller",
-    title: "Dueller",
-    short: "Vi förlorar aldrig en kamp om bollen. I värsta fall blir det oavgjort.",
-    oneLiner: "Varje gång du och en motståndare båda vill ha bollen — du tar den, eller åtminstone ser till att hen inte heller får den.",
-    practice: [
-      "Gå in med 100 % i varje närkamp — kropp först, boll sen.",
-      "Vinn första duellen och var redo för andrabollen direkt.",
-      "I värsta fall: oavgjort — bollen ut, eller fast spel — aldrig en lätt vinst för motståndaren.",
-      "Stå rätt: kort steg, låg tyngdpunkt, sida mot motståndaren.",
+    slug: "scanning",
+    title: "Scanning",
+    definition:
+      "Vet vad som finns runt dig innan bollen kommer — då har du redan bestämt dig när den landar.",
+    highlight: "innan bollen kommer",
+    steps: [
+      {
+        label: "NÄR",
+        headline: "Innan bollen kommer till dig.",
+        support: "Varje gång bollen flyttas — ny bild. Och alltid innan du själv passar.",
+      },
+      {
+        label: "VAD",
+        headline: "Motståndare, yta, medspelare.",
+        support: "Var kommer pressen ifrån? Var finns fri yta? Vem är spelbar — och var är målet?",
+      },
+      {
+        label: "HUR",
+        headline: "Korta blickar över axeln.",
+        support: "En halv sekund räcker. Titta — bestäm — agera. Scanna igen om bilden hunnit ändras.",
+      },
     ],
-    gVillkor: "Vinner ≥ 50 % av sina dueller, går aldrig undan.",
-    igVillkor: "Backar undan, släpper kropp eller tappar boll utan kamp.",
+    rop: "TITTA INNAN",
+    navShort: "TITTA INNAN",
+  },
+  {
+    slug: "yta",
+    title: "Yta",
+    definition: "Fotboll handlar om yta. Den som förstår den, tar den och skyddar den styr matchen.",
+    highlight: "förstår den, tar den och skyddar den",
+    steps: [
+      {
+        label: "FÖRSTÅ DEN",
+        headline: "Ytan finns mellan lagdelarna, bakom backlinjen och ute vid sidan.",
+        support: "Den flyttar sig när bollen flyttar sig. Scanningen visar dig var den är.",
+      },
+      {
+        label: "TA DEN",
+        headline: "Löp in i rätt tempo — första touchen in i ytan.",
+        support: "Inte tillbaka mot pressen. Ta ytan även utan boll — du öppnar för en lagkamrat.",
+      },
+      {
+        label: "SKYDDA DEN",
+        headline: "Kroppen mellan boll och motståndare.",
+        support: "Arm ute, låg tyngdpunkt, kort steg. Behåll ytan tills laget har ett bättre alternativ.",
+      },
+    ],
+    rop: "YTA",
+    navShort: "FÖRSTÅ · TA · SKYDDA",
+  },
+  {
+    slug: "prata-med-passningen",
+    title: "Prata med passningen",
+    definition:
+      "Varje passning är ett meddelande — farten, foten och riktningen berättar vad din lagkamrat ska göra.",
+    highlight: "ett meddelande",
+    steps: [
+      {
+        label: "PASSEN SÄGER NÅGOT",
+        headline: "Hård i fötterna = press bakom dig.",
+        support: "Mjuk framför dig = vänd upp och driv. I löpriktningen = fortsätt framåt i fart.",
+      },
+      {
+        label: "NÄR DU PASSAR",
+        headline: "Bestäm vad du vill säga innan du slår.",
+        support: "Rätt fot — bort från pressen. Rätt fart — spelbar för mottagaren, inte bekväm för dig.",
+      },
+      {
+        label: "EFTER PASSEN",
+        headline: "Rör dig direkt — visa en ny yta.",
+        support: "Passen är inte klar förrän mottagaren lyckats med sin första touch.",
+      },
+    ],
+    rop: "SÄG NÅGOT MED PASSEN",
+    navShort: "SÄG NÅGOT MED PASSEN",
+  },
+  {
+    slug: "duellspel",
+    title: "Duellspel",
+    definition: "Varje gång du och en motståndare vill ha samma boll — du tar den. I värsta fall får ingen den.",
+    highlight: "du tar den",
+    steps: [
+      {
+        label: "FÖRE DUELLEN",
+        headline: "Scanna: boll, motståndare, yta.",
+        support: "Kom rättvänd om det går. Bestäm dig: driva, skydda, tackla eller styra.",
+      },
+      {
+        label: "I DUELLEN",
+        headline: "Med boll: skydda med kropp och arm.",
+        support: "Första touch bort från press. Utan boll: bromsa tidigt, sidställd och låg, styr mot svag sida — tajma tacklingen.",
+      },
+      {
+        label: "EFTER DUELLEN",
+        headline: "Var beredd på studs och retur.",
+        support: "Duellen är inte över förrän laget har kontroll på bollen.",
+      },
+    ],
+    rop: "VINN DUELLEN",
+    navShort: "VINN DUELLEN",
   },
   {
     slug: "andrabollsspel",
     title: "Andrabollsspel",
-    short: "Bollen som studsar fritt och ingen äger — den tar vi. Alltid.",
-    oneLiner: "När en duell, ett huvudspel eller en räddning gör bollen ‘herrelös’ — var snabbast på den.",
-    practice: [
-      "Läs duellen innan den händer — ställ dig där bollen kommer studsa.",
-      "Närmaste spelare attackerar, näst närmaste tätar runtom.",
-      "Efter en lång boll eller hörnsituation: alla läser andrabollen — ingen står stilla.",
-      "Vinst på andrabollen är start på vår omställning till anfall.",
+    definition: "Bollen som studsar fritt och ingen äger — den tar vi. Alltid.",
+    highlight: "den tar vi. Alltid.",
+    steps: [
+      {
+        label: "LÄS",
+        headline: "Läs duellen innan den händer.",
+        support: "Ställ dig där bollen kommer studsa. Efter lång boll eller hörna — ingen står stilla.",
+      },
+      {
+        label: "ATTACKERA",
+        headline: "Närmaste spelare attackerar bollen.",
+        support: "Näst närmaste tätar runtom. Först på bollen — kort steg, låg tyngdpunkt.",
+      },
+      {
+        label: "ANVÄND VINSTEN",
+        headline: "Vinsten är starten på vår omställning.",
+        support: "Första passen framåt om det går. Har vi press — behåll och spela enkelt.",
+      },
     ],
-    gVillkor: "Är först på minst hälften av andrabollarna i sitt område.",
-    igVillkor: "Står stilla, tittar på, eller springer åt fel håll.",
-  },
-  {
-    slug: "djupled",
-    title: "Springa i djupled",
-    short: "Vi springer mot motståndarens mål så ofta vi kan — det skapar utrymme för alla.",
-    oneLiner: "En löpning bakom motståndarens backlinje är aldrig bortkastad — antingen får du bollen, eller så öppnar du en yta för en lagkamrat.",
-    practice: [
-      "Yttrar och 9:a löper i djupled vid varje bollvinst.",
-      "8:a och 7:a löper genom inre korridor när rättvänd spelare har bollen.",
-      "Timing: starta löpningen samtidigt som passaren tittar upp — inte efter.",
-      "Också om du inte får bollen — du har dragit en försvarare med dig och öppnat assistytan.",
-    ],
-    gVillkor: "Minst en djupledslöpning per anfallssekvens.",
-    igVillkor: "Stannar vid bollen och väntar — eller löper bara mot bollen.",
-  },
-  {
-    slug: "felvant",
-    title: "Springa felvänt",
-    short: "När vi tappar bollen vänder vi direkt och jagar tillbaka — alla samtidigt.",
-    oneLiner: "Bollen är borta — du har två val: ge upp, eller spurta tillbaka och hjälpa till. Vi väljer alltid det andra.",
-    practice: [
-      "Sekunden bollen tappas: vänd, sprinta, hitta din position igen.",
-      "Närmaste spelare pressar boll, du återtar din zon i 4-3-3-formen.",
-      "Forwarden är första försvarare — hen jagar bakåt om bollen går framåt.",
-      "Den här löpningen är jobbigast i fotbollen — men avgör matcher.",
-    ],
-    gVillkor: "Sprintar tillbaka i full fart inom 1 sekund efter bollförlust.",
-    igVillkor: "Går tillbaka, klagar på passningen, eller stannar i offensiv position.",
-  },
-  {
-    slug: "kommunicera",
-    title: "Kommunicera förstärkande",
-    short: "Vi peppar varandra. Korta, tydliga rop som hjälper laget — aldrig kritik.",
-    oneLiner: "Det du säger till en lagkamrat under matchen ska antingen ge information (‘bakom dig!’) eller höja energin (‘bra jobbat, kör vidare!’) — aldrig sänka.",
-    practice: [
-      "Korta rop: ‘ensam’, ‘bakom dig’, ‘tid’, ‘press’, ‘byt sida’.",
-      "Pep efter misstag — ‘kom igen, nästa gång’ — aldrig himla med ögonen.",
-      "Kapten sätter tonen, alla följer.",
-      "Säg namnet på den du pratar med — det går snabbare och tydligare.",
-    ],
-    gVillkor: "Hörs på planen, peppar lagkamrater, ger riktig information.",
-    igVillkor: "Tyst, kritisk eller frustrerad mot lagkamrater.",
+    rop: "ANDRABOLL",
+    navShort: "BOLLEN HOS OSS",
   },
 ];
 
