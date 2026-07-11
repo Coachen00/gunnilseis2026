@@ -119,6 +119,7 @@ const App = () => (
           <Route path="/maj-2026" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
           <Route path="/spelmodell/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />
           <Route path="/maj-2026/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />
+          <Route path="/sommaruppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />
           <Route path="/spelide" element={<Protected routeName="Spelidé"><Spelide /></Protected>} />
           <Route path="/forsvar" element={<Protected routeName="Försvar"><Forsvar /></Protected>} />
           <Route path="/anfall" element={<Protected routeName="Anfall"><Anfall /></Protected>} />
