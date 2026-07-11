@@ -17,9 +17,7 @@
  * Startar above-the-fold robust och pausar när fliken är dold (perf).
  */
 
-import { useEffect, useState } from "react";
-import { motion, useAnimate, type AnimationSequence } from "framer-motion";
-import { useInView } from "@/hooks/useInView";
+import { motion } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 /* === Designtokens — mörk taktisk plan, grön möjlighet + amber hot === */
@@ -34,10 +32,6 @@ const C = {
   ink: "#000052",
   text: "#ffffff",
 } as const;
-
-const SNAP: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const STD: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 /* Spelarens position (viewBox 0 0 1000 640). Anfallsriktning = höger. */
 const PX = 372;
@@ -59,10 +53,6 @@ const N = (id: string) => NODES.find((n) => n.id === id)!;
 const LANE_CHOSEN = `M ${PX} ${PY} Q 560 250 ${N("mate").x} ${N("mate").y}`;
 const LANE_REJECTED = `M ${PX} ${PY} Q 600 430 ${N("covmate").x} ${N("covmate").y}`;
 
-/* Bollens väg: matare → spelaren (mottagning) → fri yta (touch) → fri medspelare (pass). */
-const BALL_PATH = `M ${N("feeder").x} ${N("feeder").y} C 250 410 320 364 ${PX} ${PY} C 408 312 440 312 470 300 C 596 252 672 230 ${N("mate").x} ${N("mate").y}`;
-
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const pivot = (x: number, y: number) => ({
   transformBox: "view-box" as const,
   transformOrigin: `${x}px ${y}px`,
@@ -77,129 +67,19 @@ const coneSector = () => {
 };
 
 export default function ScanningScene({ reduced }: { reduced: boolean }) {
-  const [scope, animate] = useAnimate<SVGSVGElement>();
-  const { ref: inViewRef, inView } = useInView<HTMLDivElement>();
   const isMobile = useIsMobile();
-
-  // Starta vid scroll-in, men fall tillbaka till mount+1s ifall hero ligger
-  // above-the-fold och IntersectionObserver aldrig fyrar (robusthet).
-  const [armed, setArmed] = useState(false);
-  useEffect(() => {
-    if (inView) {
-      setArmed(true);
-      return;
-    }
-    const t = setTimeout(() => setArmed(true), 1000);
-    return () => clearTimeout(t);
-  }, [inView]);
-
-  useEffect(() => {
-    if (reduced || !armed) return;
-    let cancelled = false;
-
-    const seq: AnimationSequence = [
-      /* nollställ till prep-läge (gör loopen sömlös + återhämtar från avbrott) */
-      [".fov", { rotate: 0, opacity: 0.14 }, { at: 0, duration: 0 }],
-      [".marker-face", { rotate: 0 }, { at: 0, duration: 0 }],
-      [".lane-chosen", { strokeDashoffset: 1, opacity: 0.1 }, { at: 0, duration: 0 }],
-      [".lane-rejected", { opacity: 0.18 }, { at: 0, duration: 0 }],
-      [".zone-space", { opacity: 0.14, scale: 0.94 }, { at: 0, duration: 0 }],
-      [".ball-mover", { opacity: 0, offsetDistance: "0%" }, { at: 0, duration: 0 }],
-      [".core-press", { scale: 1, opacity: 0.5 }, { at: 0, duration: 0 }],
-      [".core-cover", { scale: 1, opacity: 0.5 }, { at: 0, duration: 0 }],
-      [".core-mate", { scale: 1, opacity: 0.5 }, { at: 0, duration: 0 }],
-      [".ping", { opacity: 0, scale: 0.2 }, { at: 0, duration: 0 }],
-      [".cue-1", { opacity: 0.26 }, { at: 0, duration: 0 }],
-      [".cue-2", { opacity: 0.26 }, { at: 0, duration: 0 }],
-      [".cue-3", { opacity: 0.26 }, { at: 0, duration: 0 }],
-
-      /* SCAN 1 → press (ner-höger) */
-      [".fov", { rotate: [0, 20], opacity: [0.14, 0.5, 0.2] }, { at: 1.1, duration: 0.5, ease: SNAP }],
-      [".ping", { opacity: [0.5, 0], scale: [0.2, 1] }, { at: 1.12, duration: 0.95, ease: EXPO }],
-      [".core-press", { scale: [1, 1.45, 1.08], opacity: [0.5, 1, 0.85] }, { at: 1.18, duration: 0.55 }],
-      [".cue-1", { opacity: [0.26, 1] }, { at: 1.1, duration: 0.3 }],
-
-      /* SCAN 2 → fri medspelare + yta (upp-höger), gap 0.7s */
-      [".fov", { rotate: [20, -26], opacity: [0.14, 0.5, 0.2] }, { at: 1.8, duration: 0.5, ease: SNAP }],
-      [".ping", { opacity: [0.5, 0], scale: [0.2, 1] }, { at: 1.82, duration: 0.95, ease: EXPO }],
-      [".core-mate", { scale: [1, 1.5, 1.12], opacity: [0.5, 1, 0.92] }, { at: 1.88, duration: 0.55 }],
-      [".zone-space", { opacity: [0.14, 0.42] }, { at: 1.92, duration: 0.5 }],
-
-      /* SCAN 3 → över axeln, bakåt (upp-vänster), gap 0.55s (accelererar) */
-      [".fov", { rotate: [-26, -142], opacity: [0.14, 0.42, 0.16] }, { at: 2.35, duration: 0.45, ease: SNAP }],
-      [".ping", { opacity: [0.45, 0], scale: [0.2, 1] }, { at: 2.37, duration: 0.85, ease: EXPO }],
-      [".core-cover", { scale: [1, 1.35, 1], opacity: [0.5, 0.95, 0.6] }, { at: 2.42, duration: 0.5 }],
-
-      /* SCAN 4 → snabb front, gap 0.4s (snabbast) */
-      [".fov", { rotate: [-142, -18] }, { at: 2.75, duration: 0.42, ease: SNAP }],
-
-      /* BESLUT: vald linje tänds, förkastad dämpas, yta glöder */
-      [".lane-chosen", { strokeDashoffset: [1, 0], opacity: [0.1, 1] }, { at: 3.1, duration: 0.62, ease: EXPO }],
-      [".lane-rejected", { opacity: [0.18, 0.05] }, { at: 3.1, duration: 0.5 }],
-      [".zone-space", { opacity: [0.42, 0.85], scale: [0.94, 1] }, { at: 3.2, duration: 0.55 }],
-      [".fov", { opacity: [0.2, 0.32] }, { at: 3.2, duration: 0.4 }],
-      [".core-mate", { scale: [1.12, 1.22], opacity: [0.92, 1] }, { at: 3.25, duration: 0.4 }],
-      [".cue-2", { opacity: [0.26, 1] }, { at: 3.1, duration: 0.3 }],
-
-      /* AKTION: boll in → första touch (markören vänds mot ytan) → pass genom linjen */
-      [
-        ".ball-mover",
-        { opacity: [0, 1, 1, 1, 1], offsetDistance: ["0%", "34%", "34%", "48%", "100%"] },
-        { at: 3.65, duration: 1.6, times: [0, 0.26, 0.33, 0.47, 1], ease: "easeInOut" },
-      ],
-      [".marker-face", { rotate: [0, -22] }, { at: 4.05, duration: 0.6, ease: SNAP }],
-      [".fov", { opacity: [0.32, 0.12] }, { at: 4.05, duration: 0.5 }],
-      [".cue-3", { opacity: [0.26, 1] }, { at: 4.0, duration: 0.3 }],
-      [".core-mate", { scale: [1.22, 1.6, 1.15], opacity: [1, 1, 0.95] }, { at: 4.95, duration: 0.5 }],
-
-      /* ÅTERSTÄLLNING till vila → loop */
-      [".ball-mover", { opacity: [1, 0] }, { at: 5.25, duration: 0.4 }],
-      [".lane-chosen", { opacity: [1, 0.1] }, { at: 5.4, duration: 0.5 }],
-      [".lane-rejected", { opacity: [0.05, 0.18] }, { at: 5.4, duration: 0.5 }],
-      [".zone-space", { opacity: [0.85, 0.14] }, { at: 5.4, duration: 0.5 }],
-      [".marker-face", { rotate: [-22, 0] }, { at: 5.4, duration: 0.6, ease: STD }],
-      [".fov", { rotate: [-18, 0], opacity: [0.12, 0.14] }, { at: 5.4, duration: 0.6, ease: STD }],
-      [".core-press", { opacity: [0.85, 0.5], scale: 1 }, { at: 5.4, duration: 0.5 }],
-      [".core-cover", { opacity: [0.6, 0.5], scale: 1 }, { at: 5.4, duration: 0.5 }],
-      [".core-mate", { opacity: [0.95, 0.5], scale: 1 }, { at: 5.4, duration: 0.5 }],
-      [".cue-1", { opacity: [1, 0.26] }, { at: 5.55, duration: 0.4 }],
-      [".cue-2", { opacity: [1, 0.26] }, { at: 5.55, duration: 0.4 }],
-      [".cue-3", { opacity: [1, 0.26] }, { at: 5.55, duration: 0.4 }],
-      [".ball-mover", { offsetDistance: "0%" }, { at: 5.9, duration: 0 }],
-    ];
-
-    const run = async () => {
-      await wait(450);
-      while (!cancelled) {
-        if (typeof document !== "undefined" && document.visibilityState === "hidden") {
-          await wait(400);
-          continue;
-        }
-        try {
-          await animate(seq);
-        } catch {
-          break;
-        }
-        if (cancelled) break;
-        await wait(750);
-      }
-    };
-    run();
-    return () => {
-      cancelled = true;
-    };
-  }, [reduced, armed, animate]);
-
-  const labelClass = reduced
-    ? "opacity-80"
-    : isMobile
-      ? "opacity-60"
-      : "opacity-0 transition-opacity duration-300 group-hover:opacity-100";
+  const animation = {
+    duration: 6.4,
+    repeat: Infinity,
+    ease: "easeInOut" as const,
+  };
+  const scanTimes = [0, 0.16, 0.28, 0.39, 0.48, 0.62, 1];
+  const scanTimes6 = [0, 0.2, 0.36, 0.52, 0.72, 1];
+  const labelClass = reduced ? "opacity-80" : isMobile ? "opacity-65" : "opacity-80";
 
   return (
-    <div ref={inViewRef} className="group relative aspect-[1000/640] w-full">
+    <div className="group relative aspect-[1000/640] w-full">
       <svg
-        ref={scope}
         viewBox="0 0 1000 640"
         className="h-full w-full"
         role="img"
@@ -279,10 +159,16 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
         ))}
 
         {/* fri yta (dit första touchen tar bollen) */}
-        <g className="zone-space" style={{ ...pivot(606, 268), opacity: reduced ? 0.85 : 0.14 }}>
+        <motion.g
+          className="zone-space"
+          style={pivot(606, 268)}
+          initial={{ opacity: reduced ? 0.85 : 0.14, scale: reduced ? 1 : 0.94 }}
+          animate={reduced ? undefined : { opacity: [0.14, 0.14, 0.42, 0.85, 0.85, 0.14], scale: [0.94, 0.94, 0.98, 1, 1, 0.94] }}
+          transition={reduced ? undefined : { ...animation, times: scanTimes6 }}
+        >
           <ellipse cx="606" cy="268" rx="118" ry="86" fill="url(#sc-zone)" />
           <ellipse cx="606" cy="268" rx="118" ry="86" fill="none" stroke={C.green} strokeOpacity="0.4" strokeWidth="1.4" strokeDasharray="5 8" />
-        </g>
+        </motion.g>
 
         {/* presstryck-pil mot spelaren */}
         <path
@@ -306,7 +192,7 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
           strokeLinecap="round"
           style={{ opacity: reduced ? 0.05 : 0.18 }}
         />
-        <path
+        <motion.path
           className="lane-chosen"
           d={LANE_CHOSEN}
           fill="none"
@@ -317,7 +203,9 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
           filter="url(#sc-soft)"
           pathLength={1}
           strokeDasharray={1}
-          style={{ strokeDashoffset: reduced ? 0 : 1, opacity: reduced ? 1 : 0.1 }}
+          initial={{ strokeDashoffset: reduced ? 0 : 1, opacity: reduced ? 1 : 0.1 }}
+          animate={reduced ? undefined : { strokeDashoffset: [1, 1, 1, 0, 0, 1], opacity: [0.1, 0.1, 0.1, 1, 1, 0.1] }}
+          transition={reduced ? undefined : { ...animation, times: scanTimes6 }}
         />
 
         {/* informationsnoder (motståndare/medspelare) */}
@@ -346,7 +234,7 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
                     })}
               />
               <circle cx={n.x} cy={n.y} r={n.r + 7} fill={glow} opacity="0.7" />
-              <circle
+              <motion.circle
                 className={coreClass}
                 cx={n.x}
                 cy={n.y}
@@ -355,7 +243,10 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
                 stroke={C.ink}
                 strokeOpacity="0.4"
                 strokeWidth="1.5"
-                style={{ ...pivot(n.x, n.y), opacity: baseOpacity }}
+                style={pivot(n.x, n.y)}
+                initial={{ opacity: baseOpacity, scale: 1 }}
+                animate={reduced ? undefined : { scale: [1, 1, 1.3, 1, 1, 1] }}
+                transition={reduced ? undefined : { ...animation, times: scanTimes6, delay: n.id === "press" ? 0.15 : n.id === "mate" ? 2.8 : 0.8 }}
               />
               {/* liten kärnpunkt för "tracking dot"-känsla */}
               <circle cx={n.x} cy={n.y} r={n.r * 0.34} fill={C.ink} opacity="0.45" />
@@ -364,9 +255,12 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
         })}
 
         {/* === Synkon (FOV) — roteras vid scanning === */}
-        <g
+        <motion.g
           className="fov"
-          style={{ ...pivot(PX, PY), transform: reduced ? "rotate(-18deg)" : undefined, opacity: reduced ? 0.32 : 0.14 }}
+          style={pivot(PX, PY)}
+          initial={{ rotate: reduced ? -18 : 0, opacity: reduced ? 0.32 : 0.14 }}
+          animate={reduced ? undefined : { rotate: [0, 20, -26, -142, -18, -18, 0], opacity: [0.14, 0.5, 0.2, 0.42, 0.16, 0.32, 0.14] }}
+          transition={reduced ? undefined : { ...animation, times: scanTimes }}
         >
           <path d={coneSector()} fill="url(#sc-cone)" />
           {/* tunna FOV-kanter */}
@@ -374,19 +268,37 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
             <line x1={PX} y1={PY} x2={(PX + FOV_R * Math.cos((-32 * Math.PI) / 180)).toFixed(1)} y2={(PY + FOV_R * Math.sin((-32 * Math.PI) / 180)).toFixed(1)} />
             <line x1={PX} y1={PY} x2={(PX + FOV_R * Math.cos((32 * Math.PI) / 180)).toFixed(1)} y2={(PY + FOV_R * Math.sin((32 * Math.PI) / 180)).toFixed(1)} />
           </g>
-        </g>
+        </motion.g>
 
         {/* perception-ping (expanderar vid varje scan) */}
-        <circle className="ping" cx={PX} cy={PY} r="150" fill="none" stroke={C.green} strokeWidth="1.6" style={{ ...pivot(PX, PY), opacity: 0 }} />
+        <motion.circle
+          className="ping"
+          cx={PX}
+          cy={PY}
+          r="150"
+          fill="none"
+          stroke={C.green}
+          strokeWidth="1.6"
+          style={pivot(PX, PY)}
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={reduced ? undefined : { opacity: [0, 0.65, 0, 0, 0.6, 0, 0], scale: [0.2, 1, 0.2, 0.2, 1, 0.2, 0.2] }}
+          transition={reduced ? undefined : { ...animation, times: scanTimes }}
+        />
 
         {/* === Spelar-markör === */}
         <g>
           {/* mjuk glöd under markören */}
           <circle cx={PX} cy={PY} r="30" fill="url(#sc-greenGlow)" opacity="0.5" filter="url(#sc-blur)" />
           {/* kroppsriktnings-chevron (roterar vid första touch) */}
-          <g className="marker-face" style={{ ...pivot(PX, PY), transform: reduced ? "rotate(-22deg)" : undefined }}>
+          <motion.g
+            className="marker-face"
+            style={pivot(PX, PY)}
+            initial={{ rotate: reduced ? -22 : 0 }}
+            animate={reduced ? undefined : { rotate: [0, 0, 0, 0, -22, -22, 0] }}
+            transition={reduced ? undefined : { ...animation, times: scanTimes }}
+          >
             <path d={`M ${PX + 17} ${PY} l 13 -7 l -3 7 l 3 7 z`} fill={C.green} opacity="0.9" />
-          </g>
+          </motion.g>
           {/* disc */}
           <circle cx={PX} cy={PY} r="16" fill="url(#sc-marker)" stroke={C.green} strokeWidth="2" />
           <circle cx={PX} cy={PY} r="16" fill="none" stroke={C.ball} strokeOpacity="0.25" strokeWidth="1" />
@@ -394,10 +306,26 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
         </g>
 
         {/* boll */}
-        <g className="ball-mover" style={{ offsetPath: `path("${BALL_PATH}")`, offsetDistance: reduced ? "48%" : "0%", opacity: reduced ? 1 : 0 } as React.CSSProperties}>
-          <circle r="22" fill="url(#sc-greenGlow)" filter="url(#sc-blur)" opacity="0.55" />
-          <circle r="6.5" fill={C.ball} stroke={C.green} strokeWidth="1.4" />
-        </g>
+        <motion.circle
+          className="ball-mover"
+          r="22"
+          fill="url(#sc-greenGlow)"
+          filter="url(#sc-blur)"
+          opacity="0.55"
+          initial={{ cx: N("feeder").x, cy: N("feeder").y, opacity: reduced ? 0.55 : 0 }}
+          animate={reduced ? undefined : { cx: [N("feeder").x, N("feeder").x, PX, 470, N("mate").x, N("feeder").x], cy: [N("feeder").y, N("feeder").y, PY, 300, N("mate").y, N("feeder").y], opacity: [0, 0, 1, 1, 1, 0] }}
+          transition={reduced ? undefined : { duration: 6.4, repeat: Infinity, times: [0, 0.43, 0.56, 0.64, 0.88, 1], ease: "easeInOut" }}
+        />
+        <motion.circle
+          className="ball-mover-core"
+          r="6.5"
+          fill={C.ball}
+          stroke={C.green}
+          strokeWidth="1.4"
+          initial={{ cx: N("feeder").x, cy: N("feeder").y, opacity: reduced ? 1 : 0 }}
+          animate={reduced ? undefined : { cx: [N("feeder").x, N("feeder").x, PX, 470, N("mate").x, N("feeder").x], cy: [N("feeder").y, N("feeder").y, PY, 300, N("mate").y, N("feeder").y], opacity: [0, 0, 1, 1, 1, 0] }}
+          transition={reduced ? undefined : { duration: 6.4, repeat: Infinity, times: [0, 0.43, 0.56, 0.64, 0.88, 1], ease: "easeInOut" }}
+        />
 
         {/* === Etiketter (hover desktop / alltid svag mobil+reduced) === */}
         <g fontFamily='"JetBrains Mono", ui-monospace, monospace' fontSize="12.5" fontWeight="700" letterSpacing="1.2">
@@ -415,11 +343,38 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
 
         {/* === Cue-ord: SE → FÖRSTÅ → AGERA (tänds i takt med faserna) === */}
         <g fontFamily='"JetBrains Mono", ui-monospace, monospace' fontSize="13" fontWeight="700" letterSpacing="2.4" fill={C.text}>
-          <text className="cue-1" x="40" y="606" style={{ opacity: reduced ? 1 : 0.26 }}>SE</text>
+          <motion.text
+            className="cue-1"
+            x="40"
+            y="606"
+            initial={{ opacity: reduced ? 1 : 0.26 }}
+            animate={reduced ? undefined : { opacity: [0.26, 1, 0.26, 0.26, 0.26, 0.26, 0.26] }}
+            transition={reduced ? undefined : { ...animation, times: scanTimes }}
+          >
+            SE
+          </motion.text>
           <text x="74" y="606" opacity="0.28">→</text>
-          <text className="cue-2" x="96" y="606" style={{ opacity: reduced ? 1 : 0.26 }}>FÖRSTÅ</text>
+          <motion.text
+            className="cue-2"
+            x="96"
+            y="606"
+            initial={{ opacity: reduced ? 1 : 0.26 }}
+            animate={reduced ? undefined : { opacity: [0.26, 0.26, 0.26, 1, 1, 0.26, 0.26] }}
+            transition={reduced ? undefined : { ...animation, times: scanTimes }}
+          >
+            FÖRSTÅ
+          </motion.text>
           <text x="176" y="606" opacity="0.28">→</text>
-          <text className="cue-3" x="198" y="606" style={{ opacity: reduced ? 1 : 0.26 }}>AGERA</text>
+          <motion.text
+            className="cue-3"
+            x="198"
+            y="606"
+            initial={{ opacity: reduced ? 1 : 0.26 }}
+            animate={reduced ? undefined : { opacity: [0.26, 0.26, 0.26, 0.26, 0.26, 1, 0.26] }}
+            transition={reduced ? undefined : { ...animation, times: scanTimes }}
+          >
+            AGERA
+          </motion.text>
         </g>
 
         {/* vinjett för djup */}

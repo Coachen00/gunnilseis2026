@@ -450,6 +450,15 @@
     animation: homeIdentityRise 1100ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
+  .home-identity-hero-planning {
+    align-self: center;
+    animation: homeIdentityRise 1100ms 120ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .home-identity-hero-planning > * {
+    height: 100%;
+  }
+
   .home-identity-visual-head,
   .home-identity-visual-caption {
     display: flex;
@@ -508,6 +517,71 @@
     font-family: Archivo, Inter, sans-serif;
     font-size: 1rem;
     letter-spacing: 0;
+  }
+
+  .home-identity-scan-section {
+    background: var(--home-navy);
+    color: #ffffff;
+  }
+
+  .home-identity-scan-inner {
+    display: grid;
+    width: min(1180px, calc(100% - 3rem));
+    margin-inline: auto;
+    align-items: center;
+    gap: clamp(2rem, 6vw, 6rem);
+    grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1.38fr);
+    padding-block: clamp(5rem, 9vw, 8rem);
+  }
+
+  .home-identity-scan-copy h2 {
+    max-width: 520px;
+    margin-top: 0.8rem;
+    color: #ffffff;
+    font-size: clamp(3rem, 5vw, 5.8rem);
+    font-weight: 800;
+    line-height: 0.88;
+  }
+
+  .home-identity-scan-copy > p:not(.home-identity-kicker) {
+    max-width: 470px;
+    margin-top: 1.4rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-family: Archivo, Inter, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .home-identity-scan-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .home-identity-scan-legend span {
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    padding: 0.55rem 0.7rem;
+    color: #ffffff;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .home-identity-scan-legend span:first-child {
+    border-color: var(--home-red);
+    background: var(--home-red);
+  }
+
+  .home-identity-scan-visual {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #00002e;
+  }
+
+  .home-identity-scan-visual .home-identity-visual-head {
+    border-bottom-color: rgba(255, 255, 255, 0.16);
   }
 
   .home-identity-scroll-cue {
@@ -1037,9 +1111,23 @@
     box-shadow: 10px 10px 0 rgba(151, 0, 5, 0.14);
   }
 
+  .home-identity-hero-planning {
+    width: 100%;
+  }
+
   .home-identity-scene,
   .home-identity-scene > div {
     min-height: 270px;
+  }
+
+  .home-identity-scan-inner {
+    display: block;
+    width: min(100% - 2rem, 1180px);
+    padding-block: 4rem;
+  }
+
+  .home-identity-scan-visual {
+    margin-top: 2.5rem;
   }
 
   .home-identity-scroll-cue {

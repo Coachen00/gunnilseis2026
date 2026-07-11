@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight, Pause, Play, RotateCcw } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import HomeCalendarBoard from "./HomeCalendarBoard";
 import ScanningScene from "./ScanningScene";
 
 type IdentityStep = {
@@ -220,21 +221,36 @@ export default function HomeIdentityFlow() {
             </div>
           </div>
 
-          <div className="home-identity-hero-visual" aria-label="Animerad scanning av planen">
+          <div className="home-identity-hero-planning" aria-label="Veckans planering">
+            <HomeCalendarBoard />
+          </div>
+        </div>
+        <a href="#identity-flow" className="home-identity-scroll-cue">Fem beteenden · gå vidare</a>
+      </section>
+
+      <section className="home-identity-scan-section" aria-labelledby="scan-title">
+        <div className="home-identity-scan-inner">
+          <div className="home-identity-scan-copy">
+            <p className="home-identity-kicker">01 · Scanning</p>
+            <h2 id="scan-title">Se innan du får bollen.</h2>
+            <p>En bra scanning är inte en effekt. Det är en serie korta blickar som hittar hotet, den fria spelaren och ytan som öppnar sig.</p>
+            <div className="home-identity-scan-legend" aria-label="Scanningens fyra steg">
+              <span>Se</span>
+              <span>Förstå</span>
+              <span>Välj</span>
+              <span>Spela</span>
+            </div>
+          </div>
+          <div className="home-identity-scan-visual">
             <div className="home-identity-visual-head">
-              <span>01 · Se först</span>
               <span>Synkon aktiv</span>
+              <span>Hot → yta → passning</span>
             </div>
             <div className="home-identity-scene">
               <ScanningScene reduced={reduced} />
             </div>
-            <div className="home-identity-visual-caption">
-              <strong>Scanning är startpunkten.</strong>
-              <span>Information före mottagning gör nästa beslut lugnare.</span>
-            </div>
           </div>
         </div>
-        <a href="#identity-flow" className="home-identity-scroll-cue">Fem beteenden · gå vidare</a>
       </section>
 
       <section id="identity-flow" className="home-identity-section home-identity-flow-section" aria-labelledby="identity-flow-title">
