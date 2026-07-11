@@ -31,26 +31,26 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="border-t border-border/70 py-12 mt-section bg-card/40">
+    <footer className="bg-kedja-deep py-10 mt-section">
       <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
         <div>
-          <p className="font-bold text-sm tracking-tight text-foreground">
-            Gunnilse IS <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+          <p className="font-bold text-sm tracking-tight text-kedja-mint">
+            Gunnilse IS · Spelmodell <span className="ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle text-kedja-lime">2026</span>
           </p>
           {isLoggedIn && (
-            <p className="text-xs text-muted-foreground mt-1.5 uppercase tracking-[0.22em] font-medium">
+            <p className="text-xs mt-1.5 uppercase tracking-[0.22em] font-semibold text-[rgba(226,251,206,0.6)]">
               Så spelar vi · Träning · Match
             </p>
           )}
         </div>
         {isLoggedIn && (
-          <div className="flex items-center gap-6 text-xs font-medium text-muted-foreground">
-            <Link to="/spelmodell" className="hover:text-foreground transition-colors duration-200">Spelmodell</Link>
-            <Link to="/laget" className="hover:text-foreground transition-colors duration-200">Laget</Link>
-            <Link to="/verktyg" className="hover:text-foreground transition-colors duration-200">Verktyg</Link>
+          <div className="flex items-center gap-6 text-xs font-medium text-[rgba(226,251,206,0.6)]">
+            <Link to="/spelmodell" className="hover:text-kedja-lime transition-colors duration-200">Spelmodell</Link>
+            <Link to="/laget" className="hover:text-kedja-lime transition-colors duration-200">Laget</Link>
+            <Link to="/verktyg" className="hover:text-kedja-lime transition-colors duration-200">Verktyg</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="hover:text-foreground transition-colors duration-200"
+              className="hover:text-kedja-lime transition-colors duration-200"
             >
               ↑ Toppen
             </button>
