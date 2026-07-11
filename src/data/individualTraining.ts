@@ -29,10 +29,10 @@ export const PLAN_LEVELS: Array<{ id: PlanLevel; label: string; description: str
 ];
 
 export const TRAINING_WEEKS: TrainingWeek[] = [
-  { id: 1, label: "Vecka 1", volumeRange: "70–80 %", speedTarget: "85–90 %", guidance: "Bygg rytm och lämna 2–3 repetitioner i reserv." },
-  { id: 2, label: "Vecka 2", volumeRange: "80–90 %", speedTarget: "90–92 %", guidance: "Öka dosen om återhämtningen är normal." },
-  { id: 3, label: "Vecka 3", volumeRange: "90–100 %", speedTarget: "92–95 %", guidance: "Veckans högsta volym med bibehållen kvalitet." },
-  { id: 4, label: "Vecka 4", volumeRange: "60–70 %", speedTarget: "95–97 %", guidance: "Sänk volymen och behåll fart och precision." },
+  { id: 1, label: "Vecka 1", volumeRange: "60–70 %", speedTarget: "85–90 %", guidance: "Bygg rytm och lämna 2–3 repetitioner i reserv." },
+  { id: 2, label: "Vecka 2", volumeRange: "70–80 %", speedTarget: "90–92 %", guidance: "Öka dosen om återhämtningen är normal." },
+  { id: 3, label: "Vecka 3", volumeRange: "80–90 %", speedTarget: "92–95 %", guidance: "Öka volymen med bibehållen kvalitet." },
+  { id: 4, label: "Vecka 4", volumeRange: "90–100 %", speedTarget: "95–97 %", guidance: "Veckans högsta volym med bibehållen fart och precision." },
 ];
 
 export const ROLE_PLANS: Record<TrainingRole, { label: string; sprintDoses: [string, string] }> = {
@@ -44,7 +44,7 @@ export const ROLE_PLANS: Record<TrainingRole, { label: string; sprintDoses: [str
 
 const stopRules = {
   strength: "Avsluta setet om tekniken försämras eller RPE överstiger 8.",
-  sprint: "Avsluta om tiden sjunker mer än 3 % eller löpsteget försämras.",
+  sprint: "Avsluta om tiden ökar mer än 3 %, farten sjunker eller tekniken försämras.",
   conditioning: "Avsluta intervallet vid yrsel, smärta eller oförmåga att hålla målfarten.",
 };
 

@@ -15,11 +15,11 @@ describe("individual training model", () => {
     expect(TRAINING_WEEKS.every((week) =>
       week.label && week.volumeRange && week.speedTarget && week.guidance,
     )).toBe(true);
-    expect(TRAINING_WEEKS.map((week) => week.speedTarget)).toEqual([
-      "85–90 %",
-      "90–92 %",
-      "92–95 %",
-      "95–97 %",
+    expect(TRAINING_WEEKS.map(({ label, volumeRange }) => ({ label, volumeRange }))).toEqual([
+      { label: "Vecka 1", volumeRange: "60–70 %" },
+      { label: "Vecka 2", volumeRange: "70–80 %" },
+      { label: "Vecka 3", volumeRange: "80–90 %" },
+      { label: "Vecka 4", volumeRange: "90–100 %" },
     ]);
   });
 
@@ -53,7 +53,7 @@ describe("individual training model", () => {
     },
   );
 
-  it("places strength sessions 48–72 hours apart", () => {
+  it("places two strength sessions on Monday and Friday with at least 48 hours recovery", () => {
     const strengthDays = getSchedule("midfielder", "full", 1)
       .filter((item) => item.sessionType === "strength")
       .map((item) => item.day);
@@ -65,6 +65,16 @@ describe("individual training model", () => {
       .filter((item) => item.intensity === "high");
     expect(highIntensity.length).toBeGreaterThan(0);
     expect(highIntensity.every((item) => item.stopRule.trim().length > 0)).toBe(true);
+  });
+
+  it("stops sprint work when time increases over 3%, speed drops or technique degrades", () => {
+    const sprintRules = getSchedule("forward", "full", 4)
+      .filter((item) => item.sessionType === "sprint")
+      .map((item) => item.stopRule.toLowerCase());
+
+    expect(sprintRules.every((rule) => /tiden ökar mer än 3 %/.test(rule))).toBe(true);
+    expect(sprintRules.every((rule) => /farten sjunker|tekniken försämras/.test(rule))).toBe(true);
+    expect(sprintRules.every((rule) => !rule.includes("tiden sjunker"))).toBe(true);
   });
 
   it("uses the prescribed days for maintenance and minimum plans", () => {
