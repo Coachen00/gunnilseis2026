@@ -158,11 +158,11 @@ export type CalStep = {
 
 export const KALENDER: CalStep[] = [
   { id: "egen", date: "25/6–27/7", title: "Egenperiod / semesteransvar", detail: "Håll igång kroppen. Kom inte tillbaka från noll.", load: "Egen" },
-  { id: "uppstart", date: "Tis 28/7", title: "Kontrollerad uppstart", detail: "Samla gruppen, screena status, starta bollkontakt. 75–85 min.", load: "Medel" },
+  { id: "uppstart", date: "Tis 28/7", title: "Statuskontroll och återintroduktion", detail: "Screena status och återintroducera boll och löpning kontrollerat. 60–75 min med individuell minutgräns.", load: "Medel" },
   { id: "lager-fre", date: "Fre 31/7", title: "Uppstartshelg – dag 1", detail: "Träning + gemensam mat + spelidégenomgång.", load: "Medel" },
-  { id: "lager-lor", date: "Lör 1/8", title: "Uppstartshelg – dag 2", detail: "Gym/prehab + taktiskt pass + smålagsspel.", load: "Medel" },
-  { id: "lager-son", date: "Sön 2/8", title: "Uppstartshelg – dag 3", detail: "Återhämtning, lätt boll, samtal, frivillig aktivering.", load: "Låg" },
-  { id: "ma", date: "Mån 3/8", title: "Kollektiv återstart", detail: "Återetablera spelmodell, få igång matchrytm. Medel belastning.", load: "Medel" },
+  { id: "lager-lor", date: "Lör 1/8", title: "Uppstartshelg – dag 2", detail: "Välj gym/prehab eller kontrollerat taktiskt bollpass. Ingen dubbel hård dos.", load: "Medel" },
+  { id: "lager-son", date: "Sön 2/8", title: "Återhämtningsdag", detail: "Återhämtning: ingen kollektiv belastning. Endast promenad och individuell rörlighet vid behov.", load: "Låg" },
+  { id: "ma", date: "Mån 3/8", title: "Kollektiv återstart", detail: "Återetablera spelmodell i lätt–medel intensitet utan ny tung bendos.", load: "Låg" },
   { id: "on", date: "Ons 5/8", title: "Veckans viktigaste pass", detail: "Mest matchlik träning. Bygg startelva, testa relationer. 90 min.", load: "Hög" },
   { id: "to", date: "Tor 6/8", title: "Matchförberedande pass", detail: "Matchplan, roller, fasta situationer. Tydligt, inte tungt. 65–75 min.", load: "Låg" },
   { id: "fr", date: "Fre 7/8", title: "Lätt aktivering / digital genomgång", detail: "Startelva, roller, första 15 min, scenarier. Mycket lätt.", load: "Låg" },
@@ -191,7 +191,7 @@ export const PASS: Pass[] = [
     date: "Tisdag 28/7",
     title: "Kontrollerad uppstart",
     tag: "Återstart, inte hårt pass",
-    totaltid: "75–85 min",
+    totaltid: "60–75 min",
     accent: "slate",
     syfte: [
       "Samla gruppen och kontrollera fysisk status",
@@ -206,6 +206,16 @@ export const PASS: Pass[] = [
       { namn: "Spelmodell", tid: "25 min", text: "Låg–medel intensitet. Avstånd, positioner, spelbarhet, organisation." },
       { namn: "Kort spel", tid: "15 min", text: "5v5 eller 6v6. Begränsad volym. Intensitet utan att slita." },
     ],
+    punkter: [
+      {
+        rubrik: "Individuell minutgräns",
+        rader: [
+          "Startklar: högst 60–75 min efter normal statuskontroll",
+          "Tillgänglig 45–60: högst 45–60 min och ingen extra löpdos",
+          "Tränar – ej matchklar: individuell dos beslutas efter screening",
+        ],
+      },
+    ],
   },
   {
     id: "pass-lager",
@@ -219,8 +229,8 @@ export const PASS: Pass[] = [
     ],
     upplagg: [
       { namn: "Fredag 31/7", text: "Träning + gemensam mat + spelidégenomgång. Medel belastning." },
-      { namn: "Lördag 1/8", text: "Gym/prehab + taktiskt pass + smålagsspel. Medel belastning." },
-      { namn: "Söndag 2/8", text: "Återhämtning, lätt boll, samtal, frivillig aktivering. Låg belastning." },
+      { namn: "Lördag 1/8", text: "Välj gym/prehab eller kontrollerat taktiskt bollpass. Ingen dubbel hård dos eller hårt smålagsspel efter gym." },
+      { namn: "Söndag 2/8", text: "Verklig återhämtning utan kollektiv belastning. Endast promenad och individuell rörlighet vid behov." },
     ],
   },
   {
@@ -232,6 +242,7 @@ export const PASS: Pass[] = [
     syfte: [
       "Samla så många som möjligt och återetablera spelmodellen",
       "Få igång matchrytmen, identifiera vilka som är redo för full belastning",
+      "Håll passet lätt–medel utan ny tung bendos efter uppstartshelgen",
     ],
     punkter: [
       {
@@ -259,7 +270,8 @@ export const PASS: Pass[] = [
       "Få svar på vilka som kan spela 90 minuter",
     ],
     upplagg: [
-      { namn: "Aktivering", tid: "12 min", text: "Rörlighet, acceleration, boll." },
+      { namn: "Aktivering", tid: "6 min", text: "Rörlighet, acceleration, boll." },
+      { namn: "Höghastighetsdos", tid: "6 min", text: "4 × 20 m med full vila. Stoppa om farten sjunker eller tekniken försämras." },
       { namn: "Rondo", tid: "12 min", text: "Scanning, press, bolltempo, återerövring." },
       { namn: "Spelmodell", tid: "20 min", text: "8v8 eller 9v9 med riktning. Spelavstånd och triggers." },
       { namn: "Matchspel", tid: "30 min", text: "10v10 eller 11v11 om antalet räcker. Matchlik intensitet." },
@@ -370,15 +382,14 @@ export const GYM_MATCHVECKA: { dag: string; gym: string }[] = [
 export const GYM_REGEL = "Ingen spelare ska få träningsvärk av gymmet under matchveckan.";
 
 export const EGENPERIOD_KRAV: { omrade: string; krav: string }[] = [
-  { omrade: "Löpning", krav: "2 pass per vecka" },
-  { omrade: "Gym / styrka", krav: "2 pass per vecka" },
-  { omrade: "Boll", krav: "1–2 bollpass per vecka" },
-  { omrade: "Rörlighet / prehab", krav: "10 min, 3 ggr per vecka" },
+  { omrade: "Full plan", krav: "Följ den kompletta individuella dosen med planerad återhämtning." },
+  { omrade: "Underhåll", krav: "Följ underhållsnivån när fyra huvudpassdagar inte ryms." },
+  { omrade: "Minsta effektiva dos", krav: "Följ miniminivån med två kompakta helkroppspass." },
   { omrade: "Rapportering", krav: "Meddela skada, sjukdom eller problem direkt" },
 ];
 
 export const EGENPERIOD_BUDSKAP =
-  "Du behöver inte vara i toppform när vi startar, men du får inte komma tillbaka från noll.";
+  "Välj Full plan, Underhåll eller Minsta effektiva dos i den individuella modellen. Du behöver inte vara i toppform när vi startar, men du får inte komma tillbaka från noll.";
 
 /* =========================================================================
    MENTALITET
