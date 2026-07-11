@@ -459,6 +459,27 @@
     height: 100%;
   }
 
+  .home-calendar-scroll {
+    max-height: min(620px, calc(100svh - 11rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-right: 0.25rem;
+    scrollbar-color: rgba(253, 230, 138, 0.5) transparent;
+    scrollbar-width: thin;
+  }
+
+  .home-calendar-scroll::-webkit-scrollbar {
+    width: 0.35rem;
+  }
+
+  .home-calendar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .home-calendar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(253, 230, 138, 0.5);
+  }
+
   .home-identity-visual-head,
   .home-identity-visual-caption {
     display: flex;

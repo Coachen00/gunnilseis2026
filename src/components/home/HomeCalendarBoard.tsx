@@ -202,10 +202,11 @@ export default function HomeCalendarBoard() {
           </div>
         </div>
 
-        {authed ? (
-          <AuthedCalendarContent />
-        ) : (
-          <div className="grid gap-3">
+        <div className="home-calendar-scroll" tabIndex={0} aria-label="Kalenderhändelser">
+          {authed ? (
+            <AuthedCalendarContent />
+          ) : (
+            <div className="grid gap-3">
             <div className="border border-amber-200/12 bg-amber-100/[0.035] p-4">
               <div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">
                 <LockKeyhole className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden="true" />
@@ -234,8 +235,9 @@ export default function HomeCalendarBoard() {
               Logga in
               <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
             </Link>
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
     </motion.aside>
   );
