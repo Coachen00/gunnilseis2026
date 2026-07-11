@@ -92,6 +92,19 @@ describe("Spelarvard — områden + dokumentgalleri", () => {
     expect(screen.getByText("Gymmet")).toBeInTheDocument();
   });
 
+  it("visar PDF-viewern i en portal och stänger den med den synliga kontrollen", () => {
+    const { container } = renderPage();
+
+    fireEvent.click(screen.getByRole("button", { name: /öppna kost för motorn/i }));
+    const dialog = screen.getByRole("dialog", { name: "Kost för motorn" });
+
+    expect(dialog).toBeInTheDocument();
+    expect(container).not.toContainElement(dialog);
+
+    fireEvent.click(within(dialog).getByRole("button", { name: "Stäng (Esc)" }));
+    expect(screen.queryByRole("dialog", { name: "Kost för motorn" })).not.toBeInTheDocument();
+  });
+
   it("icke-admin ser inte uppladdningsknappen", () => {
     renderPage();
     expect(screen.queryByText(/lägg till material/i)).toBeNull();

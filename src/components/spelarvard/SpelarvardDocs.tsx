@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   ExternalLink,
   FileCode2,
@@ -146,7 +147,7 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
   // Endast PDF och bild bäddas in tryggt. Slides/HTML/länk öppnas i ny flik.
   const canEmbed = doc.doc_kind === "pdf" || doc.doc_kind === "image";
 
-  return (
+  return createPortal(
     <div role="dialog" aria-modal="true" aria-label={doc.title} className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8">
       <button type="button" aria-label="Stäng" onClick={onClose} className="absolute inset-0 cursor-default bg-black/85 backdrop-blur-md" />
 
@@ -204,7 +205,8 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
