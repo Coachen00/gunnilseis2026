@@ -23,3 +23,10 @@ Implementerad med bevarade exporter och datatyper för befintligt UI.
 ## Concerns
 
 Inga kända blockerare. Belastningsnivån `Låg` för 3/8 används för att förhindra tre medel/högdagar inom fyra dygn; detaljtexten förtydligar att fotbollsinnehållet kan vara lätt–medel utan ny tung bendos.
+
+## Reviewfix
+
+- 28/7-blocken har exekverbara minutvärden som summerar till 70 minuter inom angivna 60–75 minuter.
+- Startklar avslutar senast efter 75 minuter; Tillgänglig 45–60 avslutar senast efter 60 minuter utan extra löpdos. Alla avbryter direkt vid fart- eller tekniktapp.
+- 3/8 kommuniceras konsekvent som `Låg` i kalendern och `Låg — kontrollerat` i passkortet.
+- TDD RED: två nya tester föll på 80 minuters blocksumma respektive kvarvarande `Medel — kontrollerat`.

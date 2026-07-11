@@ -18,10 +18,28 @@ describe("gradvis kollektiv återstart", () => {
   it("anger individuella minutgränser för återintroduktionen", () => {
     const uppstart = PASS.find((pass) => pass.id === "pass-2807");
     const text = JSON.stringify(uppstart).toLowerCase();
+    const blockMinutes = uppstart?.upplagg?.map((block) => {
+      const match = block.tid?.match(/^(\d+) min$/);
+      expect(match, `${block.namn} ska ha ett exekverbart minutvärde`).not.toBeNull();
+      return Number(match?.[1]);
+    }) ?? [];
 
     expect(uppstart?.totaltid).toBe("60–75 min");
+    expect(blockMinutes.reduce((summa, minuter) => summa + minuter, 0)).toBeGreaterThanOrEqual(60);
+    expect(blockMinutes.reduce((summa, minuter) => summa + minuter, 0)).toBeLessThanOrEqual(75);
     expect(text).toMatch(/individuell minutgräns/);
-    expect(text).toMatch(/45–60|60–75/);
+    expect(text).toContain("startklar: avsluta senast efter 75 min");
+    expect(text).toContain("tillgänglig 45–60: avsluta senast efter 60 min");
+    expect(text).toMatch(/avsluta direkt.*fart.*teknik/);
+  });
+
+  it("kommunicerar 3/8 konsekvent som låg belastning i kalender och pass", () => {
+    const kalendersteg = KALENDER.find((steg) => steg.id === "ma");
+    const kollektivtPass = PASS.find((pass) => pass.id === "pass-0308");
+
+    expect(kalendersteg?.load).toBe("Låg");
+    expect(kollektivtPass?.tag).toBe("Låg — kontrollerat");
+    expect(JSON.stringify(kollektivtPass).toLowerCase()).not.toMatch(/medel — kontrollerat/);
   });
 
   it("definierar en begränsad höghastighetsdos med kvalitetsstopp", () => {

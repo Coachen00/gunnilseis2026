@@ -201,18 +201,19 @@ export const PASS: Pass[] = [
     ],
     upplagg: [
       { namn: "Samling", tid: "10 min", text: "Tydlig riktning: första match 8/8. Alla ska veta vad vi bygger mot." },
-      { namn: "Screening", tid: "15 min", text: "Tränat? Ont? Springa max? Spela 90 min 8/8? Behöver du anpassning?" },
+      { namn: "Screening", tid: "10 min", text: "Tränat? Ont? Springa max? Spela 90 min 8/8? Behöver du anpassning?" },
       { namn: "Bollaktivering", tid: "15 min", text: "Rondo, passning, scanning, första touch." },
       { namn: "Spelmodell", tid: "25 min", text: "Låg–medel intensitet. Avstånd, positioner, spelbarhet, organisation." },
-      { namn: "Kort spel", tid: "15 min", text: "5v5 eller 6v6. Begränsad volym. Intensitet utan att slita." },
+      { namn: "Kort spel", tid: "10 min", text: "5v5 eller 6v6. Begränsad volym. Intensitet utan att slita." },
     ],
     punkter: [
       {
         rubrik: "Individuell minutgräns",
         rader: [
-          "Startklar: högst 60–75 min efter normal statuskontroll",
-          "Tillgänglig 45–60: högst 45–60 min och ingen extra löpdos",
+          "Startklar: avsluta senast efter 75 min",
+          "Tillgänglig 45–60: avsluta senast efter 60 min och gör ingen extra löpdos",
           "Tränar – ej matchklar: individuell dos beslutas efter screening",
+          "Alla: avsluta direkt om farten sjunker eller tekniken försämras",
         ],
       },
     ],
@@ -237,7 +238,7 @@ export const PASS: Pass[] = [
     id: "pass-0308",
     date: "Måndag 3/8",
     title: "Kollektiv återstart",
-    tag: "Medel — kontrollerat",
+    tag: "Låg — kontrollerat",
     accent: "blue",
     syfte: [
       "Samla så många som möjligt och återetablera spelmodellen",
