@@ -1019,6 +1019,10 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .mark-lime {
+    background: linear-gradient(transparent 62%, #e3ef26 62%);
+  }
 }
 
 @keyframes fadeIn {

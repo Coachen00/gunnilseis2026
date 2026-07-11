@@ -98,6 +98,15 @@ export default {
           paper: "hsl(0 0% 100%)",
           sand: "hsl(210 22% 94%)",
         },
+        kedja: {
+          ink: "#06231d",
+          deep: "#0c342c",
+          green: "#076653",
+          lime: "#e3ef26",
+          mint: "#e2fbce",
+          paper: "#fbfef2",
+          border: "rgba(12,52,44,0.16)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
