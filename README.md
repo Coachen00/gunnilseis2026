@@ -5,6 +5,18 @@ Webbplats för Gunnilse IS spelmodell — identitet, fyra skedena, fasta situati
 Stack: **Vite 6 · React 18 · TypeScript · Tailwind · shadcn/ui · Supabase · React Router**.
 Hostas på **[spelmodellen.se](https://spelmodellen.se)** via **GitHub Pages** — auto-deploy från `main` via GitHub Actions (`.github/workflows/deploy.yml`).
 
+## Source of truth
+
+`main` är den enda aktiva arbetsgrenen och den enda grenen som deployas. Arbeta lokalt i arbetskatalogen, kör testerna och pusha till `origin/main`.
+
+```bash
+git switch main
+git pull --ff-only origin main
+npm run dev
+```
+
+Lovable används inte i uppdaterings- eller deployflödet. GitHub är källan till sanningen; `push` till `main` räcker för att publicera ändringar via GitHub Actions. Äldre `feat/*`-grenar på GitHub är historiska arbetsgrenar och ska inte användas för nya ändringar utan ett uttryckligt beslut.
+
 ---
 
 ## Lokal utveckling
@@ -73,6 +85,8 @@ För att lägga till en tränare: be hen registrera sig på `/login`, godkänn i
 ## Deploy
 
 Push till `main` → GitHub Actions (`.github/workflows/deploy.yml`) bygger med Bun, kopierar `dist/index.html` till `dist/404.html` (SPA-fallback för React Router) och deployar till GitHub Pages. Live på <https://spelmodellen.se>.
+
+Efter push: kontrollera workflow-runnen under GitHub → Actions. Om en körning redan pågår väntar GitHub tills den är klar; starta inte en parallell Lovable-deploy.
 
 **DNS:** spelmodellen.se peker mot GitHubs Pages-IP:er via 4 A-records hos Loopia. `public/CNAME` innehåller `spelmodellen.se` så GitHub vet vilken host som ska serveras.
 
