@@ -14,7 +14,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, CalendarClock, Dumbbell, Film, LogIn, PlayCircle, ShieldCheck, UserPlus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { MATCH_META, SAMLING_TIME } from "@/data/matchplan";
@@ -79,8 +79,6 @@ export default function MagicalPitchHero() {
     return () => window.clearInterval(timer);
   }, [reduced]);
 
-  const activeWelcomeImage = WELCOME_IMAGES[welcomeImageIndex];
-
   // Mjuk parallax — endast när användaren scrollar förbi intro.
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -102,18 +100,26 @@ export default function MagicalPitchHero() {
     >
       {/* Välkomstfoto — tonar in mjukt och täcker hela heron, bakom animeringen.
           backgroundImage (inte <img>) → saknad fil ger ingen trasig bild-ikon. */}
-      <AnimatePresence initial={false} mode="sync">
-        <motion.div
-          key={activeWelcomeImage}
-          aria-hidden="true"
-          initial={reduced ? { opacity: 1 } : { opacity: 0, scale: 1.06 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={reduced ? undefined : { opacity: 0, scale: 1.02 }}
-          transition={{ duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${activeWelcomeImage}')` }}
-        />
-      </AnimatePresence>
+      {WELCOME_IMAGES.map((image, index) => {
+        const active = index === welcomeImageIndex;
+
+        return (
+          <motion.div
+            key={image}
+            data-testid="welcome-image"
+            aria-hidden="true"
+            initial={false}
+            animate={{ opacity: active ? 1 : 0, scale: active ? 1 : 1.025 }}
+            transition={{ duration: reduced ? 0 : 1.8, ease: "easeInOut" }}
+            className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url('${image}')`,
+              backfaceVisibility: "hidden",
+              willChange: "opacity, transform",
+            }}
+          />
+        );
+      })}
       {/* Mörk varm scrim — vänstertung så amber/cream-texten håller kontrast (WCAG) */}
       <div
         aria-hidden="true"
