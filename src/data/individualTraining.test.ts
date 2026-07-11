@@ -94,6 +94,16 @@ describe("individual training model", () => {
     expect(highIntensity.every((item) => item.stopRule.trim().length > 0)).toBe(true);
   });
 
+  it("keeps strength stop rules compatible with prescribed RPE 7–9", () => {
+    const rules = getSchedule("forward", "full", 4)
+      .filter((item) => item.sessionType === "strength")
+      .map((item) => item.stopRule);
+
+    expect(rules.every((rule) => /RPE överstiger 9/.test(rule))).toBe(true);
+    expect(rules.every((rule) => /tekniken försämras|smärta/.test(rule))).toBe(true);
+    expect(rules.every((rule) => !/RPE överstiger 8/.test(rule))).toBe(true);
+  });
+
   it("stops sprint work when time increases over 3%, speed drops or technique degrades", () => {
     const sprintRules = getSchedule("forward", "full", 4)
       .filter((item) => item.sessionType === "sprint")

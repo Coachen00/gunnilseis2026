@@ -43,7 +43,7 @@ export const ROLE_PLANS: Record<TrainingRole, { label: string; sprintDoses: [str
 };
 
 const stopRules = {
-  strength: "Avsluta setet om tekniken försämras eller RPE överstiger 8.",
+  strength: "Avsluta eller justera setet om tekniken försämras, smärta uppstår eller RPE överstiger 9.",
   sprint: "Avsluta om tiden ökar mer än 3 %, farten sjunker eller tekniken försämras.",
   conditioning: "Avsluta intervallet vid yrsel, smärta eller oförmåga att hålla målfarten.",
 };

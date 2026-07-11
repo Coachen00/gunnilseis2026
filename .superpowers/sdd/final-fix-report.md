@@ -1,6 +1,6 @@
 # Final fix report
 
-Status: DONE_WITH_CONCERNS
+Status: DONE
 
 ## Åtgärdat
 
@@ -10,11 +10,13 @@ Status: DONE_WITH_CONCERNS
 - Dokumentdialogen får initialt fokus på stäng, fångar Tab/Shift+Tab, stängs med Escape och återställer fokus till exakt öppnare.
 - Återhämtningscopy rekommenderar kolhydrat + protein så snart praktiskt och förklarar att 30 minuter inte är absolut.
 - `*.pdf binary` tillagt utan ändring av PDF-innehåll.
+- Spelarvårdscopy låser samma dagordning som den kanoniska fullplanen.
+- Styrkepass justeras eller stoppas vid försämrad teknik, smärta eller RPE över 9, förenligt med ordinerat RPE 7–9.
 
 ## Verifiering
 
-- Riktade tester: 40/40 godkända.
-- Full Vitest: 372/372 godkända i 32/32 filer.
+- Senaste riktade tester: 33/33 godkända.
+- Full Vitest: 374/374 godkända i 32/32 filer.
 - ESLint: godkänd, 0 fel.
 - Produktionsbuild: godkänd, 2250 moduler transformerade.
 - `git diff --check`: godkänd.

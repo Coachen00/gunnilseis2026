@@ -105,6 +105,21 @@ describe("spelarvard", () => {
     expect(text).not.toMatch(/underhålls med 2–3 pass i veckan/i);
   });
 
+  it("harmonierar fullplanens dagcopy med det kanoniska schemat", () => {
+    const sommar = SPELARVARD_SECTIONS.find((s) => s.id === "sommarschema")!;
+    const fullPlan = sommar.bullets.find((bullet) => bullet.startsWith("Full plan:"))!;
+
+    expect(fullPlan).toMatch(/måndag acceleration.*före styrka/i);
+    expect(fullPlan).toMatch(/onsdag hel vilodag/i);
+    expect(fullPlan).toMatch(/torsdag maxfartssprint.*före styrka/i);
+    expect(fullPlan).toMatch(/lördag HIIT\/RST/i);
+    expect(fullPlan).toMatch(/söndag lugn aerob.*teknik/i);
+    expect(fullPlan.indexOf("måndag")).toBeLessThan(fullPlan.indexOf("onsdag"));
+    expect(fullPlan.indexOf("onsdag")).toBeLessThan(fullPlan.indexOf("torsdag"));
+    expect(fullPlan.indexOf("torsdag")).toBeLessThan(fullPlan.indexOf("lördag"));
+    expect(fullPlan.indexOf("lördag")).toBeLessThan(fullPlan.indexOf("söndag"));
+  });
+
   it("beskriver skadeprevention som riskminskning, inte garanti", () => {
     const gym = SPELARVARD_SECTIONS.find((s) => s.id === "gym")!;
     const text = gym.bullets.join(" ").toLowerCase();

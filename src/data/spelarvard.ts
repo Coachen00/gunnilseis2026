@@ -146,7 +146,7 @@ export const SPELARVARD_SECTIONS: SpelarvardSection[] = [
     question: "Hur håller vi formen — och vinner serien?",
     proposal: true,
     bullets: [
-      "Full plan: måndag styrka + acceleration, onsdag HIIT/RST, fredag styrka + maxfart och söndag lugn aerob träning/teknik.",
+      "Full plan: måndag acceleration/sprint före styrka, onsdag hel vilodag, torsdag maxfartssprint före styrka, lördag HIIT/RST och söndag lugn aerob träning/teknik.",
       "Underhåll: träna måndag, onsdag och fredag med styrka, sprint och kondition enligt träningsplanen.",
       "Miniminivå: två helkroppspass med en kort konditionsdos.",
       "Planera minst en hel vilodag varje vecka och skala ned vid kvarstående trötthet eller smärta.",
