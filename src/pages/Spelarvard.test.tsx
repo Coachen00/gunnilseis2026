@@ -101,7 +101,10 @@ describe("Spelarvard — områden + dokumentgalleri", () => {
     expect(dialog).toBeInTheDocument();
     expect(container).not.toContainElement(dialog);
 
-    fireEvent.click(within(dialog).getByRole("button", { name: "Stäng (Esc)" }));
+    const closeButton = within(dialog).getByRole("button", { name: "Stäng (Esc)" });
+    expect(closeButton).toHaveClass("h-11", "w-11");
+
+    fireEvent.click(closeButton);
     expect(screen.queryByRole("dialog", { name: "Kost för motorn" })).not.toBeInTheDocument();
   });
 

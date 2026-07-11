@@ -157,7 +157,7 @@ function DocViewerModal({ doc, onClose }: { doc: SpelarvardDoc; onClose: () => v
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">{meta.label}</p>
             <h3 className="truncate text-lg font-bold leading-tight text-white md:text-xl">{doc.title}</h3>
           </div>
-          <button type="button" onClick={onClose} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="Stäng (Esc)">
+          <button type="button" onClick={onClose} className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="Stäng (Esc)">
             <X className="h-5 w-5" strokeWidth={2.4} />
           </button>
         </div>
