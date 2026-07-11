@@ -19,6 +19,10 @@ import {
   CornerDownLeft,
   Film,
   Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight,
+  RotateCcw,
   AlertTriangle,
   Activity,
   Wrench,
@@ -154,6 +158,41 @@ const BLOCK_EYEBROW: Record<string, string> = {
   "overgang-forsvar": "I sekunden bollen är deras",
   identitet: "Det här är vi varje match",
   "fasta-situationer": "Stillastående boll = poäng",
+};
+
+const TACTICAL_STEPS: Record<string, Array<{ label: string; cue: string; detail: string }>> = {
+  forsvarsspel: [
+    { label: "Skydda mitten", cue: "Stäng den farligaste vägen först.", detail: "Laget håller ihop centralt och styr spelet mot en yttre korridor." },
+    { label: "Läs triggern", cue: "Se den passning som gör pressen möjlig.", detail: "En svag passning eller mottagning sätter nästa spelare i arbete." },
+    { label: "Pressa ihop", cue: "En pressar, resten täcker.", detail: "Närmaste spelare går på boll och laget flyttar med bakom." },
+  ],
+  "overgang-anfall": [
+    { label: "Titta framåt", cue: "Första blicken är mot mål.", detail: "Bollhållaren söker djupled eller en fri yta bakom motståndaren." },
+    { label: "Spela framåt", cue: "Ta fördelen innan den försvinner.", detail: "Passningen går med fart genom eller förbi den första pressen." },
+    { label: "Löp diagonalt", cue: "Fyll nästa yta med fart.", detail: "Främre spelare hotar assistytan medan laget följer efter." },
+  ],
+  anfallsspel: [
+    { label: "Skydda mot kontring", cue: "Ha en säkerhet bakom bollen.", detail: "Sexan och backlinjen håller balansen innan fler fyller på." },
+    { label: "Spela in", cue: "Locka in motståndaren.", detail: "Vi hittar en spelare centralt eller i halvyta för att dra ihop laget." },
+    { label: "Spela ut", cue: "Flytta bollen till fri sida.", detail: "Tredje man hjälper oss ur pressen och öppnar nästa korridor." },
+    { label: "Vinn assistytan", cue: "Ta ytan där sista passningen börjar.", detail: "Bollen kommer bakom eller utanför deras backlinje." },
+    { label: "Fyll boxen", cue: "Minst fyra spelare attackerar målområdet.", detail: "Första, straffpunkt, bortre och cutback täcks när bollen kommer in." },
+  ],
+  "overgang-forsvar": [
+    { label: "Pressa direkt", cue: "Närmaste spelare attackerar bollen.", detail: "Första sekunden efter bolltapp används till att störa nästa passning." },
+    { label: "Stäng vägar", cue: "Två spelare skyddar passningslinjer.", detail: "Laget gör planen liten bakom den första pressen." },
+    { label: "Vinn eller bromsa", cue: "Återerövra om läget finns, annars hem.", detail: "Vi återtar kontrollen innan motståndaren får spela framåt." },
+  ],
+  identitet: [
+    { label: "Duellen", cue: "Gå in beslutsamt.", detail: "Vi visar mod när bollen eller ytan är vår att vinna." },
+    { label: "Andrabollen", cue: "Läs studsen före alla andra.", detail: "Närmaste spelare säkrar nästa aktion efter duellen." },
+    { label: "Nästa aktion", cue: "Kroppsspråk som hjälper laget.", detail: "Vi återgår till uppgiften direkt efter både vinst och misstag." },
+  ],
+  "fasta-situationer": [
+    { label: "Ta plats", cue: "Veta din startposition.", detail: "Varje spelare har en plats, ett ansvar och ett signalord." },
+    { label: "Kör mönstret", cue: "Löpningen säljs helt.", detail: "Vi litar på planen och tajmar aktionen tillsammans." },
+    { label: "Säkra returen", cue: "Nästa boll är också vår.", detail: "Laget täcker första boll, andraboll och kontringsskydd." },
+  ],
 };
 
 /* =========================================================================
@@ -567,12 +606,14 @@ function Arrow({
   width = 8,
   dashed = false,
   id,
+  step,
 }: {
   d: string;
   color?: string;
   width?: number;
   dashed?: boolean;
   id: string;
+  step?: number;
 }) {
   return (
     <>
@@ -583,6 +624,8 @@ function Arrow({
       </defs>
       <path
         d={d}
+        className="tactical-arrow"
+        data-tactical-step={step}
         fill="none"
         stroke={color}
         strokeWidth={width}
@@ -648,7 +691,7 @@ function ForsvarPitch() {
       <PlayerDot x={500} y={520} label="9" />
       <PlayerDot x={780} y={620} label="7" />
 
-      <Arrow id="ar-forsvar-1" d="M 250 620 Q 200 580 170 540" color="#cf3a3a" width={10} />
+      <Arrow id="ar-forsvar-1" step={3} d="M 250 620 Q 200 580 170 540" color="#cf3a3a" width={10} />
 
       <line x1="340" y1="780" x2="350" y2="620" stroke="rgba(207,58,58,0.45)" strokeWidth="4" strokeDasharray="10 10" />
       <line x1="500" y1="900" x2="500" y2="520" stroke="rgba(207,58,58,0.4)" strokeWidth="3" strokeDasharray="10 10" />
@@ -664,8 +707,8 @@ function OvergangAnfallPitch() {
         BOLLVINST
       </text>
 
-      <Arrow id="ar-omsta-1" d="M 400 900 Q 600 700 820 360" color="#3a6fc6" width={12} />
-      <Arrow id="ar-omsta-2" d="M 320 1080 Q 540 880 800 460" color="#3a6fc6" width={8} dashed />
+      <Arrow id="ar-omsta-1" step={2} d="M 400 900 Q 600 700 820 360" color="#3a6fc6" width={12} />
+      <Arrow id="ar-omsta-2" step={3} d="M 320 1080 Q 540 880 800 460" color="#3a6fc6" width={8} dashed />
 
       <rect x="650" y="280" width="280" height="280" fill="#5ec98a" opacity="0.18" stroke="#5ec98a" strokeWidth="3" strokeDasharray="14 10" />
       <text x="790" y="430" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="700" fontSize="22" fill="#f5c242" letterSpacing="4">
@@ -703,13 +746,13 @@ function AnfallsspelPitch() {
         <text x="270" y="55" fill="#f5c242">5 · FYLL BOXEN</text>
       </g>
 
-      <Arrow id="ar-anfall-1" d="M 500 1270 L 500 1170" color="#3a6fc6" width={10} />
-      <Arrow id="ar-anfall-2" d="M 500 1100 L 500 950" color="#3a6fc6" width={10} />
-      <Arrow id="ar-anfall-3" d="M 500 850 Q 620 700 760 540" color="#3a6fc6" width={10} />
-      <Arrow id="ar-anfall-4" d="M 760 380 Q 600 280 500 200" color="#f5c242" width={12} />
+      <Arrow id="ar-anfall-1" step={1} d="M 500 1270 L 500 1170" color="#3a6fc6" width={10} />
+      <Arrow id="ar-anfall-2" step={2} d="M 500 1100 L 500 950" color="#3a6fc6" width={10} />
+      <Arrow id="ar-anfall-3" step={3} d="M 500 850 Q 620 700 760 540" color="#3a6fc6" width={10} />
+      <Arrow id="ar-anfall-4" step={4} d="M 760 380 Q 600 280 500 200" color="#f5c242" width={12} />
 
-      <Arrow id="ar-anfall-r1" d="M 320 600 Q 380 380 460 240" color="#3a6fc6" width={6} dashed />
-      <Arrow id="ar-anfall-r2" d="M 680 600 Q 620 380 540 240" color="#3a6fc6" width={6} dashed />
+      <Arrow id="ar-anfall-r1" step={5} d="M 320 600 Q 380 380 460 240" color="#3a6fc6" width={6} dashed />
+      <Arrow id="ar-anfall-r2" step={5} d="M 680 600 Q 620 380 540 240" color="#3a6fc6" width={6} dashed />
 
       <PlayerDot x={500} y={1390} label="1" />
       <PlayerDot x={500} y={1300} label="3" />
@@ -734,12 +777,12 @@ function OvergangForsvarPitch() {
         BOLLTAPP
       </text>
 
-      <Arrow id="ar-omsta-d-1" d="M 720 620 Q 620 560 540 510" color="#cf3a3a" width={10} />
-      <Arrow id="ar-omsta-d-2" d="M 280 620 Q 380 560 460 510" color="#cf3a3a" width={10} />
-      <Arrow id="ar-omsta-d-3" d="M 500 720 L 500 540" color="#cf3a3a" width={10} />
+      <Arrow id="ar-omsta-d-1" step={1} d="M 720 620 Q 620 560 540 510" color="#cf3a3a" width={10} />
+      <Arrow id="ar-omsta-d-2" step={1} d="M 280 620 Q 380 560 460 510" color="#cf3a3a" width={10} />
+      <Arrow id="ar-omsta-d-3" step={1} d="M 500 720 L 500 540" color="#cf3a3a" width={10} />
 
-      <Arrow id="ar-omsta-d-4" d="M 360 420 L 540 380" color="#cf3a3a" width={5} dashed />
-      <Arrow id="ar-omsta-d-5" d="M 640 420 L 460 380" color="#cf3a3a" width={5} dashed />
+      <Arrow id="ar-omsta-d-4" step={2} d="M 360 420 L 540 380" color="#cf3a3a" width={5} dashed />
+      <Arrow id="ar-omsta-d-5" step={2} d="M 640 420 L 460 380" color="#cf3a3a" width={5} dashed />
 
       <g transform="translate(820 1330)">
         <circle r="78" fill="#0a1f15" stroke="#cf3a3a" strokeWidth="4" />
@@ -852,6 +895,157 @@ function BlockVisual({ id }: { id: string }) {
   return null;
 }
 
+function TacticalPlan({ id, num }: { id: string; num: string }) {
+  const steps = TACTICAL_STEPS[id] ?? [];
+  const [activeStep, setActiveStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const currentStep = steps[activeStep] ?? steps[0];
+
+  useEffect(() => {
+    if (!isPlaying || steps.length < 2) return;
+    const timer = window.setInterval(() => {
+      setActiveStep((current) => {
+        const next = current + 1;
+        if (next >= steps.length) {
+          setIsPlaying(false);
+          return 0;
+        }
+        return next;
+      });
+    }, 2200);
+    return () => window.clearInterval(timer);
+  }, [isPlaying, steps.length]);
+
+  const goToStep = (step: number) => {
+    setIsPlaying(false);
+    setActiveStep(Math.max(0, Math.min(step, steps.length - 1)));
+  };
+
+  if (!currentStep) return <BlockVisual id={id} />;
+
+  return (
+    <div className="tactical-plan">
+      <div className="border-b border-border bg-muted/25 px-4 py-4 md:px-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/45">
+              Sekvens {num} · {steps.length} steg
+            </p>
+            <p className="mt-1 text-sm font-bold text-foreground">{currentStep.cue}</p>
+          </div>
+          <span className="font-mono text-xs font-black tabular-nums text-foreground/45">
+            {String(activeStep + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+          </span>
+        </div>
+        <div className="mt-4 grid gap-1.5" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+          {steps.map((step, index) => (
+            <button
+              key={step.label}
+              type="button"
+              data-testid={`tactical-step-${id}-${index + 1}`}
+              aria-label={`Visa steg ${index + 1}: ${step.label}`}
+              aria-pressed={activeStep === index}
+              onClick={() => goToStep(index)}
+              className={`tactical-step-button ${activeStep === index ? "is-active" : ""}`}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>{step.label}</strong>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="tactical-visual" data-playing={isPlaying} data-step={activeStep + 1}>
+        <BlockVisual id={id} />
+      </div>
+
+      <div className="flex flex-col gap-4 border-t border-border bg-background px-4 py-4 md:flex-row md:items-center md:justify-between md:px-5">
+        <div className="min-w-0">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
+            {currentStep.label}
+          </p>
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">{currentStep.detail}</p>
+        </div>
+        <div className="flex flex-shrink-0 items-center gap-1.5">
+          <button
+            type="button"
+            aria-label="Föregående steg"
+            title="Föregående steg"
+            onClick={() => goToStep(activeStep - 1)}
+            className="tactical-control"
+            disabled={activeStep === 0}
+          >
+            <ChevronLeft className="h-4 w-4" strokeWidth={2.2} />
+          </button>
+          <button
+            type="button"
+            data-testid={`tactical-play-${id}`}
+            aria-label={isPlaying ? "Pausa sekvens" : "Spela sekvens"}
+            title={isPlaying ? "Pausa sekvens" : "Spela sekvens"}
+            onClick={() => setIsPlaying((playing) => !playing)}
+            className="tactical-control tactical-control-primary"
+          >
+            {isPlaying ? <Pause className="h-4 w-4" strokeWidth={2.2} /> : <Play className="h-4 w-4" strokeWidth={2.2} />}
+          </button>
+          <button
+            type="button"
+            aria-label="Nästa steg"
+            title="Nästa steg"
+            onClick={() => goToStep(activeStep + 1)}
+            className="tactical-control"
+            disabled={activeStep === steps.length - 1}
+          >
+            <ChevronRight className="h-4 w-4" strokeWidth={2.2} />
+          </button>
+          <button
+            type="button"
+            aria-label="Börja om sekvens"
+            title="Börja om sekvens"
+            onClick={() => goToStep(0)}
+            className="tactical-control"
+          >
+            <RotateCcw className="h-4 w-4" strokeWidth={2.2} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InstructionPanel({ block, num }: { block: MajBlock; num: string }) {
+  return (
+    <aside className="instruction-panel" aria-labelledby={`instruction-title-${block.id}`}>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-300/80">Spelarens uppgift</p>
+          <h3 id={`instruction-title-${block.id}`} className="mt-3 text-2xl font-black uppercase leading-[0.98] tracking-tight text-white">
+            {block.title}
+          </h3>
+        </div>
+        <span className="font-mono text-xs font-black tabular-nums text-white/35">{num}</span>
+      </div>
+      <p className="mt-7 text-lg font-semibold leading-snug text-white/95">{block.playerInstruction}</p>
+      <div className="mt-8 border-t border-white/15 pt-5">
+        <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-white/45">Tre saker att se</p>
+        <ol className="mt-4 space-y-3">
+          {block.doList.slice(0, 3).map((item, index) => (
+            <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-white/78">
+              <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center border border-amber-300/60 font-mono text-[10px] font-black text-amber-300">
+                {index + 1}
+              </span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div className="mt-8 border-l-2 border-amber-400 pl-4">
+        <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-300">När vi lyckas</p>
+        <p className="mt-2 text-sm font-semibold leading-relaxed text-white/88">{block.remember}</p>
+      </div>
+    </aside>
+  );
+}
+
 /* =========================================================================
    BLOCK SECTION
    ========================================================================= */
@@ -916,28 +1110,20 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             {block.kidExplanation}
           </p>
 
-          {/* Spelarinstruktion + Planvy */}
-          <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-            <div className="border border-border bg-card p-6">
-              <div className="mb-4 flex items-center gap-2">
-                <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[block.accent]].join(" ")} />
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-foreground/60">
-                  Spelarinstruktion
-                </p>
-              </div>
-              <p className="text-base font-bold leading-snug text-foreground/90">{block.playerInstruction}</p>
-            </div>
+          {/* Spelarinstruktion + interaktiv planvy */}
+          <div className="mb-8 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.65fr)]">
+            <InstructionPanel block={block} num={num} />
 
             <div className="overflow-hidden border border-border bg-background">
               <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
                 <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
-                  Taktisk planvy
+                  Taktisk planvy · steg för steg
                 </p>
                 <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/35">
                   Block {num}
                 </p>
               </div>
-              <BlockVisual id={block.id} />
+              <TacticalPlan id={block.id} num={num} />
             </div>
           </div>
 

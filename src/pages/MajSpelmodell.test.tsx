@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import MajSpelmodell from "./MajSpelmodell";
@@ -103,6 +103,20 @@ describe("MajSpelmodell page", () => {
     // Gör så här / Gör inte så här ska INTE finnas — det ligger i collapsed AccordionContent
     expect(screen.queryByText(/^gör så här$/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/^gör inte så här$/i)).not.toBeInTheDocument();
+  });
+
+  it("visar anfallssekvensen stegvis och kan starta animationen", () => {
+    renderPage();
+    fireEvent.click(screen.getByTestId("block-trigger-anfallsspel"));
+
+    const play = screen.getByTestId("tactical-play-anfallsspel");
+    expect(play).toHaveAttribute("aria-label", "Spela sekvens");
+    expect(screen.getByTestId("tactical-step-anfallsspel-5")).toHaveTextContent("Fyll boxen");
+
+    fireEvent.click(play);
+
+    expect(play).toHaveAttribute("aria-label", "Pausa sekvens");
+    expect(document.querySelector('.tactical-visual[data-playing="true"]')).toBeInTheDocument();
   });
 
   it("alla block har minst en princip definierad", () => {

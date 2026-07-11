@@ -24,15 +24,15 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 /* === Designtokens — mörk taktisk plan, grön möjlighet + amber hot === */
 const C = {
-  pitchTop: "#0a1813",
-  pitchBot: "#060f0a",
-  line: "rgba(150,214,180,0.13)",
-  lineSoft: "rgba(150,214,180,0.07)",
-  green: "#3ddc97", // medspelare / fri yta / vald linje
-  amber: "#f6a945", // press / motståndare / synkon
-  ball: "#f3fbf5",
-  ink: "#06100b",
-  text: "#cfeede",
+  pitchTop: "#000052",
+  pitchBot: "#00002e",
+  line: "rgba(255,255,255,0.16)",
+  lineSoft: "rgba(255,255,255,0.08)",
+  green: "#0c44ac", // medspelare / fri yta / vald linje
+  amber: "#ed0101", // press / motståndare / synkon
+  ball: "#ffffff",
+  ink: "#000052",
+  text: "#ffffff",
 } as const;
 
 const SNAP: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -211,8 +211,8 @@ export default function ScanningScene({ reduced }: { reduced: boolean }) {
             <stop offset="100%" stopColor={C.pitchBot} />
           </linearGradient>
           <radialGradient id="sc-marker" cx="42%" cy="38%" r="62%">
-            <stop offset="0%" stopColor="#5af0b0" />
-            <stop offset="100%" stopColor="#0c3a28" />
+            <stop offset="0%" stopColor="#5d8fe8" />
+            <stop offset="100%" stopColor="#000052" />
           </radialGradient>
           <radialGradient id="sc-greenGlow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor={C.green} stopOpacity="0.95" />
