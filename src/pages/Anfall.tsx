@@ -1,42 +1,90 @@
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import PageHero from "@/components/PageHero";
 import FasTrappa from "@/components/FasTrappa";
-import CuesBlock from "@/components/CuesBlock";
 import AttackingPrincipleCard from "@/components/AttackingPrincipleCard";
-import SectionReveal from "@/components/SectionReveal";
-import StaggerList from "@/components/StaggerList";
 import { PHASE_CUES } from "@/data/phaseCues";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { MATCH_META } from "@/data/matchplan";
+import { useScrollToHash } from "@/hooks/useScrollToHash";
+import KedjaHero from "@/components/kedja/KedjaHero";
+import KedjaNav from "@/components/kedja/KedjaNav";
+import KedjaSection from "@/components/kedja/KedjaSection";
+import KedjaSteps from "@/components/kedja/KedjaSteps";
+import KedjaClimax from "@/components/kedja/KedjaClimax";
+import KedjaQuote from "@/components/kedja/KedjaQuote";
+
+const ANFALL_CUES = PHASE_CUES.anfall;
 
 // Veckans anfallsfokus — vilka principer betonar vi inför nästa motståndare.
 // Hålls i synk med matchplan FOCUS-bullets så texten blir konsistent.
 const WEEKS_FOCUS_PRINCIPLES = ["skydda-mot-kontring", "spela-in", "spela-ut", "fyll-pa-box"] as const;
 
-const Anfall = () => (
-  <>
-    <PageHero
-      eyebrow="Anfall"
-      title="Anfallsspel — fem principer"
-      description="Vi anfaller alltid i denna ordning: skydda mot kontring, spela in, spela ut, ta med framåt, fyll på i box."
-    />
-    <FasTrappa blockId="anfallsspel" />
+const NAV_ITEMS = ATTACKING_PRINCIPLES.map((p) => ({
+  num: String(p.order).padStart(2, "0"),
+  title: p.headline,
+  sub: p.coachrop[0].replace(/!$/, ""),
+  href: `#${p.slug}`,
+}));
 
-    <div className="container">
-      <SectionReveal>
-        <CuesBlock set={PHASE_CUES.anfall} />
-      </SectionReveal>
+/** Fem spelregler — samma rader som CuesBlock, ihopdragna med sina matchande cues. */
+const MATCH_CUE_STEPS = ANFALL_CUES.rules.map((rule, i) => ({
+  label: `Regel 0${i + 1}`,
+  headline: rule,
+  support: `${ANFALL_CUES.cues[i].trigger} → ${ANFALL_CUES.cues[i].action}`,
+}));
 
-      <SectionReveal>
-        <div className="mb-8 rounded-sm border border-accent/50 bg-accent/[0.06] p-5">
-          <div className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent mb-3">
+const Anfall = () => {
+  useScrollToHash();
+
+  return (
+    <div className="bg-kedja-paper">
+      <KedjaHero
+        eyebrow="Spelmodell · Anfall"
+        title={
+          <>
+            Anfallsspel.
+            <br />
+            Fem principer, en <span className="mark-lime">ordning</span>.
+          </>
+        }
+        lead="Vi anfaller alltid i denna ordning: skydda mot kontring, spela in, spela ut, ta med framåt, fyll på i box."
+        instruction="Läs uppifrån och ner. Faller en princip, kollapsar resten."
+      >
+        <KedjaNav items={NAV_ITEMS} />
+      </KedjaHero>
+
+      <div className="bg-kedja-paper py-16">
+        <FasTrappa blockId="anfallsspel" />
+      </div>
+
+      <KedjaSection
+        id="matchcues"
+        tone="paper"
+        eyebrow="Anfall · Match-cues"
+        title="Fem principer, i den ordningen."
+        definition={ANFALL_CUES.oneLiner}
+        highlight="I den ordningen"
+      >
+        <KedjaSteps tone="paper" steps={MATCH_CUE_STEPS} />
+        <KedjaClimax label="Vårt rop" text={ANFALL_CUES.oneLiner} />
+      </KedjaSection>
+
+      <KedjaSection
+        id="principer"
+        tone="white"
+        eyebrow="Anfall · Sekvens"
+        title="En sekvens, inte fem val."
+        definition="Princip 1 är förutsättning för alla andra — utan balans bakom bollen riskerar varje framåtspelad bolltapp att kosta mål. Sedan flödar bollen: vi spelar in, vid trångt centralt spelar vi ut, när ytan öppnas tar vi den framåt, och i sista tredjedelen fyller vi på minst fyra spelare i och runt boxen."
+        highlight="utan balans bakom bollen"
+      >
+        <div className="rounded-2xl border border-kedja-border bg-kedja-paper p-6 text-left">
+          <div className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-kedja-green">
             Veckans anfallsfokus · {MATCH_META.opponent}
           </div>
-          <p className="text-sm md:text-base text-foreground/85 mb-3">
+          <p className="mb-4 text-[15px] leading-[1.55] text-kedja-deep">
             Vi övar och utvärderar dessa principer extra denna vecka — utifrån vad vi tar med från förra match.
           </p>
-          <StaggerList className="flex flex-wrap gap-2" stagger={0.04}>
+          <div className="flex flex-wrap gap-2">
             {WEEKS_FOCUS_PRINCIPLES.map((slug) => {
               const p = ATTACKING_PRINCIPLES.find((x) => x.slug === slug);
               if (!p) return null;
@@ -44,75 +92,44 @@ const Anfall = () => (
                 <a
                   key={slug}
                   href={`#${slug}`}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border border-accent/50 bg-card hover:border-accent hover:-translate-y-px transition-all duration-200"
+                  className="inline-flex items-center gap-2 rounded-full border border-kedja-border bg-white px-3 py-1.5 transition-colors hover:border-kedja-green"
                 >
-                  <span className="font-mono font-bold tabular text-accent text-xs">
-                    {String(p.order).padStart(2, "0")}
-                  </span>
-                  <span className="text-xs font-bold tracking-tight">{p.headline}</span>
+                  <span className="text-xs font-black text-kedja-green">{String(p.order).padStart(2, "0")}</span>
+                  <span className="text-xs font-bold text-kedja-ink">{p.headline}</span>
                 </a>
               );
             })}
-          </StaggerList>
+          </div>
         </div>
-      </SectionReveal>
 
-      <SectionReveal>
-        <div className="mb-12 max-w-3xl border-l-2 border-accent pl-6">
-          <p className="text-base md:text-lg text-foreground/85 leading-relaxed">
-            <span className="font-bold">Fem principer i en sekvens.</span> Princip 1
-            är förutsättning för alla andra — utan balans bakom bollen riskerar varje
-            framåtspelad bolltapp att kosta mål. Sedan flödar bollen: vi spelar{" "}
-            <em>in</em>, vid trångt centralt spelar vi <em>ut</em>, när ytan öppnas
-            tar vi den <em>framåt</em>, och i sista tredjedelen <em>fyller</em> vi
-            på minst fyra spelare i och runt boxen.
-          </p>
-        </div>
-      </SectionReveal>
-
-      <SectionReveal>
-        <StaggerList as="ul" className="mb-12 flex flex-wrap gap-2 text-xs" stagger={0.04}>
-          {ATTACKING_PRINCIPLES.map((p) => (
-            <a
-              key={p.slug}
-              href={`#${p.slug}`}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm border border-border bg-card hover:border-accent hover:-translate-y-px transition-all duration-200"
-            >
-              <span className="font-mono font-bold tabular text-accent">
-                {String(p.order).padStart(2, "0")}
-              </span>
-              <span className="font-bold tracking-tight">{p.headline}</span>
-            </a>
-          ))}
-        </StaggerList>
-      </SectionReveal>
-
-      <SectionReveal>
         <Link
           to="/anfall/spelvandningar"
-          className="group mb-12 flex items-center justify-between gap-4 rounded-sm border border-border bg-card p-5 hover:border-accent hover:-translate-y-px transition-all duration-200"
+          className="group mt-6 flex items-center justify-between gap-4 rounded-2xl border border-kedja-border bg-white p-5 text-left transition-colors hover:border-kedja-green"
         >
           <div>
-            <div className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent mb-1.5">
+            <div className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-kedja-green">
               Spelvändning · animation
             </div>
-            <div className="text-sm md:text-base font-bold tracking-tight">
-              Central korridor till yttre yta
-            </div>
+            <div className="text-[15px] font-bold text-kedja-ink">Central korridor till yttre yta</div>
           </div>
-          <ArrowUpRight className="h-5 w-5 flex-shrink-0 text-muted-foreground group-hover:text-accent transition-colors" strokeWidth={2.2} />
+          <ArrowUpRight
+            className="h-5 w-5 flex-shrink-0 text-kedja-green transition-transform group-hover:translate-x-0.5"
+            strokeWidth={2.2}
+          />
         </Link>
-      </SectionReveal>
-    </div>
+      </KedjaSection>
 
-    <div className="container pb-section space-y-10">
-      <StaggerList className="space-y-10" stagger={0.08}>
-        {ATTACKING_PRINCIPLES.map((p) => (
-          <AttackingPrincipleCard key={p.slug} principle={p} />
-        ))}
-      </StaggerList>
+      <KedjaQuote text="Vi gör inte mål med en man i boxen." highlight="mål" />
+
+      <div className="bg-kedja-paper py-24">
+        <div className="container space-y-10">
+          {ATTACKING_PRINCIPLES.map((p) => (
+            <AttackingPrincipleCard key={p.slug} principle={p} />
+          ))}
+        </div>
+      </div>
     </div>
-  </>
-);
+  );
+};
 
 export default Anfall;

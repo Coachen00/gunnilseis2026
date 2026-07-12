@@ -10,6 +10,8 @@
  * faktiskt minns under match.
  */
 
+import type { IdentityItem } from "@/data/identity";
+
 export type AttackingPrincipleSlug =
   | "skydda-mot-kontring"
   | "spela-in"
@@ -42,7 +44,7 @@ export interface AttackingPrinciple {
    * Visas som "Aktiverar"-chip på principkortet — kopplar 5-principen
    * till de 5 identitetsorden vi tränar varje match.
    */
-  aktiverarIdentitet?: ("dueller" | "andrabollsspel" | "djupled" | "felvant" | "kommunicera")[];
+  aktiverarIdentitet?: IdentityItem["slug"][];
 }
 
 export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
@@ -76,7 +78,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
         "Spel 8v8 med två markerade cover-zoner bakom bollen. Saknas en spelare i någon zon vid bollförlust = poäng till motståndaren oavsett vad som händer sen.",
     },
     coachrop: ["Cover!", "6:an stå!", "Balans!"],
-    aktiverarIdentitet: ["felvant", "kommunicera"],
+    aktiverarIdentitet: ["scanning", "yta"],
   },
   {
     slug: "spela-in",
@@ -108,7 +110,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
         "Rondo 6v3 med två motståndarled. Bonuspoäng när passningen går till en spelare som står mellan led och hen kan slå pass vidare på första touch.",
     },
     coachrop: ["In!", "Mellan!", "Hitta 10!"],
-    aktiverarIdentitet: ["kommunicera"],
+    aktiverarIdentitet: ["prata-med-passningen"],
   },
   {
     slug: "spela-ut",
@@ -140,7 +142,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
         "Två 'tysta zoner' på var sin kant. Bollen MÅSTE passera båda tysta zoner innan ett mål kan göras. Tränar tålamodet att flytta blocket istället för att forcera centralt.",
     },
     coachrop: ["Ut!", "Vänd!", "Tysta sidan!"],
-    aktiverarIdentitet: ["kommunicera"],
+    aktiverarIdentitet: ["prata-med-passningen"],
   },
   {
     slug: "ta-med-framat",
@@ -172,7 +174,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
         "Spel 7v7 med fyra mål (2 i varje kortlinje). Mål kan bara erkännas om sista passningen eller löpningen vunnit minst 10 m framåt. Sidledsväxel = noll.",
     },
     coachrop: ["Driv!", "Framåt!", "Ta meter!"],
-    aktiverarIdentitet: ["djupled", "dueller"],
+    aktiverarIdentitet: ["yta", "duellspel"],
   },
   {
     slug: "fyll-pa-box",
@@ -205,7 +207,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
         "3v3 inne i boxen + 1 bonusspelare 18 m. Cutback eller inlägg från kant. Byt sida varje gång. Räkna hur ofta vi får 4 in i boxen — under 70% är inte godkänt.",
     },
     coachrop: ["Box!", "Fyll!", "4 in!"],
-    aktiverarIdentitet: ["andrabollsspel", "dueller"],
+    aktiverarIdentitet: ["andrabollsspel", "duellspel"],
   },
 ];
 
