@@ -25,6 +25,7 @@ const SpelvandningarAnfall = lazy(() => import("./pages/SpelvandningarAnfall"));
 const Fasta = lazy(() => import("./pages/Fasta"));
 const Roller = lazy(() => import("./pages/Roller"));
 const Identitet = lazy(() => import("./pages/Identitet"));
+const KedjaTest = lazy(() => import("./pages/KedjaTest"));
 const Verktyg = lazy(() => import("./pages/Verktyg"));
 const UnderProcess = lazy(() => import("./pages/UnderProcess"));
 const UnderProcessDeck = lazy(() => import("./pages/UnderProcessDeck"));
@@ -108,6 +109,7 @@ const App = () => (
 
           {/* Förstasidan är publik — alla andra innehållsidor kräver inloggning */}
           <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
+          <Route path="/kedja-test" element={<Public routeName="Kedjatest"><KedjaTest /></Public>} />
 
           {/* Hubbar — en landningssida per värld */}
           <Route path="/spelmodell" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />

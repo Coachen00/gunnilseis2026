@@ -202,8 +202,8 @@ const TopNav = () => {
       className={cn(
         "sticky top-0 z-40 w-full transition-all duration-300",
         scrolled
-          ? "bg-background/90 backdrop-blur-xl border-b border-border/70 shadow-[0_1px_0_0_hsl(var(--border)/0.5)]"
-          : "bg-background/60 backdrop-blur-md border-b border-transparent"
+          ? "bg-kedja-paper/95 backdrop-blur-xl border-b border-kedja-border shadow-[0_1px_0_0_rgba(12,52,44,0.08)]"
+          : "bg-kedja-paper/80 backdrop-blur-md border-b border-kedja-border/60"
       )}
     >
       <div className="container flex items-center justify-between gap-4 h-16">
@@ -213,12 +213,12 @@ const TopNav = () => {
           className="flex items-center gap-2.5 group flex-shrink-0 transition-opacity hover:opacity-80"
           aria-label="Gunnilse IS — Hem"
         >
-          <div className="w-8 h-8 rounded-sm bg-primary text-primary-foreground border border-primary flex items-center justify-center font-mono font-bold text-sm leading-none">
+          <div className="w-8 h-8 rounded-[6px] bg-kedja-ink text-kedja-lime flex items-center justify-center font-mono font-black text-sm leading-none">
             G
           </div>
-          <span className="font-bold text-base tracking-tight text-foreground hidden sm:inline">
+          <span className="font-bold text-base tracking-tight text-kedja-ink hidden sm:inline">
             Gunnilse IS
-            <span className="text-accent ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            <span className="text-kedja-green ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
           </span>
         </Link>
 
@@ -245,9 +245,9 @@ const TopNav = () => {
                   cn(
                     "relative px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
                     item.featured
-                      ? "bg-emerald-600 text-white font-black shadow-sm hover:bg-emerald-700 hover:text-white"
-                      : "text-muted-foreground hover:text-foreground",
-                    isActive && (item.featured ? "bg-emerald-700 text-white" : "text-foreground")
+                      ? "bg-kedja-ink text-kedja-lime font-black shadow-sm hover:bg-kedja-deep"
+                      : "text-kedja-deep hover:text-kedja-green",
+                    isActive && (item.featured ? "bg-kedja-deep" : "text-kedja-ink")
                   )
                 }
               >
@@ -256,8 +256,7 @@ const TopNav = () => {
                     {item.label}
                     <span
                       className={cn(
-                        "absolute left-3 right-3 -bottom-0.5 h-[2px] rounded-full bg-accent transition-all duration-300",
-                        item.featured && "bg-white",
+                        "absolute left-3 right-3 -bottom-0.5 h-[3px] rounded-full bg-kedja-lime transition-all duration-300",
                         isActive ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
                       )}
                     />
@@ -273,14 +272,14 @@ const TopNav = () => {
           {user && isAdmin && (
             <Link
               to="/admin"
-              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
             >
               <Lock className="w-3.5 h-3.5" /> Admin
             </Link>
           )}
           {isLoggedIn ? (
             <div className="hidden md:flex items-center gap-2">
-              <span className="max-w-36 truncate text-xs font-semibold text-muted-foreground">
+              <span className="max-w-36 truncate text-xs font-semibold text-kedja-deep">
                 {displayName}
               </span>
               <LogoutButton />
@@ -289,13 +288,13 @@ const TopNav = () => {
             <div className="hidden md:flex items-center gap-1.5">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
               >
                 <LogIn className="w-4 h-4" /> Logga in
               </Link>
               <Link
                 to="/login?mode=signup"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-bold bg-kedja-ink text-kedja-lime hover:bg-kedja-deep transition-colors"
               >
                 <UserPlus className="w-4 h-4" /> Registrera
               </Link>
@@ -305,7 +304,7 @@ const TopNav = () => {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-foreground hover:bg-muted transition-colors"
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
               aria-label={open ? "Stäng meny" : "Öppna meny"}
               aria-expanded={open}
             >
@@ -318,7 +317,7 @@ const TopNav = () => {
       {/* Mobile menu — endast inloggade har en meny att öppna */}
       <div
         className={cn(
-          "lg:hidden overflow-hidden transition-all duration-300 ease-out border-t border-border/60",
+          "lg:hidden overflow-hidden transition-all duration-300 ease-out border-t border-kedja-border bg-kedja-paper",
           isLoggedIn && open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
         )}
       >
@@ -331,7 +330,7 @@ const TopNav = () => {
                   <button
                     type="button"
                     onClick={() => setMobileOpenGroup(isOpen ? null : item.label)}
-                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-foreground hover:bg-card transition-colors border-l-2 border-transparent"
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-kedja-ink hover:bg-kedja-mint/40 transition-colors border-l-2 border-transparent"
                   >
                     <span>{item.label}</span>
                     <ChevronDown className={cn("w-4 h-4 transition-transform", isOpen && "rotate-180")} />
@@ -343,12 +342,12 @@ const TopNav = () => {
                           {group.to ? (
                             <Link
                               to={group.to}
-                              className="block px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent"
+                              className="block px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-kedja-green"
                             >
                               {group.label}
                             </Link>
                           ) : (
-                            <div className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent">
+                            <div className="px-3 py-1.5 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-kedja-green">
                               {group.label}
                             </div>
                           )}
@@ -357,7 +356,7 @@ const TopNav = () => {
                               <li key={child.to}>
                                 <Link
                                   to={child.to}
-                                  className="block px-3 py-1.5 rounded text-sm text-muted-foreground hover:bg-card hover:text-foreground"
+                                  className="block px-3 py-1.5 rounded text-sm text-kedja-deep hover:bg-kedja-mint/40 hover:text-kedja-ink"
                                 >
                                   {child.label}
                                 </Link>
@@ -380,10 +379,10 @@ const TopNav = () => {
                   cn(
                     "px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors",
                     item.featured
-                      ? "bg-emerald-600 text-white font-black border-l-2 border-emerald-800"
+                      ? "bg-kedja-ink text-kedja-lime font-black border-l-2 border-kedja-green"
                       : isActive
-                        ? "bg-card text-accent border-l-2 border-accent"
-                        : "text-muted-foreground hover:bg-card hover:text-foreground border-l-2 border-transparent"
+                        ? "bg-kedja-mint/40 text-kedja-ink border-l-2 border-kedja-lime"
+                        : "text-kedja-deep hover:bg-kedja-mint/40 hover:text-kedja-ink border-l-2 border-transparent"
                   )
                 }
               >
@@ -394,29 +393,29 @@ const TopNav = () => {
           {user && isAdmin && (
             <Link
               to="/admin"
-              className="px-3 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:bg-muted hover:text-foreground inline-flex items-center gap-2"
+              className="px-3 py-2.5 rounded-lg text-sm font-semibold text-kedja-deep hover:bg-kedja-mint/40 hover:text-kedja-ink inline-flex items-center gap-2"
             >
               <Lock className="w-4 h-4" /> Admin
             </Link>
           )}
           {isLoggedIn ? (
-            <div className="pt-2 border-t border-border/60 mt-2">
-              <div className="px-3 pb-2 text-xs font-semibold text-muted-foreground">
+            <div className="pt-2 border-t border-kedja-border mt-2">
+              <div className="px-3 pb-2 text-xs font-semibold text-kedja-deep">
                 {displayName}
               </div>
               <LogoutButton className="w-full justify-start" />
             </div>
           ) : (
-            <div className="pt-2 border-t border-border/60 mt-2 grid gap-2">
+            <div className="pt-2 border-t border-kedja-border mt-2 grid gap-2">
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/40 transition-colors"
               >
                 <LogIn className="w-4 h-4" /> Logga in
               </Link>
               <Link
                 to="/login?mode=signup"
-                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold bg-kedja-ink text-kedja-lime hover:bg-kedja-deep transition-colors"
               >
                 <UserPlus className="w-4 h-4" /> Registrera
               </Link>

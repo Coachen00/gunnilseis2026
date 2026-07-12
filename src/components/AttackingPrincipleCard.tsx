@@ -131,7 +131,7 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
               return (
                 <a
                   key={slug}
-                  href={`/identitet/${slug}`}
+                  href={`/identitet#${slug}`}
                   className="rounded-md border border-border bg-background/60 px-2.5 py-1 text-xs font-bold text-foreground/85 hover:border-accent/60 transition-colors"
                 >
                   {id.title}

@@ -49,6 +49,10 @@ import GrundenSection from "@/components/maj2026/GrundenSection";
 import LevelBadge from "@/components/LevelBadge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
+import KedjaHero from "@/components/kedja/KedjaHero";
+import KedjaNav from "@/components/kedja/KedjaNav";
+import KedjaSteps from "@/components/kedja/KedjaSteps";
+import KedjaClimax from "@/components/kedja/KedjaClimax";
 
 /** Renderar bara children om inloggad användare är admin. Tyst annars. */
 const AdminOnly = ({ children }: { children: React.ReactNode }) => {
@@ -1054,11 +1058,13 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
   const Icon = BLOCK_ICON[block.id] ?? Shield;
   const eyebrow = BLOCK_EYEBROW[block.id] ?? "";
   const blockMedia = getBlockMedia(block.id);
+  const tone: "paper" | "white" = parseInt(num, 10) % 2 === 1 ? "paper" : "white";
+  const tacticalSteps = TACTICAL_STEPS[block.id] ?? [];
   return (
     <AccordionItem
       value={block.id}
       id={block.id}
-      className="scroll-mt-24 border-t border-border bg-background data-[state=open]:bg-muted/30"
+      className={`scroll-mt-24 border-t border-border ${tone === "paper" ? "bg-kedja-paper" : "bg-white"} data-[state=open]:bg-kedja-mint/20`}
     >
       <AccordionTrigger
         data-testid={`block-trigger-${block.id}`}
@@ -1110,6 +1116,19 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             {block.kidExplanation}
           </p>
 
+          {tacticalSteps.length > 0 && (
+            <div className="mb-10 max-w-2xl">
+              <KedjaSteps
+                tone={tone}
+                steps={tacticalSteps.map((step) => ({
+                  label: step.label,
+                  headline: step.cue,
+                  support: step.detail,
+                }))}
+              />
+            </div>
+          )}
+
           {/* Spelarinstruktion + interaktiv planvy */}
           <div className="mb-8 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.65fr)]">
             <InstructionPanel block={block} num={num} />
@@ -1133,11 +1152,14 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             <MediaSlot label={block.mediaTitle} description={block.mediaDescription} />
           </div>
 
-          {/* Do / Don't / Remember — title strings MUST match test regex /^gör så här$/i etc */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {/* Do / Don't — title strings MUST match test regex /^gör så här$/i etc */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <DoColumn variant="do" title="Gör så här" items={block.doList} />
             <DoColumn variant="dont" title="Gör inte så här" items={block.dontList} />
-            <DoColumn variant="remember" title="Kom ihåg" items={[block.remember]} />
+          </div>
+
+          <div className="mx-auto mt-8 max-w-2xl">
+            <KedjaClimax label="Kom ihåg" text={block.remember} connector={false} />
           </div>
 
           {/* Triggers — bara för försvarsspel */}
@@ -1228,65 +1250,22 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
    ========================================================================= */
 
 function Hero() {
+  const navItems = MAJ_2026_NAV_CARDS.map((card) => ({
+    num: card.number,
+    title: card.label,
+    sub: BLOCK_EYEBROW[card.id] ?? "",
+    href: `#${card.id}`,
+  }));
+
   return (
-    <section className="relative overflow-hidden border-b border-border pt-20 pb-16 md:pt-28 md:pb-24">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-1/2"
-        style={{ backgroundImage: "linear-gradient(180deg, transparent 0%, hsl(var(--muted) / 0.8) 100%)" }}
-      />
-
-      <div className="container relative">
-        <div className="mb-6 inline-flex items-center gap-3 border border-amber-400 bg-card px-3 py-2">
-          <span className="h-[2px] w-8 bg-amber-500" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">
-            {MAJ_2026_HERO.eyebrow} · Spelmodell
-          </span>
-        </div>
-
-        <h1 className="max-w-5xl text-[2.5rem] font-black uppercase leading-[0.92] tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-[5.5rem]">
-          {MAJ_2026_HERO.title}
-        </h1>
-
-        <p className="mt-8 max-w-3xl text-base leading-relaxed text-foreground/78 md:text-lg">
-          {MAJ_2026_HERO.description}
-        </p>
-
-        {/* Nav cards — anchor links matching the test by name */}
-        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-          {MAJ_2026_NAV_CARDS.map((card) => {
-            const block = MAJ_2026_BLOCKS.find((b) => b.id === card.id);
-            const accent: Tone = block?.accent ?? "white";
-            const Icon = BLOCK_ICON[card.id] ?? Shield;
-            return (
-              <a
-                key={card.id}
-                href={`#${card.id}`}
-                className="group relative flex flex-col gap-3 border border-border bg-card/60 p-4 transition-all hover:-translate-y-0.5 hover:border-amber-500 hover:bg-white/[0.05]"
-              >
-                <div className="flex items-center justify-between">
-                  <span className={["font-mono text-[11px] font-black tracking-[0.16em]", TONE_TEXT[accent]].join(" ")}>
-                    {card.number}
-                  </span>
-                  <Icon className={["h-4 w-4", TONE_TEXT[accent]].join(" ")} strokeWidth={2} />
-                </div>
-                <p className="text-sm font-black uppercase leading-tight tracking-tight text-foreground">{card.label}</p>
-                <ArrowDown className="h-4 w-4 text-foreground/30 transition-transform group-hover:translate-y-0.5 group-hover:text-amber-600" strokeWidth={2} />
-              </a>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+    <KedjaHero
+      eyebrow={`${MAJ_2026_HERO.eyebrow} · Spelmodell`}
+      title={MAJ_2026_HERO.title}
+      lead={MAJ_2026_HERO.description}
+      instruction="Läs uppifrån och ner, eller hoppa direkt till ditt block."
+    >
+      <KedjaNav items={navItems} />
+    </KedjaHero>
   );
 }
 
@@ -1471,7 +1450,7 @@ const MajSpelmodell = () => {
   const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
 
   return (
-  <div className="relative -mt-px bg-background text-foreground">
+  <div className="relative -mt-px bg-kedja-paper text-foreground">
     <Hero />
     <ModelIntro />
     {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
