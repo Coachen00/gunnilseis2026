@@ -1,4 +1,4 @@
-import { GitBranch, Layers, MonitorPlay, Sparkles, Telescope, type LucideIcon } from "lucide-react";
+import { CalendarRange, GitBranch, Layers, MonitorPlay, Sparkles, Telescope, type LucideIcon } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 import SectionHeader from "@/components/SectionHeader";
@@ -35,6 +35,13 @@ const system: Card[] = [
 
 /* Under utveckling — material som fortfarande byggs. */
 const process: Card[] = [
+  {
+    to: "/coach/traningsplanering-host-2026",
+    label: "Höst 2026",
+    title: "Träningsplanering",
+    description: "Matchkopplad planering för tre pass per vecka, video, delegering och minutstruktur.",
+    Icon: CalendarRange,
+  },
   {
     to: "/under-process/spelmodell-neon",
     label: "Deck",

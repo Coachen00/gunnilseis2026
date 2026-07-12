@@ -47,6 +47,7 @@ const Tavlingar = lazy(() => import("./pages/Tavlingar"));
 // Hubbar — landningssidor per värld i den nya informationsarkitekturen.
 const Laget = lazy(() => import("./pages/Laget"));
 const Coach = lazy(() => import("./pages/Coach"));
+const CoachTrainingPlanning = lazy(() => import("./pages/CoachTrainingPlanning"));
 const PlanensYtor = lazy(() => import("./pages/PlanensYtor"));
 
 // Print-optimerade verktygsidor — egna chunks; sällan besökta men tunga.
@@ -116,6 +117,7 @@ const App = () => (
           <Route path="/spelmodell/planens-ytor" element={<Protected routeName="Planens ytor"><PlanensYtor /></Protected>} />
           <Route path="/laget" element={<Protected routeName="Laget"><Laget /></Protected>} />
           <Route path="/coach" element={<Protected routeName="Coach"><Coach /></Protected>} />
+          <Route path="/coach/traningsplanering-host-2026" element={<Protected routeName="Coach"><CoachTrainingPlanning /></Protected>} />
 
           <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
           <Route path="/maj-2026" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
