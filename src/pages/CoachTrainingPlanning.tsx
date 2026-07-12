@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CalendarDays, CheckCircle2, Clock3, Film, Printer, Users } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, Clock3, Film, Printer, Users } from "lucide-react";
 import BreadcrumbTrail from "@/components/BreadcrumbTrail";
 import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
@@ -11,7 +11,14 @@ const formatDate = (value: string) => new Intl.DateTimeFormat("sv-SE", { weekday
 const CoachTrainingPlanning = () => (
   <>
     <BreadcrumbTrail items={[{ label: "Hem", to: "/" }, { label: "Coach", to: "/coach" }, { label: "Träningsplanering hösten 2026" }]} />
-    <PageHero eyebrow="Coach · träningsplanering" title="Hösten 2026" description="Matcherna är navet. Varje analys, träning och matchplan leder till nästa prestation." />
+    <PageHero eyebrow="Coach · träningsplanering" title="Hösten 2026" description="Matcherna är navet. Varje analys, träning och matchplan leder till nästa prestation.">
+      <div className="mt-8 grid max-w-4xl gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-4">
+        <FlowStep label="Match" text="Se vad som hände" tone="dark" />
+        <FlowStep label="Analys" text="Välj nästa fokus" tone="light" />
+        <FlowStep label="3 pass" text="Mån · ons · tors" tone="accent" />
+        <FlowStep label="Ny match" text="Testa beteendet" tone="light" arrow={false} />
+      </div>
+    </PageHero>
 
     <div className="container pb-section print:hidden">
       <div className="flex flex-wrap gap-3">
@@ -34,21 +41,39 @@ const CoachTrainingPlanning = () => (
     </SectionReveal>
 
     <SectionReveal as="section" className="container pb-section">
-      <SectionHeader badge="Träningsmetodik" title="Från förståelse till matchbeteende" number={2} />
+      <SectionHeader badge="Överblick" title="Höstens matchnav" number={2} />
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-border bg-primary px-4 py-3 text-primary-foreground sm:grid-cols-[auto_1fr_1fr_auto]">
+          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-primary-foreground/70">Vecka</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-primary-foreground/70">Match</span>
+          <span className="hidden text-[10px] font-black uppercase tracking-[0.18em] text-primary-foreground/70 sm:block">Veckans riktning</span>
+          <span className="text-right text-[10px] font-black uppercase tracking-[0.18em] text-primary-foreground/70">Pass</span>
+        </div>
+        {AUTUMN_WEEKS.map((week, index) => <div key={week.label} className="grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-border px-4 py-3 last:border-b-0 sm:grid-cols-[auto_1fr_1fr_auto]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-xs font-black text-primary">{String(index + 1).padStart(2, "0")}</span>
+          <div><p className="font-bold">{week.match.homeAway === "Hemma" ? `Gunnilse–${week.match.opponent}` : `${week.match.opponent}–Gunnilse`}</p><p className="text-xs text-muted-foreground">{formatDate(week.match.date)} · {week.match.kickoff}</p></div>
+          <p className="hidden text-sm text-muted-foreground sm:block">{week.sessions[1].focus}</p>
+          <span className="text-right text-xs font-bold text-primary">3 × 90 min</span>
+        </div>)}
+      </div>
+    </SectionReveal>
+
+    <SectionReveal as="section" className="container pb-section">
+      <SectionHeader badge="Träningsmetodik" title="Från förståelse till matchbeteende" number={3} />
       <div className="grid gap-3 md:grid-cols-4 lg:grid-cols-7">
         {TRAINING_METHOD.map(([number, title, text]) => <div key={number} className="rounded-xl border border-border bg-card p-3"><span className="text-xs font-black text-primary">{number}</span><h3 className="mt-2 text-sm font-bold">{title}</h3><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{text}</p></div>)}
       </div>
     </SectionReveal>
 
     <SectionReveal as="section" className="container pb-section">
-      <SectionHeader badge="Delegering" title="Vem gör vad" number={3} />
+      <SectionHeader badge="Delegering" title="Vem gör vad" number={4} />
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {COACH_ROLES.map(([role, task]) => <div key={role} className="flex gap-3 rounded-xl border border-border bg-card p-4"><Users className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><h3 className="font-bold">{role}</h3><p className="mt-1 text-sm text-muted-foreground">{task}</p></div></div>)}
       </div>
     </SectionReveal>
 
     <SectionReveal as="section" className="container pb-section">
-      <SectionHeader badge="Matchnav" title="Alla veckor och pass" number={4} />
+      <SectionHeader badge="Genomförande" title="Öppna en vecka när du ska planera" number={5} />
       <div className="space-y-4">
         {AUTUMN_WEEKS.map((week) => <WeekCard key={week.label} week={week} />)}
       </div>
@@ -57,6 +82,8 @@ const CoachTrainingPlanning = () => (
   </>
 );
 
+const FlowStep = ({ label, text, tone, arrow = true }: { label: string; text: string; tone: "dark" | "light" | "accent"; arrow?: boolean }) => <div className={`relative p-4 ${tone === "dark" ? "bg-primary text-primary-foreground" : tone === "accent" ? "bg-accent text-accent-foreground" : "bg-card text-foreground"}`}><p className="text-xs font-black uppercase tracking-[0.16em]">{label}</p><p className="mt-1 text-sm opacity-75">{text}</p>{arrow && <ArrowRight className="absolute right-3 top-1/2 hidden h-4 w-4 -translate-y-1/2 opacity-40 sm:block" />}</div>;
+
 const InfoCard = ({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) => <div className="rounded-xl border border-border bg-card p-4"><div className="flex items-center gap-2 text-primary">{icon}<h3 className="font-bold text-foreground">{title}</h3></div><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{text}</p></div>;
 
 const WeekCard = ({ week }: { week: (typeof AUTUMN_WEEKS)[number] }) => <details className="group overflow-hidden rounded-2xl border border-border bg-card" open={week.label === "Vecka 1"}>
@@ -64,10 +91,12 @@ const WeekCard = ({ week }: { week: (typeof AUTUMN_WEEKS)[number] }) => <details
     <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[0.16em] text-primary">{week.label} · {week.range}</p><h3 className="mt-1 text-lg font-black">{week.match.homeAway === "Hemma" ? "Gunnilse" : week.match.opponent}–{week.match.homeAway === "Hemma" ? week.match.opponent : "Gunnilse"}</h3><p className="mt-1 text-sm text-muted-foreground">{week.phase} · {formatDate(week.match.date)} {week.match.kickoff} · {week.match.venue}</p></div><CalendarDays className="h-5 w-5 text-primary" /></div>
   </summary>
   <div className="border-t border-border p-4">
-    <div className="grid gap-4 lg:grid-cols-[0.8fr_1.2fr]"><div className="space-y-3"><div><h4 className="text-xs font-black uppercase tracking-wide text-primary">Inför veckan · video</h4><ul className="mt-2 space-y-1 text-sm text-muted-foreground">{week.videoBefore.map((item) => <li key={item}>• {item}</li>)}</ul></div><div><h4 className="text-xs font-black uppercase tracking-wide text-primary">Efter matchen</h4><ul className="mt-2 space-y-1 text-sm text-muted-foreground">{week.videoAfter.map((item) => <li key={item}>• {item}</li>)}</ul></div></div><div className="space-y-3">{week.sessions.map((session) => <SessionCard key={session.date} session={session} />)}</div></div>
+<div className="space-y-5"><div className="grid gap-3 lg:grid-cols-2"><Brief label="Inför veckan · video" items={week.videoBefore} tone="primary" /><Brief label="Efter matchen" items={week.videoAfter} tone="muted" /></div><div className="grid gap-3 lg:grid-cols-3">{week.sessions.map((session) => <SessionCard key={session.date} session={session} />)}</div></div>
   </div>
 </details>;
 
-const SessionCard = ({ session }: { session: (typeof AUTUMN_WEEKS)[number]["sessions"][number] }) => <div className="rounded-xl border border-border bg-background p-3"><div className="flex flex-wrap items-start justify-between gap-2"><div><p className="text-xs font-black uppercase tracking-wide text-primary">{session.day} · {formatDate(session.date)} · 18:30–20:00</p><h4 className="mt-1 font-bold">{session.focus}</h4><p className="mt-1 text-sm text-muted-foreground">{session.objective}</p></div><span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-bold text-primary">{session.intensity}</span></div><ol className="mt-3 space-y-2 border-l-2 border-primary/20 pl-3">{session.timeline.map((block) => <li key={`${block.from}-${block.to}`}><p className="text-xs font-black text-primary">{block.from}–{block.to} min · {block.title}</p><p className="text-sm">{block.instruction}</p><p className="text-xs text-muted-foreground">Ansvar: {block.owner}</p></li>)}</ol></div>;
+const Brief = ({ label, items, tone }: { label: string; items: string[]; tone: "primary" | "muted" }) => <div className={`rounded-xl p-4 ${tone === "primary" ? "bg-primary/5" : "bg-muted/50"}`}><h4 className="text-xs font-black uppercase tracking-[0.16em] text-primary">{label}</h4><ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground">{items.map((item) => <li key={item}>• {item}</li>)}</ul></div>;
+
+const SessionCard = ({ session }: { session: (typeof AUTUMN_WEEKS)[number]["sessions"][number] }) => <div className="overflow-hidden rounded-xl border border-border bg-background"><div className="border-b border-border bg-card p-3"><div className="flex items-start justify-between gap-2"><div><p className="text-xs font-black uppercase tracking-[0.14em] text-primary">{session.day} · {formatDate(session.date)}</p><h4 className="mt-1 font-bold leading-tight">{session.focus}</h4></div><span className="shrink-0 rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold text-primary">{session.intensity}</span></div><p className="mt-2 text-xs leading-relaxed text-muted-foreground">{session.objective}</p></div><ol className="divide-y divide-border">{session.timeline.map((block) => <li key={`${block.from}-${block.to}`} className="grid grid-cols-[42px_1fr] gap-2 p-2.5"><span className="pt-0.5 text-[10px] font-black tabular-nums text-primary">{block.from}–{block.to}</span><div><p className="text-xs font-bold">{block.title}</p><p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{block.instruction}</p><p className="mt-1 text-[10px] font-semibold text-muted-foreground/80">{block.owner}</p></div></li>)}</ol></div>;
 
 export default CoachTrainingPlanning;
