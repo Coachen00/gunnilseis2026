@@ -5,6 +5,8 @@ import { ArrowLeft, Check, X, Loader2, Shield, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import ContentEditor from "@/components/admin/ContentEditor";
 import { IDENTITY } from "@/data/identity";
+import { PHASES } from "@/data/principles";
+import { PHASE_CUES } from "@/data/phaseCues";
 
 interface Profile {
   id: string;
@@ -169,6 +171,18 @@ const Admin = () => {
               label="Identitetsord"
               description="Fem beteenden i varje match. Visas på Hem och /identitet/<slug>."
               fallback={IDENTITY}
+            />
+            <ContentEditor
+              contentKey="principles"
+              label="Principer per skede"
+              description="HUR vi spelar — uppbyggnad, progression, avslut, försvar, omställningar, målvakt, fasta. Visas på /forsvar, /anfall, /fasta och /spelide."
+              fallback={PHASES}
+            />
+            <ContentEditor
+              contentKey="phaseCues"
+              label="Match-cues per skede"
+              description="Korta regler + 'när → då' för försvar, anfall och båda omställningar. Visas i blocket högst upp på respektive sida."
+              fallback={PHASE_CUES}
             />
           </div>
         </div>
