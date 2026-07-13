@@ -116,7 +116,7 @@ const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [] 
                     {group.label}
                   </Link>
                 ) : (
-                  <div className="mb-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent-ink">
+                  <div className="mb-2 text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-accent">
                     {group.label}
                   </div>
                 )}

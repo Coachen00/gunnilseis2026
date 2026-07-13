@@ -214,7 +214,7 @@ export default function MatchdayCommandPanel() {
     <section className="rounded-xl border border-border bg-card">
       <header className="grid gap-5 border-b border-border p-5 lg:grid-cols-[1fr_auto] lg:items-start">
         <div>
-          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
+          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
             <ClipboardCheck className="h-3.5 w-3.5" />
             Matchdagskommando
           </div>
@@ -224,7 +224,7 @@ export default function MatchdayCommandPanel() {
           </p>
         </div>
         <div className="rounded-lg border border-accent/30 bg-accent/10 px-4 py-3 text-right">
-          <div className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent-ink">Fokus</div>
+          <div className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">Fokus</div>
           <div className="mt-1 text-sm font-black">{FOCUS[0]}</div>
         </div>
       </header>
@@ -249,7 +249,7 @@ function Timeline() {
   return (
     <div className="rounded-lg border border-border bg-background/35 p-4">
       <div className="mb-4 flex items-center gap-2 text-sm font-black">
-        <AlarmClock className="h-4 w-4 text-accent-ink" />
+        <AlarmClock className="h-4 w-4 text-accent" />
         Matchklocka
       </div>
       <div className="space-y-3">
@@ -331,7 +331,7 @@ function DecisionGrid() {
   return (
     <div>
       <div className="mb-3 flex items-center gap-2 text-sm font-black">
-        <Gauge className="h-4 w-4 text-accent-ink" />
+        <Gauge className="h-4 w-4 text-accent" />
         Beslut under match
       </div>
       <div className="grid gap-3 md:grid-cols-2">
@@ -375,7 +375,7 @@ function SidelineLanguage({ active, onSelect }: { active: PhaseKey; onSelect: (p
   return (
     <aside className="rounded-lg border border-border bg-background/35 p-4">
       <div className="mb-4 flex items-center gap-2 text-sm font-black">
-        <Megaphone className="h-4 w-4 text-accent-ink" />
+        <Megaphone className="h-4 w-4 text-accent" />
         Sidlinjespråk
       </div>
       <div className="space-y-2">

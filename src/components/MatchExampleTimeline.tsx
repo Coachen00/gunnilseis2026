@@ -43,8 +43,7 @@ const MatchExampleTimeline = () => {
             value={values[i]}
             onChange={(e) => updateValue(i, e.target.value)}
             placeholder={step.fieldPlaceholder}
-            aria-label={step.fieldLabel}
-            className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2 mb-3 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2 mb-3 placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
           />
           <label className="text-xs text-muted-foreground font-medium">{step.fieldLabel}</label>
           
@@ -55,13 +54,12 @@ const MatchExampleTimeline = () => {
               value={urls[i]}
               onChange={(e) => updateUrl(i, e.target.value)}
               placeholder="Bildlänk"
-              aria-label={`Bildlänk för ${step.label}`}
-              className="flex-1 text-xs bg-muted/50 border border-border rounded-lg px-2 py-1.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+              className="flex-1 text-xs bg-muted/50 border border-border rounded-lg px-2 py-1.5 placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
 
           {urls[i].trim() ? (
-            <img src={urls[i]} alt={step.label} loading="lazy" decoding="async" className="w-full h-24 object-cover rounded-lg border border-border mt-2" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            <img src={urls[i]} alt={step.label} className="w-full h-24 object-cover rounded-lg border border-border mt-2" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
           ) : (
             <div className="w-full h-20 rounded-lg bg-muted/30 border-2 border-dashed border-muted-foreground/20 flex items-center justify-center gap-1 mt-2">
               <Image className="w-4 h-4 text-muted-foreground/40" />

@@ -69,13 +69,9 @@ const TrainingVideo = ({ title, url, duration, className }: TrainingVideoProps) 
             rel="noopener noreferrer"
             className="block relative group"
           >
-            <img
-              src={thumbnail}
+            <img 
+              src={thumbnail} 
               alt={title}
-              loading="lazy"
-              decoding="async"
-              width={320}
-              height={180}
               className="w-full h-full object-cover transition-transform group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition-colors">
@@ -93,7 +89,6 @@ const TrainingVideo = ({ title, url, duration, className }: TrainingVideoProps) 
           <iframe
             src={embedUrl}
             title={title}
-            loading="lazy"
             className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen

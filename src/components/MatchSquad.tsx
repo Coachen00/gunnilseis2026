@@ -56,14 +56,14 @@ const MatchSquad = () => {
                   placeholder="Nr"
                   value={player.number}
                   onChange={e => updatePlayer(i, "number", e.target.value)}
-                  className="w-12 h-10 rounded-md border border-input bg-background px-2 text-xs text-center focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="w-12 h-8 rounded-md border border-input bg-background px-2 text-xs text-center focus:outline-none focus:ring-1 focus:ring-ring"
                 />
                 <input
                   type="text"
                   placeholder="Spelarnamn"
                   value={player.name}
                   onChange={e => updatePlayer(i, "name", e.target.value)}
-                  className="flex-1 h-10 rounded-md border border-input bg-background px-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="flex-1 h-8 rounded-md border border-input bg-background px-2 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
                 />
               </div>
             ))}
@@ -93,7 +93,7 @@ const MatchSquad = () => {
                 placeholder="Spelarnamn / nummer"
                 value={roles[key]}
                 onChange={e => updateRole(key, e.target.value)}
-                className="flex-1 h-10 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                className="flex-1 h-8 rounded-md border border-input bg-background px-3 text-sm focus:outline-none focus:ring-1 focus:ring-ring"
               />
             </div>
           ))}

@@ -30,8 +30,6 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
               <img
                 src={url}
                 alt={title}
-                loading="lazy"
-                decoding="async"
                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.015]"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
@@ -96,7 +94,7 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
               onChange={(e) => setUrl(e.target.value)}
               onBlur={() => hasImage && setEditing(false)}
               placeholder="https://..."
-              className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
+              className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground/60"
             />
             {hasImage && (
               <button
@@ -128,7 +126,6 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
             <img
               src={url}
               alt={title}
-              decoding="async"
               className="max-h-[84vh] w-full rounded-md border border-border bg-black object-contain"
             />
           </div>

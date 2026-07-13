@@ -66,14 +66,14 @@ const Period1 = () => {
     <article className="container py-12 md:py-16">
       <Link
         to="/#period-1"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition hover:text-accent-ink"
+        className="mb-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition hover:text-accent"
       >
         <ArrowLeft className="h-4 w-4" />
         Tillbaka till spelmodellen
       </Link>
 
       <header className="mb-8">
-        <p className="mb-3 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.28em] text-accent-ink">
+        <p className="mb-3 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.28em] text-accent">
           <CalendarDays className="h-3.5 w-3.5" />
           Period 1 · {PERIOD_1.dateRange}
         </p>
@@ -111,7 +111,7 @@ const Period1 = () => {
               <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground">
                 Periodens facts
               </p>
-              <dl className="space-y-3 text-sm">
+              <dl className="space-y-2 text-sm">
                 <div className="flex justify-between gap-4">
                   <dt className="text-muted-foreground">Aktiva veckor</dt>
                   <dd className="font-bold text-foreground">6</dd>
@@ -202,14 +202,14 @@ const Period1 = () => {
             <section key={week.weekNumber} id={`vecka-${week.weekNumber}`} className="scroll-mt-24">
               <header className="mb-4 flex flex-wrap items-baseline justify-between gap-3 border-b border-border pb-3">
                 <div>
-                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
+                  <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
                     Vecka {week.weekNumber} · {week.dateRange}
                   </p>
                   <h2 className="mt-1 text-xl font-black tracking-normal text-foreground md:text-2xl">
                     {week.theme}
                   </h2>
                 </div>
-                <p className="rounded-md border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold text-accent-ink">
+                <p className="rounded-md border border-accent/30 bg-accent/10 px-3 py-1.5 text-[11px] font-semibold text-accent">
                   KPI · {week.kpi}
                 </p>
               </header>
@@ -225,7 +225,7 @@ const Period1 = () => {
         <TabsContent value="fordjupning" className="space-y-12">
           <section>
             <h2 className="mb-4 flex items-center gap-2 text-2xl font-black tracking-normal text-foreground md:text-3xl">
-              <Target className="h-5 w-5 text-accent-ink" />
+              <Target className="h-5 w-5 text-accent" />
               Effektlogik
             </h2>
             <EffectLogic blocks={PERIOD_1.effectLogic} />
@@ -233,7 +233,7 @@ const Period1 = () => {
 
           <section>
             <h2 className="mb-4 flex items-center gap-2 text-2xl font-black tracking-normal text-foreground md:text-3xl">
-              <Sparkles className="h-5 w-5 text-accent-ink" />
+              <Sparkles className="h-5 w-5 text-accent" />
               Inspirationskort
             </h2>
             <p className="mb-4 max-w-2xl text-sm text-muted-foreground">
@@ -248,7 +248,7 @@ const Period1 = () => {
 
           <section>
             <h2 className="mb-4 flex items-center gap-2 text-2xl font-black tracking-normal text-foreground md:text-3xl">
-              <MessageSquareQuote className="h-5 w-5 text-accent-ink" />
+              <MessageSquareQuote className="h-5 w-5 text-accent" />
               Tränarens språk
             </h2>
             <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
@@ -257,7 +257,7 @@ const Period1 = () => {
                   key={cue}
                   className="rounded-lg border border-border bg-card/35 px-3 py-2 text-sm font-semibold text-foreground/85"
                 >
-                  <span className="mr-1 text-accent-ink">›</span>
+                  <span className="mr-1 text-accent">›</span>
                   {cue}
                 </li>
               ))}
@@ -281,13 +281,13 @@ const Period1 = () => {
             </div>
             <div>
               <h2 className="mb-3 flex items-center gap-2 text-xl font-black tracking-normal text-foreground">
-                <Gauge className="h-4.5 w-4.5 text-accent-ink" />
+                <Gauge className="h-4.5 w-4.5 text-accent" />
                 KPI vecka för vecka
               </h2>
               <ol className="space-y-2 rounded-xl border border-border bg-card/35 p-4 text-sm">
                 {kpis.map((k) => (
                   <li key={k.week} className="flex items-baseline gap-3">
-                    <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
+                    <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
                       V{k.week}
                     </span>
                     <span className="text-foreground/85">{k.kpi}</span>
@@ -298,7 +298,7 @@ const Period1 = () => {
           </section>
 
           <section className="rounded-xl border border-border bg-card/35 p-6">
-            <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
+            <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
               {PERIOD_1.followUp.dateRange}
             </p>
             <h2 className="text-2xl font-black tracking-normal text-foreground">
@@ -312,7 +312,7 @@ const Period1 = () => {
                 <ul className="space-y-1.5 text-sm leading-relaxed text-foreground/85">
                   {PERIOD_1.followUp.bullets.map((b) => (
                     <li key={b} className="flex items-baseline gap-2">
-                      <span className="text-accent-ink">›</span>
+                      <span className="text-accent">›</span>
                       {b}
                     </li>
                   ))}

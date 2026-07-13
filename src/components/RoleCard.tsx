@@ -10,14 +10,14 @@ interface RoleCardProps {
 const RoleCard = ({ line, players, description, variant = "midfield" }: RoleCardProps) => {
   return (
     <div className={cn(
-      "bg-card rounded-sm p-6 md:p-7 border transition-all duration-200 hover:-translate-y-px hover:shadow-[0_10px_28px_-12px_hsl(215_70%_12%/0.22)]",
+      "bg-card rounded-sm p-6 border transition-all duration-200 hover:-translate-y-px hover:shadow-[0_10px_28px_-12px_hsl(215_70%_12%/0.22)]",
       variant === "attack"
         ? "border-zone-attack/35 hover:border-zone-attack/70"
         : variant === "defense"
         ? "border-zone-defense/35 hover:border-zone-defense/70"
         : "border-zone-midfield/35 hover:border-zone-midfield/70"
     )}>
-      <div className="flex items-center gap-3 mb-5">
+      <div className="flex items-center gap-3 mb-4">
         <div className={cn(
           "w-12 h-12 rounded-sm flex items-center justify-center font-mono font-bold text-xl tabular border",
           variant === "attack"

@@ -20,8 +20,7 @@ export default function ContentEditor<T>({
   description,
   fallback,
 }: ContentEditorProps<T>) {
-  const { data, source, loading, error, reload } = useContent<T>(contentKey, fallback);
-  const tableMissing = !!error;
+  const { data, source, loading, reload } = useContent<T>(contentKey, fallback);
   const [text, setText] = useState("");
   const [parseError, setParseError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -118,9 +117,9 @@ export default function ContentEditor<T>({
           <div className="flex gap-2 mt-3">
             <button
               onClick={handleSave}
-              disabled={!!parseError || saving || tableMissing}
+              disabled={!!parseError || saving || source === "fallback"}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              title={tableMissing ? "Kör migrationen content_blocks i Supabase först" : undefined}
+              title={source === "fallback" ? "Kör migrationen content_blocks i Supabase först" : undefined}
             >
               {saving ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -138,7 +137,7 @@ export default function ContentEditor<T>({
               Återställ
             </button>
           </div>
-          {tableMissing && (
+          {source === "fallback" && (
             <p className="text-xs text-amber-400/90 mt-3 leading-relaxed">
               Tabellen <code className="font-mono bg-muted px-1 rounded">content_blocks</code>{" "}
               hittas inte. Kör migrationen{" "}
@@ -146,12 +145,6 @@ export default function ContentEditor<T>({
                 supabase/migrations/20260706120000_reapply_content_blocks.sql
               </code>{" "}
               i Supabase Studio för att aktivera redigering.
-            </p>
-          )}
-          {!tableMissing && source === "fallback" && (
-            <p className="text-xs text-muted-foreground/80 mt-3 leading-relaxed">
-              Ingen rad finns ännu i <code className="font-mono bg-muted px-1 rounded">content_blocks</code> för nyckeln{" "}
-              <code className="font-mono bg-muted px-1 rounded">{contentKey}</code>. Klicka <strong>Spara</strong> för att skapa raden från fallback-värdet.
             </p>
           )}
         </>

@@ -1,15 +1,9 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target, Video } from "lucide-react";
+import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 
 const tools = [
-  {
-    to: "/media-bibliotek",
-    label: "Mediabibliotek",
-    desc: "Ladda upp klipp, koppla till spelmodellen, växla synlighet för spelare.",
-    icon: Video,
-  },
   {
     to: "/spelmodell-labb",
     label: "Spelmodell-labb",
@@ -57,7 +51,7 @@ const Verktyg = () => (
             to={to}
             className="group grid items-center gap-4 py-5 transition hover:bg-card/35 md:grid-cols-[48px_220px_1fr_28px]"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent-ink">
+            <span className="grid h-10 w-10 place-items-center rounded-md border border-border bg-card/55 text-accent">
               <Icon className="h-4 w-4" strokeWidth={1.75} />
             </span>
             <h2 className="text-xl text-foreground">{label}</h2>

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import spelytorImage from "@/assets/spelytor-diagram.webp";
+import spelytorImage from "@/assets/spelytor-diagram.png";
 
 interface SpelytorDiagramProps {
   className?: string;
@@ -16,11 +16,9 @@ const SpelytorDiagram = ({ className }: SpelytorDiagramProps) => {
       </p>
       
       <div className="relative w-full max-w-md mx-auto">
-        <img
-          src={spelytorImage}
-          alt="Spelytor diagram - Utgångsyta, Spelyta 1, 2 och 3"
-          loading="lazy"
-          decoding="async"
+        <img 
+          src={spelytorImage} 
+          alt="Spelytor diagram - Utgångsyta, Spelyta 1, 2 och 3" 
           className="w-full h-auto rounded-lg border border-border"
         />
       </div>

@@ -24,21 +24,20 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, X, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import offensivHorna from "@/assets/offensiv-horna.webp";
-import defensivHorna from "@/assets/defensiv-horna.webp";
-import formation433 from "@/assets/formation-433.webp";
-import spelytorPlanbild from "@/assets/spelytor-planbild.webp";
-import spelbarhetInfografik from "@/assets/spelbarhet-infografik.webp";
-import hornaTyper from "@/assets/horna-typer.webp";
-import forsvarMotHorna from "@/assets/forsvar-mot-horna.webp";
+import offensivHorna from "@/assets/offensiv-horna.png";
+import defensivHorna from "@/assets/defensiv-horna.png";
+import formation433 from "@/assets/formation-433.png";
+import spelytorPlanbild from "@/assets/spelytor-planbild.png";
+import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
+import hornaTyper from "@/assets/horna-typer.png";
+import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
 
-import imgLagtForsvar from "@/assets/spelmodell/lagt-forsvar.webp";
-import imgHogtForsvar from "@/assets/spelmodell/hogt-forsvarsspel.webp";
-import imgForsvaraYttre from "@/assets/spelmodell/forsvara-yttre-korridor.webp";
-import imgForsvarMotKontring from "@/assets/spelmodell/forsvar-mot-kontring.webp";
-import imgKontring from "@/assets/spelmodell/kontring.webp";
-import imgDirektBollatererovring from "@/assets/spelmodell/direkt-bollatererovring.webp";
-
+import imgLagtForsvar from "@/assets/spelmodell/lagt-forsvar.png";
+import imgHogtForsvar from "@/assets/spelmodell/hogt-forsvarsspel.png";
+import imgForsvaraYttre from "@/assets/spelmodell/forsvara-yttre-korridor.png";
+import imgForsvarMotKontring from "@/assets/spelmodell/forsvar-mot-kontring.png";
+import imgKontring from "@/assets/spelmodell/kontring.png";
+import imgDirektBollatererovring from "@/assets/spelmodell/direkt-bollatererovring.png";
 
 /* ── Expandable image overlay ── */
 export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: string; className?: string }) => {
@@ -46,7 +45,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
   return (
     <>
       <button onClick={() => setExpanded(true)} className={`cursor-pointer w-full group ${className}`}>
-        <img src={src} alt={alt} loading="lazy" decoding="async" className="w-full rounded-xl border border-border transition-all duration-300 group-hover:shadow-lg group-hover:border-primary/20" />
+        <img src={src} alt={alt} className="w-full rounded-xl border border-border transition-all duration-300 group-hover:shadow-lg group-hover:border-primary/20" />
       </button>
       {expanded && (
         <div className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in" onClick={() => setExpanded(false)}>
@@ -54,7 +53,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
             <button onClick={() => setExpanded(false)} className="absolute -top-12 right-0 w-9 h-9 rounded-full bg-card flex items-center justify-center hover:bg-muted transition-colors shadow-lg">
               <X className="w-4 h-4 text-foreground" />
             </button>
-            <img src={src} alt={alt} decoding="async" className="w-full rounded-xl border border-border shadow-2xl" />
+            <img src={src} alt={alt} className="w-full rounded-xl border border-border shadow-2xl" />
           </div>
         </div>
       )}
@@ -484,14 +483,14 @@ export const KvalitetSection = () => (
       ].map((item) => (
         <div key={item.label} className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover">
           <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-primary mb-4">{item.label}</h4>
-          <input type="text" placeholder={item.placeholder} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 mb-3 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
-          <textarea placeholder="Kort anteckning" rows={2} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
+          <input type="text" placeholder={item.placeholder} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 mb-3 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all" />
+          <textarea placeholder="Kort anteckning" rows={2} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
         </div>
       ))}
     </div>
     <div className="bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm">
       <h4 className="text-xs font-bold uppercase tracking-[0.15em] text-foreground mb-4">Lärdom (1–3 meningar)</h4>
-      <textarea placeholder="Vad lärde vi oss idag?" rows={3} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
+      <textarea placeholder="Vad lärde vi oss idag?" rows={3} className="w-full text-sm bg-muted/50 border border-border rounded-lg px-3 py-2.5 placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 transition-all resize-none" />
     </div>
   </section>
 );

@@ -19,7 +19,6 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       spacing: {
-        "section-xs": "2rem",
         "section-sm": "4rem",
         section: "6rem",
         "section-lg": "8rem",
@@ -53,7 +52,6 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
-          ink: "hsl(var(--accent-text))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

@@ -16,7 +16,7 @@ const PageHero = ({ eyebrow, title, description, children }: PageHeroProps) => {
           <SectionReveal>
             <div className="flex items-center gap-3 mb-6">
               <span className="inline-block w-10 h-[2px] bg-accent" aria-hidden="true" />
-              <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent-ink">
+              <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-accent">
                 {eyebrow}
               </span>
             </div>

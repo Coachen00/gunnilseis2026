@@ -84,7 +84,7 @@ function PresetBar({ activeId, onApply }: { activeId: string; onApply: (preset: 
   return (
     <section className="border-y border-border py-4">
       <div className="mb-3 flex items-center gap-2 text-sm font-black">
-        <ClipboardList className="h-4 w-4 text-accent-ink" />
+        <ClipboardList className="h-4 w-4 text-accent" />
         Välj startläge
       </div>
       <div className="flex gap-2 overflow-x-auto pb-1">
@@ -111,7 +111,7 @@ function PresetBar({ activeId, onApply }: { activeId: string; onApply: (preset: 
 function FocusPanel({ selectedIds, onToggle }: { selectedIds: string[]; onToggle: (id: string) => void }) {
   return (
     <section>
-      <SectionTitle icon={<ListChecks className="h-4 w-4 text-accent-ink" />} label="Fokus" title="Välj få principer." />
+      <SectionTitle icon={<ListChecks className="h-4 w-4 text-accent" />} label="Fokus" title="Välj få principer." />
       <div className="mt-4 divide-y divide-border border-y border-border">
         {LAB_PHASES.map((phase) => {
           const principles = LAB_PRINCIPLES.filter((principle) => principle.phase === phase.id).slice(0, 4);
@@ -153,7 +153,7 @@ function FocusPanel({ selectedIds, onToggle }: { selectedIds: string[]; onToggle
 function ScenarioPanel({ scenarioId, onSelect }: { scenarioId: string; onSelect: (id: string) => void }) {
   return (
     <section>
-      <SectionTitle icon={<Eye className="h-4 w-4 text-accent-ink" />} label="Matchbild" title="Välj problemet som syns." />
+      <SectionTitle icon={<Eye className="h-4 w-4 text-accent" />} label="Matchbild" title="Välj problemet som syns." />
       <div className="mt-4 divide-y divide-border border-y border-border">
         {MATCH_SCENARIOS.map((scenario) => (
           <ScenarioRow
@@ -205,7 +205,7 @@ function SessionPlan({
   return (
     <section>
       <div className="grid gap-5 border-y border-border py-5 md:grid-cols-[1fr_260px] md:items-end">
-        <SectionTitle icon={<Timer className="h-4 w-4 text-accent-ink" />} label="Pass" title="Ett enkelt upplägg." />
+        <SectionTitle icon={<Timer className="h-4 w-4 text-accent" />} label="Pass" title="Ett enkelt upplägg." />
         <div>
           <div className="mb-2 flex items-center justify-between text-xs font-black uppercase tracking-wide text-muted-foreground">
             <span>Tid</span>
@@ -264,7 +264,7 @@ function CoachBrief({
 }) {
   return (
     <section className="rounded-md border border-border bg-card p-5">
-      <div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent-ink">
+      <div className="mb-4 flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">
         <MessageSquareText className="h-3.5 w-3.5" />
         Coachbrief
       </div>
@@ -296,7 +296,7 @@ function BriefBlock({ title, items }: { title: string; items: string[] }) {
       <ul className="space-y-2">
         {items.map((item) => (
           <li key={item} className="flex gap-2 text-sm leading-relaxed text-foreground/88">
-            <ArrowRight className="mt-1 h-3.5 w-3.5 flex-shrink-0 text-accent-ink" />
+            <ArrowRight className="mt-1 h-3.5 w-3.5 flex-shrink-0 text-accent" />
             <span>{labelOrRaw(item)}</span>
           </li>
         ))}
@@ -308,7 +308,7 @@ function BriefBlock({ title, items }: { title: string; items: string[] }) {
 function SectionTitle({ icon, label, title }: { icon: ReactNode; label: string; title: string }) {
   return (
     <header>
-      <p className="mb-2 flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent-ink">
+      <p className="mb-2 flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-accent">
         {icon}
         {label}
       </p>

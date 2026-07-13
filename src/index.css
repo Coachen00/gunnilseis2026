@@ -77,17 +77,6 @@
     @apply border-border;
   }
 
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 4.5rem; /* TopNav h-16 + lite andrum för anchor-jumps */
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
-
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -97,20 +86,6 @@
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Inter OpenType-features:
-       - cv11: stylistic alternate single-storey 'a' (cleaner display feel)
-       - ss03: alternate digits with tabular figures-friendly proportions
-       - cv05: alt 'l' for tighter rhythm
-       - ss01: stylistic set 1 (slight optical refinements)
-       Plus standard ligatures + contextual alternates. */
-    font-feature-settings: "cv11" on, "ss03" on, "cv05" on, "ss01" on, "liga" on, "calt" on;
-    text-rendering: optimizeLegibility;
-  }
-
-  /* Mono numeric tags (01/02/03) get tabular figures so they line up perfectly */
-  .font-mono {
-    font-feature-settings: "tnum" on, "zero" on;
-    font-variant-numeric: tabular-nums slashed-zero;
   }
 
   /* Architectural typography — Inter tight, heavy weights, no serif */
@@ -1028,62 +1003,6 @@
     background-size: 64px 64px;
   }
 
-  .animate-fall {
-    animation: fallDown var(--fall-duration, 32s) linear infinite;
-    will-change: transform, opacity;
-  }
-
-  .animate-pitch-pulse {
-    animation: pitchPulse 9s ease-in-out infinite;
-  }
-
-  .animate-hero-reveal {
-    opacity: 0;
-    animation: heroReveal 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    animation-delay: var(--reveal-delay, 0s);
-  }
-
-  .animate-hero-reveal-grand {
-    opacity: 0;
-    animation: heroRevealGrand 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--reveal-delay, 0s);
-  }
-
-  .animate-accent-grow {
-    transform-origin: top center;
-    transform: scaleY(0);
-    animation: accentGrow 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    animation-delay: var(--reveal-delay, 0s);
-  }
-
-  .animate-shine {
-    position: relative;
-    overflow: hidden;
-  }
-  .animate-shine::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      105deg,
-      transparent 30%,
-      hsl(var(--accent) / 0.18) 48%,
-      hsl(0 0% 100% / 0.12) 50%,
-      hsl(var(--accent) / 0.18) 52%,
-      transparent 70%
-    );
-    transform: translateX(-110%);
-    animation: shineSweep 2.4s 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
-
-  .bg-grain {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    background-repeat: repeat;
-    background-size: 180px 180px;
-  }
-
   .bg-mesh-gradient {
     background-image:
       radial-gradient(at 15% 18%, hsl(var(--accent) / 0.06) 0px, transparent 50%),
@@ -1151,80 +1070,6 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fallDown {
-  0% {
-    transform: translate3d(0, -12vh, 0) rotate(0);
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  35% {
-    transform: translate3d(calc(var(--drift, 0) * 0.4), 35vh, 0) rotate(-0.2deg);
-  }
-  65% {
-    transform: translate3d(calc(var(--drift, 0) * 0.7), 70vh, 0) rotate(0.3deg);
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translate3d(var(--drift, 0), 112vh, 0) rotate(0);
-    opacity: 0;
-  }
-}
-
-@keyframes pitchPulse {
-  0%, 100% { opacity: 0.18; }
-  50%      { opacity: 0.30; }
-}
-
-@keyframes heroReveal {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 18px, 0);
-    filter: blur(6px);
-  }
-  60% {
-    filter: blur(0);
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-    filter: blur(0);
-  }
-}
-
-@keyframes heroRevealGrand {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, 32px, 0) scale3d(0.96, 0.96, 1);
-    filter: blur(10px);
-    letter-spacing: 0.05em;
-  }
-  50% {
-    filter: blur(0);
-    letter-spacing: 0;
-  }
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
-    filter: blur(0);
-    letter-spacing: -0.025em;
-  }
-}
-
-@keyframes accentGrow {
-  0%   { transform: scaleY(0); opacity: 0; }
-  60%  { opacity: 1; }
-  100% { transform: scaleY(1); opacity: 1; }
-}
-
-@keyframes shineSweep {
-  0%   { transform: translateX(-110%); }
-  100% { transform: translateX(110%); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
   .animate-mesh-shift,
@@ -1232,67 +1077,8 @@
   .animate-slide-up,
   .animate-pulse-soft,
   .animate-fade-in-up,
-  .animate-bounce-slow,
-  .animate-fall,
-  .animate-pitch-pulse,
-  .animate-hero-reveal,
-  .animate-hero-reveal-grand,
-  .animate-accent-grow {
+  .animate-bounce-slow {
     animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    letter-spacing: revert !important;
-  }
-  .animate-shine::after {
-    display: none !important;
-  }
-}
-
-/* Print-stylsheet — säkerställer att sidan ser ren ut vid Ctrl+P. */
-@media print {
-  /* Göm allt som inte hör hemma i tryck: nav, footer, dekorativa overlays. */
-  header,
-  footer,
-  [aria-hidden="true"],
-  .animate-fall,
-  .animate-pitch-pulse,
-  .animate-hero-reveal,
-  .animate-hero-reveal-grand,
-  video {
-    display: none !important;
-  }
-
-  /* Återställ bakgrund och text för läsbar tryck. */
-  html,
-  body {
-    background: white !important;
-    color: black !important;
-    font-size: 11pt;
-  }
-
-  h1,
-  h2,
-  h3 {
-    color: black !important;
-    page-break-after: avoid;
-  }
-
-  a {
-    color: #0b3a91 !important;
-    text-decoration: underline;
-  }
-
-  /* Visa URL efter externa länkar. Interna (#) skippas. */
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.85em;
-    color: #555;
-  }
-
-  /* Ensure sections don't break in awkward places */
-  section {
-    page-break-inside: avoid;
   }
 
   .tactical-visual[data-playing="true"] .tactical-arrow {

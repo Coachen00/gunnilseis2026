@@ -15,7 +15,7 @@ export default function Matchplan() {
     <section className="space-y-4">
       <div className="flex items-baseline justify-between">
         <div>
-          <p className="text-[10px] font-mono uppercase tracking-[0.28em] text-accent-ink">
+          <p className="text-[10px] font-mono uppercase tracking-[0.28em] text-accent">
             Matchplan
           </p>
           <h2 className="text-2xl tracking-tight">
@@ -35,11 +35,11 @@ export default function Matchplan() {
         >
           <span className="absolute bottom-6 left-0 top-6 w-[3px] rounded-r bg-accent" />
           <div className="flex flex-wrap items-baseline gap-3">
-            <span className="font-mono text-[11px] font-bold tracking-wider text-accent-ink">
+            <span className="font-mono text-[11px] font-bold tracking-wider text-accent">
               {sec.num}
             </span>
             <div className="flex-1 min-w-0">
-              <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-accent-ink">
+              <div className="text-[10px] font-bold uppercase tracking-[0.28em] text-accent">
                 {sec.eyebrow}
               </div>
               <h3 className="text-xl tracking-tight">{sec.title}</h3>
@@ -51,7 +51,7 @@ export default function Matchplan() {
               {sec.principles.map((p) => (
                 <span
                   key={p}
-                  className="rounded-full border border-accent/40 bg-accent/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-accent-ink"
+                  className="rounded-full border border-accent/40 bg-accent/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-accent"
                 >
                   {p}
                 </span>
@@ -77,7 +77,7 @@ export default function Matchplan() {
                   key={k}
                   className="rounded-lg border border-border bg-muted/40 px-3 py-2"
                 >
-                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-accent-ink">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-accent">
                     {k}
                   </div>
                   <div className="mt-0.5 text-sm font-semibold">{v}</div>
