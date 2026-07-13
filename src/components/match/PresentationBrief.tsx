@@ -105,7 +105,7 @@ export default function PresentationBrief() {
     <section className="rounded-xl border border-border bg-card">
       <div className="grid gap-6 border-b border-border p-5 lg:grid-cols-[1fr_auto] lg:items-end">
         <div>
-          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+          <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent-ink">
             <Sparkles className="h-3.5 w-3.5" />
             Presentationsbrief
           </div>
@@ -117,7 +117,7 @@ export default function PresentationBrief() {
         <button
           type="button"
           onClick={copyPrompt}
-          className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-4 text-xs font-black uppercase tracking-wider text-accent transition hover:bg-accent hover:text-background"
+          className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-accent/40 bg-accent/10 px-4 text-xs font-black uppercase tracking-wider text-accent-ink transition hover:bg-accent hover:text-background"
         >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           {copied ? "Kopierad" : "Kopiera brief"}
@@ -143,7 +143,7 @@ function DesignRule({ Icon, label, text }: { Icon: LucideIcon; label: string; te
   return (
     <div className="rounded-lg border border-border bg-muted/25 p-3">
       <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-wider text-foreground">
-        <Icon className="h-4 w-4 text-accent" />
+        <Icon className="h-4 w-4 text-accent-ink" />
         {label}
       </div>
       <p className="text-xs leading-relaxed text-muted-foreground">{text}</p>
@@ -187,7 +187,7 @@ function InfoLine({
 }) {
   return (
     <div className="grid grid-cols-[18px_1fr] gap-2 text-xs leading-relaxed">
-      <Icon className={cn("mt-0.5 h-3.5 w-3.5", muted ? "text-muted-foreground" : "text-accent")} />
+      <Icon className={cn("mt-0.5 h-3.5 w-3.5", muted ? "text-muted-foreground" : "text-accent-ink")} />
       <p className={muted ? "text-muted-foreground" : "text-foreground/85"}>
         <span className="font-mono font-black uppercase tracking-wider text-muted-foreground">{label}: </span>
         {text}

@@ -28,8 +28,8 @@ const Truppen = () => {
         )}
 
         {usingFallback && !loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-            Fallback-data · väntar på första syncen
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent-ink">
+            Visar sparad lista · väntar på dagens uppdatering
           </div>
         )}
 
@@ -45,7 +45,7 @@ const Truppen = () => {
               >
                 <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
                   <div className="flex items-baseline gap-3">
-                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black tracking-wider text-accent">
+                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black tracking-wider text-accent-ink">
                       {labels.short}
                     </span>
                     <h2 className="text-xl text-foreground">{labels.long}</h2>
@@ -64,7 +64,7 @@ const Truppen = () => {
                         className={cn(
                           "grid h-8 w-8 flex-shrink-0 place-items-center rounded-sm font-mono text-xs font-black",
                           player.jerseyNumber
-                            ? "border border-accent/30 bg-accent/5 text-accent"
+                            ? "border border-accent/30 bg-accent/5 text-accent-ink"
                             : "border border-border/70 text-muted-foreground"
                         )}
                       >
@@ -82,7 +82,7 @@ const Truppen = () => {
                   ))}
                   {list.length === 0 && (
                     <li className="px-5 py-6 text-center text-xs text-muted-foreground">
-                      Inga spelare i denna grupp ännu.
+                      Inga spelare i den här gruppen ännu — truppen synkas dagligen från svenskalag.se.
                     </li>
                   )}
                 </ul>
@@ -95,7 +95,7 @@ const Truppen = () => {
         <SectionReveal as="section" className="mt-10 rounded-md border border-border/70 bg-card overflow-hidden">
           <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent-ink">
                 Ledarstab
               </span>
               <h2 className="text-xl text-foreground">Tränare & ledning</h2>
@@ -124,7 +124,7 @@ const Truppen = () => {
           href="https://www.svenskalag.se/gunnilseis-herr/truppen"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
+          className="mt-8 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent-ink"
         >
           Källa · svenskalag.se
           <ExternalLink className="h-3 w-3" />

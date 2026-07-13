@@ -10,7 +10,7 @@ const WeekJourney = ({ to = "/period/1?tab=passen" }: { to?: string }) => (
           to={`${to}#vecka-${week.weekNumber}`}
           className="group flex h-full flex-col rounded-lg border border-border bg-card/40 p-3 transition hover:border-accent/45"
         >
-          <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+          <span className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent-ink">
             Vecka {week.weekNumber}
           </span>
           <span className="mt-1 text-sm font-black leading-tight text-foreground">{week.theme}</span>

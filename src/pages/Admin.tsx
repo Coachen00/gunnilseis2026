@@ -64,7 +64,7 @@ const Admin = () => {
       .eq("id", id);
 
     if (error) {
-      toast({ title: "Fel", description: error.message, variant: "destructive" });
+      toast({ title: "Kunde inte ändra åtkomst", description: "Försök igen om en stund.", variant: "destructive" });
     } else {
       toast({ title: !currentApproval ? "Godkänd!" : "Åtkomst borttagen" });
       fetchProfiles();
@@ -147,7 +147,11 @@ const Admin = () => {
                   </p>
                 </div>
                 <button
-                  onClick={() => toggleApproval(p.id, p.approved)}
+                  onClick={() => {
+                    if (window.confirm(`Ta bort åtkomsten för ${p.email}? Personen loggas ut och måste godkännas på nytt.`)) {
+                      toggleApproval(p.id, p.approved);
+                    }
+                  }}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted text-muted-foreground text-xs font-bold hover:bg-destructive hover:text-destructive-foreground transition-colors"
                 >
                   <X className="w-3.5 h-3.5" />
