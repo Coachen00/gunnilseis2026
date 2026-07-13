@@ -14,6 +14,11 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 
+const isChunkLoadError = (error: Error) =>
+  /chunkloaderror|failed to fetch dynamically imported module|importing a module script failed|loading chunk .* failed/i.test(
+    `${error.name} ${error.message}`,
+  );
+
 /**
  * ErrorBoundary — fångar render-/lifecycle-fel under denna gren av trädet.
  *
@@ -37,7 +42,25 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
     });
   }
 
-  private reset = () => this.setState({ error: null });
+  private reset = () => {
+    const error = this.state.error;
+
+    if (error && isChunkLoadError(error) && typeof window !== "undefined") {
+      const retryKey = `gunnilse-chunk-retry:${error.message}`;
+
+      try {
+        if (!window.sessionStorage.getItem(retryKey)) {
+          window.sessionStorage.setItem(retryKey, "1");
+          window.location.reload();
+          return;
+        }
+      } catch {
+        // Storage can be unavailable in privacy-restricted browsers.
+      }
+    }
+
+    this.setState({ error: null });
+  };
 
   render() {
     if (!this.state.error) return this.props.children;
