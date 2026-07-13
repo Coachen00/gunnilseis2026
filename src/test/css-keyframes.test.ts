@@ -1,0 +1,119 @@
+import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+/**
+ * Sanity-test för CSS-keyframes som hero-koreografin är beroende av.
+ * Fångar regressioner där någon "städar" index.css och tar bort en keyframe
+ * som fortfarande används av en .animate-*-klass.
+ */
+
+const css = readFileSync(join(process.cwd(), "src/index.css"), "utf-8");
+
+const expectedKeyframes = [
+  "fadeIn",
+  "slideUp",
+  "pulseSoft",
+  "floatParticle",
+  "meshShift",
+  "fadeInUp",
+  "bounceSlow",
+  "fallDown",
+  "pitchPulse",
+  "heroReveal",
+  "heroRevealGrand",
+  "accentGrow",
+  "shineSweep",
+];
+
+const expectedUtilities = [
+  "animate-fade-in",
+  "animate-slide-up",
+  "animate-pulse-soft",
+  "animate-float",
+  "animate-mesh-shift",
+  "animate-fade-in-up",
+  "animate-bounce-slow",
+  "animate-fall",
+  "animate-pitch-pulse",
+  "animate-hero-reveal",
+  "animate-hero-reveal-grand",
+  "animate-accent-grow",
+  "animate-shine",
+  "bg-grain",
+  "bg-mesh-gradient",
+];
+
+describe("index.css — keyframes & utilities", () => {
+  it.each(expectedKeyframes)("@keyframes %s finns", (name) => {
+    expect(css).toMatch(new RegExp(`@keyframes\\s+${name}\\s*\\{`));
+  });
+
+  it.each(expectedUtilities)("utility .%s definieras", (name) => {
+    const escaped = name.replace(/-/g, "\\-");
+    expect(css).toMatch(new RegExp(`\\.${escaped}\\s*\\{`));
+  });
+
+  it("prefers-reduced-motion-block stänger ALL nya animationer", () => {
+    // Hitta alla reduced-motion-block och välj det som innehåller animate-fall
+    const blocks = Array.from(
+      css.matchAll(/@media\s*\(prefers-reduced-motion:\s*reduce\)\s*\{([\s\S]*?)\}\s*\}/g),
+    );
+    const animBlock = blocks.find((m) => /animate-fall/.test(m[1]));
+    expect(animBlock).toBeDefined();
+    const block = animBlock![1];
+    expect(block).toMatch(/animate-fall/);
+    expect(block).toMatch(/animate-pitch-pulse/);
+    expect(block).toMatch(/animate-hero-reveal/);
+    expect(block).toMatch(/animate-hero-reveal-grand/);
+    expect(block).toMatch(/animate-accent-grow/);
+  });
+
+  it("html har smooth scroll-behavior + reduced-motion-fallback", () => {
+    expect(css).toMatch(/html\s*\{[\s\S]*?scroll-behavior:\s*smooth/);
+    expect(css).toMatch(/scroll-padding-top/);
+    // Det andra reduced-motion-blocket ska sätta scroll-behavior:auto
+    const blocks = Array.from(
+      css.matchAll(/@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?\}\s*\}/g),
+    );
+    const scrollBlock = blocks.find((m) => /scroll-behavior:\s*auto/.test(m[0]));
+    expect(scrollBlock).toBeDefined();
+  });
+
+  it("design-tokens definieras i :root", () => {
+    expect(css).toMatch(/:root\s*\{[\s\S]*?--background:/);
+    expect(css).toMatch(/--accent:\s*47\s*78%\s*56%/);
+    expect(css).toMatch(/--primary:\s*212\s*50%\s*48%/);
+    expect(css).toMatch(/--pitch-lines:\s*142\s*25%\s*45%/);
+  });
+
+  it("fallDown har 5 keyframe-stops för organisk sway", () => {
+    const fallBlock = css.match(/@keyframes\s+fallDown\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(fallBlock).not.toBeNull();
+    const block = fallBlock![1];
+    // Bör ha 0% / 10% / 35% / 65% / 90% / 100% — minst 5 stops
+    const stops = block.match(/\d+%\s*\{/g) || [];
+    expect(stops.length).toBeGreaterThanOrEqual(5);
+    // Drift-bezier: ska använda calc med var(--drift)
+    expect(block).toMatch(/calc\(var\(--drift/);
+    // Tiny rotation under fall
+    expect(block).toMatch(/rotate\(-?0?\.\d+deg\)/);
+  });
+
+  it("heroRevealGrand-keyframet inkluderar scale + letter-spacing-animation", () => {
+    const grandBlock = css.match(/@keyframes\s+heroRevealGrand\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(grandBlock).not.toBeNull();
+    const block = grandBlock![1];
+    expect(block).toMatch(/scale3d/);
+    expect(block).toMatch(/letter-spacing/);
+    expect(block).toMatch(/blur/);
+  });
+
+  it("heroReveal-keyframet inkluderar blur-fade och translate-up", () => {
+    const reveal = css.match(/@keyframes\s+heroReveal\s*\{([\s\S]*?)\}\s*(?:@|\n\n)/);
+    expect(reveal).not.toBeNull();
+    const block = reveal![1];
+    expect(block).toMatch(/blur\(6px\)/);
+    expect(block).toMatch(/translate3d\(0,\s*18px/);
+  });
+});
