@@ -1,14 +1,32 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# Spelmodellen.se — Gunnilse IS
+# Publik landningssida indexeras. Auth-only routes blockeras nedan
+# och har dessutom <meta name="robots" content="noindex"> via RouteMeta.
 
 User-agent: *
-Allow: /
+Allow: /$
+Allow: /og-image.png
+Allow: /og-image.jpg
+Allow: /favicon.ico
+
+Disallow: /login
+Disallow: /admin
+Disallow: /period/
+Disallow: /maj-2026
+Disallow: /spelide
+Disallow: /forsvar
+Disallow: /anfall
+Disallow: /omstallning-forsvar
+Disallow: /omstallning-anfall
+Disallow: /fasta
+Disallow: /match/
+Disallow: /truppen
+Disallow: /roller
+Disallow: /identitet
+Disallow: /spelmodell-labb
+Disallow: /verktyg
+Disallow: /traningsplan
+Disallow: /matchblad
+Disallow: /motstandaranalys
+Disallow: /taktiktavla
+
+Sitemap: https://spelmodellen.se/sitemap.xml

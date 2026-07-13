@@ -30,6 +30,8 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
               <img
                 src={url}
                 alt={title}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.015]"
                 onError={(e) => {
                   (e.target as HTMLImageElement).style.display = "none";
@@ -126,6 +128,7 @@ const ImageLinkCard = ({ title, bullet, className }: ImageLinkCardProps) => {
             <img
               src={url}
               alt={title}
+              decoding="async"
               className="max-h-[84vh] w-full rounded-md border border-border bg-black object-contain"
             />
           </div>

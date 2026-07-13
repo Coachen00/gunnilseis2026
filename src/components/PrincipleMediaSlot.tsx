@@ -510,6 +510,7 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
                   <iframe
                     src={videoEmbedUrl(previewSrc)!}
                     className="aspect-video w-full"
+                    loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     title={principleLabel}
@@ -521,6 +522,8 @@ const PrincipleMediaSlot = ({ blockId, principleId, principleLabel, oneLiner, di
                 <img
                   src={previewSrc!}
                   alt={principleLabel}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-72 w-full object-cover"
                   onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
                 />

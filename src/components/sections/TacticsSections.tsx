@@ -24,20 +24,21 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { ChevronDown, X, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import offensivHorna from "@/assets/offensiv-horna.png";
-import defensivHorna from "@/assets/defensiv-horna.png";
-import formation433 from "@/assets/formation-433.png";
-import spelytorPlanbild from "@/assets/spelytor-planbild.png";
-import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
-import hornaTyper from "@/assets/horna-typer.png";
-import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
+import offensivHorna from "@/assets/offensiv-horna.webp";
+import defensivHorna from "@/assets/defensiv-horna.webp";
+import formation433 from "@/assets/formation-433.webp";
+import spelytorPlanbild from "@/assets/spelytor-planbild.webp";
+import spelbarhetInfografik from "@/assets/spelbarhet-infografik.webp";
+import hornaTyper from "@/assets/horna-typer.webp";
+import forsvarMotHorna from "@/assets/forsvar-mot-horna.webp";
 
-import imgLagtForsvar from "@/assets/spelmodell/lagt-forsvar.png";
-import imgHogtForsvar from "@/assets/spelmodell/hogt-forsvarsspel.png";
-import imgForsvaraYttre from "@/assets/spelmodell/forsvara-yttre-korridor.png";
-import imgForsvarMotKontring from "@/assets/spelmodell/forsvar-mot-kontring.png";
-import imgKontring from "@/assets/spelmodell/kontring.png";
-import imgDirektBollatererovring from "@/assets/spelmodell/direkt-bollatererovring.png";
+import imgLagtForsvar from "@/assets/spelmodell/lagt-forsvar.webp";
+import imgHogtForsvar from "@/assets/spelmodell/hogt-forsvarsspel.webp";
+import imgForsvaraYttre from "@/assets/spelmodell/forsvara-yttre-korridor.webp";
+import imgForsvarMotKontring from "@/assets/spelmodell/forsvar-mot-kontring.webp";
+import imgKontring from "@/assets/spelmodell/kontring.webp";
+import imgDirektBollatererovring from "@/assets/spelmodell/direkt-bollatererovring.webp";
+
 
 /* ── Expandable image overlay ── */
 export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt: string; className?: string }) => {
@@ -45,7 +46,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
   return (
     <>
       <button onClick={() => setExpanded(true)} className={`cursor-pointer w-full group ${className}`}>
-        <img src={src} alt={alt} className="w-full rounded-xl border border-border transition-all duration-300 group-hover:shadow-lg group-hover:border-primary/20" />
+        <img src={src} alt={alt} loading="lazy" decoding="async" className="w-full rounded-xl border border-border transition-all duration-300 group-hover:shadow-lg group-hover:border-primary/20" />
       </button>
       {expanded && (
         <div className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in" onClick={() => setExpanded(false)}>
@@ -53,7 +54,7 @@ export const ExpandableImage = ({ src, alt, className = "" }: { src: string; alt
             <button onClick={() => setExpanded(false)} className="absolute -top-12 right-0 w-9 h-9 rounded-full bg-card flex items-center justify-center hover:bg-muted transition-colors shadow-lg">
               <X className="w-4 h-4 text-foreground" />
             </button>
-            <img src={src} alt={alt} className="w-full rounded-xl border border-border shadow-2xl" />
+            <img src={src} alt={alt} decoding="async" className="w-full rounded-xl border border-border shadow-2xl" />
           </div>
         </div>
       )}
