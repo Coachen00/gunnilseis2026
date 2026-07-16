@@ -100,6 +100,50 @@
     let lastFormation = { home: '4-4-2', away: '4-4-2' };
     let benchMemory = { home: null, away: null };
     let pitchResizeObserver = null;
+    let boardAutosaveTimer = null;
+    let lastAutosavedState = '';
+
+    function boardContext() {
+        return window.__TACTICS_BOARD_CONTEXT || null;
+    }
+
+    function setAutosaveStatus(message, tone = 'saved') {
+        const status = document.getElementById('tactics-autosave-status');
+        if (!status) return;
+        status.textContent = message;
+        status.dataset.tone = tone;
+    }
+
+    function saveBoardState() {
+        const context = boardContext();
+        if (!context) return;
+        try {
+            const serialized = JSON.stringify(captureFrameState());
+            if (serialized === lastAutosavedState) return;
+            localStorage.setItem('gunnilse:taktiktavla:state:' + encodeURIComponent(context), serialized);
+            lastAutosavedState = serialized;
+            setAutosaveStatus('Sparad automatiskt · ' + new Date().toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' }));
+        } catch (_) {
+            setAutosaveStatus('Kunde inte autospara just nu', 'error');
+        }
+    }
+
+    function loadBoardState() {
+        const context = boardContext();
+        if (!context) return;
+        try {
+            const raw = localStorage.getItem('gunnilse:taktiktavla:state:' + encodeURIComponent(context));
+            if (!raw) {
+                setAutosaveStatus('Autosparar arbetsläget …');
+                return;
+            }
+            applyFrameState(JSON.parse(raw));
+            lastAutosavedState = JSON.stringify(captureFrameState());
+            setAutosaveStatus('Senast sparad version laddad');
+        } catch (_) {
+            setAutosaveStatus('Autosparning startar från en ny tavla', 'error');
+        }
+    }
 
     function legacyXToLogical(value) {
         return (Number(value) / legacyBoard.width) * logicalBoard.width;
@@ -202,6 +246,8 @@
         initFrameDelaySlider();
         setZoom();
         updateAllToggleButtons();
+        loadBoardState();
+        if (boardContext()) boardAutosaveTimer = window.setInterval(saveBoardState, 1000);
         if ('ResizeObserver' in window) {
             pitchResizeObserver = new ResizeObserver(() => {
                 syncCanvasesToPitch();
@@ -1298,7 +1344,7 @@
         setTimeout(() => {
             html2canvas(document.querySelector('#capture-wrapper')).then((imageCanvas) => {
                 const image = imageCanvas.toDataURL('image/png');
-                const activityId = window.__TACTICS_ACTIVITY_ID;
+                const activityId = window.__TACTICS_BOARD_CONTEXT || window.__TACTICS_ACTIVITY_ID;
                 try {
                     const key = activityId
                         ? 'gunnilse:taktiktavla:image:' + encodeURIComponent(activityId)
@@ -1503,6 +1549,11 @@
     document.addEventListener = originalDocumentAddEventListener;
 
     window.__cleanupTacticBoard = () => {
+        saveBoardState();
+        if (boardAutosaveTimer !== null) {
+            window.clearInterval(boardAutosaveTimer);
+            boardAutosaveTimer = null;
+        }
         if (tacticBoardAnimationFrameId !== null) {
             cancelAnimationFrame(tacticBoardAnimationFrameId);
             tacticBoardAnimationFrameId = null;

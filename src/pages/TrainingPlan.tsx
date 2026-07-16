@@ -2,11 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Printer, Plus, Trash2, RotateCcw, BookOpen, ImagePlus, ExternalLink } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
-import { getTacticsImage, removeTacticsImage } from "@/lib/tacticsBoardStorage";
+import { getLatestTacticsImage, getTacticsImage, removeTacticsImage } from "@/lib/tacticsBoardStorage";
 
 const STORAGE_KEY = "gunnilse:traningsplan:v1";
 
 type PlanData = {
+  id: string;
   fields: Record<string, string>;
   activities: string[];
 };
@@ -19,12 +20,17 @@ const DEFAULT_FIELDS: Record<string, string> = {
   "spel:namn": "Spel",
 };
 
+function createPlanId() {
+  return typeof crypto?.randomUUID === "function" ? crypto.randomUUID() : `plan-${Date.now()}`;
+}
+
 function loadPlan(): PlanData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const p = JSON.parse(raw);
       return {
+        id: p.id ?? createPlanId(),
         fields: { ...DEFAULT_FIELDS, ...(p.fields ?? {}) },
         activities: Array.isArray(p.activities) && p.activities.length ? p.activities : [...DEFAULT_ACTIVITIES],
       };
@@ -32,7 +38,15 @@ function loadPlan(): PlanData {
   } catch {
     /* ignore malformed storage */
   }
-  return { fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] };
+  return { id: createPlanId(), fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] };
+}
+
+function getTrainingLabel(fields: Record<string, string>) {
+  const date = fields.datum;
+  if (!date) return "Träningspass";
+  const parsed = new Date(`${date}T12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return "Träningspass";
+  return `${new Intl.DateTimeFormat("sv-SE", { weekday: "long", day: "numeric", month: "numeric" }).format(parsed)} träning`;
 }
 
 const labelCls = "block text-[11px] font-bold uppercase tracking-wide text-[#1e3a8a] mb-1";
@@ -132,8 +146,8 @@ const TrainingPlan = () => {
   const [armed, setArmed] = useState(false);
   const [latestBoardImage, setLatestBoardImage] = useState(() => {
     try {
-      const raw = localStorage.getItem("gunnilse:taktiktavla:latest-image");
-      return raw ? (JSON.parse(raw) as { image: string; savedAt: string }) : null;
+      const image = getLatestTacticsImage();
+      return image ? { image, savedAt: new Date().toISOString() } : null;
     } catch {
       return null;
     }
@@ -165,9 +179,9 @@ const TrainingPlan = () => {
 
   const importLatestBoard = () => {
     try {
-      const raw = localStorage.getItem("gunnilse:taktiktavla:latest-image");
-      if (!raw) return;
-      const board = JSON.parse(raw) as { image: string; savedAt: string };
+      const image = getLatestTacticsImage();
+      if (!image) return;
+      const board = { image, savedAt: new Date().toISOString() };
       setLatestBoardImage(board);
       set("taktikbild", board.image);
       set("taktikbild_datum", board.savedAt);
@@ -181,7 +195,7 @@ const TrainingPlan = () => {
     setPlan((p) => {
       const next: Record<string, string> = {};
       for (const [k, v] of Object.entries(p.fields)) if (!k.startsWith(id + ":")) next[k] = v;
-      removeTacticsImage(id);
+      removeTacticsImage(`${p.id}:${id}`);
       return { fields: next, activities: p.activities.filter((x) => x !== id) };
     });
 
@@ -352,13 +366,17 @@ const TrainingPlan = () => {
                   </div>
                   <button
                     type="button"
-                    onClick={() => navigate(`/taktiktavla?activity=${encodeURIComponent(id)}`)}
+                    onClick={() => {
+                      const contextId = `${plan.id}:${id}`;
+                      const query = new URLSearchParams({ context: contextId, label: `${getTrainingLabel(plan.fields)} · ${get(id + ":namn") || `Moment ${i + 1}`}` });
+                      navigate(`/taktiktavla?${query.toString()}`);
+                    }}
                     className="group relative self-start overflow-hidden rounded border border-[#1e3a8a]/20 bg-[#4CAF50] text-left focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] focus:ring-offset-2 print:pointer-events-none"
                     style={{ aspectRatio: "68/52.5" }}
                     aria-label={`Öppna taktiktavla för aktivitet ${i + 1}`}
                   >
-                    {getTacticsImage(id) ? (
-                      <img src={getTacticsImage(id) ?? undefined} alt="Senast sparade taktiktavla" className="h-full w-full object-cover" />
+                    {getTacticsImage(`${plan.id}:${id}`) ? (
+                      <img src={getTacticsImage(`${plan.id}:${id}`) ?? undefined} alt="Senast sparade taktiktavla" className="h-full w-full object-cover" />
                     ) : (
                       <PitchSVG half />
                     )}

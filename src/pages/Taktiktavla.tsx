@@ -23,6 +23,7 @@ declare global {
      */
     __setTacticsScene?: (scene: TacticsBoardScene) => void;
     __TACTICS_ACTIVITY_ID?: string | null;
+    __TACTICS_BOARD_CONTEXT?: string | null;
   }
 }
 
@@ -68,6 +69,8 @@ function injectStaticBoardMarkup(host: HTMLElement, markup: string) {
 const Taktiktavla = () => {
   const location = useLocation();
   const activityId = new URLSearchParams(location.search).get("activity");
+  const contextId = new URLSearchParams(location.search).get("context");
+  const contextLabel = new URLSearchParams(location.search).get("label");
   const boardRootRef = useRef<HTMLDivElement>(null);
   const backdropRootRef = useRef<Root | null>(null);
   const [loadError, setLoadError] = useState(false);
@@ -97,6 +100,7 @@ const Taktiktavla = () => {
 
   useEffect(() => {
     window.__TACTICS_ACTIVITY_ID = activityId;
+    window.__TACTICS_BOARD_CONTEXT = contextId;
     const boardRoot = boardRootRef.current;
     if (!boardRoot) return;
 
@@ -134,6 +138,7 @@ const Taktiktavla = () => {
 
     return () => {
       delete window.__TACTICS_ACTIVITY_ID;
+      delete window.__TACTICS_BOARD_CONTEXT;
       mounted = false;
       window.__cleanupTacticBoard?.();
       delete window.__cleanupTacticBoard;
@@ -152,11 +157,11 @@ const Taktiktavla = () => {
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
           <Link
-            to="/coach"
+            to={contextId ? "/traningsplan" : "/coach"}
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4" />
-            Coach
+            {contextId ? "Tillbaka till träningsplanering" : "Coach"}
           </Link>
           <div className="flex items-center gap-4">
             <div className="hidden items-center gap-2 text-sm font-display font-bold text-primary sm:flex">
@@ -178,7 +183,7 @@ const Taktiktavla = () => {
               </span>
             </div>
             <h1 className="font-display text-3xl font-bold leading-tight sm:text-4xl">
-              Matchdagens taktiktavla
+              {contextLabel || "Matchdagens taktiktavla"}
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Forma laget, byt mellan målade miljöer och spara bilder direkt i samma vy som matchplanen.
@@ -187,11 +192,11 @@ const Taktiktavla = () => {
 
           <div className="flex flex-wrap gap-2">
             <Link
-              to="/coach"
+              to={contextId ? "/traningsplan" : "/coach"}
               className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
             >
               <LayoutDashboard className="h-4 w-4" />
-              Coach
+              {contextId ? "Träningsplanering" : "Coach"}
             </Link>
             <Link
               to="/match/kommande"
@@ -214,6 +219,12 @@ const Taktiktavla = () => {
       {loadError && (
         <div className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-xs text-amber-100">
           Skärmbildsfunktionen kunde inte laddas just nu. Tavlan fungerar ändå.
+        </div>
+      )}
+
+      {contextId && (
+        <div id="tactics-autosave-status" className="border-b border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-center text-xs font-semibold text-emerald-200">
+          Autosparar arbetsläget …
         </div>
       )}
 
