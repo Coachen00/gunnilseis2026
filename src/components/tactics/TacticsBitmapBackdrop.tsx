@@ -1,14 +1,11 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   getTacticsBoardAsset,
   type TacticsBoardScene,
 } from "@/data/tacticsBoardAssets";
 import {
   CoachboardScene,
-  MatchOverviewScene,
   NeutralAnalysisScene,
-  NightPitchScene,
-  TrainingPitchPaintedScene,
   WhiteboardScene,
 } from "@/components/tactics/PaintedScenes";
 
@@ -22,8 +19,6 @@ type TacticsBitmapBackdropProps = {
  */
 const SVG_SCENES: Partial<Record<TacticsBoardScene, React.FC<{ className?: string; style?: CSSProperties }>>> = {
   whiteboard: WhiteboardScene,
-  night_pitch: NightPitchScene,
-  match_overview: MatchOverviewScene,
   coachboard: CoachboardScene,
   neutral_analysis: NeutralAnalysisScene,
   // training_pitch finns både som bitmap (default) och svg-fallback.
@@ -34,6 +29,10 @@ const TacticsBitmapBackdrop = ({ scene }: TacticsBitmapBackdropProps) => {
   const asset = getTacticsBoardAsset(scene);
   const [bitmapSource, setBitmapSource] = useState(asset.src ?? "");
   const SvgScene = SVG_SCENES[scene];
+
+  useEffect(() => {
+    setBitmapSource(asset.src ?? "");
+  }, [asset.src, scene]);
 
   // Wrapper-fig är alltid `pointer-events: none` (sätt också via CSS),
   // så backdrop aldrig fångar klick från taktikytan.

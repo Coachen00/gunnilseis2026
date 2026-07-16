@@ -4,7 +4,7 @@
             --pitch-stripe: #215e24;
             --line-white: rgba(255, 255, 255, 0.85);
             --zone-border: rgba(255, 255, 255, 0.6);
-            --player-size: 34px;
+            --player-size: 12px;
         }
 
         .tactic-board-page {
@@ -269,7 +269,13 @@
         }
 
         .tactic-board-page #pitch::before {
-            content: none;
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--line-white);
+            box-sizing: border-box;
+            pointer-events: none;
+            z-index: 4;
         }
 
         .tactic-board-page .line {
@@ -398,8 +404,8 @@
         }
 
         .tactic-board-page .golden-zone {
-            background: rgba(255, 215, 0, 0.5);
-            border-color: #FFD700;
+            background: rgba(220, 38, 38, 0.74);
+            border-color: #ff8a8a;
             color: #FFF;
         }
 
@@ -1547,7 +1553,7 @@
     top: 0;
     height: 14%; /* matchar #pitch top:14% */
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.20));
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.25);
+    border-bottom: 0;
     justify-content: flex-end;
 }
 
@@ -1555,7 +1561,7 @@
     bottom: 0;
     height: 14%; /* matchar resterande: 100 - (14+72) = 14 */
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.20));
-    border-top: 1px dashed rgba(255, 255, 255, 0.25);
+    border-top: 0;
     justify-content: flex-end;
 }
 
@@ -1803,6 +1809,431 @@
 
     .tactic-board-page .tactic-panel-body {
         padding: 10px 12px 14px;
+    }
+}
+
+.tactic-board-page {
+    --player-size: 12px;
+}
+
+.tactic-board-page .tactic-board-shell {
+    grid-template-columns: minmax(248px, 282px) minmax(0, 1fr);
+    gap: 14px;
+    max-width: 1760px;
+    padding: 10px 12px 24px;
+}
+
+.tactic-board-page .tactic-control-panel {
+    top: 68px;
+    max-height: calc(100vh - 82px);
+    gap: 8px;
+    padding: 10px;
+    border-radius: 9px;
+    background: linear-gradient(180deg, hsl(200 16% 8%), hsl(210 18% 6%));
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+
+.tactic-board-page .tactic-control-header {
+    padding: 2px 4px 9px;
+}
+
+.tactic-board-page .tactic-control-title {
+    font-size: 16px;
+}
+
+.tactic-board-page .tactic-panel-stack {
+    gap: 6px;
+}
+
+.tactic-board-page .tactic-panel {
+    border-radius: 7px;
+}
+
+.tactic-board-page .tactic-panel summary {
+    grid-template-columns: 24px 1fr 14px;
+    gap: 7px;
+    padding: 8px 10px;
+}
+
+.tactic-board-page .tactic-panel-title {
+    font-size: 11px;
+    letter-spacing: 0.07em;
+}
+
+.tactic-board-page .tactic-panel-body {
+    gap: 9px;
+    padding: 10px 10px 12px;
+}
+
+.tactic-board-page .tactic-board-main #capture-wrapper {
+    max-width: none;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.tactic-board-page .tactic-board-main #capture-area {
+    max-width: none;
+    padding: 4px;
+}
+
+.tactic-board-page .tactics-board {
+    max-width: none;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 7px;
+    box-shadow:
+        0 0 0 1px rgba(15, 21, 17, 0.72),
+        0 18px 42px rgba(0, 0, 0, 0.38);
+}
+
+.tactic-board-page .tactic-panel-hint {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.tactic-board-page .tactic-section-title,
+.tactic-board-page .tactic-field-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+}
+
+.tactic-board-page .piece {
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.18),
+        0 3px 8px rgba(0, 0, 0, 0.46);
+}
+
+@media (max-width: 1024px) {
+    .tactic-board-page .tactic-board-shell {
+        padding: 10px;
+    }
+}
+
+.tactic-board-page .training-material-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.tactic-board-page .training-material-button {
+    position: relative;
+    min-height: 42px;
+    padding: 20px 5px 5px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.045);
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: none;
+}
+
+.tactic-board-page .training-material-button::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 7px;
+    width: 22px;
+    height: 9px;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    background: #ef8c20;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.tactic-board-page .training-material-button:hover {
+    border-color: rgba(55, 199, 112, 0.58);
+    background: rgba(55, 199, 112, 0.12);
+    color: white;
+}
+
+.tactic-board-page .material-cone::before {
+    width: 12px;
+    height: 13px;
+    top: 4px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    border-radius: 0;
+}
+
+.tactic-board-page .material-hurdle::before {
+    width: 25px;
+    height: 10px;
+    top: 7px;
+    border-top: 3px solid #f2b134;
+    border-bottom: 2px solid #f2b134;
+    background: transparent;
+    box-shadow: -8px 5px 0 -3px #f2b134, 8px 5px 0 -3px #f2b134;
+}
+
+.tactic-board-page .material-ring::before {
+    width: 15px;
+    height: 15px;
+    top: 3px;
+    border: 3px solid #f3c64d;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.tactic-board-page .material-ladder::before {
+    width: 27px;
+    height: 12px;
+    top: 5px;
+    border: 2px solid #e9c46a;
+    background: repeating-linear-gradient(90deg, transparent 0 5px, #e9c46a 5px 7px);
+}
+
+.tactic-board-page .material-pole::before {
+    width: 5px;
+    height: 17px;
+    top: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #e7b23d, #fff0a8 55%, #c88719);
+}
+
+.tactic-board-page .material-mannequin::before {
+    width: 16px;
+    height: 18px;
+    top: 2px;
+    clip-path: polygon(38% 0, 62% 0, 67% 25%, 94% 42%, 76% 52%, 70% 100%, 30% 100%, 24% 52%, 6% 42%, 33% 25%);
+    border-radius: 4px;
+    background: #e8eced;
+}
+
+.tactic-board-page .material-mini-goal::before {
+    width: 28px;
+    height: 14px;
+    top: 4px;
+    border: 2px solid #e8eced;
+    background: repeating-linear-gradient(135deg, transparent 0 4px, rgba(232, 236, 237, 0.32) 4px 5px);
+}
+
+.tactic-board-page .material-ball::before {
+    width: 15px;
+    height: 15px;
+    top: 3px;
+    border: 1px solid #1e2528;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, #b7bec0);
+}
+
+.tactic-board-page .piece.hurdle {
+    width: 40px;
+    height: 20px;
+    border-top: 5px solid #f2b134;
+    border-bottom: 3px solid #f2b134;
+    background: transparent;
+    box-shadow: -12px 6px 0 -4px #f2b134, 12px 6px 0 -4px #f2b134;
+}
+
+.tactic-board-page .piece.ring {
+    width: 30px;
+    height: 30px;
+    border: 6px solid #f3c64d;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.tactic-board-page .piece.ladder {
+    width: 58px;
+    height: 22px;
+    border: 3px solid #e9c46a;
+    background: repeating-linear-gradient(90deg, transparent 0 9px, #e9c46a 9px 12px);
+}
+
+.tactic-board-page .piece.pole {
+    width: 8px;
+    height: 40px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #d08b19, #fff0a8 55%, #b77815);
+}
+
+.tactic-board-page .piece.mannequin {
+    width: 26px;
+    height: 44px;
+    clip-path: polygon(38% 0, 62% 0, 67% 25%, 94% 42%, 76% 52%, 70% 100%, 30% 100%, 24% 52%, 6% 42%, 33% 25%);
+    border-radius: 5px;
+    background: linear-gradient(90deg, #b7c0c1, #f2f5f4 50%, #9ca7a9);
+}
+
+.tactic-board-page .piece.mini-goal {
+    width: 58px;
+    height: 34px;
+    border: 4px solid #edf1f1;
+    background: repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 5px, rgba(19, 33, 34, 0.08) 5px 8px);
+}
+
+.tactic-board-page .piece.hurdle,
+.tactic-board-page .piece.ring,
+.tactic-board-page .piece.ladder,
+.tactic-board-page .piece.pole,
+.tactic-board-page .piece.mannequin,
+.tactic-board-page .piece.mini-goal {
+    z-index: 105;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.38);
+}
+
+.tactic-board-page .piece.player-piece {
+    width: var(--player-size);
+    height: var(--player-size);
+    border: 1.5px solid rgba(255, 255, 255, 0.92);
+    outline: 1px solid rgba(8, 16, 19, 0.72);
+    font-family: 'Arial Narrow', 'Segoe UI', sans-serif;
+    font-size: clamp(5px, calc(var(--player-size) * 0.4), 15px);
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.52),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.28),
+        0 3px 0 rgba(7, 15, 18, 0.62),
+        0 6px 12px rgba(3, 10, 12, 0.42);
+    filter: none;
+}
+
+.tactic-board-page .piece.player-piece::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    right: 5px;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+    pointer-events: none;
+}
+
+.tactic-board-page .piece.player-piece.home {
+    background: radial-gradient(circle at 34% 24%, #ff817a 0 12%, #e0443f 35%, #a91f27 100%);
+}
+
+.tactic-board-page .piece.player-piece.away {
+    background: radial-gradient(circle at 34% 24%, #69baff 0 12%, #2584d4 35%, #14509c 100%);
+}
+
+.tactic-board-page .piece.player-piece .name {
+    bottom: calc(var(--player-size) * -0.82);
+    z-index: 2;
+    max-width: 86px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px 5px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(8, 14, 17, 0.88);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(6px, calc(var(--player-size) * 0.32), 9px);
+    font-weight: 750;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(3px);
+}
+
+.tactic-board-page .piece.player-piece:hover {
+    transform: translate(-50%, -50%) scale(1.08);
+    z-index: 130;
+}
+
+.tactic-board-page .piece.player-piece.linking {
+    border: 2px solid #ffe36e;
+    box-shadow:
+        0 0 0 3px rgba(255, 227, 110, 0.24),
+        0 5px 14px rgba(255, 214, 70, 0.46);
+}
+
+.tactic-board-page .tactics-interaction-layer > .piece {
+    z-index: 120;
+    overflow: visible;
+}
+
+.tactic-board-page .zone-opponents {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tactic-board-page .zone-opponents span {
+    position: absolute;
+    width: clamp(16px, 3.4vw, 28px);
+    height: clamp(16px, 3.4vw, 28px);
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 236, 232, 0.88);
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #ef7771 0 20%, #a9272d 52%, #641b21 100%);
+    box-shadow: 0 3px 7px rgba(39, 9, 13, 0.42);
+    animation: zoneOpponentScan 3.8s ease-in-out infinite;
+}
+
+.tactic-board-page .zone-opponents span:nth-child(2) {
+    animation-delay: -1.2s;
+}
+
+.tactic-board-page .zone-opponents span:nth-child(3) {
+    animation-delay: -2.4s;
+}
+
+.tactic-board-page .zone-opponents span:nth-child(4) {
+    animation-delay: -0.6s;
+}
+
+.tactic-board-page .opponent-formation {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.tactic-board-page .opponent-player {
+    position: absolute;
+    width: clamp(17px, 2.7vw, 25px);
+    height: clamp(17px, 2.7vw, 25px);
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(255, 244, 241, 0.84);
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #f4877d 0 17%, #ad3037 48%, #5f1c25 100%);
+    box-shadow: 0 3px 7px rgba(46, 8, 12, 0.42);
+}
+
+.tactic-board-page .opponent-player::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    right: 4px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.tactic-board-page .opponent-goalkeeper {
+    background: radial-gradient(circle at 32% 28%, #f8dc77 0 17%, #b98220 48%, #6c4414 100%);
+}
+
+.tactic-board-page #layer-spelytor .play-zone {
+    z-index: 1;
+}
+
+.tactic-board-page #layer-spelytor .play-zone-content {
+    z-index: 3;
+}
+
+.tactic-board-page .tactics-board[data-scene="whiteboard"] #pitch::before,
+.tactic-board-page .tactics-board[data-scene="neutral_analysis"] #pitch::before {
+    border-color: rgba(40, 30, 15, 0.7);
+}
+
+@keyframes zoneOpponentScan {
+    0%, 100% { margin-left: 0; margin-top: 0; }
+    50% { margin-left: 4px; margin-top: -3px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tactic-board-page .zone-opponents span {
+        animation: none;
     }
 }
     

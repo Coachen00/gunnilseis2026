@@ -52,7 +52,7 @@
                     <div class="tactic-panel-section">
                         <span class="tactic-section-title">Visa p&aring; planen</span>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
-                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; Assistyta</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; assistytor</label>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner straffomr&aring;de</label>
@@ -175,6 +175,20 @@
                         <button type="button" onclick="clearCanvas()">Rensa ritverk</button>
                     </div>
                     <div class="tactic-panel-section">
+                        <span class="tactic-section-title">Träningsmaterial</span>
+                        <p class="tactic-panel-hint">Lägg ut material och flytta det till rätt startposition.</p>
+                        <div class="training-material-grid" aria-label="Lägg till träningsmaterial">
+                            <button type="button" class="training-material-button material-cone" onclick="addTrainingObject('cone')" title="Lägg till kon">Kon</button>
+                            <button type="button" class="training-material-button material-hurdle" onclick="addTrainingObject('hurdle')" title="Lägg till häck">Häck</button>
+                            <button type="button" class="training-material-button material-ring" onclick="addTrainingObject('ring')" title="Lägg till ring">Ring</button>
+                            <button type="button" class="training-material-button material-ladder" onclick="addTrainingObject('ladder')" title="Lägg till stege">Stege</button>
+                            <button type="button" class="training-material-button material-pole" onclick="addTrainingObject('pole')" title="Lägg till käpp">Käpp</button>
+                            <button type="button" class="training-material-button material-mannequin" onclick="addTrainingObject('mannequin')" title="Lägg till träningsdummy">Dummy</button>
+                            <button type="button" class="training-material-button material-mini-goal" onclick="addTrainingObject('mini-goal')" title="Lägg till minimål">Minimål</button>
+                            <button type="button" class="training-material-button material-ball" onclick="addBall()" title="Lägg till boll">Boll</button>
+                        </div>
+                    </div>
+                    <div class="tactic-panel-section">
                         <span class="tactic-section-title">Passningslinjer</span>
                         <p class="tactic-panel-hint">L&auml;nka tv&aring; spelare = passningslinje mellan dem som f&ouml;ljer n&auml;r de flyttas.</p>
                         <div class="quick-actions stacked">
@@ -234,7 +248,7 @@
                     </div>
                     <div class="slider-group">
                         <span>Spelar-storlek</span>
-                        <input type="range" id="playerSize" min="28" max="56" value="34" oninput="setPlayerSize(this.value)">
+                        <input type="range" id="playerSize" min="12" max="56" value="12" oninput="setPlayerSize(this.value)">
                         <span id="playerSizeValue" class="slider-value">100%</span>
                     </div>
                 </div>
@@ -279,41 +293,44 @@
                     </div>
 
                     <div id="layer-spelytor" class="layer" style="display:none; z-index:2;">
-                        <div class="zone play-zone zone-origin" style="left:0%; width:36.3636%; height:100%;">
+                        <div class="opponent-formation" aria-label="Motståndare i 4-4-2">
+                            <span class="opponent-player" style="left:28%; top:35%;"></span>
+                            <span class="opponent-player" style="left:28%; top:65%;"></span>
+                            <span class="opponent-player" style="left:52%; top:14%;"></span>
+                            <span class="opponent-player" style="left:52%; top:38%;"></span>
+                            <span class="opponent-player" style="left:52%; top:62%;"></span>
+                            <span class="opponent-player" style="left:52%; top:86%;"></span>
+                            <span class="opponent-player" style="left:76%; top:14%;"></span>
+                            <span class="opponent-player" style="left:76%; top:38%;"></span>
+                            <span class="opponent-player" style="left:76%; top:62%;"></span>
+                            <span class="opponent-player" style="left:76%; top:86%;"></span>
+                            <span class="opponent-player opponent-goalkeeper" style="left:94%; top:50%;"></span>
+                        </div>
+                        <div class="zone play-zone zone-origin" style="left:0%; width:28%; height:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Utg&aring;ngsyta</span>
                                 <span class="zone-sub">Framf&ouml;r forwards</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-one" style="left:36.3636%; width:18.1818%; height:100%;">
+                        <div class="zone play-zone zone-one" style="left:28%; width:24%; height:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 1</span>
                                 <span class="zone-sub">Mellan forwards och mittf&auml;lt</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-two" style="left:54.5455%; width:22.7273%; height:100%;">
+                        <div class="zone play-zone zone-two" style="left:52%; width:24%; height:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 2</span>
                                 <span class="zone-sub">Mellan mittf&auml;lt och backlinje</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-three" style="left:77.2727%; width:22.7273%; height:100%;">
+                        <div class="zone play-zone zone-three" style="left:76%; width:24%; height:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 3</span>
-                                <span class="zone-sub">Bakom backlinjen</span>
+                                <span class="zone-sub">Bakom backlinjen, framför målvakten</span>
                             </div>
                         </div>
 
-                        <div class="dummy-player" style="left:36.3636%; top:35.7143%;"></div>
-                        <div class="dummy-player" style="left:36.3636%; top:64.2857%;"></div>
-                        <div class="dummy-player" style="left:54.5455%; top:17.1429%;"></div>
-                        <div class="dummy-player" style="left:54.5455%; top:38.5714%;"></div>
-                        <div class="dummy-player" style="left:54.5455%; top:61.4286%;"></div>
-                        <div class="dummy-player" style="left:54.5455%; top:82.8571%;"></div>
-                        <div class="dummy-player" style="left:77.2727%; top:17.1429%;"></div>
-                        <div class="dummy-player" style="left:77.2727%; top:38.5714%;"></div>
-                        <div class="dummy-player" style="left:77.2727%; top:61.4286%;"></div>
-                        <div class="dummy-player" style="left:77.2727%; top:82.8571%;"></div>
                     </div>
 
                     <div id="layer-assistv" class="layer" style="display:none; z-index:3;">

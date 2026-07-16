@@ -88,6 +88,8 @@ const Taktiktavla = () => {
     backdropRootRef.current?.render(<TacticsBitmapBackdrop scene={scene} />);
     const boardEl = boardRootRef.current?.querySelector<HTMLElement>(".tactics-board");
     if (boardEl) boardEl.dataset.scene = scene;
+    const sceneSelect = boardRootRef.current?.querySelector<HTMLSelectElement>("#sceneSelect");
+    if (sceneSelect) sceneSelect.value = scene;
   }, [scene]);
 
   useEffect(() => {

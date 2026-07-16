@@ -27,7 +27,7 @@
     const svgLinks = document.getElementById('dynamic-links');
 
     const totalFrames = 10;
-    const defaultPlayerSize = 34;
+    const defaultPlayerSize = 12;
     // Mutable: ändras via #frameDelay-slidern i Sekvens-panelen.
     let frameDelayMs = 1500;
     const movableLineThresholdPx = 76;
@@ -37,18 +37,18 @@
     const formationOrder = ['4-4-2', '4-3-3', '4-2-3-1', '4-1-4-1', '4-3-1-2', '4-4-1-1', '3-5-2', '3-4-3', '3-4-2-1', '3-4-1-2', '5-3-2', '5-4-1'];
     const layerIds = ['layer-korridorer', 'layer-golden', 'layer-spelytor', 'layer-assistv', 'layer-straffzoner'];
     const zoomPresets = {
-        full: { originX: 50, originY: 50 },
-        'third-l': { originX: 22, originY: 50 },
-        'third-c': { originX: 50, originY: 50 },
-        'third-r': { originX: 78, originY: 50 },
-        'box-l': { originX: 12, originY: 50 },
-        'box-r': { originX: 88, originY: 50 },
-        'mid-high': { originX: 50, originY: 28 },
-        'mid-low': { originX: 50, originY: 72 },
-        'corner-tl': { originX: 0, originY: 0 },
-        'corner-bl': { originX: 0, originY: 100 },
-        'corner-tr': { originX: 100, originY: 0 },
-        'corner-br': { originX: 100, originY: 100 }
+        full: { originX: 50, originY: 50, scale: 1 },
+        'third-l': { originX: 22, originY: 50, scale: 1.65 },
+        'third-c': { originX: 50, originY: 50, scale: 1.55 },
+        'third-r': { originX: 78, originY: 50, scale: 1.65 },
+        'box-l': { originX: 12, originY: 50, scale: 2.35 },
+        'box-r': { originX: 88, originY: 50, scale: 2.35 },
+        'mid-high': { originX: 50, originY: 28, scale: 1.7 },
+        'mid-low': { originX: 50, originY: 72, scale: 1.7 },
+        'corner-tl': { originX: 0, originY: 0, scale: 2.35 },
+        'corner-bl': { originX: 0, originY: 100, scale: 2.35 },
+        'corner-tr': { originX: 100, originY: 0, scale: 2.35 },
+        'corner-br': { originX: 100, originY: 100, scale: 2.35 }
     };
 
     const legacyFormations = {
@@ -193,6 +193,8 @@
         createInitialPieces();
         initTimeline();
         initFormationButtons();
+        document.getElementById('zoomSelect')?.addEventListener('change', setZoom);
+        document.getElementById('zoomLevel')?.addEventListener('input', setZoom);
         setPlayerSize(defaultPlayerSize);
         updateToolSettingsLabels();
         updateToolOptionsVisibility();
@@ -456,6 +458,22 @@
         createPiece('cone', '', 41 + (Math.random() * 18), 3, `cone-${itemCounter++}`, 'logical');
     }
 
+    function addTrainingObject(type) {
+        const presets = {
+            cone: { x: 38, y: 44 },
+            hurdle: { x: 50, y: 52 },
+            ring: { x: 50, y: 48 },
+            ladder: { x: 50, y: 42 },
+            pole: { x: 50, y: 38 },
+            mannequin: { x: 62, y: 50 },
+            'mini-goal': { x: 50, y: 68 },
+        };
+        const preset = presets[type];
+        if (!preset) return;
+        const jitter = () => (Math.random() - 0.5) * 8;
+        createPiece(type, '', preset.x + jitter(), preset.y + jitter(), `${type}-${itemCounter++}`, 'logical');
+    }
+
     function setPlayerSize(value) {
         const size = Number(value);
         document.documentElement.style.setProperty('--player-size', `${size}px`);
@@ -560,11 +578,13 @@
         const value = document.getElementById('zoomSelect').value;
         const zoomPercent = Number(document.getElementById('zoomLevel').value);
         const preset = zoomPresets[value] || zoomPresets.full;
-        const scale = zoomPercent / 100;
+        const scale = (preset.scale || 1) * (zoomPercent / 100);
         captureArea.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
         captureArea.style.transformOrigin = `${preset.originX}% ${preset.originY}%`;
         captureArea.style.transform = `scale(${scale})`;
         currentScale = scale;
+        captureArea.dataset.zoomPreset = value;
+        captureArea.dataset.zoomScale = String(scale);
         updateToolSettingsLabels();
     }
 
@@ -1518,7 +1538,8 @@
   window.setTeamAvailability = setTeamAvailability;
   window.clearPlayers = clearPlayers;
   window.addBall = addBall;
-  window.addCone = addCone;
+    window.addCone = addCone;
+    window.addTrainingObject = addTrainingObject;
   window.setPlayerSize = setPlayerSize;
   window.updateToolSettingsLabels = updateToolSettingsLabels;
   window.updateToolOptionsVisibility = updateToolOptionsVisibility;

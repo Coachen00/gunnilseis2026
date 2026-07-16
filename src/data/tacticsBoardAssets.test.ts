@@ -13,7 +13,14 @@ describe("TACTICS_BOARD_ASSETS", () => {
         height: 72,
       },
     });
-    expect(TACTICS_BOARD_ASSETS.training_pitch.src).toContain("training-pitch-painted.webp");
+    expect(TACTICS_BOARD_ASSETS.training_pitch.src).toContain("training-pitch-realistic.png");
     expect(TACTICS_BOARD_ASSETS.training_pitch.fallbackSrc).toContain("training-pitch-painted.png");
+  });
+
+  it("uses bitmap scenes for the other full-pitch backgrounds", () => {
+    expect(TACTICS_BOARD_ASSETS.night_pitch).toMatchObject({ kind: "bitmap" });
+    expect(TACTICS_BOARD_ASSETS.match_overview).toMatchObject({ kind: "bitmap" });
+    expect(TACTICS_BOARD_ASSETS.night_pitch.src).toContain("night-pitch-realistic.png");
+    expect(TACTICS_BOARD_ASSETS.match_overview.src).toContain("match-overview-realistic.png");
   });
 });
