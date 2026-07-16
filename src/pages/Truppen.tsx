@@ -1,4 +1,4 @@
-import PageHero from "@/components/PageHero";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import SectionReveal from "@/components/SectionReveal";
 import { useSquad } from "@/hooks/useSquad";
 import { POSITION_LABELS, groupSquadByPosition, type Position } from "@/data/squad";
@@ -13,22 +13,22 @@ const Truppen = () => {
   const totalPlayers = players.length;
 
   return (
-    <>
-      <PageHero
+    <div className="bg-kedja-paper">
+      <KedjaHero
         eyebrow="Trupp"
         title="Herrtruppen 2026"
-        description={`${totalPlayers} spelare i fyra positionsgrupper. Synkas dagligen från svenskalag.se — manuella ändringar görs i adminvyn.`}
+        lead={`${totalPlayers} spelare i fyra positionsgrupper. Synkas dagligen från svenskalag.se — manuella ändringar görs i adminvyn.`}
       />
 
       <div className="container pb-section">
         {loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-kedja-border bg-white px-3 py-1.5 text-xs text-kedja-deep/70">
             <Loader2 className="h-3 w-3 animate-spin" /> Hämtar truppen…
           </div>
         )}
 
         {usingFallback && !loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-kedja-green/30 bg-kedja-green/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-kedja-green">
             Fallback-data · väntar på första syncen
           </div>
         )}
@@ -41,47 +41,47 @@ const Truppen = () => {
             return (
               <section
                 key={pos}
-                className="rounded-md border border-border/70 bg-card overflow-hidden"
+                className="rounded-md border border-kedja-border/70 bg-white overflow-hidden"
               >
-                <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
+                <header className="flex items-center justify-between border-b border-kedja-border/60 px-5 py-4">
                   <div className="flex items-baseline gap-3">
-                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-accent/40 bg-accent/10 font-mono text-[10px] font-black tracking-wider text-accent">
+                    <span className="grid h-7 w-7 place-items-center rounded-sm border border-kedja-green/40 bg-kedja-green/10 font-mono text-[10px] font-black tracking-wider text-kedja-green">
                       {labels.short}
                     </span>
-                    <h2 className="text-xl text-foreground">{labels.long}</h2>
+                    <h2 className="text-xl text-kedja-ink">{labels.long}</h2>
                   </div>
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-kedja-deep/70">
                     {list.length} spelare
                   </span>
                 </header>
-                <ul className="divide-y divide-border/50">
+                <ul className="divide-y divide-kedja-border/50">
                   {list.map((player) => (
                     <li
                       key={player.name}
-                      className="group flex items-center gap-3 px-5 py-3 transition-colors hover:bg-muted/30"
+                      className="group flex items-center gap-3 px-5 py-3 transition-colors hover:bg-kedja-paper"
                     >
                       <span
                         className={cn(
                           "grid h-8 w-8 flex-shrink-0 place-items-center rounded-sm font-mono text-xs font-black",
                           player.jerseyNumber
-                            ? "border border-accent/30 bg-accent/5 text-accent"
-                            : "border border-border/70 text-muted-foreground"
+                            ? "border border-kedja-green/30 bg-kedja-green/5 text-kedja-green"
+                            : "border border-kedja-border/70 text-kedja-deep/70"
                         )}
                       >
                         {player.jerseyNumber ?? "—"}
                       </span>
-                      <span className="flex-1 text-sm font-bold tracking-tight text-foreground">
+                      <span className="flex-1 text-sm font-bold tracking-tight text-kedja-ink">
                         {player.name}
                       </span>
                       {player.birthYear && (
-                        <span className="font-mono text-[10px] text-muted-foreground">
+                        <span className="font-mono text-[10px] text-kedja-deep/70">
                           ’{String(player.birthYear).slice(2)}
                         </span>
                       )}
                     </li>
                   ))}
                   {list.length === 0 && (
-                    <li className="px-5 py-6 text-center text-xs text-muted-foreground">
+                    <li className="px-5 py-6 text-center text-xs text-kedja-deep/70">
                       Inga spelare i denna grupp ännu.
                     </li>
                   )}
@@ -92,26 +92,26 @@ const Truppen = () => {
         </SectionReveal>
 
         {/* Ledarstab */}
-        <SectionReveal as="section" className="mt-10 rounded-md border border-border/70 bg-card overflow-hidden">
-          <header className="flex items-center justify-between border-b border-border/60 px-5 py-4">
+        <SectionReveal as="section" className="mt-10 rounded-md border border-kedja-border/70 bg-white overflow-hidden">
+          <header className="flex items-center justify-between border-b border-kedja-border/60 px-5 py-4">
             <div className="flex items-baseline gap-3">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-kedja-green">
                 Ledarstab
               </span>
-              <h2 className="text-xl text-foreground">Tränare & ledning</h2>
+              <h2 className="text-xl text-kedja-ink">Tränare & ledning</h2>
             </div>
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-kedja-deep/70">
               {staff.length} personer
             </span>
           </header>
-          <ul className="divide-y divide-border/50">
+          <ul className="divide-y divide-kedja-border/50">
             {staff.map((member) => (
               <li
                 key={member.name}
                 className="flex items-center justify-between px-5 py-3"
               >
-                <span className="text-sm font-bold tracking-tight text-foreground">{member.name}</span>
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                <span className="text-sm font-bold tracking-tight text-kedja-ink">{member.name}</span>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-kedja-deep/70">
                   {member.role}
                 </span>
               </li>
@@ -124,13 +124,13 @@ const Truppen = () => {
           href="https://www.svenskalag.se/gunnilseis-herr/truppen"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
+          className="mt-8 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-kedja-deep/70 transition hover:text-kedja-green"
         >
           Källa · svenskalag.se
           <ExternalLink className="h-3 w-3" />
         </a>
       </div>
-    </>
+    </div>
   );
 };
 

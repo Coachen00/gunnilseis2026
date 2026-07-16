@@ -13,7 +13,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Info } from "lucide-react";
-import PageHero from "@/components/PageHero";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import SectionReveal from "@/components/SectionReveal";
 import SpelarvardDocs from "@/components/spelarvard/SpelarvardDocs";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
@@ -59,8 +59,8 @@ const Spelarvard = () => {
     .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   return (
-    <>
-      <PageHero eyebrow="Spelare · Vård" title={SPELARVARD_TITLE} description={SPELARVARD_INTRO} />
+    <div className="bg-kedja-paper">
+      <KedjaHero eyebrow="Spelare · Vård" title={SPELARVARD_TITLE} lead={SPELARVARD_INTRO} />
 
       <div className="container space-y-6 pb-section md:space-y-8">
         {isAdmin && (
@@ -77,10 +77,10 @@ const Spelarvard = () => {
 
         {/* Rullgardin: välj område */}
         <SectionReveal>
-          <div className="rounded-2xl border border-border bg-card p-4 md:p-5">
+          <div className="rounded-2xl border border-kedja-border bg-white p-4 md:p-5">
             <label
               htmlFor="spelarvard-omrade"
-              className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground"
+              className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-kedja-deep/70"
             >
               Välj område
             </label>
@@ -89,7 +89,7 @@ const Spelarvard = () => {
                 id="spelarvard-omrade"
                 value={area.id}
                 onChange={(e) => setAreaId(e.target.value)}
-                className="h-12 w-full appearance-none rounded-xl border border-border bg-background pl-4 pr-10 text-base font-black tracking-tight text-foreground outline-none transition focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20"
+                className="h-12 w-full appearance-none rounded-xl border border-kedja-border bg-white pl-4 pr-10 text-base font-black tracking-tight text-kedja-ink outline-none transition focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20"
               >
                 {SPELARVARD_AREAS.map((a) => (
                   <option key={a.id} value={a.id}>
@@ -103,7 +103,7 @@ const Spelarvard = () => {
                 aria-hidden="true"
               />
             </div>
-            <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground">{area.blurb}</p>
+            <p className="mt-2.5 text-sm leading-relaxed text-kedja-deep/70">{area.blurb}</p>
           </div>
         </SectionReveal>
 
@@ -115,21 +115,21 @@ const Spelarvard = () => {
 
           return (
             <SectionReveal key={section.id}>
-              <article id={section.id} className="scroll-mt-24 rounded-2xl border border-border bg-card p-5 md:p-7">
+              <article id={section.id} className="scroll-mt-24 rounded-2xl border border-kedja-border bg-white p-5 md:p-7">
                 <header className="flex items-start gap-3">
                   <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-amber-50 font-mono text-[12px] font-black text-amber-800">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-xl font-black tracking-tight text-foreground md:text-2xl">{section.title}</h2>
+                      <h2 className="text-xl font-black tracking-tight text-kedja-ink md:text-2xl">{section.title}</h2>
                       {section.proposal && (
                         <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.18em] text-amber-800">
                           Förslag
                         </span>
                       )}
                     </div>
-                    <p className="mt-0.5 text-sm font-medium text-muted-foreground">{section.question}</p>
+                    <p className="mt-0.5 text-sm font-medium text-kedja-deep/70">{section.question}</p>
                   </div>
                 </header>
 
@@ -137,7 +137,7 @@ const Spelarvard = () => {
                   {section.bullets.map((b, bi) => (
                     <li key={bi} className="grid grid-cols-[22px_1fr] items-baseline gap-2">
                       <span className="font-mono text-[10px] font-black text-amber-700">{String(bi + 1).padStart(2, "0")}</span>
-                      <span className="text-sm leading-relaxed text-foreground/90">{b}</span>
+                      <span className="text-sm leading-relaxed text-kedja-ink/90">{b}</span>
                     </li>
                   ))}
                 </ul>
@@ -156,20 +156,20 @@ const Spelarvard = () => {
         })}
 
         <SectionReveal>
-          <p className="text-xs text-muted-foreground">{SPELARVARD_SOURCE_NOTE}</p>
+          <p className="text-xs text-kedja-deep/70">{SPELARVARD_SOURCE_NOTE}</p>
         </SectionReveal>
 
         <SectionReveal>
           <Link
             to="/match/kommande"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-foreground transition hover:border-amber-500/60"
+            className="inline-flex items-center gap-1.5 rounded-md border border-kedja-border bg-white px-3.5 py-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-ink transition hover:border-amber-500/60"
           >
             Till veckans match
             <ArrowRight className="h-3 w-3" strokeWidth={2.4} />
           </Link>
         </SectionReveal>
       </div>
-    </>
+    </div>
   );
 };
 
