@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Printer, Plus, Trash2, RotateCcw, BookOpen } from "lucide-react";
+import { ArrowLeft, Printer, Plus, Trash2, RotateCcw, BookOpen, ImagePlus, ExternalLink } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 
 const STORAGE_KEY = "gunnilse:traningsplan:v1";
@@ -10,7 +10,13 @@ type PlanData = {
   activities: string[];
 };
 
-const DEFAULT_ACTIVITIES = ["a1", "a2", "a3"];
+const DEFAULT_ACTIVITIES = ["aktivering", "spelovning1", "spelovning2", "spel"];
+const DEFAULT_FIELDS: Record<string, string> = {
+  "aktivering:namn": "Aktivering",
+  "spelovning1:namn": "Spelövning 1",
+  "spelovning2:namn": "Spelövning 2",
+  "spel:namn": "Spel",
+};
 
 function loadPlan(): PlanData {
   try {
@@ -18,14 +24,14 @@ function loadPlan(): PlanData {
     if (raw) {
       const p = JSON.parse(raw);
       return {
-        fields: p.fields ?? {},
+        fields: { ...DEFAULT_FIELDS, ...(p.fields ?? {}) },
         activities: Array.isArray(p.activities) && p.activities.length ? p.activities : [...DEFAULT_ACTIVITIES],
       };
     }
   } catch {
     /* ignore malformed storage */
   }
-  return { fields: {}, activities: [...DEFAULT_ACTIVITIES] };
+  return { fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] };
 }
 
 const labelCls = "block text-[11px] font-bold uppercase tracking-wide text-[#1e3a8a] mb-1";
@@ -122,6 +128,14 @@ const REMINDERS: { title: string; items: string[] }[] = [
 const TrainingPlan = () => {
   const [plan, setPlan] = useState<PlanData>(loadPlan);
   const [armed, setArmed] = useState(false);
+  const [latestBoardImage, setLatestBoardImage] = useState(() => {
+    try {
+      const raw = localStorage.getItem("gunnilse:taktiktavla:latest-image");
+      return raw ? (JSON.parse(raw) as { image: string; savedAt: string }) : null;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     try {
@@ -147,6 +161,19 @@ const TrainingPlan = () => {
   const get = (k: string) => plan.fields[k] ?? "";
   const set = (k: string, v: string) => setPlan((p) => ({ ...p, fields: { ...p.fields, [k]: v } }));
 
+  const importLatestBoard = () => {
+    try {
+      const raw = localStorage.getItem("gunnilse:taktiktavla:latest-image");
+      if (!raw) return;
+      const board = JSON.parse(raw) as { image: string; savedAt: string };
+      setLatestBoardImage(board);
+      set("taktikbild", board.image);
+      set("taktikbild_datum", board.savedAt);
+    } catch {
+      setLatestBoardImage(null);
+    }
+  };
+
   const addActivity = () => setPlan((p) => ({ ...p, activities: [...p.activities, "a" + Date.now()] }));
   const removeActivity = (id: string) =>
     setPlan((p) => {
@@ -161,7 +188,7 @@ const TrainingPlan = () => {
       window.setTimeout(() => setArmed(false), 2500);
       return;
     }
-    setPlan({ fields: {}, activities: [...DEFAULT_ACTIVITIES] });
+    setPlan({ fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] });
     setArmed(false);
   };
 
@@ -171,7 +198,7 @@ const TrainingPlan = () => {
       <div className="max-w-[1050px] mx-auto mb-4 flex items-center justify-between gap-3 print:hidden">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-primary hover:underline">
           <ArrowLeft className="w-4 h-4" />
-          Tillbaka till spelkarta
+          Tillbaka till Coach
         </Link>
         <div className="flex items-center gap-2">
           <button
@@ -198,12 +225,16 @@ const TrainingPlan = () => {
       <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#FFD700] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none">
         {/* Title */}
         <div className="bg-[#1e3a8a] text-white px-5 py-3 flex items-baseline justify-between">
-          <h1 className="text-lg font-bold uppercase tracking-wide">Träningspass</h1>
+          <h1 className="text-lg font-bold uppercase tracking-wide">Träningsplanering</h1>
           <span className="text-[#FFD700] text-xs font-semibold print:hidden">Sparas automatiskt</span>
         </div>
 
-        {/* Pass essentials */}
+        {/* Matchlärdom och grov plan */}
         <div className="p-4 border-b border-gray-200">
+          <div className="mb-4 rounded-xl border-2 border-[#1e3a8a]/15 bg-[#1e3a8a]/5 p-3">
+            <p className={labelCls}>1 · Vad tar vi med oss från matchen?</p>
+            <AutoTextarea value={get("match_larande")} onChange={(v) => set("match_larande", v)} placeholder="Vad såg vi? Vad behöver vi behålla, förstå eller förbättra till nästa match?" />
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
               <label className={labelCls}>Datum</label>
@@ -214,7 +245,7 @@ const TrainingPlan = () => {
               <input value={get("lag")} onChange={(e) => set("lag", e.target.value)} placeholder="T.ex. U17" className={inputCls} />
             </div>
             <div>
-              <label className={labelCls}>Fokus / tema</label>
+              <label className={labelCls}>Tema</label>
               <input
                 value={get("fokus")}
                 onChange={(e) => set("fokus", e.target.value)}
@@ -226,6 +257,10 @@ const TrainingPlan = () => {
               <label className={labelCls}>Passlängd</label>
               <input value={get("langd")} onChange={(e) => set("langd", e.target.value)} placeholder="90 min" className={inputCls} />
             </div>
+          </div>
+          <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+            <p className={labelCls}>2 · Grov översikt</p>
+            <AutoTextarea value={get("oversikt")} onChange={(v) => set("oversikt", v)} placeholder="Vad ska träningen handla om? Vilket beteende ska synas i spel?" />
           </div>
           <div className="mt-3">
             <label className={labelCls}>Frånvarande spelare</label>
@@ -257,11 +292,19 @@ const TrainingPlan = () => {
           </Collapsible>
         </div>
 
+        <div className="border-b border-gray-200 bg-[#fffdf0] p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div><p className={labelCls}>Bild från Taktiktavlan</p><p className="text-xs text-gray-600">Spara en tavla där och importera den sedan direkt till den här planen.</p></div>
+            <div className="flex flex-wrap gap-2 print:hidden"><Link to="/taktiktavla" className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 text-xs font-bold text-[#1e3a8a]"><ExternalLink className="h-4 w-4" />Öppna Taktiktavlan</Link><button type="button" onClick={importLatestBoard} className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#1e3a8a] px-3 text-xs font-bold text-white"><ImagePlus className="h-4 w-4" />Importera senaste bild</button></div>
+          </div>
+          {(get("taktikbild") || latestBoardImage?.image) && <img src={get("taktikbild") || latestBoardImage?.image} alt="Importerad bild från Taktiktavlan" className="mt-3 max-h-[420px] w-full rounded-lg border border-gray-200 object-contain" />}
+        </div>
+
         {/* Activities */}
         <div className="p-4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold uppercase tracking-wide text-[#1e3a8a]">
-              Aktiviteter <span className="text-gray-400 font-normal">({plan.activities.length})</span>
+              3 · Detaljplan <span className="text-gray-400 font-normal">({plan.activities.length} moment)</span>
             </h2>
           </div>
 

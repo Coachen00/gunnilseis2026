@@ -1297,9 +1297,15 @@
         captureArea.style.transformOrigin = 'center center';
         setTimeout(() => {
             html2canvas(document.querySelector('#capture-wrapper')).then((imageCanvas) => {
+                const image = imageCanvas.toDataURL('image/png');
+                try {
+                    localStorage.setItem('gunnilse:taktiktavla:latest-image', JSON.stringify({ image, savedAt: new Date().toISOString() }));
+                } catch (_) {
+                    // Bilden laddas fortfarande ner även om lokal lagring är full.
+                }
                 const link = document.createElement('a');
                 link.download = 'taktik_master.png';
-                link.href = imageCanvas.toDataURL();
+                link.href = image;
                 link.click();
                 captureArea.style.transform = originalTransform;
                 captureArea.style.transformOrigin = originalTransformOrigin;
