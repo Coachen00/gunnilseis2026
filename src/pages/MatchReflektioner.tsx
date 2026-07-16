@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Loader2, MessageSquarePlus, Trash2, AlertCircle, Wifi } from "lucide-react";
-import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import SectionReveal from "@/components/SectionReveal";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,15 +61,15 @@ const MatchReflektioner = () => {
   };
 
   return (
-    <>
-      <PageHero
+    <div className="bg-kedja-paper">
+      <KedjaHero
         eyebrow="Match · Reflektion"
         title="Samlade tankar — sista perioden"
-        description="Mönster, trender och insikter över flera matcher i rad. Skrivs av tränaren — synkas live till alla."
+        lead="Mönster, trender och insikter över flera matcher i rad. Skrivs av tränaren — synkas live till alla."
       />
       <div className="container pb-section space-y-12">
         <div className="flex flex-wrap items-center justify-between gap-3" aria-live="polite">
-          <div className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+          <div className="inline-flex items-center gap-2 text-xs text-kedja-deep/70">
             <Wifi className="h-3.5 w-3.5 text-zone-attack" aria-hidden="true" />
             <span>Live · uppdateras automatiskt när någon skriver</span>
           </div>
@@ -94,7 +94,7 @@ const MatchReflektioner = () => {
         )}
 
         {isLoading && (
-          <div className="rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground inline-flex items-center gap-2" role="status">
+          <div className="rounded-lg border border-kedja-border bg-white p-6 text-sm text-kedja-deep/70 inline-flex items-center gap-2" role="status">
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
             Hämtar reflektioner…
           </div>
@@ -113,7 +113,7 @@ const MatchReflektioner = () => {
         {!isLoading && !isError && entries.length === 0 && (
           <SectionReveal as="section">
             <SectionHeader badge="Tomt" title="Inga reflektioner ännu" subtitle="Tränaren samlar reflektioner här när de finns att samla." />
-            <div className="bg-card rounded-lg p-6 border border-dashed border-border text-sm text-muted-foreground">
+            <div className="bg-white rounded-lg p-6 border border-dashed border-kedja-border text-sm text-kedja-deep/70">
               När minst en match är spelad och tränaren börjar notera mönster, dyker de upp här.
               {canEdit && " Tryck på \"Ny reflektion\" för att skriva den första."}
             </div>
@@ -130,7 +130,7 @@ const MatchReflektioner = () => {
           </ul>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -162,11 +162,11 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-lg border border-border bg-card p-5 space-y-4"
+      className="rounded-lg border border-kedja-border bg-white p-5 space-y-4"
     >
       <fieldset className="space-y-2">
         <legend className="sr-only">Kategori</legend>
-        <Label className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+        <Label className="text-[10px] font-mono uppercase tracking-wider text-kedja-deep/70">
           Kategori
         </Label>
         <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Kategori">
@@ -176,8 +176,8 @@ const ReflectionForm = ({ onSubmit, pending }: ReflectionFormProps) => {
               className={cn(
                 "cursor-pointer rounded-md border px-3 py-1.5 text-xs font-semibold transition focus-within:ring-2 focus-within:ring-ring",
                 badge === b
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-muted-foreground hover:border-accent/50"
+                  ? "border-kedja-green bg-kedja-green/10 text-kedja-green"
+                  : "border-kedja-border text-kedja-deep/70 hover:border-kedja-green/50"
               )}
             >
               <input
@@ -236,17 +236,17 @@ const ReflectionCard = ({ reflection, canEdit, onRemove }: ReflectionCardProps) 
   return (
     <article
       className={cn(
-        "rounded-lg border bg-card p-5 transition",
-        optimistic ? "border-accent/40 opacity-80" : "border-border"
+        "rounded-lg border bg-white p-5 transition",
+        optimistic ? "border-kedja-green/40 opacity-80" : "border-kedja-border"
       )}
       aria-busy={optimistic}
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-accent">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-[0.22em] text-kedja-green">
             {reflection.badge}
           </span>
-          <h3 className="mt-1 text-xl font-bold leading-tight text-foreground">
+          <h3 className="mt-1 text-xl font-bold leading-tight text-kedja-ink">
             {reflection.title}
           </h3>
         </div>
@@ -255,16 +255,16 @@ const ReflectionCard = ({ reflection, canEdit, onRemove }: ReflectionCardProps) 
             type="button"
             onClick={onRemove}
             aria-label={`Ta bort reflektion: ${reflection.title}`}
-            className="rounded-md p-1.5 text-muted-foreground transition hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-md p-1.5 text-kedja-deep/70 transition hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Trash2 className="h-4 w-4" aria-hidden="true" />
           </button>
         )}
       </div>
-      <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">
+      <p className="whitespace-pre-wrap text-sm leading-relaxed text-kedja-ink/90">
         {reflection.body}
       </p>
-      <p className="mt-3 text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+      <p className="mt-3 text-[10px] font-mono uppercase tracking-wider text-kedja-deep/70">
         {new Date(reflection.createdAt).toLocaleString("sv-SE")}
         {optimistic && " · sparar…"}
       </p>

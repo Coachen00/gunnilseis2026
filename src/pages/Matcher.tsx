@@ -1,5 +1,5 @@
-import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import { useSeasonMatches } from "@/hooks/useSeasonMatches";
 import { MONTH_LABELS, nextMatch, type SeasonMatch } from "@/data/season";
 import { CALENDAR_TRAININGS, type CalendarTraining } from "@/data/teamCalendar";
@@ -31,22 +31,22 @@ const Matcher = () => {
   const months = Array.from(groupActivitiesByMonth(activities).entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
   return (
-    <>
-      <PageHero
+    <div className="bg-kedja-paper">
+      <KedjaHero
         eyebrow="Säsong"
         title="Kalender"
-        description={`${matches.length} matcher · ${CALENDAR_TRAININGS.length} träningar · allt i datumordning`}
+        lead={`${matches.length} matcher · ${CALENDAR_TRAININGS.length} träningar · allt i datumordning`}
       />
 
       <div className="container pb-section">
         {loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-kedja-border bg-white px-3 py-1.5 text-xs text-kedja-deep/70">
             <Loader2 className="h-3 w-3 animate-spin" /> Hämtar kalender…
           </div>
         )}
 
         {usingFallback && !loading && (
-          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-md border border-kedja-green/30 bg-kedja-green/5 px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-kedja-green">
             Fallback-data · väntar på första syncen
           </div>
         )}
@@ -64,10 +64,10 @@ const Matcher = () => {
             return (
               <SectionReveal key={key} as="section">
                 <h2 className="mb-4 flex items-baseline gap-3">
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-accent">
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.24em] text-kedja-green">
                     {String(monthIdx).padStart(2, "0")}
                   </span>
-                  <span className="text-xl font-black tracking-tight text-foreground">{label}</span>
+                  <span className="text-xl font-black tracking-tight text-kedja-ink">{label}</span>
                 </h2>
                 <ul className="space-y-2">
                   {monthActivities.map((activity) => (
@@ -89,13 +89,13 @@ const Matcher = () => {
           href="https://www.svenskalag.se/gunnilseis-herr/kalender"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-muted-foreground transition hover:text-accent"
+          className="mt-10 inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.22em] text-kedja-deep/70 transition hover:text-kedja-green"
         >
           Källa · svenskalag.se kalender
           <ExternalLink className="h-3 w-3" />
         </a>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -146,7 +146,7 @@ const SummaryTile = ({
     tone === "red"
       ? "border-primary/30 bg-primary/5 text-primary"
       : tone === "green"
-        ? "border-accent/30 bg-accent/5 text-accent"
+        ? "border-kedja-green/30 bg-kedja-green/5 text-kedja-green"
         : "border-amber-500/30 bg-amber-500/10 text-amber-700";
 
   return (
@@ -192,10 +192,10 @@ const TrainingRow = ({
   isPast: boolean;
 }) => {
   const rowClassName = cn(
-    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-card px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
+    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-white px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
     isNext
-      ? "border-accent/60 shadow-[0_0_0_1px_hsl(var(--accent)/0.3)]"
-      : "border-border/70 hover:border-accent/40",
+      ? "border-kedja-green/60 shadow-[0_0_0_1px_rgba(7,102,83,0.3)]"
+      : "border-kedja-border/70 hover:border-kedja-green/40",
     isPast && !isNext && "opacity-70 hover:opacity-100"
   );
 
@@ -205,12 +205,12 @@ const TrainingRow = ({
         <DateStamp iso={training.date} />
         <div className="min-w-0">
           <div className="flex items-center gap-2">
-            <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border border-accent/40 bg-accent/10 text-accent">
+            <span className="grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border border-kedja-green/40 bg-kedja-green/10 text-kedja-green">
               <Dumbbell className="h-3 w-3" strokeWidth={2.2} aria-hidden="true" />
             </span>
-            <p className="truncate text-base font-semibold tracking-tight text-foreground">{training.title}</p>
+            <p className="truncate text-base font-semibold tracking-tight text-kedja-ink">{training.title}</p>
           </div>
-          <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+          <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-kedja-deep/70">
             <span className="font-mono font-bold uppercase tracking-[0.16em]">{training.focus}</span>
             <span className="inline-flex items-center gap-1">
               <MapPin className="h-3 w-3" />
@@ -237,11 +237,11 @@ const MatchRow = ({
 }) => {
   const result = resultOf(match);
   const rowClassName = cn(
-    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-card px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
+    "group grid grid-cols-[64px_1fr] items-center gap-4 rounded-md border bg-white px-4 py-3 transition sm:grid-cols-[64px_1fr_auto]",
     match.sourceUrl && "cursor-pointer",
     isNext || isUpcoming
       ? "border-primary/60 shadow-[0_0_0_1px_hsl(var(--primary)/0.25)] hover:border-primary"
-      : "border-border/70 hover:border-primary/40",
+      : "border-kedja-border/70 hover:border-primary/40",
     isPast && !isNext && !isUpcoming && "opacity-70 hover:opacity-100"
   );
 
@@ -284,7 +284,7 @@ const MatchRowContent = ({
               "grid h-5 w-5 flex-shrink-0 place-items-center rounded-sm border font-mono text-[9px] font-black uppercase",
               match.homeAway === "home"
                 ? "border-primary/40 bg-primary/10 text-primary"
-                : "border-border bg-background/60 text-muted-foreground"
+                : "border-kedja-border bg-kedja-paper text-kedja-deep/70"
             )}
             title={match.homeAway === "home" ? "Hemmamatch" : "Bortamatch"}
           >
@@ -294,16 +294,16 @@ const MatchRowContent = ({
               <ArrowUpRight className="h-3 w-3" />
             )}
           </span>
-          <p className="truncate text-base font-semibold tracking-tight text-foreground">
+          <p className="truncate text-base font-semibold tracking-tight text-kedja-ink">
             {match.homeAway === "home" ? "Gunnilse — " : ""}
             {match.opponent}
             {match.homeAway === "away" ? " — Gunnilse" : ""}
             {match.sourceUrl && (
-              <ExternalLink className="ml-1.5 hidden h-3 w-3 text-muted-foreground transition group-hover:text-primary sm:inline" />
+              <ExternalLink className="ml-1.5 hidden h-3 w-3 text-kedja-deep/70 transition group-hover:text-primary sm:inline" />
             )}
           </p>
         </div>
-        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+        <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-kedja-deep/70">
           <span className="inline-flex items-center gap-1 font-mono font-bold uppercase tracking-[0.16em]">
             <Trophy className="h-3 w-3" />
             {match.competition}
@@ -333,12 +333,12 @@ const DateStamp = ({ iso }: { iso: string }) => {
   const time = date.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
 
   return (
-    <div className="flex flex-col items-center justify-center border-r border-border/60 pr-4">
-      <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+    <div className="flex flex-col items-center justify-center border-r border-kedja-border/60 pr-4">
+      <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-kedja-deep/70">
         {weekday}
       </span>
-      <span className="text-2xl font-black leading-none tracking-tight text-foreground">{day}</span>
-      <span className="mt-0.5 font-mono text-[9px] font-bold tracking-wider text-muted-foreground">
+      <span className="text-2xl font-black leading-none tracking-tight text-kedja-ink">{day}</span>
+      <span className="mt-0.5 font-mono text-[9px] font-bold tracking-wider text-kedja-deep/70">
         {time}
       </span>
     </div>
@@ -351,8 +351,8 @@ const StatusBadge = ({ isNext, label }: { isNext: boolean; label: string }) => (
       className={cn(
         "rounded-sm border px-2 py-1 font-mono text-[10px] font-black uppercase tracking-wider",
         isNext
-          ? "border-accent/40 bg-accent/10 text-accent"
-          : "border-border bg-muted/30 text-muted-foreground"
+          ? "border-kedja-green/40 bg-kedja-green/10 text-kedja-green"
+          : "border-kedja-border bg-kedja-paper text-kedja-deep/70"
       )}
     >
       {label}
@@ -366,7 +366,7 @@ const ResultBadge = ({ result }: { result: { outcome: "W" | "D" | "L"; us: numbe
       className={cn(
         "flex items-center gap-1.5 rounded-sm border px-2 py-1",
         result.outcome === "W" && "border-zone-attack/40 bg-zone-attack/10 text-zone-attack",
-        result.outcome === "D" && "border-border bg-muted/30 text-muted-foreground",
+        result.outcome === "D" && "border-kedja-border bg-kedja-paper text-kedja-deep/70",
         result.outcome === "L" && "border-destructive/40 bg-destructive/10 text-destructive"
       )}
     >
