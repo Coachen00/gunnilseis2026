@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom";
 import { ArrowLeft, BookOpen, ClipboardList, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 import TacticsBitmapBackdrop from "@/components/tactics/TacticsBitmapBackdrop";
+import TacticsLibrary from "@/components/tactics/TacticsLibrary";
+import { getLatestTacticsImage } from "@/lib/tacticsBoardStorage";
 import {
   TACTICS_BOARD_ASSETS,
   TACTICS_SCENE_ORDER,
@@ -75,6 +77,7 @@ const Taktiktavla = () => {
   const backdropRootRef = useRef<Root | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [scene, setSceneState] = useState<TacticsBoardScene>("training_pitch");
+  const [latestImage, setLatestImage] = useState<string | null>(() => getLatestTacticsImage());
 
   // Stabil setter — exponeras globalt så HTML-toolbarens select kan triggera om-render.
   const setScene = useCallback((next: TacticsBoardScene) => {
@@ -97,6 +100,15 @@ const Taktiktavla = () => {
     const sceneSelect = boardRootRef.current?.querySelector<HTMLSelectElement>("#sceneSelect");
     if (sceneSelect) sceneSelect.value = scene;
   }, [scene]);
+
+  useEffect(() => {
+    const handleImageSaved = (event: Event) => {
+      const image = (event as CustomEvent<{ image?: string }>).detail?.image;
+      if (image) setLatestImage(image);
+    };
+    window.addEventListener("tactics:image-saved", handleImageSaved);
+    return () => window.removeEventListener("tactics:image-saved", handleImageSaved);
+  }, []);
 
   useEffect(() => {
     window.__TACTICS_ACTIVITY_ID = activityId;
@@ -227,6 +239,8 @@ const Taktiktavla = () => {
           Autosparar arbetsläget …
         </div>
       )}
+
+      <TacticsLibrary latestImage={latestImage} />
 
       <div id="tactic-board-workspace" ref={boardRootRef} className="tactic-board-page" />
 

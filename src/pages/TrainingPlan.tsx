@@ -144,6 +144,7 @@ const TrainingPlan = () => {
   const navigate = useNavigate();
   const [plan, setPlan] = useState<PlanData>(loadPlan);
   const [armed, setArmed] = useState(false);
+  const [imageStatus, setImageStatus] = useState("Spara en tavla i Taktiktavlan först.");
   const [latestBoardImage, setLatestBoardImage] = useState(() => {
     try {
       const image = getLatestTacticsImage();
@@ -180,13 +181,18 @@ const TrainingPlan = () => {
   const importLatestBoard = () => {
     try {
       const image = getLatestTacticsImage();
-      if (!image) return;
+      if (!image) {
+        setImageStatus("Ingen sparad tavla hittades. Öppna Taktiktavlan och tryck Spara tavlan.");
+        return;
+      }
       const board = { image, savedAt: new Date().toISOString() };
       setLatestBoardImage(board);
       set("taktikbild", board.image);
       set("taktikbild_datum", board.savedAt);
+      setImageStatus("Importerad till träningsplaneringen.");
     } catch {
       setLatestBoardImage(null);
+      setImageStatus("Den sparade bilden kunde inte läsas. Spara tavlan igen.");
     }
   };
 
@@ -311,7 +317,7 @@ const TrainingPlan = () => {
 
         <div className="border-b border-gray-200 bg-[#fffdf0] p-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div><p className={labelCls}>Bild från Taktiktavlan</p><p className="text-xs text-gray-600">Spara en tavla där och importera den sedan direkt till den här planen.</p></div>
+            <div><p className={labelCls}>Bild från Taktiktavlan</p><p className="text-xs text-gray-600">Spara en tavla där och importera den sedan direkt till den här planen.</p><p className="mt-1 text-xs font-semibold text-[#1e3a8a]">{imageStatus}</p></div>
             <div className="flex flex-wrap gap-2 print:hidden"><Link to="/taktiktavla" className="inline-flex h-10 items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 text-xs font-bold text-[#1e3a8a]"><ExternalLink className="h-4 w-4" />Öppna Taktiktavlan</Link><button type="button" onClick={importLatestBoard} className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#1e3a8a] px-3 text-xs font-bold text-white"><ImagePlus className="h-4 w-4" />Importera senaste bild</button></div>
           </div>
           {(get("taktikbild") || latestBoardImage?.image) && <img src={get("taktikbild") || latestBoardImage?.image} alt="Importerad bild från Taktiktavlan" className="mt-3 max-h-[420px] w-full rounded-lg border border-gray-200 object-contain" />}

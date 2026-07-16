@@ -1812,6 +1812,62 @@
     }
 }
 
+.tactics-library {
+    margin: 18px auto;
+    width: min(1400px, calc(100% - 36px));
+    border: 1px solid hsl(220 14% 18%);
+    border-radius: 8px;
+    background: hsl(200 12% 8%);
+    color: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.tactics-library__header,
+.tactics-library__controls,
+.tactics-library__folder-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+}
+
+.tactics-library__header { justify-content: space-between; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.tactics-library__header svg { width: 28px; height: 28px; color: hsl(145 70% 58%); }
+.tactics-library__eyebrow { display: block; color: hsl(145 70% 62%); font: 800 10px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.2em; text-transform: uppercase; }
+.tactics-library__header h2 { margin: 5px 0 2px; font-size: 1.2rem; }
+.tactics-library__header p { margin: 0; color: rgba(255, 255, 255, 0.56); font-size: 0.78rem; }
+.tactics-library__controls { flex-wrap: wrap; align-items: flex-end; background: hsl(200 20% 11%); }
+.tactics-library__controls label { display: flex; min-width: 170px; flex: 1 1 170px; flex-direction: column; gap: 5px; }
+.tactics-library__controls label span { color: rgba(255, 255, 255, 0.55); font: 800 10px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.12em; text-transform: uppercase; }
+.tactics-library__controls select,
+.tactics-library__controls input { width: 100%; height: 36px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 6px; background: hsl(220 16% 16%); color: white; padding: 0 10px; }
+.tactics-library__actions { display: flex; flex: 1 1 100%; flex-wrap: wrap; gap: 8px; }
+.tactics-library__actions button { display: inline-flex; height: 36px; align-items: center; gap: 7px; padding: 0 11px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 6px; background: hsl(220 16% 16%); color: white; font-size: 0.75rem; font-weight: 800; }
+.tactics-library__actions button:hover { border-color: hsl(145 70% 52%); }
+.tactics-library__actions .tactics-library__save-upload { border-color: hsl(145 70% 42%); background: hsl(145 70% 42%); color: #07110c; }
+.tactics-library__actions svg { width: 15px; height: 15px; }
+.tactics-library__folder-label { color: hsl(145 70% 62%); font-size: 0.78rem; font-weight: 800; }
+.tactics-library__folder-label svg { width: 16px; height: 16px; }
+.tactics-library__folder-label span { margin-left: auto; color: rgba(255, 255, 255, 0.45); font-size: 0.7rem; }
+.tactics-library__empty { margin: 0 20px 20px; display: flex; flex-direction: column; gap: 4px; border: 1px dashed rgba(255, 255, 255, 0.18); padding: 22px; color: rgba(255, 255, 255, 0.75); }
+.tactics-library__empty span { color: rgba(255, 255, 255, 0.45); font-size: 0.8rem; }
+.tactics-library__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; padding: 0 20px 20px; }
+.tactics-library__item { position: relative; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 6px; background: hsl(220 16% 13%); }
+.tactics-library__item img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #0b1510; }
+.tactics-library__item > div { display: flex; flex-direction: column; gap: 3px; padding: 10px 38px 10px 10px; }
+.tactics-library__item strong { overflow: hidden; font-size: 0.75rem; text-overflow: ellipsis; white-space: nowrap; }
+.tactics-library__item span { color: rgba(255, 255, 255, 0.45); font-size: 0.68rem; }
+.tactics-library__item > button { position: absolute; right: 7px; bottom: 8px; display: grid; width: 26px; height: 26px; place-items: center; border: 0; background: transparent; color: rgba(255, 255, 255, 0.45); }
+.tactics-library__item > button:hover { color: #ff6868; }
+.tactics-library__item > button svg { width: 14px; height: 14px; }
+
+@media (max-width: 600px) {
+    .tactics-library { width: calc(100% - 24px); margin: 12px auto; }
+    .tactics-library__header, .tactics-library__controls, .tactics-library__folder-label { padding: 14px; }
+    .tactics-library__empty { margin: 0 14px 14px; }
+    .tactics-library__grid { padding: 0 14px 14px; }
+}
+
 .tactic-board-page {
     --player-size: 12px;
 }

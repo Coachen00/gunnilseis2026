@@ -1352,6 +1352,7 @@
                     const saved = JSON.stringify({ image, savedAt: new Date().toISOString() });
                     localStorage.setItem(key, saved);
                     if (activityId) localStorage.setItem('gunnilse:taktiktavla:latest-image', saved);
+                    window.dispatchEvent(new CustomEvent('tactics:image-saved', { detail: { image, savedAt: JSON.parse(saved).savedAt } }));
                 } catch (_) {
                     // Bilden laddas fortfarande ner även om lokal lagring är full.
                 }
@@ -1359,6 +1360,10 @@
                 link.download = 'taktik_master.png';
                 link.href = image;
                 link.click();
+                captureArea.style.transform = originalTransform;
+                captureArea.style.transformOrigin = originalTransformOrigin;
+            }).catch(() => {
+                setAutosaveStatus('Bilden kunde inte skapas. Försök igen.', 'error');
                 captureArea.style.transform = originalTransform;
                 captureArea.style.transformOrigin = originalTransformOrigin;
             });
