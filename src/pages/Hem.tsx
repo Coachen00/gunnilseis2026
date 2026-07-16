@@ -9,6 +9,7 @@ import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
 import HomePhotoCarousel from "@/components/home/HomePhotoCarousel";
+import MatchRadar from "@/components/home/MatchRadar";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
@@ -90,6 +91,8 @@ const Hem = () => {
       >
         <KedjaNav items={WORLDS} />
       </KedjaHero>
+
+      <MatchRadar />
 
       <KedjaSection
         id="match"

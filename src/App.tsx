@@ -52,6 +52,8 @@ const Laget = lazy(() => import("./pages/Laget"));
 const Coach = lazy(() => import("./pages/Coach"));
 const CoachTrainingPlanning = lazy(() => import("./pages/CoachTrainingPlanning"));
 const PlanensYtor = lazy(() => import("./pages/PlanensYtor"));
+const SpelmodellLager = lazy(() => import("./pages/SpelmodellLager"));
+const Forberedelsesteg = lazy(() => import("./pages/Forberedelsesteg"));
 
 // Print-optimerade verktygsidor — egna chunks; sällan besökta men tunga.
 const TrainingPlan = lazy(() => import("./pages/TrainingPlan"));
@@ -145,6 +147,7 @@ const App = () => (
           {/* Hubbar — en landningssida per värld */}
           <Route path="/spelmodell" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
           <Route path="/spelmodell/planens-ytor" element={<Protected routeName="Planens ytor"><PlanensYtor /></Protected>} />
+          <Route path="/spelmodell/lager" element={<Protected routeName="Spelmodellens lager"><SpelmodellLager /></Protected>} />
           <Route path="/laget" element={<Protected routeName="Laget"><Laget /></Protected>} />
           <Route path="/coach" element={<Protected routeName="Coach"><Coach /></Protected>} />
           <Route path="/coach/traningsplanering-host-2026" element={<PrintRoute routeName="Träningsplanering"><TrainingPlan /></PrintRoute>} />
@@ -177,6 +180,7 @@ const App = () => (
           <Route path="/spelmodell-labb" element={<Protected routeName="Spelmodell-labb"><SpelmodellLab /></Protected>} />
           <Route path="/verktyg" element={<Protected routeName="Verktyg"><Verktyg /></Protected>} />
           <Route path="/under-process" element={<Protected routeName="Prisma 2026"><UnderProcess /></Protected>} />
+          <Route path="/under-process/forberedelsesteg" element={<Protected routeName="Förberedelsesteg"><Forberedelsesteg /></Protected>} />
           <Route path="/under-process/5-upphojt-i-fem" element={<Protected routeName="5 upphöjt i fem"><FemUpphojtFem /></Protected>} />
           {/* Helskärms-deck (owner-only, gate i sidan) — utan Layout-chrome */}
           <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodell Neon"><UnderProcessDeck /></PrintRoute>} />
