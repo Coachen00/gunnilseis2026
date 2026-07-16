@@ -124,11 +124,11 @@ const Login = () => {
 
   if (signUpDone) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
-        <Card className="w-full max-w-md card-gradient border-border">
+      <div className="min-h-screen bg-kedja-paper flex items-center justify-center p-4">
+        <Card className="w-full max-w-md bg-white border-kedja-border">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl text-foreground">Förfrågan skickad</CardTitle>
-            <CardDescription className="text-muted-foreground">
+            <CardTitle className="text-3xl text-kedja-ink">Förfrågan skickad</CardTitle>
+            <CardDescription className="text-kedja-deep/70">
               Din förfrågan för <strong>{username}</strong> är registrerad.
               En administratör behöver godkänna kontot innan du kan logga in.
             </CardDescription>
@@ -136,12 +136,12 @@ const Login = () => {
           <CardContent className="text-center">
             <button
               onClick={() => { setSignUpDone(false); setIsSignUp(false); }}
-              className="text-sm text-primary hover:underline"
+              className="text-sm text-kedja-green hover:underline"
             >
               Tillbaka till inloggning
             </button>
             <div className="mt-3">
-              <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+              <Link to="/" className="text-xs text-kedja-deep/60 hover:text-kedja-green transition-colors">
                 Till startsidan
               </Link>
             </div>
@@ -152,17 +152,17 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen hero-gradient flex items-center justify-center p-4">
-      <Card className="w-full max-w-md card-gradient border-border">
+    <div className="min-h-screen bg-kedja-paper flex items-center justify-center p-4">
+      <Card className="w-full max-w-md bg-white border-kedja-border">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/5 px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-accent">
+          <div className="mx-auto mb-3 inline-flex items-center gap-2 rounded-full border border-kedja-green/30 bg-kedja-mint px-3 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.24em] text-kedja-green">
             <ShieldCheck className="h-3 w-3" strokeWidth={2.4} />
             Gunnilse IS · 2026
           </div>
-          <CardTitle className="text-3xl text-foreground">
+          <CardTitle className="text-3xl text-kedja-ink">
             {isSignUp ? "Begär tillgång" : "Välkommen tillbaka"}
           </CardTitle>
-          <CardDescription className="text-muted-foreground">
+          <CardDescription className="text-kedja-deep/70">
             {isSignUp
               ? "Skicka en förfrågan så godkänner en ledare den. Du får mejl när du kan logga in."
               : "Logga in för att se matchplan, träningar och filmbibliotek."}
@@ -171,7 +171,7 @@ const Login = () => {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-foreground">Användarnamn</Label>
+              <Label htmlFor="username" className="text-kedja-ink">Användarnamn</Label>
               <Input
                 id="username"
                 type="text"
@@ -180,11 +180,11 @@ const Login = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-background border-border"
+                className="bg-white border-kedja-border"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-foreground">Lösenord</Label>
+              <Label htmlFor="password" className="text-kedja-ink">Lösenord</Label>
               <Input
                 id="password"
                 type="password"
@@ -193,10 +193,14 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="bg-background border-border"
+                className="bg-white border-kedja-border"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full bg-kedja-ink text-kedja-lime hover:bg-kedja-deep"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -212,21 +216,21 @@ const Login = () => {
 
           {/* Inne efter login — visa vad användaren kommer åt */}
           {isSignUp && (
-            <div className="mt-6 rounded-lg border border-border bg-muted/30 p-4">
-              <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-accent">
+            <div className="mt-6 rounded-lg border border-kedja-border bg-kedja-mint/40 p-4">
+              <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-green">
                 Du får tillgång till
               </p>
-              <ul className="space-y-2 text-sm text-foreground/90">
+              <ul className="space-y-2 text-sm text-kedja-ink/90">
                 <li className="flex items-center gap-2">
-                  <PlayCircle className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <PlayCircle className="h-4 w-4 shrink-0 text-kedja-green" strokeWidth={2.2} />
                   Hela spelmodellen — sex spelfaser, identitet och fasta situationer
                 </li>
                 <li className="flex items-center gap-2">
-                  <CalendarClock className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <CalendarClock className="h-4 w-4 shrink-0 text-kedja-green" strokeWidth={2.2} />
                   Veckans match — trupp, matchplan och fokuspunkter
                 </li>
                 <li className="flex items-center gap-2">
-                  <Film className="h-4 w-4 shrink-0 text-accent" strokeWidth={2.2} />
+                  <Film className="h-4 w-4 shrink-0 text-kedja-green" strokeWidth={2.2} />
                   Filmbibliotek — klipp sorterade efter spelfas
                 </li>
               </ul>
@@ -237,7 +241,7 @@ const Login = () => {
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-primary hover:underline"
+              className="text-sm text-kedja-green hover:underline"
             >
               {isSignUp
                 ? "Har du redan ett konto? Logga in"
@@ -245,7 +249,7 @@ const Login = () => {
             </button>
           </div>
           <div className="mt-3 text-center">
-            <Link to="/" className="text-xs text-muted-foreground hover:text-primary transition-colors">
+            <Link to="/" className="text-xs text-kedja-deep/60 hover:text-kedja-green transition-colors">
               Tillbaka till startsidan
             </Link>
           </div>

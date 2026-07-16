@@ -37,7 +37,7 @@ const ROLE_NOTES: Record<DisplayRole, { short: string; focus: string }> = {
   FWD: { short: "Explosivitet, djupled och upprepade snabba löpningar.", focus: "första steget, djupledshotet och sprintkvaliteten" },
 };
 const LEVEL_TONES: Record<PlanLevel, string> = {
-  full: "border-zinc-950 bg-zinc-950 text-white",
+  full: "border-kedja-ink bg-kedja-ink text-white",
   maintenance: "border-sky-700/25 bg-sky-50 text-sky-950",
   minimum: "border-emerald-700/25 bg-emerald-50 text-emerald-950",
 };
@@ -75,14 +75,14 @@ function ScheduleCard({ role, level, week }: { role: TrainingRole; level: PlanLe
   return (
     <article aria-label={levelInfo.label} className={cn("border p-4", LEVEL_TONES[level])}>
       <h3 className={cn("text-xl font-black", level === "full" ? "text-white" : "text-foreground")}>{levelInfo.label}</h3>
-      <p className={cn("mt-1 text-sm", level === "full" ? "text-zinc-300" : "text-foreground/75")}>{levelInfo.description}</p>
+      <p className={cn("mt-1 text-sm", level === "full" ? "text-kedja-mint/80" : "text-foreground/75")}>{levelInfo.description}</p>
       <ul className="mt-4 space-y-4">
         {items.map((item, index) => (
-          <li key={`${item.day}-${item.sessionType}-${index}`} className={cn("border-l-2 pl-3", level === "full" ? "border-lime-300" : "border-accent/50")}>
-            <p className={cn("font-mono text-[10px] font-black uppercase tracking-[0.18em]", level === "full" ? "text-lime-300" : "text-accent")}>{item.day}</p>
+          <li key={`${item.day}-${item.sessionType}-${index}`} className={cn("border-l-2 pl-3", level === "full" ? "border-kedja-lime" : "border-accent/50")}>
+            <p className={cn("font-mono text-[10px] font-black uppercase tracking-[0.18em]", level === "full" ? "text-kedja-lime" : "text-accent")}>{item.day}</p>
             <p className={cn("mt-1 text-sm font-black", level === "full" ? "text-white" : "text-foreground")}>{item.title}</p>
-            <p className={cn("mt-1 text-xs font-semibold", level === "full" ? "text-zinc-200" : "text-foreground/80")}>{item.dose}</p>
-            <dl className={cn("mt-2 grid gap-1 text-xs", level === "full" ? "text-zinc-300" : "text-muted-foreground")}>
+            <p className={cn("mt-1 text-xs font-semibold", level === "full" ? "text-kedja-mint/90" : "text-foreground/80")}>{item.dose}</p>
+            <dl className={cn("mt-2 grid gap-1 text-xs", level === "full" ? "text-kedja-mint/80" : "text-muted-foreground")}>
               <div><dt className="inline font-black">Intensitet: </dt><dd className="inline">{INTENSITY_LABELS[item.intensity]}</dd></div>
               <div><dt className="inline font-black">Vila: </dt><dd className="inline">{item.recovery}</dd></div>
               <div><dt className="inline font-black">Stoppregel: </dt><dd className="inline">{item.stopRule}</dd></div>
@@ -117,10 +117,10 @@ const Semestern2026 = () => {
 
       <main className="container pb-section">
         <SectionReveal as="section">
-          <div className="border border-zinc-900 bg-zinc-950 p-5 text-white md:p-7">
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-lime-300">Gör så här</p>
+          <div className="border border-kedja-ink bg-kedja-ink p-5 text-white md:p-7">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-lime">Gör så här</p>
             <h2 className="mt-2 text-3xl font-black tracking-tight md:text-5xl">Hitta ditt namn. Välj vecka. Följ dosen.</h2>
-            <p className="mt-3 max-w-3xl text-sm font-semibold leading-relaxed text-zinc-300">Börja på vecka 1 och gå vidare när återhämtningen är normal. Avsluta alltid enligt passets stoppregel.</p>
+            <p className="mt-3 max-w-3xl text-sm font-semibold leading-relaxed text-kedja-mint/80">Börja på vecka 1 och gå vidare när återhämtningen är normal. Avsluta alltid enligt passets stoppregel.</p>
           </div>
         </SectionReveal>
 
@@ -140,12 +140,12 @@ const Semestern2026 = () => {
         </SectionReveal>
 
         <SectionReveal as="section" className="mt-12">
-          <div className="mb-5 border border-zinc-900 bg-zinc-950 p-5 text-white md:p-6">
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-lime-300">Spelarkort</p>
+          <div className="mb-5 border border-kedja-ink bg-kedja-ink p-5 text-white md:p-6">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-lime">Spelarkort</p>
             <h2 className="mt-1 text-3xl font-black tracking-tight md:text-5xl">Öppna ditt namn.</h2>
-            <p className="mt-3 text-sm font-semibold text-zinc-300">{loading ? "Hämtar truppen..." : `${playerPlans.length} spelare med personligt positionsfokus.`}</p>
+            <p className="mt-3 text-sm font-semibold text-kedja-mint/80">{loading ? "Hämtar truppen..." : `${playerPlans.length} spelare med personligt positionsfokus.`}</p>
           </div>
-          <Accordion type="single" collapsible className="border border-zinc-900 bg-card">
+          <Accordion type="single" collapsible className="border border-kedja-ink bg-card">
             {playerPlans.map(({ player, displayRole, trainingRole }) => (
               <AccordionItem key={player.name} value={player.name} className="border-border/80 px-4 md:px-5">
                 <AccordionTrigger className="min-h-16 gap-4 text-left hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -157,7 +157,7 @@ const Semestern2026 = () => {
                     <legend className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-accent">Välj träningsvecka</legend>
                     <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
                       {TRAINING_WEEKS.map((candidate) => (
-                        <button key={candidate.id} type="button" aria-pressed={selectedWeek === candidate.id} onClick={() => setSelectedWeek(candidate.id)} className={cn("min-h-11 border px-3 text-sm font-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", selectedWeek === candidate.id ? "border-zinc-950 bg-zinc-950 text-white" : "border-border bg-background text-foreground hover:bg-muted")}>{candidate.label}</button>
+                        <button key={candidate.id} type="button" aria-pressed={selectedWeek === candidate.id} onClick={() => setSelectedWeek(candidate.id)} className={cn("min-h-11 border px-3 text-sm font-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", selectedWeek === candidate.id ? "border-kedja-ink bg-kedja-ink text-white" : "border-border bg-background text-foreground hover:bg-muted")}>{candidate.label}</button>
                       ))}
                     </div>
                   </fieldset>

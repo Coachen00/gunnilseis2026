@@ -71,8 +71,8 @@ const Admin = () => {
 
   if (!isAdmin || loading) {
     return (
-      <div className="min-h-screen hero-gradient flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-kedja-paper flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-kedja-green" />
       </div>
     );
   }
@@ -81,23 +81,23 @@ const Admin = () => {
   const approved = profiles.filter((p) => p.approved);
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
+    <div className="min-h-screen bg-kedja-paper p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-primary hover:underline mb-6">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-kedja-green hover:underline mb-6">
           <ArrowLeft className="w-4 h-4" />
           Tillbaka till spelkarta
         </Link>
 
         <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary" />
+          <div className="w-10 h-10 rounded-lg bg-kedja-mint flex items-center justify-center">
+            <Shield className="w-5 h-5 text-kedja-green" />
           </div>
-          <h1 className="text-2xl font-black text-foreground">Admin</h1>
+          <h1 className="text-2xl font-black text-kedja-ink">Admin</h1>
         </div>
 
         <div className="flex items-center gap-2 mb-3">
-          <Shield className="w-4 h-4 text-muted-foreground" />
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+          <Shield className="w-4 h-4 text-kedja-deep/60" />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-kedja-deep/60">
             Användare
           </h2>
         </div>
@@ -132,7 +132,7 @@ const Admin = () => {
         )}
 
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">
+          <h2 className="text-sm font-bold uppercase tracking-wider text-kedja-deep/60 mb-3">
             Godkända ({approved.length})
           </h2>
           <div className="space-y-2">
@@ -158,8 +158,8 @@ const Admin = () => {
 
         <div className="mt-12">
           <div className="flex items-center gap-2 mb-3">
-            <FileText className="w-4 h-4 text-muted-foreground" />
-            <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground">
+            <FileText className="w-4 h-4 text-kedja-deep/60" />
+            <h2 className="text-sm font-bold uppercase tracking-wider text-kedja-deep/60">
               Innehåll
             </h2>
           </div>

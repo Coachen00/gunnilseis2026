@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   ArrowRight,
   BookOpen,
-  CalendarDays,
   Compass,
   Gauge,
   Layers,
@@ -14,6 +13,7 @@ import {
   Sparkles,
   Target,
 } from "lucide-react";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EffectLogic from "@/components/period/EffectLogicBlock";
 import { PeriodGraphic } from "@/components/period/PeriodGraphics";
@@ -63,30 +63,25 @@ const Period1 = () => {
   };
 
   return (
-    <article className="container py-12 md:py-16">
-      <Link
-        to="/#period-1"
-        className="mb-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground transition hover:text-accent"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Tillbaka till spelmodellen
-      </Link>
+    <div className="bg-kedja-paper">
+      <div className="container pt-8">
+        <Link
+          to="/#period-1"
+          className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-kedja-green transition hover:text-kedja-ink"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Tillbaka till spelmodellen
+        </Link>
+      </div>
 
-      <header className="mb-8">
-        <p className="mb-3 flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.28em] text-accent">
-          <CalendarDays className="h-3.5 w-3.5" />
-          Period 1 · {PERIOD_1.dateRange}
-        </p>
-        <h1 className="max-w-4xl text-4xl font-black leading-[1.02] tracking-[-0.035em] text-foreground md:text-5xl lg:text-6xl">
-          Diagonalt spel från korridor till korridor
-        </h1>
-        <p className="mt-4 max-w-3xl text-base leading-relaxed text-foreground/85 md:text-lg">
-          Vi flyttar bollen diagonalt från en korridor till en annan. Mål: attrahera press, hitta
-          rättvänd spelare, attackera kanten, fyll boxen.
-        </p>
-      </header>
+      <KedjaHero
+        eyebrow={`Period 1 · ${PERIOD_1.dateRange}`}
+        title="Diagonalt spel från korridor till korridor"
+        lead="Vi flyttar bollen diagonalt från en korridor till en annan. Mål: attrahera press, hitta rättvänd spelare, attackera kanten, fyll boxen."
+      />
 
-      <Tabs value={tab} onValueChange={handleTabChange} className="w-full">
+      <article className="container py-12 md:py-16">
+        <Tabs value={tab} onValueChange={handleTabChange} className="w-full">
         <TabsList className="mb-8 flex h-auto w-full flex-wrap justify-start gap-1 rounded-lg bg-card/35 p-1.5">
           {TABS.map(({ value, label, Icon }) => (
             <TabsTrigger
@@ -335,7 +330,8 @@ const Period1 = () => {
           </section>
         </TabsContent>
       </Tabs>
-    </article>
+      </article>
+    </div>
   );
 };
 

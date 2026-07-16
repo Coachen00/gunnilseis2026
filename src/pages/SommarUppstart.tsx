@@ -4,14 +4,15 @@ import {
   ArrowRight,
   CheckCircle2,
   Dumbbell,
-  Flag,
   Gauge,
   ListChecks,
   RotateCcw,
-  Sparkles,
   Target,
   Users,
 } from "lucide-react";
+import KedjaHero from "@/components/kedja/KedjaHero";
+import KedjaNav from "@/components/kedja/KedjaNav";
+import KedjaClimax from "@/components/kedja/KedjaClimax";
 import {
   BESLUT,
   CONFIRM_QUESTIONS,
@@ -89,11 +90,11 @@ function SectionHead({
   return (
     <div id={id} className="scroll-mt-24">
       <div className="mb-3 flex items-center gap-3">
-        <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
-        <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">{eyebrow}</p>
+        <span className="h-[2px] w-10 bg-kedja-green" aria-hidden="true" />
+        <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-kedja-green">{eyebrow}</p>
       </div>
-      <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-4xl">{title}</h2>
-      {desc && <p className="mb-2 mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">{desc}</p>}
+      <h2 className="text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-4xl">{title}</h2>
+      {desc && <p className="mb-2 mt-3 max-w-3xl text-sm leading-relaxed text-kedja-deep/80 md:text-base">{desc}</p>}
     </div>
   );
 }
@@ -102,66 +103,66 @@ function SectionHead({
    HERO
    ========================================================================= */
 
+const NAV_ITEMS = [
+  { num: "01", title: "Utgångspunkt", sub: "Hemma ≠ matchredo", href: "#utgangspunkt" },
+  { num: "02", title: "Spelartavla", sub: "Arbetsyta", href: "#tavla" },
+  { num: "03", title: "Bekräftelser", sub: "Tre frågor", href: "#bekraftelser" },
+  { num: "04", title: "Prognos", sub: "Datum för datum", href: "#prognos" },
+  { num: "05", title: "Kalender", sub: "Vägen dit", href: "#kalender" },
+  { num: "06", title: "Passupplägg", sub: "Varje pass", href: "#pass" },
+  { num: "07", title: "Gym & fys", sub: "Periodisering", href: "#gymfys" },
+  { num: "08", title: "Mentalitet", sub: "Ansvar", href: "#mentalitet" },
+  { num: "09", title: "Beslut", sub: "Det är bestämt", href: "#beslut" },
+  { num: "10", title: "Nästa handling", sub: "Samla besked", href: "#nasta" },
+];
+
 function Hero({ counts, total }: { counts: Record<AvailabilityStatus, number>; total: number }) {
   return (
-    <section className="relative overflow-hidden border-b border-border pt-20 pb-14 md:pt-28 md:pb-20">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 opacity-30"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, hsl(var(--border) / 0.5) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border) / 0.5) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-        }}
-      />
-      <div className="container relative">
-        <div className="mb-6 inline-flex items-center gap-3 border border-amber-400 bg-card px-3 py-2">
-          <span className="h-[2px] w-8 bg-amber-500" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-amber-700">{HERO.eyebrow}</span>
+    <>
+      <KedjaHero
+        eyebrow={HERO.eyebrow}
+        title={HERO.title}
+        lead={HERO.lead}
+        instruction={`Första match · ${HERO.matchDate}`}
+      >
+        <KedjaNav items={NAV_ITEMS} />
+      </KedjaHero>
+
+      {/* Live truppbild */}
+      <section className="border-b border-kedja-border bg-white py-10">
+        <div className="container">
+          <p className="mb-4 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-green">
+            Truppläge nu
+          </p>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+            {STATUS_ORDER.map((s) => {
+              const t = TONE[STATUS_META[s].accent];
+              return (
+                <a
+                  key={s}
+                  href="#tavla"
+                  className={`flex flex-col gap-1 border ${t.border} ${t.bg} p-4 transition-transform hover:-translate-y-0.5`}
+                >
+                  <span className={`text-3xl font-black tabular-nums ${t.text}`}>{counts[s]}</span>
+                  <span className="font-mono text-[10px] font-black uppercase leading-tight tracking-[0.14em] text-kedja-deep/70">
+                    {STATUS_META[s].label}
+                  </span>
+                </a>
+              );
+            })}
+            <a
+              href="#tavla"
+              className="flex flex-col gap-1 border border-kedja-border bg-kedja-paper p-4 transition-transform hover:-translate-y-0.5"
+            >
+              <span className="text-3xl font-black tabular-nums text-kedja-deep/50">{counts.oklassad}</span>
+              <span className="font-mono text-[10px] font-black uppercase leading-tight tracking-[0.14em] text-kedja-deep/50">
+                Oklassad · {total} totalt
+              </span>
+            </a>
+          </div>
         </div>
-
-        <h1 className="max-w-4xl text-[2.5rem] font-black uppercase leading-[0.92] tracking-tight text-foreground sm:text-6xl md:text-7xl">
-          {HERO.title}
-        </h1>
-
-        <div className="mt-6 inline-flex items-center gap-2 border border-rose-300 bg-rose-50 px-3 py-2">
-          <Flag className="h-4 w-4 text-rose-700" strokeWidth={2.2} />
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-rose-700">
-            Första match · {HERO.matchDate}
-          </span>
-        </div>
-
-        <p className="mt-8 max-w-3xl text-base leading-relaxed text-foreground/78 md:text-lg">{HERO.lead}</p>
-
-        {/* Live truppbild */}
-        <div className="mt-12 grid grid-cols-2 gap-3 md:grid-cols-5">
-          {STATUS_ORDER.map((s) => {
-            const t = TONE[STATUS_META[s].accent];
-            return (
-              <a
-                key={s}
-                href="#tavla"
-                className={`flex flex-col gap-1 border ${t.border} ${t.bg} p-4 transition-transform hover:-translate-y-0.5`}
-              >
-                <span className={`text-3xl font-black tabular-nums ${t.text}`}>{counts[s]}</span>
-                <span className="font-mono text-[10px] font-black uppercase leading-tight tracking-[0.14em] text-foreground/70">
-                  {STATUS_META[s].label}
-                </span>
-              </a>
-            );
-          })}
-          <a
-            href="#tavla"
-            className="flex flex-col gap-1 border border-border bg-card p-4 transition-transform hover:-translate-y-0.5"
-          >
-            <span className="text-3xl font-black tabular-nums text-foreground/50">{counts.oklassad}</span>
-            <span className="font-mono text-[10px] font-black uppercase leading-tight tracking-[0.14em] text-foreground/50">
-              Oklassad · {total} totalt
-            </span>
-          </a>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
@@ -173,18 +174,18 @@ function Utgangspunkt() {
   return (
     <section className="border-b border-border py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Utgångspunkt" title="HEMMA ≠ MATCHREDO" desc={UTGANGSPUNKT.intro} />
+        <SectionHead id="utgangspunkt" eyebrow="Utgångspunkt" title="HEMMA ≠ MATCHREDO" desc={UTGANGSPUNKT.intro} />
         <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
           {UTGANGSPUNKT.distinctions.map((d) => (
             <div key={d.n} className="border border-border bg-card p-6">
-              <span className="font-mono text-[11px] font-black tabular-nums text-amber-700">{d.n}</span>
+              <span className="font-mono text-[11px] font-black tabular-nums text-kedja-green">{d.n}</span>
               <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-foreground">{d.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-foreground/75">{d.desc}</p>
             </div>
           ))}
         </div>
-        <div className="mt-6 border-l-4 border-amber-500 bg-amber-50 p-5">
-          <p className="text-sm leading-relaxed text-foreground/85 md:text-base">{UTGANGSPUNKT.conclusion}</p>
+        <div className="mt-6 border-l-4 border-kedja-green bg-kedja-mint p-5">
+          <p className="text-sm leading-relaxed text-kedja-deep md:text-base">{UTGANGSPUNKT.conclusion}</p>
         </div>
       </div>
     </section>
@@ -220,7 +221,7 @@ function PlayerChip({
         <select
           value={status}
           onChange={(e) => onChange(e.target.value as AvailabilityStatus)}
-          className={`rounded border ${t.border} ${t.bg} px-1.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.1em] ${t.text} focus:outline-none focus:ring-2 focus:ring-amber-400`}
+          className={`rounded border ${t.border} ${t.bg} px-1.5 py-1 font-mono text-[10px] font-black uppercase tracking-[0.1em] ${t.text} focus:outline-none focus:ring-2 focus:ring-kedja-green`}
         >
           {STATUS_SELECT_ORDER.map((s) => (
             <option key={s} value={s}>
@@ -335,7 +336,7 @@ function TriCell({ value, onClick, label }: { value: boolean | null; onClick: ()
       type="button"
       onClick={onClick}
       aria-label={label}
-      className={`min-w-[3.25rem] rounded border px-2 py-1 font-mono text-[11px] font-black uppercase tracking-[0.1em] transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 ${styles}`}
+      className={`min-w-[3.25rem] rounded border px-2 py-1 font-mono text-[11px] font-black uppercase tracking-[0.1em] transition-colors focus:outline-none focus:ring-2 focus:ring-kedja-green ${styles}`}
     >
       {txt}
     </button>
@@ -360,6 +361,7 @@ function BekraftelseTracker({
     <section className="border-b border-border py-14 md:py-20">
       <div className="container">
         <SectionHead
+          id="bekraftelser"
           eyebrow="Arbetsyta · bekräftelser"
           title="TRE FRÅGOR PER SPELARE"
           desc="Bocka av varje spelares svar på de tre obligatoriska frågorna. Tryck på en cell för att växla Ja → Nej → tomt. Sparas lokalt."
@@ -429,7 +431,7 @@ function Prognos() {
   return (
     <section className="border-b border-border bg-muted/30 py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Prognos" title="DATUM FÖR DATUM" />
+        <SectionHead id="prognos" eyebrow="Prognos" title="DATUM FÖR DATUM" />
         <div className="mt-8 overflow-x-auto">
           <table className="w-full min-w-[560px] border-collapse text-left">
             <thead>
@@ -481,6 +483,7 @@ function KalenderChecklista({
     <section className="border-b border-border py-14 md:py-20">
       <div className="container">
         <SectionHead
+          id="kalender"
           eyebrow="Arbetsyta · kalender"
           title="VÄGEN 25/6 → 8/8"
           desc="Bocka av varje steg när det är genomfört. Sparas lokalt."
@@ -503,7 +506,7 @@ function KalenderChecklista({
                   type="button"
                   onClick={() => onToggle(s.id)}
                   aria-pressed={checked}
-                  className={`flex w-full items-start gap-3 border px-4 py-3 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-amber-400 ${
+                  className={`flex w-full items-start gap-3 border px-4 py-3 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-kedja-green ${
                     checked ? "border-emerald-300 bg-emerald-50" : "border-border bg-card hover:bg-muted/40"
                   }`}
                 >
@@ -574,7 +577,7 @@ function PassCard({ p }: { p: Pass }) {
             {p.upplagg.map((u) => (
               <div key={u.namn} className="flex items-baseline gap-3 border-l-2 border-border pl-3">
                 <span className="font-mono text-[11px] font-black uppercase tracking-[0.1em] text-foreground/70">{u.namn}</span>
-                {u.tid && <span className="font-mono text-[10px] font-bold text-amber-700">{u.tid}</span>}
+                {u.tid && <span className="font-mono text-[10px] font-bold text-kedja-green">{u.tid}</span>}
                 <span className="text-sm leading-snug text-foreground/75">{u.text}</span>
               </div>
             ))}
@@ -602,7 +605,7 @@ function Passupplagg() {
   return (
     <section className="border-b border-border bg-muted/30 py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Passupplägg" title="VARJE PASS, STEG FÖR STEG" desc="Öppna ett pass för fullt upplägg, syfte och nyckelpunkter." />
+        <SectionHead id="pass" eyebrow="Passupplägg" title="VARJE PASS, STEG FÖR STEG" desc="Öppna ett pass för fullt upplägg, syfte och nyckelpunkter." />
         <Accordion type="multiple" className="mt-8 space-y-2">
           {PASS.map((p) => (
             <PassCard key={p.id} p={p} />
@@ -647,19 +650,19 @@ function GymFys() {
   return (
     <section className="border-b border-border py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Gym & fys" title="STÖDJER FOTBOLLEN — STÖR DEN INTE" />
+        <SectionHead id="gymfys" eyebrow="Gym & fys" title="STÖDJER FOTBOLLEN — STÖR DEN INTE" />
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div className="border border-border bg-card p-5">
             <div className="mb-3 flex items-center gap-2">
-              <Dumbbell className="h-4 w-4 text-amber-700" strokeWidth={2.2} />
-              <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-amber-700">Sommarperiodisering</p>
+              <Dumbbell className="h-4 w-4 text-kedja-green" strokeWidth={2.2} />
+              <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Sommarperiodisering</p>
             </div>
             <SimpleTable head={["Period", "Fokus"]} rows={GYM_SOMMAR.map((r) => [r.period, r.fokus])} />
           </div>
           <div className="border border-border bg-card p-5">
             <div className="mb-3 flex items-center gap-2">
-              <Gauge className="h-4 w-4 text-amber-700" strokeWidth={2.2} />
-              <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-amber-700">Matchveckan</p>
+              <Gauge className="h-4 w-4 text-kedja-green" strokeWidth={2.2} />
+              <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Matchveckan</p>
             </div>
             <SimpleTable head={["Dag", "Gym / fys"]} rows={GYM_MATCHVECKA.map((r) => [r.dag, r.gym])} />
           </div>
@@ -671,10 +674,10 @@ function GymFys() {
 
         {/* Egenperiod */}
         <div className="mt-8 border border-border bg-card p-5">
-          <p className="mb-3 font-mono text-[11px] font-black uppercase tracking-[0.2em] text-amber-700">Egenperiod 25/6–27/7 · minimikrav</p>
+          <p className="mb-3 font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Egenperiod 25/6–27/7 · minimikrav</p>
           <SimpleTable head={["Område", "Krav"]} rows={EGENPERIOD_KRAV.map((r) => [r.omrade, r.krav])} />
-          <div className="mt-4 border-l-4 border-amber-500 bg-amber-50 p-4">
-            <p className="text-sm font-bold leading-relaxed text-foreground/85">“{EGENPERIOD_BUDSKAP}”</p>
+          <div className="mt-4 border-l-4 border-kedja-green bg-kedja-mint p-4">
+            <p className="text-sm font-bold leading-relaxed text-kedja-deep">“{EGENPERIOD_BUDSKAP}”</p>
           </div>
         </div>
       </div>
@@ -690,10 +693,10 @@ function Mentalitet() {
   return (
     <section className="border-b border-border bg-muted/30 py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Mentalitet" title="ANSVAR ÄR DET VIKTIGASTE" />
-        <div className="mt-8 border-2 border-amber-400/70 bg-gradient-to-br from-amber-50 to-amber-100/40 p-6 md:p-8">
-          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-800">Ledarbudskap</p>
-          <p className="mt-2 text-xl font-black leading-tight tracking-tight text-foreground md:text-2xl">“{MENTALITET.ledarbudskap}”</p>
+        <SectionHead id="mentalitet" eyebrow="Mentalitet" title="ANSVAR ÄR DET VIKTIGASTE" />
+        <div className="mt-8 border-2 border-kedja-ink bg-kedja-ink p-6 md:p-8">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-lime">Ledarbudskap</p>
+          <p className="mt-2 text-xl font-black leading-tight tracking-tight text-white md:text-2xl">“{MENTALITET.ledarbudskap}”</p>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="border border-border bg-card p-5">
@@ -735,14 +738,14 @@ function BeslutSektion() {
   return (
     <section className="border-b border-border py-14 md:py-20">
       <div className="container">
-        <SectionHead eyebrow="Beslut" title="DET ÄR BESTÄMT" />
+        <SectionHead id="beslut" eyebrow="Beslut" title="DET ÄR BESTÄMT" />
         <ol className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
           {BESLUT.map((b, i) => (
-            <li key={b} className="flex items-start gap-3 border border-border bg-card p-4">
-              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full border border-amber-300 bg-amber-50 font-mono text-[11px] font-black text-amber-800">
+            <li key={b} className="flex items-start gap-3 border border-kedja-border bg-white p-4">
+              <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full border border-kedja-border bg-kedja-mint font-mono text-[11px] font-black text-kedja-green">
                 {i + 1}
               </span>
-              <span className="text-sm font-bold leading-snug text-foreground/90">{b}</span>
+              <span className="text-sm font-bold leading-snug text-kedja-ink/90">{b}</span>
             </li>
           ))}
         </ol>
@@ -761,7 +764,7 @@ function Effektlogik() {
             <thead>
               <tr className="border-b-2 border-border">
                 {["Resurser", "Aktiviteter", "Mål", "Effekt"].map((h) => (
-                  <th key={h} className="px-3 py-2.5 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">
+                  <th key={h} className="px-3 py-2.5 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-kedja-green">
                     {h}
                   </th>
                 ))}
@@ -786,21 +789,20 @@ function Effektlogik() {
 
 function NastaHandling() {
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section id="nasta" className="scroll-mt-24 border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead eyebrow="Nästa handling" title="SAMLA IN EXAKTA BESKED" desc={NASTA_HANDLING.intro} />
         <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
           {NASTA_HANDLING.fragor.map((q, i) => (
             <div key={q} className="border border-sky-300 bg-sky-50 p-5">
               <span className="font-mono text-[11px] font-black tabular-nums text-sky-700">F{i + 1}</span>
-              <p className="mt-2 text-sm font-bold leading-snug text-foreground/90">{q}</p>
+              <p className="mt-2 text-sm font-bold leading-snug text-kedja-ink/90">{q}</p>
             </div>
           ))}
         </div>
-        <div className="mt-8 flex items-start gap-3 border-l-4 border-amber-500 bg-amber-50 p-5">
-          <Sparkles className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-700" strokeWidth={2.1} />
-          <p className="text-sm leading-relaxed text-foreground/85 md:text-base">{SLUTREK}</p>
-        </div>
+      </div>
+      <div className="mt-8">
+        <KedjaClimax label="Slutrekommendation" text={SLUTREK} />
       </div>
     </section>
   );
@@ -894,14 +896,14 @@ const SommarUppstart = () => {
       <NastaHandling />
 
       {/* Closing — reset + tillbaka till spelmodellen */}
-      <section className="bg-muted/40 py-14">
+      <section className="bg-kedja-mint/40 py-14">
         <div className="container flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Arbetsyta</p>
-            <h2 className="mt-2 max-w-2xl text-xl font-black uppercase tracking-tight text-foreground md:text-2xl">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-kedja-green">Arbetsyta</p>
+            <h2 className="mt-2 max-w-2xl text-xl font-black uppercase tracking-tight text-kedja-ink md:text-2xl">
               Allt sparas i din webbläsare
             </h2>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+            <p className="mt-2 max-w-xl text-sm text-kedja-deep/70">
               Spelarstatus, bekräftelser och checklista är personliga för den här enheten.
             </p>
           </div>
@@ -916,7 +918,7 @@ const SommarUppstart = () => {
             </button>
             <Link
               to="/spelmodell"
-              className="inline-flex items-center gap-2 rounded-md border border-amber-500 bg-amber-500 px-4 py-2.5 font-mono text-[11px] font-black uppercase tracking-[0.18em] text-foreground transition-colors hover:bg-amber-400"
+              className="inline-flex items-center gap-2 rounded-md border border-kedja-ink bg-kedja-ink px-4 py-2.5 font-mono text-[11px] font-black uppercase tracking-[0.18em] text-kedja-lime transition-colors hover:bg-kedja-deep"
             >
               <Target className="h-4 w-4" strokeWidth={2.2} />
               Till spelmodellen
