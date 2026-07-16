@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PageHero from "@/components/PageHero";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import SectionReveal from "@/components/SectionReveal";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { isOwnerEmail } from "@/lib/owner";
@@ -73,9 +73,9 @@ const steps: Step[] = [
 function Locked() {
   return (
     <div className="container pb-section">
-      <div className="rounded-md border border-dashed border-border bg-card p-6">
+      <div className="rounded-md border border-dashed border-kedja-border bg-white p-6">
         <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Låst coachmaterial</p>
-        <p className="mt-2 text-sm font-semibold text-muted-foreground">Prisma visas bara för behörigt coachkonto.</p>
+        <p className="mt-2 text-sm font-semibold text-kedja-deep/70">Prisma visas bara för behörigt coachkonto.</p>
       </div>
     </div>
   );
@@ -86,60 +86,60 @@ const UnderProcess = () => {
   const isOwner = isOwnerEmail(session?.user?.email);
 
   return (
-    <>
-      <PageHero
+    <div className="bg-kedja-paper">
+      <KedjaHero
         eyebrow="Coach · Prisma 2026"
         title="Från idé till matchbevis"
-        description="Prisma är arbetsprocessen för tränarteamet. Det beskriver hur vi bygger, tränar, testar och justerar — inte ännu en spelmodell."
+        lead="Prisma är arbetsprocessen för tränarteamet. Det beskriver hur vi bygger, tränar, testar och justerar — inte ännu en spelmodell."
       />
 
       {loading ? (
-        <div className="container pb-section text-sm font-semibold text-muted-foreground">Verifierar coachåtkomst…</div>
+        <div className="container pb-section text-sm font-semibold text-kedja-deep/70">Verifierar coachåtkomst…</div>
       ) : !isOwner ? (
         <Locked />
       ) : (
         <main className="container pb-section">
-          <div className="mb-8 grid gap-3 border border-border bg-card p-5 md:grid-cols-3 md:p-7">
+          <div className="mb-8 grid gap-3 border border-kedja-border bg-white p-5 md:grid-cols-3 md:p-7">
             <div>
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Riktning</p>
-              <p className="mt-2 text-sm font-semibold leading-relaxed text-foreground/75">Var förberedd.</p>
+              <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-deep">Var förberedd.</p>
             </div>
             <div>
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-rose-700">Arbetsregel</p>
-              <p className="mt-2 text-sm font-semibold leading-relaxed text-foreground/75">Ett fokus i taget.</p>
+              <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-deep">Ett fokus i taget.</p>
             </div>
             <div>
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">Kriterium</p>
-              <p className="mt-2 text-sm font-semibold leading-relaxed text-foreground/75">Gå vidare när beteendet syns.</p>
+              <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-deep">Gå vidare när beteendet syns.</p>
             </div>
           </div>
 
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {steps.map((step) => (
               <SectionReveal key={step.number}>
-                <article className="h-full border border-border bg-card p-5 md:p-6">
+                <article className="h-full border border-kedja-border bg-white p-5 md:p-6">
                   <div className="flex items-start justify-between gap-4">
-                    <span className="font-mono text-xs font-black tracking-[0.2em] text-muted-foreground">{step.number}</span>
+                    <span className="font-mono text-xs font-black tracking-[0.2em] text-kedja-deep/60">{step.number}</span>
                     {step.to && (
-                      <Link to={step.to} className="text-xs font-bold uppercase tracking-[0.12em] text-primary hover:underline">
+                      <Link to={step.to} className="text-xs font-bold uppercase tracking-[0.12em] text-kedja-green hover:underline">
                         Fördjupa →
                       </Link>
                     )}
                   </div>
-                  <h2 className="mt-5 text-2xl font-black tracking-tight text-foreground">{step.title}</h2>
-                  <p className="mt-3 text-sm font-semibold leading-relaxed text-foreground/80">{step.purpose}</p>
+                  <h2 className="mt-5 text-2xl font-black tracking-tight text-kedja-ink">{step.title}</h2>
+                  <p className="mt-3 text-sm font-semibold leading-relaxed text-kedja-deep">{step.purpose}</p>
                   <dl className="mt-6 grid gap-4 text-sm">
                     <div>
-                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Gör</dt>
-                      <dd className="mt-1 font-semibold leading-relaxed text-foreground/75">{step.action}</dd>
+                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-deep/60">Gör</dt>
+                      <dd className="mt-1 font-semibold leading-relaxed text-kedja-deep/70">{step.action}</dd>
                     </div>
                     <div>
-                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Leverans</dt>
-                      <dd className="mt-1 font-semibold leading-relaxed text-foreground/75">{step.deliverable}</dd>
+                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-deep/60">Leverans</dt>
+                      <dd className="mt-1 font-semibold leading-relaxed text-kedja-deep/70">{step.deliverable}</dd>
                     </div>
                     <div>
-                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">Klart när</dt>
-                      <dd className="mt-1 font-semibold leading-relaxed text-foreground/75">{step.done}</dd>
+                      <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-deep/60">Klart när</dt>
+                      <dd className="mt-1 font-semibold leading-relaxed text-kedja-deep/70">{step.done}</dd>
                     </div>
                   </dl>
                 </article>
@@ -148,7 +148,7 @@ const UnderProcess = () => {
           </div>
         </main>
       )}
-    </>
+    </div>
   );
 };
 

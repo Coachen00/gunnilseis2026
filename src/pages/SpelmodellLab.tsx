@@ -1,15 +1,15 @@
-import PageHero from "@/components/PageHero";
+import KedjaHero from "@/components/kedja/KedjaHero";
 import SpelmodellLabWorkspace from "@/components/SpelmodellLabWorkspace";
 
 const SpelmodellLab = () => (
-  <>
-    <PageHero
+  <div className="bg-kedja-paper">
+    <KedjaHero
       eyebrow="Spelmodell · Labb"
       title="Bygg träning och matchspråk från samma principer"
-      description="Ett interaktivt coachrum för att välja fokus, diagnosticera matchbilden och skapa ett konkret pass med kopierbar brief."
+      lead="Ett interaktivt coachrum för att välja fokus, diagnosticera matchbilden och skapa ett konkret pass med kopierbar brief."
     />
     <SpelmodellLabWorkspace />
-  </>
+  </div>
 );
 
 export default SpelmodellLab;
