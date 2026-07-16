@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowLeft, BookOpen, ClipboardList, LayoutDashboard } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 import TacticsBitmapBackdrop from "@/components/tactics/TacticsBitmapBackdrop";
@@ -22,6 +22,7 @@ declare global {
      * detta för att be React rendra om backdrop med ny scen.
      */
     __setTacticsScene?: (scene: TacticsBoardScene) => void;
+    __TACTICS_ACTIVITY_ID?: string | null;
   }
 }
 
@@ -65,6 +66,8 @@ function injectStaticBoardMarkup(host: HTMLElement, markup: string) {
 }
 
 const Taktiktavla = () => {
+  const location = useLocation();
+  const activityId = new URLSearchParams(location.search).get("activity");
   const boardRootRef = useRef<HTMLDivElement>(null);
   const backdropRootRef = useRef<Root | null>(null);
   const [loadError, setLoadError] = useState(false);
@@ -93,6 +96,7 @@ const Taktiktavla = () => {
   }, [scene]);
 
   useEffect(() => {
+    window.__TACTICS_ACTIVITY_ID = activityId;
     const boardRoot = boardRootRef.current;
     if (!boardRoot) return;
 
@@ -129,6 +133,7 @@ const Taktiktavla = () => {
       });
 
     return () => {
+      delete window.__TACTICS_ACTIVITY_ID;
       mounted = false;
       window.__cleanupTacticBoard?.();
       delete window.__cleanupTacticBoard;
@@ -140,7 +145,7 @@ const Taktiktavla = () => {
     };
     // Kör endast en gång — scen-uppdateringar går via effekten ovan.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activityId]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

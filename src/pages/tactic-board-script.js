@@ -1298,8 +1298,14 @@
         setTimeout(() => {
             html2canvas(document.querySelector('#capture-wrapper')).then((imageCanvas) => {
                 const image = imageCanvas.toDataURL('image/png');
+                const activityId = window.__TACTICS_ACTIVITY_ID;
                 try {
-                    localStorage.setItem('gunnilse:taktiktavla:latest-image', JSON.stringify({ image, savedAt: new Date().toISOString() }));
+                    const key = activityId
+                        ? 'gunnilse:taktiktavla:image:' + encodeURIComponent(activityId)
+                        : 'gunnilse:taktiktavla:latest-image';
+                    const saved = JSON.stringify({ image, savedAt: new Date().toISOString() });
+                    localStorage.setItem(key, saved);
+                    if (activityId) localStorage.setItem('gunnilse:taktiktavla:latest-image', saved);
                 } catch (_) {
                     // Bilden laddas fortfarande ner även om lokal lagring är full.
                 }

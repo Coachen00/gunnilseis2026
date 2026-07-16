@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Printer, Plus, Trash2, RotateCcw, BookOpen, ImagePlus, ExternalLink } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
+import { getTacticsImage, removeTacticsImage } from "@/lib/tacticsBoardStorage";
 
 const STORAGE_KEY = "gunnilse:traningsplan:v1";
 
@@ -126,6 +127,7 @@ const REMINDERS: { title: string; items: string[] }[] = [
 ];
 
 const TrainingPlan = () => {
+  const navigate = useNavigate();
   const [plan, setPlan] = useState<PlanData>(loadPlan);
   const [armed, setArmed] = useState(false);
   const [latestBoardImage, setLatestBoardImage] = useState(() => {
@@ -179,6 +181,7 @@ const TrainingPlan = () => {
     setPlan((p) => {
       const next: Record<string, string> = {};
       for (const [k, v] of Object.entries(p.fields)) if (!k.startsWith(id + ":")) next[k] = v;
+      removeTacticsImage(id);
       return { fields: next, activities: p.activities.filter((x) => x !== id) };
     });
 
@@ -347,9 +350,22 @@ const TrainingPlan = () => {
                       placeholder="Vad gör spelarna? Yta, regler, mål med övningen…"
                     />
                   </div>
-                  <div className="bg-[#4CAF50] rounded overflow-hidden self-start" style={{ aspectRatio: "68/52.5" }}>
-                    <PitchSVG half />
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/taktiktavla?activity=${encodeURIComponent(id)}`)}
+                    className="group relative self-start overflow-hidden rounded border border-[#1e3a8a]/20 bg-[#4CAF50] text-left focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] focus:ring-offset-2 print:pointer-events-none"
+                    style={{ aspectRatio: "68/52.5" }}
+                    aria-label={`Öppna taktiktavla för aktivitet ${i + 1}`}
+                  >
+                    {getTacticsImage(id) ? (
+                      <img src={getTacticsImage(id) ?? undefined} alt="Senast sparade taktiktavla" className="h-full w-full object-cover" />
+                    ) : (
+                      <PitchSVG half />
+                    )}
+                    <span className="absolute inset-x-0 bottom-0 bg-[#102b68]/90 px-2 py-1 text-center text-[10px] font-bold text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus:opacity-100 print:hidden">
+                      Öppna taktiktavla
+                    </span>
+                  </button>
                 </div>
 
                 {/* Collapsible load + coaching detail */}
