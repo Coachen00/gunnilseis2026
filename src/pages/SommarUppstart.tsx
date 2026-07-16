@@ -61,7 +61,7 @@ const TONE: Record<Accent, { border: string; bg: string; text: string; dot: stri
   blue: { border: "border-sky-300", bg: "bg-sky-50", text: "text-sky-700", dot: "bg-sky-600", chip: "border-sky-300 bg-sky-100 text-sky-800" },
   amber: { border: "border-amber-400/70", bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-500", chip: "border-amber-300 bg-amber-100 text-amber-800" },
   rose: { border: "border-rose-300", bg: "bg-rose-50", text: "text-rose-700", dot: "bg-rose-500", chip: "border-rose-300 bg-rose-100 text-rose-800" },
-  slate: { border: "border-border", bg: "bg-muted", text: "text-muted-foreground", dot: "bg-foreground/40", chip: "border-border bg-card text-foreground/70" },
+  slate: { border: "border-kedja-border", bg: "bg-kedja-paper", text: "text-kedja-deep/70", dot: "bg-foreground/40", chip: "border-kedja-border bg-white text-kedja-ink/70" },
 };
 
 const LOAD_TONE: Record<string, Accent> = {
@@ -172,15 +172,15 @@ function Hero({ counts, total }: { counts: Record<AvailabilityStatus, number>; t
 
 function Utgangspunkt() {
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section className="border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead id="utgangspunkt" eyebrow="Utgångspunkt" title="HEMMA ≠ MATCHREDO" desc={UTGANGSPUNKT.intro} />
         <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
           {UTGANGSPUNKT.distinctions.map((d) => (
-            <div key={d.n} className="border border-border bg-card p-6">
+            <div key={d.n} className="border border-kedja-border bg-white p-6">
               <span className="font-mono text-[11px] font-black tabular-nums text-kedja-green">{d.n}</span>
-              <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-foreground">{d.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/75">{d.desc}</p>
+              <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-kedja-ink">{d.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-kedja-ink/75">{d.desc}</p>
             </div>
           ))}
         </div>
@@ -211,10 +211,10 @@ function PlayerChip({
 }) {
   const t = TONE[STATUS_META[status].accent];
   return (
-    <div className={`flex items-center justify-between gap-2 border ${t.border} bg-background px-3 py-2`}>
+    <div className={`flex items-center justify-between gap-2 border ${t.border} bg-kedja-paper px-3 py-2`}>
       <div className="min-w-0">
-        <p className="truncate text-sm font-bold leading-tight text-foreground">{name}</p>
-        {note && <p className="truncate text-[11px] leading-snug text-muted-foreground">{note}</p>}
+        <p className="truncate text-sm font-bold leading-tight text-kedja-ink">{name}</p>
+        {note && <p className="truncate text-[11px] leading-snug text-kedja-deep/70">{note}</p>}
       </div>
       <label className="flex-shrink-0">
         <span className="sr-only">Flytta {name} till annan grupp</span>
@@ -254,10 +254,10 @@ function StatusColumn({
         </div>
         <span className={`font-mono text-sm font-black tabular-nums ${t.text}`}>{players.length}</span>
       </div>
-      <p className="border-x border-border bg-card/40 px-3 py-1.5 text-[11px] leading-snug text-muted-foreground">{meta.blurb}</p>
-      <div className="flex flex-1 flex-col gap-1.5 border border-t-0 border-border bg-muted/20 p-2">
+      <p className="border-x border-kedja-border bg-white/40 px-3 py-1.5 text-[11px] leading-snug text-kedja-deep/70">{meta.blurb}</p>
+      <div className="flex flex-1 flex-col gap-1.5 border border-t-0 border-kedja-border bg-kedja-paper/20 p-2">
         {players.length === 0 ? (
-          <p className="px-1 py-3 text-center text-[11px] italic text-foreground/35">Tom</p>
+          <p className="px-1 py-3 text-center text-[11px] italic text-kedja-ink/35">Tom</p>
         ) : (
           players.map((p) => (
             <PlayerChip key={p.name} name={p.name} note={p.note} status={status} onChange={(s) => onChange(p.name, s)} />
@@ -276,7 +276,7 @@ function Spelartavla({
   onChange: (name: string, s: AvailabilityStatus) => void;
 }) {
   return (
-    <section className="border-b border-border bg-muted/30 py-14 md:py-20">
+    <section className="border-b border-kedja-border bg-kedja-paper/30 py-14 md:py-20">
       <div className="container">
         <SectionHead
           id="tavla"
@@ -287,10 +287,10 @@ function Spelartavla({
 
         {/* Oklassad pool */}
         {byStatus.oklassad.length > 0 && (
-          <div className="mt-8 border border-border bg-card p-4">
+          <div className="mt-8 border border-kedja-border bg-white p-4">
             <div className="mb-3 flex items-center gap-2">
-              <Users className="h-4 w-4 text-foreground/55" strokeWidth={2.1} />
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
+              <Users className="h-4 w-4 text-kedja-ink/55" strokeWidth={2.1} />
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-ink/55">
                 Oklassade · {byStatus.oklassad.length} att placera
               </p>
             </div>
@@ -329,7 +329,7 @@ function TriCell({ value, onClick, label }: { value: boolean | null; onClick: ()
       ? "border-emerald-300 bg-emerald-100 text-emerald-800"
       : value === false
         ? "border-rose-300 bg-rose-100 text-rose-800"
-        : "border-border bg-muted text-foreground/40";
+        : "border-kedja-border bg-kedja-paper text-kedja-ink/40";
   const txt = value === true ? "Ja" : value === false ? "Nej" : "–";
   return (
     <button
@@ -358,7 +358,7 @@ function BekraftelseTracker({
   }).length;
 
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section className="border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead
           id="bekraftelser"
@@ -368,13 +368,13 @@ function BekraftelseTracker({
         />
 
         <div className="mt-6 flex items-center gap-3">
-          <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
+          <div className="h-2 flex-1 overflow-hidden rounded-full bg-kedja-paper">
             <div
               className="h-full rounded-full bg-emerald-500 transition-all"
               style={{ width: players.length ? `${(answered / players.length) * 100}%` : "0%" }}
             />
           </div>
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.16em] text-foreground/60">
+          <span className="font-mono text-[11px] font-black uppercase tracking-[0.16em] text-kedja-ink/60">
             {answered}/{players.length} klara
           </span>
         </div>
@@ -382,15 +382,15 @@ function BekraftelseTracker({
         <div className="mt-6 overflow-x-auto">
           <table className="w-full min-w-[480px] border-collapse">
             <thead>
-              <tr className="border-b border-border">
-                <th className="px-2 py-2 text-left font-mono text-[10px] font-black uppercase tracking-[0.16em] text-foreground/55">
+              <tr className="border-b border-kedja-border">
+                <th className="px-2 py-2 text-left font-mono text-[10px] font-black uppercase tracking-[0.16em] text-kedja-ink/55">
                   Spelare
                 </th>
                 {CONFIRM_QUESTIONS.map((q) => (
                   <th
                     key={q.key}
                     title={q.full}
-                    className="px-2 py-2 text-center font-mono text-[10px] font-black uppercase tracking-[0.12em] text-foreground/55"
+                    className="px-2 py-2 text-center font-mono text-[10px] font-black uppercase tracking-[0.12em] text-kedja-ink/55"
                   >
                     {q.short}
                   </th>
@@ -401,8 +401,8 @@ function BekraftelseTracker({
               {players.map((p) => {
                 const c = confirms[p.name];
                 return (
-                  <tr key={p.name} className="border-b border-border/60 hover:bg-muted/30">
-                    <td className="px-2 py-1.5 text-sm font-bold text-foreground">{p.name}</td>
+                  <tr key={p.name} className="border-b border-kedja-border/60 hover:bg-kedja-paper/30">
+                    <td className="px-2 py-1.5 text-sm font-bold text-kedja-ink">{p.name}</td>
                     {CONFIRM_QUESTIONS.map((q) => (
                       <td key={q.key} className="px-2 py-1.5 text-center">
                         <TriCell
@@ -429,15 +429,15 @@ function BekraftelseTracker({
 
 function Prognos() {
   return (
-    <section className="border-b border-border bg-muted/30 py-14 md:py-20">
+    <section className="border-b border-kedja-border bg-kedja-paper/30 py-14 md:py-20">
       <div className="container">
         <SectionHead id="prognos" eyebrow="Prognos" title="DATUM FÖR DATUM" />
         <div className="mt-8 overflow-x-auto">
           <table className="w-full min-w-[560px] border-collapse text-left">
             <thead>
-              <tr className="border-b-2 border-border">
+              <tr className="border-b-2 border-kedja-border">
                 {["Datum", "Aktivitet", "Bedömning"].map((h) => (
-                  <th key={h} className="px-3 py-2.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-foreground/55">
+                  <th key={h} className="px-3 py-2.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-ink/55">
                     {h}
                   </th>
                 ))}
@@ -447,15 +447,15 @@ function Prognos() {
               {PROGNOS.map((r) => {
                 const t = TONE[r.tone];
                 return (
-                  <tr key={r.datum} className="border-b border-border/60">
+                  <tr key={r.datum} className="border-b border-kedja-border/60">
                     <td className="whitespace-nowrap px-3 py-3">
                       <span className={`inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px] font-black uppercase tracking-[0.12em] ${t.chip}`}>
                         <span className={`h-1.5 w-1.5 rounded-full ${t.dot}`} />
                         {r.datum}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-sm font-bold text-foreground">{r.aktivitet}</td>
-                    <td className="px-3 py-3 text-sm leading-relaxed text-foreground/75">{r.bedomning}</td>
+                    <td className="px-3 py-3 text-sm font-bold text-kedja-ink">{r.aktivitet}</td>
+                    <td className="px-3 py-3 text-sm leading-relaxed text-kedja-ink/75">{r.bedomning}</td>
                   </tr>
                 );
               })}
@@ -480,7 +480,7 @@ function KalenderChecklista({
 }) {
   const done = KALENDER.filter((s) => checks[s.id]).length;
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section className="border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead
           id="kalender"
@@ -491,7 +491,7 @@ function KalenderChecklista({
 
         <div className="mt-6 flex items-center gap-3">
           <ListChecks className="h-4 w-4 text-emerald-700" strokeWidth={2.2} />
-          <span className="font-mono text-[11px] font-black uppercase tracking-[0.16em] text-foreground/60">
+          <span className="font-mono text-[11px] font-black uppercase tracking-[0.16em] text-kedja-ink/60">
             {done}/{KALENDER.length} genomförda
           </span>
         </div>
@@ -507,24 +507,24 @@ function KalenderChecklista({
                   onClick={() => onToggle(s.id)}
                   aria-pressed={checked}
                   className={`flex w-full items-start gap-3 border px-4 py-3 text-left transition-colors focus:outline-none focus:ring-2 focus:ring-kedja-green ${
-                    checked ? "border-emerald-300 bg-emerald-50" : "border-border bg-card hover:bg-muted/40"
+                    checked ? "border-emerald-300 bg-emerald-50" : "border-kedja-border bg-white hover:bg-kedja-paper/40"
                   }`}
                 >
                   <CheckCircle2
-                    className={`mt-0.5 h-5 w-5 flex-shrink-0 ${checked ? "text-emerald-600" : "text-foreground/25"}`}
+                    className={`mt-0.5 h-5 w-5 flex-shrink-0 ${checked ? "text-emerald-600" : "text-kedja-ink/25"}`}
                     strokeWidth={2.2}
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-foreground/60">{s.date}</span>
+                      <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-kedja-ink/60">{s.date}</span>
                       <span className={`inline-flex items-center gap-1 border px-1.5 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.12em] ${t.chip}`}>
                         {s.load}
                       </span>
                     </div>
-                    <p className={`mt-0.5 text-sm font-bold leading-tight ${checked ? "text-foreground/60 line-through" : "text-foreground"}`}>
+                    <p className={`mt-0.5 text-sm font-bold leading-tight ${checked ? "text-kedja-ink/60 line-through" : "text-kedja-ink"}`}>
                       {s.title}
                     </p>
-                    <p className="mt-0.5 text-xs leading-snug text-muted-foreground">{s.detail}</p>
+                    <p className="mt-0.5 text-xs leading-snug text-kedja-deep/70">{s.detail}</p>
                   </div>
                 </button>
               </li>
@@ -543,29 +543,29 @@ function KalenderChecklista({
 function PassCard({ p }: { p: Pass }) {
   const t = TONE[p.accent];
   return (
-    <AccordionItem value={p.id} className={`overflow-hidden border ${t.border} bg-background`}>
-      <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-muted/30 md:px-5">
+    <AccordionItem value={p.id} className={`overflow-hidden border ${t.border} bg-kedja-paper`}>
+      <AccordionTrigger className="px-4 py-3.5 hover:no-underline hover:bg-kedja-paper/30 md:px-5">
         <div className="flex w-full items-center gap-3 text-left">
           <span className={`h-2 w-2 flex-shrink-0 rounded-full ${t.dot}`} />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-foreground/55">{p.date}</span>
+              <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-kedja-ink/55">{p.date}</span>
               <span className={`inline-flex border px-1.5 py-0.5 font-mono text-[9px] font-black uppercase tracking-[0.12em] ${t.chip}`}>
                 {p.tag}
               </span>
               {p.totaltid && (
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-foreground/40">{p.totaltid}</span>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.1em] text-kedja-ink/40">{p.totaltid}</span>
               )}
             </div>
-            <p className="mt-0.5 text-base font-black uppercase tracking-tight text-foreground">{p.title}</p>
+            <p className="mt-0.5 text-base font-black uppercase tracking-tight text-kedja-ink">{p.title}</p>
           </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="border-t border-border bg-card/40 px-4 pb-5 pt-4 md:px-5">
+      <AccordionContent className="border-t border-kedja-border bg-white/40 px-4 pb-5 pt-4 md:px-5">
         {p.syfte && (
           <ul className="mb-4 space-y-1.5">
             {p.syfte.map((s) => (
-              <li key={s} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/80">
+              <li key={s} className="flex items-start gap-2 text-sm leading-relaxed text-kedja-ink/80">
                 <span className={`mt-1.5 inline-block h-1 w-1 flex-shrink-0 rounded-full ${t.dot}`} />
                 <span>{s}</span>
               </li>
@@ -575,10 +575,10 @@ function PassCard({ p }: { p: Pass }) {
         {p.upplagg && (
           <div className="mb-4 space-y-1.5">
             {p.upplagg.map((u) => (
-              <div key={u.namn} className="flex items-baseline gap-3 border-l-2 border-border pl-3">
-                <span className="font-mono text-[11px] font-black uppercase tracking-[0.1em] text-foreground/70">{u.namn}</span>
+              <div key={u.namn} className="flex items-baseline gap-3 border-l-2 border-kedja-border pl-3">
+                <span className="font-mono text-[11px] font-black uppercase tracking-[0.1em] text-kedja-ink/70">{u.namn}</span>
                 {u.tid && <span className="font-mono text-[10px] font-bold text-kedja-green">{u.tid}</span>}
-                <span className="text-sm leading-snug text-foreground/75">{u.text}</span>
+                <span className="text-sm leading-snug text-kedja-ink/75">{u.text}</span>
               </div>
             ))}
           </div>
@@ -588,7 +588,7 @@ function PassCard({ p }: { p: Pass }) {
             <p className={`mb-2 font-mono text-[10px] font-black uppercase tracking-[0.18em] ${t.text}`}>{blk.rubrik}</p>
             <ul className="space-y-1.5">
               {blk.rader.map((r) => (
-                <li key={r} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+                <li key={r} className="flex items-start gap-2 text-sm leading-relaxed text-kedja-ink/85">
                   <span className={`mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full ${t.dot}`} />
                   <span>{r}</span>
                 </li>
@@ -603,7 +603,7 @@ function PassCard({ p }: { p: Pass }) {
 
 function Passupplagg() {
   return (
-    <section className="border-b border-border bg-muted/30 py-14 md:py-20">
+    <section className="border-b border-kedja-border bg-kedja-paper/30 py-14 md:py-20">
       <div className="container">
         <SectionHead id="pass" eyebrow="Passupplägg" title="VARJE PASS, STEG FÖR STEG" desc="Öppna ett pass för fullt upplägg, syfte och nyckelpunkter." />
         <Accordion type="multiple" className="mt-8 space-y-2">
@@ -625,9 +625,9 @@ function SimpleTable({ head, rows }: { head: [string, string]; rows: [string, st
     <div className="overflow-x-auto">
       <table className="w-full border-collapse text-left">
         <thead>
-          <tr className="border-b-2 border-border">
+          <tr className="border-b-2 border-kedja-border">
             {head.map((h) => (
-              <th key={h} className="px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-foreground/55">
+              <th key={h} className="px-3 py-2 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-kedja-ink/55">
                 {h}
               </th>
             ))}
@@ -635,9 +635,9 @@ function SimpleTable({ head, rows }: { head: [string, string]; rows: [string, st
         </thead>
         <tbody>
           {rows.map(([a, b]) => (
-            <tr key={a} className="border-b border-border/60">
-              <td className="whitespace-nowrap px-3 py-2.5 text-sm font-bold text-foreground">{a}</td>
-              <td className="px-3 py-2.5 text-sm leading-relaxed text-foreground/75">{b}</td>
+            <tr key={a} className="border-b border-kedja-border/60">
+              <td className="whitespace-nowrap px-3 py-2.5 text-sm font-bold text-kedja-ink">{a}</td>
+              <td className="px-3 py-2.5 text-sm leading-relaxed text-kedja-ink/75">{b}</td>
             </tr>
           ))}
         </tbody>
@@ -648,18 +648,18 @@ function SimpleTable({ head, rows }: { head: [string, string]; rows: [string, st
 
 function GymFys() {
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section className="border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead id="gymfys" eyebrow="Gym & fys" title="STÖDJER FOTBOLLEN — STÖR DEN INTE" />
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <div className="border border-border bg-card p-5">
+          <div className="border border-kedja-border bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Dumbbell className="h-4 w-4 text-kedja-green" strokeWidth={2.2} />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Sommarperiodisering</p>
             </div>
             <SimpleTable head={["Period", "Fokus"]} rows={GYM_SOMMAR.map((r) => [r.period, r.fokus])} />
           </div>
-          <div className="border border-border bg-card p-5">
+          <div className="border border-kedja-border bg-white p-5">
             <div className="mb-3 flex items-center gap-2">
               <Gauge className="h-4 w-4 text-kedja-green" strokeWidth={2.2} />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Matchveckan</p>
@@ -673,7 +673,7 @@ function GymFys() {
         </div>
 
         {/* Egenperiod */}
-        <div className="mt-8 border border-border bg-card p-5">
+        <div className="mt-8 border border-kedja-border bg-white p-5">
           <p className="mb-3 font-mono text-[11px] font-black uppercase tracking-[0.2em] text-kedja-green">Egenperiod 25/6–27/7 · minimikrav</p>
           <SimpleTable head={["Område", "Krav"]} rows={EGENPERIOD_KRAV.map((r) => [r.omrade, r.krav])} />
           <div className="mt-4 border-l-4 border-kedja-green bg-kedja-mint p-4">
@@ -691,7 +691,7 @@ function GymFys() {
 
 function Mentalitet() {
   return (
-    <section className="border-b border-border bg-muted/30 py-14 md:py-20">
+    <section className="border-b border-kedja-border bg-kedja-paper/30 py-14 md:py-20">
       <div className="container">
         <SectionHead id="mentalitet" eyebrow="Mentalitet" title="ANSVAR ÄR DET VIKTIGASTE" />
         <div className="mt-8 border-2 border-kedja-ink bg-kedja-ink p-6 md:p-8">
@@ -699,22 +699,22 @@ function Mentalitet() {
           <p className="mt-2 text-xl font-black leading-tight tracking-tight text-white md:text-2xl">“{MENTALITET.ledarbudskap}”</p>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="border border-border bg-card p-5">
-            <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-foreground/60">Krav på spelarna</p>
+          <div className="border border-kedja-border bg-white p-5">
+            <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-kedja-ink/60">Krav på spelarna</p>
             <ul className="space-y-2">
               {MENTALITET.kravSpelare.map((k) => (
-                <li key={k} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+                <li key={k} className="flex items-start gap-2 text-sm leading-relaxed text-kedja-ink/85">
                   <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-sky-600" />
                   <span>{k}</span>
                 </li>
               ))}
             </ul>
           </div>
-          <div className="border border-border bg-card p-5">
-            <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-foreground/60">Ledarens ansvar</p>
+          <div className="border border-kedja-border bg-white p-5">
+            <p className="mb-3 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-kedja-ink/60">Ledarens ansvar</p>
             <ul className="space-y-2">
               {MENTALITET.kravLedare.map((k) => (
-                <li key={k} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+                <li key={k} className="flex items-start gap-2 text-sm leading-relaxed text-kedja-ink/85">
                   <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-600" />
                   <span>{k}</span>
                 </li>
@@ -722,7 +722,7 @@ function Mentalitet() {
             </ul>
           </div>
         </div>
-        <p className="mt-6 text-sm italic leading-relaxed text-foreground/70">
+        <p className="mt-6 text-sm italic leading-relaxed text-kedja-ink/70">
           Extra viktigt för spelare som kommer hem sent: {MENTALITET.sentLandande}
         </p>
       </div>
@@ -736,7 +736,7 @@ function Mentalitet() {
 
 function BeslutSektion() {
   return (
-    <section className="border-b border-border py-14 md:py-20">
+    <section className="border-b border-kedja-border py-14 md:py-20">
       <div className="container">
         <SectionHead id="beslut" eyebrow="Beslut" title="DET ÄR BESTÄMT" />
         <ol className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -756,13 +756,13 @@ function BeslutSektion() {
 
 function Effektlogik() {
   return (
-    <section className="border-b border-border bg-muted/30 py-14 md:py-20">
+    <section className="border-b border-kedja-border bg-kedja-paper/30 py-14 md:py-20">
       <div className="container">
         <SectionHead eyebrow="Effektlogik" title="FRÅN RESURS TILL EFFEKT" />
         <div className="mt-8 overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse text-left">
             <thead>
-              <tr className="border-b-2 border-border">
+              <tr className="border-b-2 border-kedja-border">
                 {["Resurser", "Aktiviteter", "Mål", "Effekt"].map((h) => (
                   <th key={h} className="px-3 py-2.5 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-kedja-green">
                     {h}
@@ -772,10 +772,10 @@ function Effektlogik() {
             </thead>
             <tbody>
               {EFFEKTLOGIK.map((r) => (
-                <tr key={r.resurs} className="border-b border-border/60">
-                  <td className="px-3 py-3 text-sm font-bold text-foreground">{r.resurs}</td>
-                  <td className="px-3 py-3 text-sm text-foreground/75">{r.aktivitet}</td>
-                  <td className="px-3 py-3 text-sm text-foreground/75">{r.mal}</td>
+                <tr key={r.resurs} className="border-b border-kedja-border/60">
+                  <td className="px-3 py-3 text-sm font-bold text-kedja-ink">{r.resurs}</td>
+                  <td className="px-3 py-3 text-sm text-kedja-ink/75">{r.aktivitet}</td>
+                  <td className="px-3 py-3 text-sm text-kedja-ink/75">{r.mal}</td>
                   <td className="px-3 py-3 text-sm font-bold text-emerald-700">{r.effekt}</td>
                 </tr>
               ))}
@@ -881,7 +881,7 @@ const SommarUppstart = () => {
   }, [players, statuses]);
 
   return (
-    <div className="relative -mt-px bg-background text-foreground">
+    <div className="relative -mt-px bg-kedja-paper text-kedja-ink">
       <Hero counts={counts} total={players.length} />
       <Utgangspunkt />
       <Spelartavla byStatus={byStatus} onChange={setStatus} />

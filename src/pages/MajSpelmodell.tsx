@@ -127,7 +127,7 @@ const TONE_BG: Record<Tone, string> = {
   red: "bg-rose-50 border-rose-300/80",
   blue: "bg-sky-50 border-sky-300/80",
   green: "bg-emerald-50 border-emerald-300/80",
-  white: "bg-muted border-border",
+  white: "bg-kedja-paper border-kedja-border",
 };
 
 const TONE_DOT: Record<Tone, string> = {
@@ -143,7 +143,7 @@ const TONE_TEXT: Record<Tone, string> = {
   red: "text-rose-700",
   blue: "text-sky-700",
   green: "text-emerald-700",
-  white: "text-foreground",
+  white: "text-kedja-ink",
 };
 
 const BLOCK_ICON: Record<string, typeof Shield> = {
@@ -212,7 +212,7 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
       {uniqueItems.map((item) => (
         <figure
           key={item.src}
-          className="overflow-hidden rounded-md border border-border bg-background"
+          className="overflow-hidden rounded-md border border-kedja-border bg-kedja-paper"
         >
           <div className="bg-black">
             {item.kind === "video" ? (
@@ -226,7 +226,7 @@ function MediaGrid({ items, columns = 2 }: { items: MediaAsset[]; columns?: 2 | 
               />
             )}
           </div>
-          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-foreground/85">
+          <figcaption className="px-3 py-2 text-xs font-bold leading-snug text-kedja-ink/85">
             {item.label}
           </figcaption>
         </figure>
@@ -334,7 +334,7 @@ function getBlockMedia(blockId: string): MediaAsset[] {
 function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
   if (items.length === 0) return null;
   return (
-    <div className="mb-8 border border-border bg-card p-4 md:p-5">
+    <div className="mb-8 border border-kedja-border bg-white p-4 md:p-5">
       <div className="mb-4 flex flex-col gap-1 md:flex-row md:items-end md:justify-between">
         <div className="flex items-center gap-2">
           <Film className="h-4 w-4 text-amber-700" strokeWidth={2.1} />
@@ -342,7 +342,7 @@ function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
             Matchklipp i blocket
           </h3>
         </div>
-        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-kedja-deep/70">
           {items.length} filer
         </p>
       </div>
@@ -353,7 +353,7 @@ function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
 
 function ModelIntro() {
   return (
-    <section id="vad-ar-spelmodellen" className="scroll-mt-24 border-b border-border bg-background py-14 md:py-18">
+    <section id="vad-ar-spelmodellen" className="scroll-mt-24 border-b border-kedja-border bg-kedja-paper py-14 md:py-18">
       <div className="container">
         <div className="mb-6 flex items-center gap-3">
           <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
@@ -363,15 +363,15 @@ function ModelIntro() {
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {MODEL_INTRO.map((item) => (
-            <article key={item.title} className="border border-border bg-card p-5">
-              <h2 className="text-lg font-black tracking-tight text-foreground">{item.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/72">{item.text}</p>
+            <article key={item.title} className="border border-kedja-border bg-white p-5">
+              <h2 className="text-lg font-black tracking-tight text-kedja-ink">{item.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-kedja-ink/72">{item.text}</p>
             </article>
           ))}
         </div>
         <div className="mt-6 border border-amber-500/40 bg-amber-50 p-5">
-          <h2 className="text-xl font-black tracking-tight text-foreground">Så används den</h2>
-          <ol className="mt-3 grid gap-2 text-sm font-semibold text-foreground/78 md:grid-cols-3 xl:grid-cols-6">
+          <h2 className="text-xl font-black tracking-tight text-kedja-ink">Så används den</h2>
+          <ol className="mt-3 grid gap-2 text-sm font-semibold text-kedja-ink/78 md:grid-cols-3 xl:grid-cols-6">
             {MODEL_FLOW.map((step, i) => (
               <li key={step} className="flex items-center gap-2">
                 <span className="font-mono text-[10px] font-black text-amber-700">{String(i + 1).padStart(2, "0")}</span>
@@ -398,9 +398,9 @@ function PrincipleLearningCard({ principle }: { principle: PrincipleDef }) {
   return (
     <dl className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
       {rows.map(([label, text]) => (
-        <div key={label} className="border border-border bg-card p-3">
+        <div key={label} className="border border-kedja-border bg-white p-3">
           <dt className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">{label}</dt>
-          <dd className="mt-1 text-sm leading-relaxed text-foreground/78">{text}</dd>
+          <dd className="mt-1 text-sm leading-relaxed text-kedja-ink/78">{text}</dd>
         </div>
       ))}
     </dl>
@@ -409,7 +409,7 @@ function PrincipleLearningCard({ principle }: { principle: PrincipleDef }) {
 
 function GlossarySection() {
   return (
-    <section id="ordlista" className="scroll-mt-24 border-t border-border bg-muted/30 py-16 md:py-20">
+    <section id="ordlista" className="scroll-mt-24 border-t border-kedja-border bg-kedja-paper/30 py-16 md:py-20">
       <div className="container">
         <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
@@ -417,26 +417,26 @@ function GlossarySection() {
               <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Ordlista</p>
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
+            <h2 className="text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-4xl">
               Begrepp som måste betyda samma sak för alla
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
+          <p className="max-w-md text-sm leading-relaxed text-kedja-deep/70">
             Varje ord ska kunna kopplas till matchbild och spelarhandling. Om ordet inte hjälper nästa aktion ska det inte styra spelaren.
           </p>
         </div>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {GLOSSARY.map((item) => (
-            <article key={item.term} className="border border-border bg-background p-4">
-              <h3 className="text-base font-black text-foreground">{item.term}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/70">
-                <span className="font-bold text-foreground">Enkelt:</span> {item.definition}
+            <article key={item.term} className="border border-kedja-border bg-kedja-paper p-4">
+              <h3 className="text-base font-black text-kedja-ink">{item.term}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-kedja-ink/70">
+                <span className="font-bold text-kedja-ink">Enkelt:</span> {item.definition}
               </p>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/70">
-                <span className="font-bold text-foreground">I match:</span> {item.match}
+              <p className="mt-2 text-sm leading-relaxed text-kedja-ink/70">
+                <span className="font-bold text-kedja-ink">I match:</span> {item.match}
               </p>
-              <p className="mt-1 text-sm leading-relaxed text-foreground/70">
-                <span className="font-bold text-foreground">Spelaren:</span> {item.action}
+              <p className="mt-1 text-sm leading-relaxed text-kedja-ink/70">
+                <span className="font-bold text-kedja-ink">Spelaren:</span> {item.action}
               </p>
             </article>
           ))}
@@ -451,13 +451,13 @@ function MediaSlot({ label = "Lägg in film eller bild här", description }: { l
     <div
       role="img"
       aria-label={label}
-      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-border bg-card px-4 text-center"
+      className="flex h-44 w-full flex-col items-center justify-center gap-2 border border-dashed border-kedja-border bg-white px-4 text-center"
     >
-      <div className="flex items-center gap-3 text-foreground/55">
+      <div className="flex items-center gap-3 text-kedja-ink/55">
         <Film className="h-5 w-5" strokeWidth={1.6} />
         <span className="font-mono text-[11px] font-bold uppercase tracking-[0.22em]">{label}</span>
       </div>
-      {description && <p className="text-xs text-foreground/45">{description}</p>}
+      {description && <p className="text-xs text-kedja-ink/45">{description}</p>}
     </div>
   );
 }
@@ -510,7 +510,7 @@ function DoColumn({
       </div>
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-foreground/85">
+          <li key={item} className="flex items-start gap-2 text-sm leading-relaxed text-kedja-ink/85">
             <span className={["mt-1.5 inline-block h-1 w-1 flex-shrink-0 rounded-full", styles.dotBg].join(" ")} />
             <span>{item}</span>
           </li>
@@ -827,7 +827,7 @@ function IdentitetGrid() {
         return (
           <div
             key={c.title}
-            className="relative overflow-hidden border border-border bg-muted/40 p-6"
+            className="relative overflow-hidden border border-kedja-border bg-kedja-paper/40 p-6"
             style={{ boxShadow: `inset 0 -4px 0 0 ${c.color}` }}
           >
             <div
@@ -836,8 +836,8 @@ function IdentitetGrid() {
             >
               <Icon className="h-6 w-6" strokeWidth={2} />
             </div>
-            <h3 className="mb-2 text-2xl font-black uppercase tracking-tight text-foreground">{c.title}</h3>
-            <p className="text-sm leading-relaxed text-foreground/75">{c.desc}</p>
+            <h3 className="mb-2 text-2xl font-black uppercase tracking-tight text-kedja-ink">{c.title}</h3>
+            <p className="text-sm leading-relaxed text-kedja-ink/75">{c.desc}</p>
           </div>
         );
       })}
@@ -862,15 +862,15 @@ function FastaGrid() {
         return (
           <div
             key={f.title}
-            className="border border-dashed border-border bg-card/60 p-5 transition-colors hover:border-emerald-400 hover:bg-emerald-50"
+            className="border border-dashed border-kedja-border bg-white/60 p-5 transition-colors hover:border-emerald-400 hover:bg-emerald-50"
           >
             <div className="mb-3 flex items-center gap-3">
               <Icon className="h-5 w-5 text-emerald-700" strokeWidth={1.8} />
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700">{f.hint}</p>
             </div>
-            <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-foreground">{f.title}</h3>
+            <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-kedja-ink">{f.title}</h3>
             <div className="border-t border-dashed border-white/15 pt-3">
-              <p className="text-xs italic text-foreground/45">Tomt fält — fyll med uppställning, löpningar, ansvar.</p>
+              <p className="text-xs italic text-kedja-ink/45">Tomt fält — fyll med uppställning, löpningar, ansvar.</p>
             </div>
           </div>
         );
@@ -929,15 +929,15 @@ function TacticalPlan({ id, num }: { id: string; num: string }) {
 
   return (
     <div className="tactical-plan">
-      <div className="border-b border-border bg-muted/25 px-4 py-4 md:px-5">
+      <div className="border-b border-kedja-border bg-kedja-paper/25 px-4 py-4 md:px-5">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/45">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-ink/45">
               Sekvens {num} · {steps.length} steg
             </p>
-            <p className="mt-1 text-sm font-bold text-foreground">{currentStep.cue}</p>
+            <p className="mt-1 text-sm font-bold text-kedja-ink">{currentStep.cue}</p>
           </div>
-          <span className="font-mono text-xs font-black tabular-nums text-foreground/45">
+          <span className="font-mono text-xs font-black tabular-nums text-kedja-ink/45">
             {String(activeStep + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
           </span>
         </div>
@@ -963,12 +963,12 @@ function TacticalPlan({ id, num }: { id: string; num: string }) {
         <BlockVisual id={id} />
       </div>
 
-      <div className="flex flex-col gap-4 border-t border-border bg-background px-4 py-4 md:flex-row md:items-center md:justify-between md:px-5">
+      <div className="flex flex-col gap-4 border-t border-kedja-border bg-kedja-paper px-4 py-4 md:flex-row md:items-center md:justify-between md:px-5">
         <div className="min-w-0">
           <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
             {currentStep.label}
           </p>
-          <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">{currentStep.detail}</p>
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-kedja-deep/70">{currentStep.detail}</p>
         </div>
         <div className="flex flex-shrink-0 items-center gap-1.5">
           <button
@@ -1064,11 +1064,11 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
     <AccordionItem
       value={block.id}
       id={block.id}
-      className={`scroll-mt-24 border-t border-border ${tone === "paper" ? "bg-kedja-paper" : "bg-white"} data-[state=open]:bg-kedja-mint/20`}
+      className={`scroll-mt-24 border-t border-kedja-border ${tone === "paper" ? "bg-kedja-paper" : "bg-white"} data-[state=open]:bg-kedja-mint/20`}
     >
       <AccordionTrigger
         data-testid={`block-trigger-${block.id}`}
-        className="container w-full px-4 py-4 hover:no-underline hover:bg-muted/40 md:py-5 [&[data-state=open]>div>div:last-child>svg]:rotate-180"
+        className="container w-full px-4 py-4 hover:no-underline hover:bg-kedja-paper/40 md:py-5 [&[data-state=open]>div>div:last-child>svg]:rotate-180"
       >
         <div className="flex w-full items-center justify-between gap-4 text-left">
           <div className="flex min-w-0 items-center gap-3 md:gap-4">
@@ -1089,17 +1089,17 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
               <Icon className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
             </div>
             <div className="min-w-0">
-              <h2 className="truncate text-base font-bold leading-tight tracking-tight text-foreground md:text-lg">
+              <h2 className="truncate text-base font-bold leading-tight tracking-tight text-kedja-ink md:text-lg">
                 {block.title}
               </h2>
               {eyebrow && (
-                <p className="mt-0.5 truncate text-xs leading-snug text-muted-foreground">
+                <p className="mt-0.5 truncate text-xs leading-snug text-kedja-deep/70">
                   {eyebrow}
                 </p>
               )}
             </div>
           </div>
-          <div className="flex flex-shrink-0 items-center gap-2 text-muted-foreground">
+          <div className="flex flex-shrink-0 items-center gap-2 text-kedja-deep/70">
             {block.principles.length > 0 && (
               <span className="hidden font-mono text-[10px] font-bold uppercase tracking-[0.18em] sm:inline">
                 {block.principles.length} principer
@@ -1112,7 +1112,7 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
 
       <AccordionContent className="overflow-hidden">
         <div className="container pb-16 pt-2 md:pb-20">
-          <p className="mb-10 max-w-2xl text-base leading-relaxed text-foreground/75 md:text-lg">
+          <p className="mb-10 max-w-2xl text-base leading-relaxed text-kedja-ink/75 md:text-lg">
             {block.kidExplanation}
           </p>
 
@@ -1133,12 +1133,12 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
           <div className="mb-8 grid grid-cols-1 gap-5 lg:grid-cols-[minmax(280px,0.72fr)_minmax(0,1.65fr)]">
             <InstructionPanel block={block} num={num} />
 
-            <div className="overflow-hidden border border-border bg-background">
-              <div className="flex items-center justify-between border-b border-border bg-muted/30 px-4 py-2.5">
-                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
+            <div className="overflow-hidden border border-kedja-border bg-kedja-paper">
+              <div className="flex items-center justify-between border-b border-kedja-border bg-kedja-paper/30 px-4 py-2.5">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-ink/55">
                   Taktisk planvy · steg för steg
                 </p>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-foreground/35">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-kedja-ink/35">
                   Block {num}
                 </p>
               </div>
@@ -1174,20 +1174,20 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             <div className="mt-10">
               <div className="mb-3 flex items-center gap-3 px-1">
                 <Layers className={["h-4 w-4", TONE_TEXT[block.accent]].join(" ")} strokeWidth={2.2} />
-                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-muted-foreground">
+                <p className="font-mono text-[11px] font-black uppercase tracking-[0.24em] text-kedja-deep/70">
                   Principer · {block.principles.length}
                 </p>
               </div>
-              <Accordion type="multiple" className="overflow-hidden rounded-md border border-border bg-card">
+              <Accordion type="multiple" className="overflow-hidden rounded-md border border-kedja-border bg-white">
                 {block.principles.map((p) => (
                   <AccordionItem
                     key={p.id}
                     value={`${block.id}-${p.id}`}
-                    className="border-b border-border last:border-b-0"
+                    className="border-b border-kedja-border last:border-b-0"
                   >
                     <AccordionTrigger
                       data-testid={`principle-trigger-${block.id}-${p.id}`}
-                      className="px-4 py-3 hover:no-underline hover:bg-muted/40 md:px-5 md:py-3.5"
+                      className="px-4 py-3 hover:no-underline hover:bg-kedja-paper/40 md:px-5 md:py-3.5"
                     >
                       <div className="flex w-full items-center gap-3 text-left">
                         <span
@@ -1197,23 +1197,23 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
                           ].join(" ")}
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold leading-tight text-foreground">
+                          <p className="truncate text-sm font-bold leading-tight text-kedja-ink">
                             {p.label}
                           </p>
-                          <p className="mt-0.5 truncate text-xs leading-snug text-muted-foreground">
+                          <p className="mt-0.5 truncate text-xs leading-snug text-kedja-deep/70">
                             {p.oneLiner}
                           </p>
                         </div>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="border-t border-border bg-background px-4 pb-5 pt-4 md:px-5">
+                    <AccordionContent className="border-t border-kedja-border bg-kedja-paper px-4 pb-5 pt-4 md:px-5">
                       {(() => {
                         const staticItems = MAJ_2026_PRINCIPLE_MEDIA[block.id]?.[p.id] ?? [];
                         return staticItems.length > 0 ? (
                           <div className="mb-5 space-y-3">
                             <div className="flex items-center gap-2">
-                              <Film className="h-3.5 w-3.5 text-foreground/55" strokeWidth={2} />
-                              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">
+                              <Film className="h-3.5 w-3.5 text-kedja-ink/55" strokeWidth={2} />
+                              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-ink/55">
                                 Filmer & bilder · {staticItems.length}
                               </p>
                             </div>
@@ -1282,13 +1282,13 @@ const EFFEKT_ICONS = {
 
 function EffektlogikStrip() {
   return (
-    <section id="effektlogik" className="scroll-mt-24 border-b border-border py-16 md:py-20">
+    <section id="effektlogik" className="scroll-mt-24 border-b border-kedja-border py-16 md:py-20">
       <div className="container">
         <div className="mb-10 flex items-center gap-3">
           <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
           <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Effektlogik</p>
         </div>
-        <h2 className="mb-12 max-w-3xl text-3xl font-black uppercase tracking-tight text-foreground md:text-4xl">
+        <h2 className="mb-12 max-w-3xl text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-4xl">
           Från vad vi har — till vad vi blir.
         </h2>
 
@@ -1297,12 +1297,12 @@ function EffektlogikStrip() {
             const Icon = EFFEKT_ICONS[block.label];
             return (
               <div key={block.label} className="contents">
-                <div className="border border-border bg-card p-5">
+                <div className="border border-kedja-border bg-white p-5">
                   <div className="mb-3 flex items-center gap-2 text-amber-700">
                     <Icon className="h-4 w-4" strokeWidth={1.8} />
                     <h3 className="font-mono text-[11px] font-black uppercase tracking-[0.22em] text-amber-700">{block.label}</h3>
                   </div>
-                  <ul className="space-y-1.5 text-xs leading-relaxed text-foreground/70">
+                  <ul className="space-y-1.5 text-xs leading-relaxed text-kedja-ink/70">
                     {block.items.map((item) => (
                       <li key={item} className="flex items-start gap-2">
                         <span className="mt-1.5 inline-block h-1 w-1 flex-shrink-0 bg-amber-500" />
@@ -1333,7 +1333,7 @@ const SNABB_TONES: Tone[] = ["red", "yellow", "blue", "red", "yellow", "green"];
 
 function SpelarenSnabbversion() {
   return (
-    <section id="snabbversion" className="scroll-mt-24 border-b border-border bg-muted/40 py-16 md:py-20">
+    <section id="snabbversion" className="scroll-mt-24 border-b border-kedja-border bg-kedja-paper/40 py-16 md:py-20">
       <div className="container">
         <div className="mb-8 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
           <div>
@@ -1342,9 +1342,9 @@ function SpelarenSnabbversion() {
               <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Spelarens snabbversion</p>
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tight text-foreground md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-foreground/65">
+          <p className="max-w-md text-sm leading-relaxed text-kedja-ink/65">
             Sex skeden. Tre–fyra ord per kommando. Det här är det enda du behöver komma ihåg i 90 minuter.
           </p>
         </div>
@@ -1353,9 +1353,9 @@ function SpelarenSnabbversion() {
           {MAJ_2026_QUICK_ACTIONS.map((qa, i) => {
             const tone = SNABB_TONES[i] ?? "white";
             return (
-              <div key={qa.scenario} className="border border-border bg-background p-5 transition-colors hover:border-[#f5c242]/40">
+              <div key={qa.scenario} className="border border-kedja-border bg-kedja-paper p-5 transition-colors hover:border-[#f5c242]/40">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="text-lg font-black uppercase tracking-tight text-foreground">{qa.scenario}</h3>
+                  <h3 className="text-lg font-black uppercase tracking-tight text-kedja-ink">{qa.scenario}</h3>
                   <span className={["inline-flex items-center gap-2 border px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.18em]", TONE_BG[tone], TONE_TEXT[tone]].join(" ")}>
                     <span className={["h-1.5 w-1.5 rounded-full", TONE_DOT[tone]].join(" ")} />
                     Skede
@@ -1365,7 +1365,7 @@ function SpelarenSnabbversion() {
                   {qa.actions.map((p) => (
                     <li key={p} className="flex items-start gap-2.5">
                       <span className={["mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0", TONE_DOT[tone]].join(" ")} />
-                      <span className="text-sm leading-relaxed text-foreground/85">{p}</span>
+                      <span className="text-sm leading-relaxed text-kedja-ink/85">{p}</span>
                     </li>
                   ))}
                 </ul>
@@ -1392,7 +1392,7 @@ const TRIGGERS = [
 
 function TriggersBand() {
   return (
-    <section className="border-b border-border py-8">
+    <section className="border-b border-kedja-border py-8">
       <div className="container">
         <div className="border border-rose-300 bg-rose-50 p-5">
           <div className="mb-4 flex items-center gap-3">
@@ -1403,7 +1403,7 @@ function TriggersBand() {
           </div>
           <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {TRIGGERS.map((t, i) => (
-              <li key={t} className="flex items-start gap-3 text-sm text-foreground/85">
+              <li key={t} className="flex items-start gap-3 text-sm text-kedja-ink/85">
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center border border-rose-300 bg-rose-100 font-mono text-[10px] font-black text-rose-700">
                   {String(i + 1).padStart(2, "0")}
                 </span>
@@ -1450,7 +1450,7 @@ const MajSpelmodell = () => {
   const [openBlocks, setOpenBlocks] = useHashControlledAccordion();
 
   return (
-  <div className="relative -mt-px bg-kedja-paper text-foreground">
+  <div className="relative -mt-px bg-kedja-paper text-kedja-ink">
     <Hero />
     <ModelIntro />
     {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
@@ -1461,13 +1461,13 @@ const MajSpelmodell = () => {
     <SpelarenSnabbversion />
 
     {/* Nivå 2 — principerna per fas */}
-    <div className="border-t border-border bg-background pt-10">
+    <div className="border-t border-kedja-border bg-kedja-paper pt-10">
       <div className="container">
         <LevelBadge level={2} className="mb-3" />
-        <h2 className="text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+        <h2 className="text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
           Blocken — principerna per fas
         </h2>
-        <p className="mb-6 mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+        <p className="mb-6 mt-2 max-w-2xl text-sm leading-relaxed text-kedja-deep/70">
           Öppna en fas i taget. Varje block fördjupar sin rad från Grunden.
         </p>
       </div>
@@ -1476,7 +1476,7 @@ const MajSpelmodell = () => {
       type="multiple"
       value={openBlocks}
       onValueChange={setOpenBlocks}
-      className="border-t border-border"
+      className="border-t border-kedja-border"
     >
       {MAJ_2026_BLOCKS.map((block, i) => (
         <BlockSection key={block.id} block={block} num={String(i + 1).padStart(2, "0")} />
@@ -1484,7 +1484,7 @@ const MajSpelmodell = () => {
     </Accordion>
 
     {/* Nivå 3 — fördjupning: filmbibliotek (flyttat ned under blocken) */}
-    <div className="border-t border-border bg-background pt-10">
+    <div className="border-t border-kedja-border bg-kedja-paper pt-10">
       <div className="container">
         <LevelBadge level={3} className="mb-1" />
       </div>
@@ -1494,7 +1494,7 @@ const MajSpelmodell = () => {
 
     {/* Övrigt — filmer/bilder utan koppling till specifik princip */}
     {MAJ_2026_OVRIGT_MEDIA.length > 0 && (
-      <section id="ovrigt" className="scroll-mt-24 border-t border-border bg-muted/30 py-16 md:py-20">
+      <section id="ovrigt" className="scroll-mt-24 border-t border-kedja-border bg-kedja-paper/30 py-16 md:py-20">
         <div className="container">
           <div className="mb-3 flex items-center gap-3">
             <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
@@ -1502,10 +1502,10 @@ const MajSpelmodell = () => {
               Övrigt
             </p>
           </div>
-          <h2 className="mb-4 max-w-3xl text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+          <h2 className="mb-4 max-w-3xl text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
             Filmer & bilder utan princip-koppling
           </h2>
-          <p className="mb-10 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+          <p className="mb-10 max-w-2xl text-sm leading-relaxed text-kedja-deep/70 md:text-base">
             Material som inte hör till ett specifikt block eller en specifik princip — hero-takes, identifierande klipp och referensbilder. Sortera senare vid behov.
           </p>
           <MediaGrid items={MAJ_2026_OVRIGT_MEDIA} columns={3} />
@@ -1514,26 +1514,26 @@ const MajSpelmodell = () => {
     )}
 
     {/* Closing strip */}
-    <section className="border-t border-border bg-muted/40 py-16">
+    <section className="border-t border-kedja-border bg-kedja-paper/40 py-16">
       <div className="container">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Slut</p>
-            <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">
+            <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
               Sex block. En idé. Ett lag.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">
             <a
               href="#forsvarsspel"
-              className="inline-flex items-center gap-2 rounded-md border border-amber-500 bg-amber-500 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:bg-amber-400"
+              className="inline-flex items-center gap-2 rounded-md border border-amber-500 bg-amber-500 px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-kedja-ink transition-colors hover:bg-amber-400"
             >
               <ArrowDown className="h-4 w-4" strokeWidth={2.4} />
               Tillbaka till block 01
             </a>
             <Link
               to="/period/1"
-              className="inline-flex items-center gap-2 border border-border bg-card px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-foreground transition-colors hover:border-[#f5c242] hover:text-amber-600"
+              className="inline-flex items-center gap-2 border border-kedja-border bg-white px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-kedja-ink transition-colors hover:border-[#f5c242] hover:text-amber-600"
             >
               Träna det
               <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
