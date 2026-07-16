@@ -24,6 +24,20 @@ export type AutumnSession = {
   intensity: "Låg" | "Medel" | "Hög";
   owner: string;
   timeline: TimelineBlock[];
+  plan: TrainingPlan;
+};
+
+export type TrainingMoment = {
+  title: string;
+  purpose: string;
+  options: string[];
+};
+
+export type TrainingPlan = {
+  activation: TrainingMoment;
+  exerciseOne: TrainingMoment;
+  exerciseTwo: TrainingMoment;
+  game: TrainingMoment;
 };
 
 export type AutumnWeek = {
@@ -45,6 +59,28 @@ export const TRAINING_METHOD = [
   ["6", "Reflektera", "Låt spelarna beskriva vad de såg och gjorde."],
   ["7", "Följ upp", "Mät samma beteende i matchen och justera nästa vecka."],
 ] as const;
+
+const activationOptions = (theme: string): string[] => [
+  `Dynamisk aktivering med boll: bål, höft och fotled → riktningsförändring → scanning och passning. Veckans cue: ${theme}.`,
+  `Parvis förberedelseträning: dynamisk rörlighet, löpteknik framåt/bakåt/sidled, fotarbete och hoppa–landa–löp. Avsluta med första aktionen i ${theme.toLowerCase()}.`,
+  `FIFA 11+-inspirerad aktivering: balans, knäkontroll, bål/höft och kontrollerad acceleration. Lägg in boll efter varje serie och coacha ${theme.toLowerCase()}.`,
+];
+
+const trainingPlanFor = (theme: string): TrainingPlan => ({
+  activation: { title: "Aktivering", purpose: "Cirka 15 min: förbered kroppen och koppla direkt till dagens spelbeteende.", options: activationOptions(theme) },
+  exerciseOne: { title: "Spelövning 1", purpose: "Förenkla problemet med få spelare, hög aktivitet och en tydlig riktning.", options: [
+    `4v2/5v3 i tre korridorer: hitta spelbarhet, scanning och nästa passning kopplat till ${theme.toLowerCase()}.`,
+    `3v3 + 2 jokrar med riktning: laget får poäng när det löser ${theme.toLowerCase()} efter bollvinst.`,
+  ] },
+  exerciseTwo: { title: "Spelövning 2", purpose: "Öka motstånd, yta och beslut utan att tappa veckans princip.", options: [
+    `5v5 + målvakter med korridorer och omställning: poäng för ${theme.toLowerCase()} i rätt ögonblick.`,
+    `7v7/8v8 med riktning mot mål: starta i den situation som kräver ${theme.toLowerCase()} och låt spelet leva.`,
+  ] },
+  game: { title: "Spel", purpose: "Testa beteendet i matchlik miljö med få coachstopp och tydlig uppföljning.", options: [
+    `8v8/9v9 fritt spel: coacha bara ${theme.toLowerCase()} och notera tre matchlika exempel.`,
+    `11v11 eller största möjliga spelform: matchplan, omställning och ${theme.toLowerCase()} utan extra regler.`,
+  ] },
+});
 
 export const COACH_ROLES = [
   ["Huvudtränare", "Äger veckans fokus, matchplan, samling och slutbeslut."],
@@ -130,6 +166,7 @@ export const AUTUMN_WEEKS: AutumnWeek[] = matches.map((match, index) => {
       intensity,
       owner: day === "Torsdag" ? "Huvudtränare + hela tränarteamet" : day === "Onsdag" ? "Huvudtränare" : "Huvudtränare + videoansvarig",
       timeline: baseTimeline[day],
+      plan: trainingPlanFor(sessionFocus),
     };
   });
   return {
