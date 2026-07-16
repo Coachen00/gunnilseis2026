@@ -79,6 +79,11 @@ const coachGroups: NavGroup[] = [
       { label: "5⁵", to: "/under-process/5-upphojt-i-fem", hint: "Minnesskelettet" },
       { label: "Spelidé", to: "/spelide", hint: "Vi kommer förberedda" },
       { label: "Spelmodell-labb", to: "/spelmodell-labb", hint: "Bygg veckans matchbild" },
+      { label: "Träningsplanering", to: "/coach/traningsplanering-host-2026", hint: "Fyra moment per pass" },
+      { label: "Träningsplan", to: "/traningsplan", hint: "A4 för passet" },
+      { label: "Matchblad", to: "/matchblad", hint: "Trupp och fokuspunkter" },
+      { label: "Motståndaranalys", to: "/motstandaranalys", hint: "Styrkor, svagheter och plan" },
+      { label: "Taktiktavla", to: "/taktiktavla", hint: "Flytta spelare och rita sekvenser" },
     ],
   },
 ];
@@ -118,13 +123,12 @@ const navItems: NavItem[] = [
     variant: "narrow",
     activePathPrefixes: ["/laget", "/truppen", "/spelarvard", "/semestern-2026", "/tavlingar"],
   },
-  { kind: "link", to: "/verktyg", label: "Verktyg" },
   {
     kind: "dropdown",
     label: "Coach",
     groups: coachGroups,
     variant: "narrow",
-    activePathPrefixes: ["/coach", "/under-process", "/spelide", "/spelmodell-labb"],
+    activePathPrefixes: ["/coach", "/under-process", "/spelide", "/spelmodell-labb", "/traningsplan", "/matchblad", "/motstandaranalys", "/taktiktavla"],
   },
 ];
 

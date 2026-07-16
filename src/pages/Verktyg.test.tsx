@@ -20,9 +20,13 @@ describe("Verktyg page", () => {
       "href",
       "/spelmodell-labb"
     );
-    expect(screen.getByRole("link", { name: /Träningsplan/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Träningsplan A4 för passet/i })).toHaveAttribute(
       "href",
       "/traningsplan"
+    );
+    expect(screen.getByRole("link", { name: /Träningsplanering/i })).toHaveAttribute(
+      "href",
+      "/coach/traningsplanering-host-2026"
     );
     expect(screen.getByRole("link", { name: /Matchblad/i })).toHaveAttribute(
       "href",
@@ -32,7 +36,7 @@ describe("Verktyg page", () => {
       "href",
       "/motstandaranalys"
     );
-    expect(screen.getByRole("link", { name: /Taktiktavla/i })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Taktiktavla Flytta spelare/i })).toHaveAttribute(
       "href",
       "/taktiktavla"
     );

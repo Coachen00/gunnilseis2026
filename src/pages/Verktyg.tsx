@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
+import { ArrowRight, CalendarDays, ClipboardList, FileText, Search, Sparkles, Target } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import SectionReveal from "@/components/SectionReveal";
 
@@ -9,6 +9,12 @@ const tools = [
     label: "Spelmodell-labb",
     desc: "Fokus, matchbild och passupplägg.",
     icon: Sparkles,
+  },
+  {
+    to: "/coach/traningsplanering-host-2026",
+    label: "Träningsplanering",
+    desc: "Fyra moment per pass och länkar till Taktiktavlan.",
+    icon: CalendarDays,
   },
   {
     to: "/traningsplan",
