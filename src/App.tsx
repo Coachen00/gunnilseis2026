@@ -4,11 +4,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import AuthGuard from "./components/AuthGuard";
 import Layout from "./components/Layout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { createAppQueryClient } from "./lib/queryClient";
+import { useAuthSession } from "./hooks/useAuthSession";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -67,6 +69,32 @@ const PageFallback = () => (
   </div>
 );
 
+const HomeRoute = () => {
+  const { isAuthed, loading } = useAuthSession();
+
+  if (loading) return <PageFallback />;
+
+  if (!isAuthed) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-kedja-paper px-6 text-center">
+        <div className="max-w-xl">
+          <h1 className="text-4xl font-black tracking-tight text-kedja-ink sm:text-6xl">
+            Välkommen till Gunnilse herr 2026
+          </h1>
+          <Link
+            to="/login"
+            className="mt-10 inline-flex h-12 items-center justify-center rounded-sm bg-kedja-green px-8 text-sm font-black text-white transition hover:bg-kedja-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kedja-green focus-visible:ring-offset-2"
+          >
+            Logga in
+          </Link>
+        </div>
+      </main>
+    );
+  }
+
+  return <Public routeName="Hem"><Hem /></Public>;
+};
+
 // Public-vy: ingen auth, Layout + ErrorBoundary. Används BARA för förstasidan
 // (`/`) och `/login` — allt övrigt innehåll är inloggnings-skyddat så att
 // taktik, matchplan, trupp etc. aldrig läcker till oinloggade besökare.
@@ -109,8 +137,8 @@ const App = () => (
           <Route path="/login" element={<Login />} />
 
           {/* Förstasidan är publik — alla andra innehållsidor kräver inloggning */}
-          <Route path="/" element={<Public routeName="Hem"><Hem /></Public>} />
-          <Route path="/kedja-test" element={<Public routeName="Kedjatest"><KedjaTest /></Public>} />
+          <Route path="/" element={<HomeRoute />} />
+          <Route path="/kedja-test" element={<Protected routeName="Kedjatest"><KedjaTest /></Protected>} />
 
           {/* Hubbar — en landningssida per värld */}
           <Route path="/spelmodell" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
