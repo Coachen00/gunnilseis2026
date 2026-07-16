@@ -14,8 +14,7 @@ const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
   { num: "02", title: "Spelmodell", sub: "Sex faser, en idé", href: "/spelmodell" },
   { num: "03", title: "Laget", sub: "Trupp, vård, tävlingar", href: "/laget" },
-  { num: "04", title: "Verktyg", sub: "Matchblad, planer", href: "/verktyg" },
-  { num: "05", title: "Coach", sub: "Prisma 2026 · 5⁵", href: "/coach" },
+  { num: "04", title: "Coach", sub: "Prisma, planer, taktiktavla", href: "/coach" },
 ];
 
 function formatMatchDate(iso: string): string {
@@ -187,22 +186,11 @@ const Hem = () => {
       </KedjaSection>
 
       <KedjaSection
-        id="verktyg"
-        tone="white"
-        eyebrow="Kapitel 04"
-        title="Verktyg"
-        definition="Matchblad, taktiktavla och träningsplan — de verktyg du behöver i vardagen, samlade på ett ställe."
-        highlight="samlade på ett ställe"
-      >
-        <VidareLank to="/verktyg" label="Alla verktyg" />
-      </KedjaSection>
-
-      <KedjaSection
         id="coach"
         tone="paper"
-        eyebrow="Kapitel 05"
+        eyebrow="Kapitel 04"
         title="Coach"
-        definition="Prisma 2026 och 5⁵ beskriver hur hela tankesystemet hänger ihop — för dig som leder laget."
+        definition="Prisma 2026, 5⁵ och coachmaterialet beskriver hur tankesystemet hänger ihop — för dig som leder laget."
         highlight="hela tankesystemet hänger ihop"
       >
         <KedjaSteps
@@ -222,6 +210,11 @@ const Hem = () => {
               label: "Bygg",
               headline: "Spelmodell-labb",
               support: "Testa och bygg veckans matchbild innan den möter verkligheten.",
+            },
+            {
+              label: "Planera",
+              headline: "Matchblad, taktiktavla och träningsplan",
+              support: "Samla planering, bilder och fokuspunkter inför nästa prestation.",
             },
           ]}
         />

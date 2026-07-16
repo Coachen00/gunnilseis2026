@@ -328,7 +328,7 @@ export const AnfallsspelSection = () => (
           to="/taktiktavla"
           className="group relative bg-card/85 backdrop-blur-sm rounded-xl p-6 border border-border shadow-sm card-hover flex flex-col justify-center min-h-[280px]"
         >
-          <div className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">Verktyg</div>
+          <div className="text-xs font-bold uppercase tracking-[0.15em] text-accent mb-3">Coach</div>
           <h4 className="text-xl font-black text-foreground mb-2 tracking-tight">Öppna taktiktavlan</h4>
           <p className="text-sm text-muted-foreground leading-relaxed mb-5">
             Dra spelare med siffror 1–11, byt formation, visa korridorer och resonera kring sekvensen i en enkel pluppmatta.

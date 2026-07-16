@@ -147,11 +147,11 @@ const Taktiktavla = () => {
       <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
           <Link
-            to="/verktyg"
+            to="/coach"
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4" />
-            Verktyg
+            Coach
           </Link>
           <div className="flex items-center gap-4">
             <div className="hidden items-center gap-2 text-sm font-display font-bold text-primary sm:flex">
@@ -182,11 +182,11 @@ const Taktiktavla = () => {
 
           <div className="flex flex-wrap gap-2">
             <Link
-              to="/verktyg"
+              to="/coach"
               className="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-background px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
             >
               <LayoutDashboard className="h-4 w-4" />
-              Verktyg
+              Coach
             </Link>
             <Link
               to="/match/kommande"

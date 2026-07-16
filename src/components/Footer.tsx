@@ -47,7 +47,7 @@ const Footer = () => {
           <div className="flex items-center gap-6 text-xs font-medium text-[rgba(226,251,206,0.6)]">
             <Link to="/spelmodell" className="hover:text-kedja-lime transition-colors duration-200">Spelmodell</Link>
             <Link to="/laget" className="hover:text-kedja-lime transition-colors duration-200">Laget</Link>
-            <Link to="/verktyg" className="hover:text-kedja-lime transition-colors duration-200">Verktyg</Link>
+            <Link to="/coach" className="hover:text-kedja-lime transition-colors duration-200">Coach</Link>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className="hover:text-kedja-lime transition-colors duration-200"

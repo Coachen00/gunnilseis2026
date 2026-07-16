@@ -45,8 +45,8 @@ const tools = [
 const Verktyg = () => (
   <>
     <PageHero
-      eyebrow="Verktyg"
-      title="Tränarverktyg"
+      eyebrow="Coach"
+      title="Coachmaterial"
       description="Välj det du behöver inför träning eller match."
     />
     <SectionReveal as="section" className="container pb-section">
