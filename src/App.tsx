@@ -77,20 +77,18 @@ const HomeRoute = () => {
 
   if (!isAuthed) {
     return (
-      <main className="min-h-screen bg-kedja-paper">
-        <HomePhotoCarousel />
-        <div className="absolute inset-x-0 top-0 z-10 flex justify-center px-6 pt-[clamp(6rem,16vh,10rem)] text-center">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight text-white drop-shadow-lg sm:text-6xl">
-              Välkommen till Gunnilse herr 2026
-            </h1>
-            <Link
-              to="/login"
-              className="mt-10 inline-flex h-12 items-center justify-center rounded-sm bg-kedja-green px-8 text-sm font-black text-white transition hover:bg-kedja-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kedja-green focus-visible:ring-offset-2"
-            >
-              Logga in
-            </Link>
-          </div>
+      <main className="home-public">
+        <HomePhotoCarousel hideCaption />
+        <div className="home-public__content">
+          <span className="home-photo-carousel__eyebrow">Gunnilse herr · 2026</span>
+          <h1>Välkommen till Gunnilse herr 2026</h1>
+          <p>Dagens viktigaste från laget — samlat på ett ställe.</p>
+          <Link
+            to="/login"
+            className="home-public__cta"
+          >
+            Logga in
+          </Link>
         </div>
       </main>
     );

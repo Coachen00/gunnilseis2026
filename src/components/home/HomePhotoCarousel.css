@@ -1,15 +1,73 @@
 .home-photo-carousel {
   position: relative;
-  min-height: min(68vh, 720px);
+  min-height: 100svh;
   overflow: hidden;
   background: #07120d;
   color: #fff;
 }
 
 .home-photo-carousel--compact {
-  min-height: 420px;
-  margin: 0 auto 4rem;
-  max-width: 1440px;
+  min-height: 100svh;
+  margin: 0 0 4rem;
+  max-width: none;
+}
+
+.home-public {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #07120d;
+}
+
+.home-public__content {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: clamp(1.5rem, 8vw, 8rem);
+  width: min(42rem, calc(100% - 3rem));
+  color: #fff;
+  transform: translateY(-50%);
+}
+
+.home-public__content h1 {
+  max-width: 38rem;
+  margin: 1rem 0 1.25rem;
+  font-size: clamp(2.8rem, 6.5vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.home-public__content p {
+  max-width: 28rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.7vw, 1.3rem);
+}
+
+.home-public__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.25rem;
+  margin-top: 2rem;
+  padding: 0 2rem;
+  border-radius: 0.15rem;
+  background: #e2fbce;
+  color: #07120d;
+  font-size: 0.95rem;
+  font-weight: 900;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.home-public__cta:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.home-public__cta:focus-visible {
+  outline: 3px solid #e2fbce;
+  outline-offset: 4px;
 }
 
 .home-photo-carousel__slides,
@@ -95,11 +153,11 @@
 
 @media (max-width: 640px) {
   .home-photo-carousel {
-    min-height: 76vh;
+    min-height: 100svh;
   }
 
   .home-photo-carousel--compact {
-    min-height: 380px;
+    min-height: 100svh;
     margin-bottom: 2.5rem;
   }
 
@@ -115,6 +173,16 @@
   .home-photo-carousel__controls {
     right: 1.5rem;
     bottom: 2rem;
+  }
+
+  .home-public__content {
+    top: auto;
+    bottom: 7rem;
+    transform: none;
+  }
+
+  .home-public__content h1 {
+    font-size: clamp(2.7rem, 13vw, 4.8rem);
   }
 }
 
