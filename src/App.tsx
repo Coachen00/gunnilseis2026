@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { createAppQueryClient } from "./lib/queryClient";
 import { useAuthSession } from "./hooks/useAuthSession";
 import HomePhotoCarousel from "./components/home/HomePhotoCarousel";
+import MatchRadar from "./components/home/MatchRadar";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -84,7 +85,6 @@ const HomeRoute = () => {
         <div className="home-public__content">
           <span className="home-photo-carousel__eyebrow">Gunnilse herr · 2026</span>
           <h1>Välkommen till Gunnilse herr 2026</h1>
-          <p>Dagens viktigaste från laget — samlat på ett ställe.</p>
           <Link
             to="/login"
             className="home-public__cta"
@@ -92,6 +92,7 @@ const HomeRoute = () => {
             Logga in
           </Link>
         </div>
+        <MatchRadar />
       </main>
     );
   }
