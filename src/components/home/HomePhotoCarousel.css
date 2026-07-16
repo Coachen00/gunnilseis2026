@@ -1,0 +1,126 @@
+.home-photo-carousel {
+  position: relative;
+  min-height: min(68vh, 720px);
+  overflow: hidden;
+  background: #07120d;
+  color: #fff;
+}
+
+.home-photo-carousel--compact {
+  min-height: 420px;
+  margin: 0 auto 4rem;
+  max-width: 1440px;
+}
+
+.home-photo-carousel__slides,
+.home-photo-carousel__slide,
+.home-photo-carousel__veil {
+  position: absolute;
+  inset: 0;
+}
+
+.home-photo-carousel__slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 900ms ease, transform 6s ease;
+}
+
+.home-photo-carousel__slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.home-photo-carousel__veil {
+  background: linear-gradient(90deg, rgba(3, 12, 8, 0.76), rgba(3, 12, 8, 0.12) 68%, rgba(3, 12, 8, 0.18));
+}
+
+.home-photo-carousel__caption {
+  position: absolute;
+  left: clamp(1.5rem, 8vw, 8rem);
+  bottom: clamp(4.5rem, 12vh, 8rem);
+  display: grid;
+  gap: 0.45rem;
+  max-width: 34rem;
+}
+
+.home-photo-carousel__caption strong {
+  font-size: clamp(2.25rem, 6vw, 5.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+.home-photo-carousel__caption > span:last-child {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+}
+
+.home-photo-carousel__eyebrow {
+  color: #e2fbce;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.home-photo-carousel__controls {
+  position: absolute;
+  right: clamp(1.5rem, 8vw, 8rem);
+  bottom: 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.home-photo-carousel__controls button {
+  width: 2rem;
+  height: 0.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.42);
+  cursor: pointer;
+}
+
+.home-photo-carousel__controls button.is-active {
+  background: #e2fbce;
+}
+
+.home-photo-carousel__controls button:focus-visible {
+  outline: 2px solid #e2fbce;
+  outline-offset: 5px;
+}
+
+@media (max-width: 640px) {
+  .home-photo-carousel {
+    min-height: 76vh;
+  }
+
+  .home-photo-carousel--compact {
+    min-height: 380px;
+    margin-bottom: 2.5rem;
+  }
+
+  .home-photo-carousel__slide {
+    object-position: 58% center;
+  }
+
+  .home-photo-carousel__caption {
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .home-photo-carousel__controls {
+    right: 1.5rem;
+    bottom: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-photo-carousel__slide {
+    transition: none;
+    transform: none;
+  }
+}

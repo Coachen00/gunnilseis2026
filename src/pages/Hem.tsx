@@ -8,6 +8,7 @@ import KedjaNav from "@/components/kedja/KedjaNav";
 import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
+import HomePhotoCarousel from "@/components/home/HomePhotoCarousel";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
@@ -75,6 +76,7 @@ const Hem = () => {
 
   return (
     <div className="bg-kedja-paper">
+      <HomePhotoCarousel compact />
       <KedjaHero
         eyebrow="Gunnilse IS · Spelmodell 2026"
         title={

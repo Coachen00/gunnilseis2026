@@ -11,6 +11,7 @@ import Layout from "./components/Layout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { createAppQueryClient } from "./lib/queryClient";
 import { useAuthSession } from "./hooks/useAuthSession";
+import HomePhotoCarousel from "./components/home/HomePhotoCarousel";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -76,17 +77,20 @@ const HomeRoute = () => {
 
   if (!isAuthed) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-kedja-paper px-6 text-center">
-        <div className="max-w-xl">
-          <h1 className="text-4xl font-black tracking-tight text-kedja-ink sm:text-6xl">
-            Välkommen till Gunnilse herr 2026
-          </h1>
-          <Link
-            to="/login"
-            className="mt-10 inline-flex h-12 items-center justify-center rounded-sm bg-kedja-green px-8 text-sm font-black text-white transition hover:bg-kedja-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kedja-green focus-visible:ring-offset-2"
-          >
-            Logga in
-          </Link>
+      <main className="min-h-screen bg-kedja-paper">
+        <HomePhotoCarousel />
+        <div className="absolute inset-x-0 top-0 z-10 flex justify-center px-6 pt-[clamp(6rem,16vh,10rem)] text-center">
+          <div>
+            <h1 className="text-4xl font-black tracking-tight text-white drop-shadow-lg sm:text-6xl">
+              Välkommen till Gunnilse herr 2026
+            </h1>
+            <Link
+              to="/login"
+              className="mt-10 inline-flex h-12 items-center justify-center rounded-sm bg-kedja-green px-8 text-sm font-black text-white transition hover:bg-kedja-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kedja-green focus-visible:ring-offset-2"
+            >
+              Logga in
+            </Link>
+          </div>
         </div>
       </main>
     );
