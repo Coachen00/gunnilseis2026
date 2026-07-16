@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { ArrowRight, CalendarDays, CheckCircle2, Clock3, Film, Printer, Users } from "lucide-react";
 import BreadcrumbTrail from "@/components/BreadcrumbTrail";
 import PageHero from "@/components/PageHero";
@@ -10,8 +11,8 @@ const formatDate = (value: string) => new Intl.DateTimeFormat("sv-SE", { weekday
 
 const CoachTrainingPlanning = () => (
   <>
-    <BreadcrumbTrail items={[{ label: "Hem", to: "/" }, { label: "Coach", to: "/coach" }, { label: "Träningsplanering hösten 2026" }]} />
-    <PageHero eyebrow="Coach · träningsplanering" title="Hösten 2026" description="Matcherna är navet. Varje analys, träning och matchplan leder till nästa prestation.">
+    <BreadcrumbTrail items={[{ label: "Hem", to: "/" }, { label: "Coach", to: "/coach" }, { label: "Träningsplanering" }]} />
+    <PageHero eyebrow="Coach · träningsplanering" title="Träningsplanering" description="Skapa bilden i taktiktavlan, välj träningsmoment och lägg snabbt in det i veckans plan.">
       <div className="mt-8 grid max-w-4xl gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-4">
         <FlowStep label="Match" text="Se vad som hände" tone="dark" />
         <FlowStep label="Analys" text="Välj nästa fokus" tone="light" />
@@ -27,6 +28,9 @@ const CoachTrainingPlanning = () => (
         </button>
         <Link to="/coach" className="inline-flex h-11 items-center gap-2 rounded-lg border border-border bg-background px-4 text-sm font-bold">
           Tillbaka till Coach
+        </Link>
+        <Link to="/taktiktavla" className="inline-flex h-11 items-center gap-2 rounded-lg border border-primary bg-primary/5 px-4 text-sm font-bold text-primary">
+          Skapa bild i Taktiktavlan <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </div>
@@ -74,6 +78,7 @@ const CoachTrainingPlanning = () => (
 
     <SectionReveal as="section" className="container pb-section">
       <SectionHeader badge="Genomförande" title="Öppna en vecka när du ska planera" number={5} />
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/20 bg-primary/5 p-4"><div><p className="font-bold">Bilder och övningsplanering hör ihop</p><p className="mt-1 text-sm text-muted-foreground">Skapa en planbild i Taktiktavlan och använd den som stöd när du väljer ett av alternativen i passet.</p></div><Link to="/taktiktavla" className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-3 text-sm font-bold text-primary-foreground">Öppna Taktiktavlan <ArrowRight className="h-4 w-4" /></Link></div>
       <div className="space-y-4">
         {AUTUMN_WEEKS.map((week) => <WeekCard key={week.label} week={week} />)}
       </div>
@@ -91,12 +96,19 @@ const WeekCard = ({ week }: { week: (typeof AUTUMN_WEEKS)[number] }) => <details
     <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-black uppercase tracking-[0.16em] text-primary">{week.label} · {week.range}</p><h3 className="mt-1 text-lg font-black">{week.match.homeAway === "Hemma" ? "Gunnilse" : week.match.opponent}–{week.match.homeAway === "Hemma" ? week.match.opponent : "Gunnilse"}</h3><p className="mt-1 text-sm text-muted-foreground">{week.phase} · {formatDate(week.match.date)} {week.match.kickoff} · {week.match.venue}</p></div><CalendarDays className="h-5 w-5 text-primary" /></div>
   </summary>
   <div className="border-t border-border p-4">
-<div className="space-y-5"><div className="grid gap-3 lg:grid-cols-2"><Brief label="Inför veckan · video" items={week.videoBefore} tone="primary" /><Brief label="Efter matchen" items={week.videoAfter} tone="muted" /></div><div className="grid gap-3 lg:grid-cols-3">{week.sessions.map((session) => <SessionCard key={session.date} session={session} />)}</div></div>
+<div className="space-y-5"><div className="grid gap-3 lg:grid-cols-2"><Brief label="Inför veckan · video" items={week.videoBefore} tone="primary" /><Brief label="Efter matchen" items={week.videoAfter} tone="muted" /></div><div className="grid gap-3 lg:grid-cols-3">{week.sessions.map((session) => <SessionPlanCard key={session.date} session={session} />)}</div></div>
   </div>
 </details>;
 
 const Brief = ({ label, items, tone }: { label: string; items: string[]; tone: "primary" | "muted" }) => <div className={`rounded-xl p-4 ${tone === "primary" ? "bg-primary/5" : "bg-muted/50"}`}><h4 className="text-xs font-black uppercase tracking-[0.16em] text-primary">{label}</h4><ul className="mt-2 space-y-1.5 text-sm leading-relaxed text-muted-foreground">{items.map((item) => <li key={item}>• {item}</li>)}</ul></div>;
 
 const SessionCard = ({ session }: { session: (typeof AUTUMN_WEEKS)[number]["sessions"][number] }) => <div className="overflow-hidden rounded-xl border border-border bg-background"><div className="border-b border-border bg-card p-3"><div className="flex items-start justify-between gap-2"><div><p className="text-xs font-black uppercase tracking-[0.14em] text-primary">{session.day} · {formatDate(session.date)}</p><h4 className="mt-1 font-bold leading-tight">{session.focus}</h4></div><span className="shrink-0 rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold text-primary">{session.intensity}</span></div><p className="mt-2 text-xs leading-relaxed text-muted-foreground">{session.objective}</p></div><ol className="divide-y divide-border">{session.timeline.map((block) => <li key={`${block.from}-${block.to}`} className="grid grid-cols-[42px_1fr] gap-2 p-2.5"><span className="pt-0.5 text-[10px] font-black tabular-nums text-primary">{block.from}–{block.to}</span><div><p className="text-xs font-bold">{block.title}</p><p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">{block.instruction}</p><p className="mt-1 text-[10px] font-semibold text-muted-foreground/80">{block.owner}</p></div></li>)}</ol></div>;
+
+const SessionPlanCard = ({ session }: { session: (typeof AUTUMN_WEEKS)[number]["sessions"][number] }) => {
+  const moments = [session.plan.activation, session.plan.exerciseOne, session.plan.exerciseTwo, session.plan.game];
+  const [selected, setSelected] = useState([0, 0, 0, 0]);
+
+  return <div className="overflow-hidden rounded-xl border border-border bg-background"><div className="border-b border-border bg-card p-3"><div className="flex items-start justify-between gap-2"><div><p className="text-xs font-black uppercase tracking-[0.14em] text-primary">{session.day} · {formatDate(session.date)}</p><h4 className="mt-1 font-bold leading-tight">{session.focus}</h4></div><span className="shrink-0 rounded-full bg-primary/10 px-2 py-1 text-[10px] font-bold text-primary">{session.intensity}</span></div><p className="mt-2 text-xs leading-relaxed text-muted-foreground">{session.objective}</p></div><div className="border-b border-border bg-primary/5 px-3 py-2"><p className="text-[10px] font-black uppercase tracking-[0.14em] text-primary">Enkel plan · fyra moment</p><p className="mt-1 text-xs text-muted-foreground">Välj ett färdigt alternativ per moment. Håll samma metodik hela passet.</p></div><ol className="divide-y divide-border">{moments.map((moment, momentIndex) => <li key={moment.title} className="p-3"><div className="flex items-start gap-2"><span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-black text-primary">{momentIndex + 1}</span><div className="min-w-0 flex-1"><p className="text-xs font-bold">{moment.title}</p><p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">{moment.purpose}</p><div className="mt-2 grid gap-1.5">{moment.options.map((option, optionIndex) => <button key={option} type="button" onClick={() => setSelected((current) => current.map((value, index) => index === momentIndex ? optionIndex : value))} className={`min-h-11 rounded-lg border px-2.5 py-2 text-left text-[11px] leading-relaxed transition-colors ${selected[momentIndex] === optionIndex ? "border-primary bg-primary/10 font-semibold text-foreground" : "border-border bg-background text-muted-foreground hover:bg-muted/50"}`} aria-pressed={selected[momentIndex] === optionIndex}><span className="mr-1 font-black text-primary">{String.fromCharCode(65 + optionIndex)}.</span>{option}</button>)}</div></div></div></li>)}</ol></div>;
+};
 
 export default CoachTrainingPlanning;
