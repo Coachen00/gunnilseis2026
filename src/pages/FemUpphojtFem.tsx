@@ -8,8 +8,15 @@ import { isOwnerEmail } from "@/lib/owner";
 
 const segments: SegmentItem[] = [
   { id: "oversikt", label: "Översikt" },
+  { id: "superprinciper", label: "Superprinciperna" },
   { id: "femmor", label: "Femmorna" },
   { id: "anvandning", label: "Användning" },
+];
+
+const superprinciper = [
+  { title: "Nå gyllene zonen med övertal", skede: "Anfall + omställning anfall" },
+  { title: "Skydda gyllene zonen", skede: "Försvar + omställning försvar" },
+  { title: "Vinn duellen & andrabollen", skede: "Alla skeden, identitetens kärna" },
 ];
 
 const femmor = [
@@ -17,7 +24,6 @@ const femmor = [
   { number: "02", eyebrow: "Beteende", title: "5 identitetsord", summary: "Våra gemensamma beteenden gör spelidén synlig i varje situation.", text: "Scanning · Ta ytan · Prata med passningen · Duellspel · Andrabollsspel", to: "/identitet", action: "Se identiteten" },
   { number: "03", eyebrow: "Sekvens", title: "5 anfallsprinciper", summary: "En ordning som hjälper oss att välja nästa handling med boll.", text: "Skydda · Spela in · Spela ut · Framåt · Fyll boxen", to: "/anfall", action: "Se anfallssekvensen" },
   { number: "04", eyebrow: "Arbetsgång", title: "5 förberedelsesteg", summary: "Från första analys till ett beslut som går att agera på.", text: "Analysera · Samla info · Tolka · Besluta · Agera", to: "/under-process/forberedelsesteg", action: "Följ arbetsgången" },
-  { number: "05", eyebrow: "Nivåer", title: "5 lager per skede", summary: "Samma idé blir användbar när den bryts ner från riktning till vardag.", text: "Riktning · Princip · Subprincip · Koncept · Arbetssätt", to: "/spelmodell/lager", action: "Se lagren" },
 ];
 
 function Locked() {
@@ -50,11 +56,27 @@ const FemUpphojtFem = () => {
               <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed text-kedja-deep">Börja alltid i riktningen. Gå sedan till identitet, skede, princip och arbetssätt. Om en idé inte hjälper nästa beslut ska den förenklas eller tas bort.</p>
             </section>
           </SectionReveal>
+          <SectionReveal>
+            <section id="superprinciper" className="mt-8 scroll-mt-32 border border-kedja-border bg-white p-6 md:p-8">
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-violet-700">Superprinciperna</p>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-kedja-ink">De tre över-reglerna</h2>
+              <p className="mt-4 max-w-2xl text-base font-semibold leading-relaxed text-kedja-deep">De tre över-reglerna som alla huvudprinciper tjänar — spelarens kortaste språk för hur vi spelar.</p>
+              <div className="mt-6 grid gap-3 md:grid-cols-3">
+                {superprinciper.map((item, i) => (
+                  <div key={item.title} className="border border-kedja-border bg-kedja-paper p-4">
+                    <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-deep/60">{i + 1} · {item.skede}</p>
+                    <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-deep">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </SectionReveal>
           <section id="femmor" className="mt-8 scroll-mt-32">
             <div className="mb-4">
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-deep/60">Femmorna</p>
-              <h2 className="mt-2 text-3xl font-black tracking-tight text-kedja-ink">Fem återkommande strukturer</h2>
+              <h2 className="mt-2 text-3xl font-black tracking-tight text-kedja-ink">Fyra återkommande strukturer</h2>
               <p className="mt-3 max-w-2xl text-base font-semibold leading-relaxed text-kedja-deep/70">Varje kort börjar med en enkel förklaring. Öppna sedan det som är relevant och gå från överblick till konkreta beteenden.</p>
+              <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-kedja-deep/60">Den femte femman ("5 lager") ströks — mnemonik får aldrig trumfa sanning. Tre femmor är äkta, en är strukturell.</p>
             </div>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {femmor.map((item) => (

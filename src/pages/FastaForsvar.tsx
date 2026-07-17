@@ -72,7 +72,7 @@ const FastaForsvar = () => (
       highlight="kontringsskydd"
     >
       <div className="rounded-2xl border border-kedja-border bg-white p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
-        Fyll på med inkastregler defensivt.
+        Markera korta alternativet, förvänta lång — vinn andrabollar.
       </div>
     </KedjaSection>
 
@@ -85,7 +85,7 @@ const FastaForsvar = () => (
       highlight="press"
     >
       <div className="rounded-2xl border border-kedja-border bg-kedja-paper p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
-        Fyll på med avsparksregler defensivt.
+        Direkt press enligt pressvillkoren: dålig touch, bakåtpassning, vänd rygg, passning mot sidlinje.
       </div>
     </KedjaSection>
   </div>

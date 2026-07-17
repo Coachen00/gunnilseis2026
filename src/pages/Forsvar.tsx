@@ -66,6 +66,17 @@ const Forsvar = () => (
     <div className="bg-white py-24">
       <div className="container">
         <PrincipleBlock phase="forsvar" showSource />
+        <div className="mt-10 rounded-2xl border border-kedja-border bg-kedja-paper p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
+          <div className="mb-3 text-[11px] font-mono font-bold uppercase tracking-[0.3em] text-kedja-green">
+            Mått — vad kompakt betyder
+          </div>
+          <ul className="space-y-1.5">
+            <li>Avstånd mellan lagdelar: ~10–12 m.</li>
+            <li>Blockets totala djup: max ~30 m.</li>
+            <li>Kedjan smalare än straffområdesbredden när bollen är central.</li>
+            <li>Backlinjen upp 5 m vid motståndarens bakåtpassning.</li>
+          </ul>
+        </div>
       </div>
     </div>
 

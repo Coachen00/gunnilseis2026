@@ -76,6 +76,50 @@ const PrincipleItem = ({
                 ))}
               </ul>
             )}
+            {principle.lookFor && principle.lookFor.length > 0 && (
+              <div className="mt-4">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  Titta efter
+                </span>
+                <ul className="mt-2 space-y-1 text-sm text-muted-foreground leading-relaxed">
+                  {principle.lookFor.map((q) => (
+                    <li key={q}>· {q}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {principle.actions && principle.actions.length > 0 && (
+              <div className="mt-4">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
+                  Gör detta
+                </span>
+                <ul className="mt-2 space-y-1 text-sm text-muted-foreground leading-relaxed">
+                  {principle.actions.map((a) => (
+                    <li key={a}>· {a}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {principle.coachCalls && principle.coachCalls.length > 0 && (
+              <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground mr-1">
+                  Coachrop
+                </span>
+                {principle.coachCalls.map((c) => (
+                  <span
+                    key={c}
+                    className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-md border border-accent/40 bg-accent/10 text-accent"
+                  >
+                    {c}
+                  </span>
+                ))}
+                {principle.identity && principle.identity.length > 0 && (
+                  <span className="text-xs text-muted-foreground ml-1">
+                    — aktiverar identitet: {principle.identity.join(", ")}
+                  </span>
+                )}
+              </div>
+            )}
             <div className="mt-5 border-t border-border pt-4">
               <div className="mb-2 flex items-baseline justify-between gap-3">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">

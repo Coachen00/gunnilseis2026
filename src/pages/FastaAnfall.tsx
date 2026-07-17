@@ -61,7 +61,9 @@ const FastaAnfall = () => (
       highlight="mönster"
     >
       <div className="rounded-2xl border border-kedja-border bg-white p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
-        Fyll på med inkastregler offensivt.
+        Kasta snabbt framåt när motståndaren sover. Annars längs linjen eller tillbaka-in — kastaren får direkt
+        tillbaka och vänder spelet. Aldrig inkast rakt in i trängsel utan andrabollsstöd: närmaste två står för
+        andrabollen.
       </div>
     </KedjaSection>
 
@@ -74,7 +76,8 @@ const FastaAnfall = () => (
       highlight="uppspel"
     >
       <div className="rounded-2xl border border-kedja-border bg-kedja-paper p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
-        Fyll på med avsparksmönster.
+        Lång boll mot vänster yttre korridor. Närmaste två attackerar nedslaget — vi äger andrabollen.{" "}
+        <span className="font-bold text-kedja-ink">Standard, satt 2026-07.</span>
       </div>
     </KedjaSection>
   </div>

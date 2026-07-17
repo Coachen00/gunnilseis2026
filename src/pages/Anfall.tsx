@@ -119,6 +119,36 @@ const Anfall = () => {
         </Link>
       </KedjaSection>
 
+      <KedjaSection
+        id="plan-b"
+        tone="paper"
+        eyebrow="Anfall · Plan B"
+        title="Plan B — när pressen låser."
+        definition="Kort spel stängt: motståndaren pressar man-mot-man högt och målvakten saknar rättvänd mottagare. Då spelar vi riktat, inte i panik."
+        highlight="riktat, inte i panik"
+      >
+        <div className="rounded-2xl border border-kedja-border bg-white p-6 text-left text-[15px] leading-[1.55] text-kedja-deep">
+          <p>
+            Riktad lång boll mot EN förbestämd sida/korridor — aldrig planlös uppspark. Target (9:an eller ytter)
+            väljs per motståndare i matchplanen.
+          </p>
+          <p className="mt-4 font-bold text-kedja-ink">Struktur runt nedslaget — före bollen:</p>
+          <ul className="mt-2 space-y-1.5">
+            <li>8/10 + bollnära ytter tätt runt nedslagsplatsen</li>
+            <li>6:an framför backlinjen för den långa andrabollen</li>
+            <li>Backlinjen flyttar upp bakom</li>
+          </ul>
+          <p className="mt-4">
+            Vinner vi andrabollen → spela direkt enligt principerna (In/Ut/Framåt). Förlorar vi den → omedelbar
+            motpress.
+          </p>
+        </div>
+        <KedjaClimax
+          label="Identiteten"
+          text="Plan B är identitetens spel — Andrabollsspel + Dueller — inte ett avsteg från idén."
+        />
+      </KedjaSection>
+
       <KedjaQuote text="Vi gör inte mål med en man i boxen." highlight="mål" />
 
       <div className="bg-kedja-paper py-24">

@@ -26,6 +26,14 @@ export interface Principle {
   sub: string[];
   /** Källcitat ordagrant ur dokumentet */
   source: string;
+  /** Vad tränaren/spelaren ska scanna efter under spel */
+  lookFor?: string[];
+  /** Konkreta handlingar som uppfyller principen */
+  actions?: string[];
+  /** Korta coachrop kopplade till principen */
+  coachCalls?: string[];
+  /** Identitetsblock som ropet aktiverar */
+  identity?: string[];
 }
 
 export interface PhaseSpec {
@@ -142,6 +150,20 @@ export const PHASES: Record<Phase, PhaseSpec> = {
         sub: ["Positionering", "Press", "Markering", "Förhindra avslut", "Rädda avslut"],
         source:
           "Förhindra att motståndarna kommer till avslut i golden zone; Rädda avslut i golden zone. Subprincip: Positionering; Press; Markering; Förhindra avslut; Rädda avslut. — Lagbesök Teori, Smålands FF",
+        lookFor: [
+          "Är gyllene zonen täckt — kropp i ytan och skottlinjen blockerad?",
+          "Har närmaste försvarare press på bollhållaren i spelyta 2–3?",
+          "Vem tar andrabollen om avslutet blockeras?",
+        ],
+        actions: [
+          "Skydda mitten först — positionering före rusning.",
+          "Manorientering nära boll, täck yta längre bort.",
+          "Blockera skottlinjer, målvakten ska se bollen.",
+          "Mittbackarna släpper aldrig central yta samtidigt.",
+          "Efter räddning/block: vinn andrabollar direkt.",
+        ],
+        coachCalls: ["Mitten!", "Blockera!", "Andraboll!"],
+        identity: ["Dueller", "Andrabollsspel"],
       },
       {
         headline: "Styr pressen åt en sida — håll laget kompakt.",
@@ -155,6 +177,20 @@ export const PHASES: Record<Phase, PhaseSpec> = {
         ],
         source:
           "Förhindra speluppbyggnad: Styr pressen åt ett håll. Håll laget kompakt genom överflyttning, centrering, uppflyttning och nedflyttning. — Övningsbank 9v9, Södermanlands FF",
+        lookFor: [
+          "Åt vilket håll visar 9:an uppspelet?",
+          "Håller lagdelarna avstånden när bollen flyttas?",
+          "Är bortre sidan centrerad?",
+        ],
+        actions: [
+          "9:an styr uppspelet åt bestämd sida, pressar aldrig ensam.",
+          "Överflyttning — hela laget följer bollens sida.",
+          "Centrering — bortre ytter/ytterback kliver in i inre korridor.",
+          "Upp-/nedflyttning — linjerna flyttar ihop.",
+          "Skydda minst 3 av 5 korridorer nära bollen.",
+        ],
+        coachCalls: ["Styr!", "Ihop!", "Sidan!"],
+        identity: ["Scanning"],
       },
     ],
   },
