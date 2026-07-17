@@ -1,13 +1,11 @@
 /**
  * Owner-grind för coach-privat material under /under-process.
  *
- * Sajten har ingen separat roll för "ägaren" i Supabase — owner-innehåll
- * gateras klient-sida på inloggningens e-post. Delade gunnilse-loginet ger
- * ingen Supabase-session och passerar därför aldrig denna check.
+ * Owner-innehåll gateras klient-sida på den exakta Supabase-e-postadressen.
+ * Delad åtkomst kan aldrig kvalificera eftersom den inte räknas som owner.
  */
-export const OWNER_LOGIN = "leojsjoqvist";
+export const OWNER_EMAIL = "leojsjoqvist@gmail.com";
 
 export function isOwnerEmail(email: string | null | undefined): boolean {
-  const normalized = email?.toLowerCase() ?? "";
-  return normalized === OWNER_LOGIN || normalized.startsWith(`${OWNER_LOGIN}@`);
+  return email?.trim().toLowerCase() === OWNER_EMAIL;
 }
