@@ -32,6 +32,7 @@ const spelmodellGroups: NavGroup[] = [
     to: "/spelmodell",
     children: [
       { label: "Så spelar vi", to: "/spelmodell", hint: "Hela modellen i översikt" },
+      { label: "Storyn · Var förberedd", to: "/spelmodell#storyn", hint: "Berättelsen bakom modellen" },
       { label: "Planens ytor", to: "/spelmodell/planens-ytor", hint: "Korridorer & spelytor" },
     ],
   },
