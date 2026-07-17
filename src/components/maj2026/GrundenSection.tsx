@@ -51,16 +51,6 @@ export default function GrundenSection() {
           {GRUNDEN_MENING}
         </p>
 
-        {/* Storyn: taket over modellen */}
-        <div id="storyn" className="mt-12 scroll-mt-24 border border-amber-500/50 bg-amber-50 p-6">
-          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Storyn · taket</p>
-          <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">Var förberedd</h3>
-          <p className="mt-2 max-w-3xl text-base font-semibold leading-relaxed text-foreground/75">
-            Standards, ledarskap och träningskultur gör oss redo att känna igen matchtillståndet,
-            välja prioritering och agera tillsammans.
-          </p>
-        </div>
-
         {/* Niva 1: fyra levande skeden */}
         <div className="mt-12 border-t border-border pt-8">
           <LevelBadge level={1} className="mb-4" />

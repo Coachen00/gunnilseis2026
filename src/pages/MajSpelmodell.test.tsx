@@ -55,6 +55,13 @@ describe("MajSpelmodell page", () => {
     }
   });
 
+  it("visar Storyn som egen översta kategori", () => {
+    renderPage();
+    expect(screen.getByRole("heading", { name: /var förberedd/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /det jag vill göra/i })).toBeInTheDocument();
+    expect(screen.getByText(/standards → ledarskap → träningskultur/i)).toBeInTheDocument();
+  });
+
   it("legacy-url /maj-2026 renderar samma huvudmodell utan krasch", () => {
     renderPage("/maj-2026");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");

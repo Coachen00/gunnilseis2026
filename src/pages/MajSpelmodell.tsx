@@ -100,6 +100,58 @@ const MODEL_FLOW = ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"
 const MATCH_STATE_FACTORS = ["Resultat", "Tid", "Motståndarpress", "Spelarstatus", "Numerär"] as const;
 const PRIORITIES = ["Behåll", "Öka risk", "Skydda", "Byt plan"] as const;
 
+const STORYN_LAYERS = [
+  {
+    title: "Det jag vill göra",
+    text: "Bygga en spelmodell som gör det lättare att vara förberedd: förstå vad som händer, välja vad som är viktigast och hjälpa laget att agera tillsammans.",
+  },
+  {
+    title: "Det jag förstår",
+    text: "Modellen behöver hålla ihop standards, ledarskap, träningskultur, spelprinciper och matchens observationer. Det är samma kedja från vardag till match.",
+  },
+  {
+    title: "Det jag riskerar att missa",
+    text: "Att samla fler ord, bilder och principer utan att göra nästa beslut tydligare. Om spelaren inte vet vad den ska se och göra är modellen inte färdig.",
+  },
+  {
+    title: "Det jag återkommer till",
+    text: "Var förberedd. Läs matchtillståndet, välj prioritering och gör beteendet synligt — sedan lär vi av det vi faktiskt såg.",
+  },
+] as const;
+
+function StorynSection() {
+  return (
+    <section id="storyn" className="scroll-mt-24 border-b border-amber-500/30 bg-amber-50 py-16 md:py-20" aria-labelledby="storyn-rubrik">
+      <div className="container">
+        <div className="mb-8 max-w-3xl">
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Kategori 00 · Storyn</p>
+          <h2 id="storyn-rubrik" className="mt-3 text-4xl font-black uppercase tracking-tight text-kedja-ink md:text-6xl">Var förberedd</h2>
+          <p className="mt-5 text-lg leading-relaxed text-kedja-deep md:text-xl">
+            Det här är berättelsen bakom spelmodellen — mitt sätt att förstå vad jag vill bygga,
+            vad jag redan ser och vad jag ännu behöver upptäcka.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {STORYN_LAYERS.map((layer) => (
+            <article key={layer.title} className="border border-amber-500/30 bg-white p-6">
+              <h3 className="text-xl font-black tracking-tight text-kedja-ink">{layer.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-kedja-deep/80">{layer.text}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-6 border-t border-amber-500/30 pt-6">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Kedjan jag vill hålla levande</p>
+          <p className="mt-3 text-base font-bold leading-relaxed text-kedja-ink md:text-lg">
+            Standards → ledarskap → träningskultur → spelprincip → matchtillstånd → prioritering → beteende → observation → lärande.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const GLOSSARY = [
   { term: "Spelmodell", definition: "Vårt gemensamma språk för matchens olika lägen.", match: "Matchen byter läge hela tiden.", action: "Använd modellen för att veta nästa beslut." },
   { term: "Spelidé", definition: "Vår övergripande tanke om hur vi vill spela.", match: "Vårt sätt att vinna matchens vanligaste situationer.", action: "Välj lösningen som passar vår idé, inte bara första impulsen." },
@@ -1465,6 +1517,7 @@ const MajSpelmodell = () => {
   return (
   <div className="relative -mt-px bg-kedja-paper text-kedja-ink">
     <Hero />
+    <StorynSection />
     <ModelIntro />
     {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
         nivå 2 (blocken) → nivå 3 (filmbibliotek + övrigt). */}
