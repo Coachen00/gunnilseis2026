@@ -9,7 +9,7 @@
 
 import { ArrowDown } from "lucide-react";
 import LevelBadge from "@/components/LevelBadge";
-import { FAS_RADER, GRUNDEN_MENING, MANTRAN } from "@/data/grunden";
+import { FAS_RADER, GRUNDEN_MENING, MANTRAN, SPECIAL_RADER } from "@/data/grunden";
 
 export default function GrundenSection() {
   return (
@@ -51,11 +51,21 @@ export default function GrundenSection() {
           {GRUNDEN_MENING}
         </p>
 
-        {/* ── Nivå 1: sex faser, en rad var ── */}
+        {/* Storyn: taket over modellen */}
+        <div className="mt-12 border border-amber-500/50 bg-amber-50 p-6">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Storyn · taket</p>
+          <h3 className="mt-2 text-2xl font-black uppercase tracking-tight text-foreground md:text-3xl">Var förberedd</h3>
+          <p className="mt-2 max-w-3xl text-base font-semibold leading-relaxed text-foreground/75">
+            Standards, ledarskap och träningskultur gör oss redo att känna igen matchtillståndet,
+            välja prioritering och agera tillsammans.
+          </p>
+        </div>
+
+        {/* Niva 1: fyra levande skeden */}
         <div className="mt-12 border-t border-border pt-8">
           <LevelBadge level={1} className="mb-4" />
           <h3 className="mb-5 text-xl font-black uppercase tracking-tight text-foreground md:text-2xl">
-            Sex faser — en rad var
+            Fyra levande skeden — en rad var
           </h3>
           <ul className="divide-y divide-border border border-border bg-card">
             {FAS_RADER.map((fas) => (
@@ -81,6 +91,23 @@ export default function GrundenSection() {
           <p className="mt-3 text-xs text-muted-foreground">
             Klicka på en fas för principerna (nivå 2) och fördjupningen (nivå 3) längre ner på sidan.
           </p>
+        </div>
+
+        <div className="mt-8 border-t border-border pt-8">
+          <p className="mb-4 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-foreground/55">Särskilda kategorier</p>
+          <ul className="divide-y divide-border border border-border bg-card">
+            {SPECIAL_RADER.map((fas) => (
+              <li key={fas.id}>
+                <a href={`#${fas.id}`} className="group flex flex-col gap-1 p-4 transition-colors hover:bg-muted/40 sm:flex-row sm:items-baseline sm:gap-4 sm:p-5">
+                  <span className="font-mono text-[10px] font-black uppercase tracking-[0.14em] text-foreground/55 sm:w-24">
+                    {fas.id === "identitet" ? "Tvärgående" : "Död boll"}
+                  </span>
+                  <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-foreground sm:w-48">{fas.title}</span>
+                  <span className="text-sm text-foreground/70 group-hover:text-foreground">{fas.remember}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

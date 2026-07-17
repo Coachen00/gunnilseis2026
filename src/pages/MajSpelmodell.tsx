@@ -75,8 +75,8 @@ const MODEL_INTRO = [
     text: "Vi är ett lag som skyddar mitten, spelar framåt när läget finns, fyller boxen och reagerar direkt när bollen byter ägare.",
   },
   {
-    title: "De sex delarna",
-    text: "Försvar, vinna boll, anfall, tappa boll, identitet och fasta situationer. Det är matchens karta.",
+    title: "Fyra skeden och två särdelar",
+    text: "Försvar, omställning till anfall, anfall, omställning till försvar — plus identiteten som följer med överallt och fasta situationer när bollen är död.",
   },
   {
     title: "Vad gör spelaren först?",
@@ -96,7 +96,9 @@ const MODEL_INTRO = [
   },
 ] as const;
 
-const MODEL_FLOW = ["Skede", "Matchsignal", "Spelarhandling", "Laghandling", "Träning", "Matchtecken"] as const;
+const MODEL_FLOW = ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"] as const;
+const MATCH_STATE_FACTORS = ["Resultat", "Tid", "Motståndarpress", "Spelarstatus", "Numerär"] as const;
+const PRIORITIES = ["Behåll", "Öka risk", "Skydda", "Byt plan"] as const;
 
 const GLOSSARY = [
   { term: "Spelmodell", definition: "Vårt gemensamma språk för matchens olika lägen.", match: "Matchen byter läge hela tiden.", action: "Använd modellen för att veta nästa beslut." },
@@ -160,8 +162,8 @@ const BLOCK_EYEBROW: Record<string, string> = {
   "overgang-anfall": "I sekunden bollen är vår",
   anfallsspel: "När vi har bollen",
   "overgang-forsvar": "I sekunden bollen är deras",
-  identitet: "Det här är vi varje match",
-  "fasta-situationer": "Stillastående boll = poäng",
+  identitet: "Tvärgående · det här är vi varje match",
+  "fasta-situationer": "Död boll · fasta situationer",
 };
 
 const TACTICAL_STEPS: Record<string, Array<{ label: string; cue: string; detail: string }>> = {
@@ -371,7 +373,7 @@ function ModelIntro() {
         </div>
         <div className="mt-6 border border-amber-500/40 bg-amber-50 p-5">
           <h2 className="text-xl font-black tracking-tight text-kedja-ink">Så används den</h2>
-          <ol className="mt-3 grid gap-2 text-sm font-semibold text-kedja-ink/78 md:grid-cols-3 xl:grid-cols-6">
+          <ol className="mt-3 grid gap-2 text-sm font-semibold text-kedja-ink/78 md:grid-cols-4">
             {MODEL_FLOW.map((step, i) => (
               <li key={step} className="flex items-center gap-2">
                 <span className="font-mono text-[10px] font-black text-amber-700">{String(i + 1).padStart(2, "0")}</span>
@@ -379,6 +381,16 @@ function ModelIntro() {
               </li>
             ))}
           </ol>
+          <div className="mt-5 grid gap-4 border-t border-amber-500/25 pt-4 md:grid-cols-2">
+            <div>
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">Matchtillstånd läses genom</p>
+              <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-ink/75">{MATCH_STATE_FACTORS.join(" · ")}</p>
+            </div>
+            <div>
+              <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">Prioriteringen kan vara</p>
+              <p className="mt-2 text-sm font-semibold leading-relaxed text-kedja-ink/75">{PRIORITIES.join(" · ")}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1345,7 +1357,7 @@ function SpelarenSnabbversion() {
             <h2 className="text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-kedja-ink/65">
-            Sex skeden. Tre–fyra ord per kommando. Det här är det enda du behöver komma ihåg i 90 minuter.
+            Fyra levande skeden. Tre–fyra ord per kommando. Identitet och fasta situationer ligger bredvid, inte som extra skeden.
           </p>
         </div>
 
@@ -1520,7 +1532,7 @@ const MajSpelmodell = () => {
           <div>
             <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Slut</p>
             <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
-              Sex block. En idé. Ett lag.
+              Fyra skeden. Två särdelar. En story.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">

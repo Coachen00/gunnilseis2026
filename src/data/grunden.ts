@@ -31,8 +31,9 @@ export const MANTRAN: Mantra[] = [
 export const GRUNDEN_MENING =
   "Bredd skapar korridorer. Djup skapar spelytor. Assistytan skapar sista passningen. Gyllene zonen skapar avslut.";
 
-/* ── NIVÅ 1: sex faser, en rad var ────────────────────────────────────
- * Härleds ur blockens befintliga remember-rader. */
+/* ── NIVÅ 1: fyra levande skeden ──────────────────────────────────────
+ * Identitet och fasta situationer ligger kvar som separata kategorier,
+ * men är inte levande skeden. */
 export interface FasRad {
   id: string;
   num: string;
@@ -40,9 +41,13 @@ export interface FasRad {
   remember: string;
 }
 
-export const FAS_RADER: FasRad[] = MAJ_2026_BLOCKS.map((b, i) => ({
+export const FAS_RADER: FasRad[] = MAJ_2026_BLOCKS.filter((b) => b.kind === "live").map((b, i) => ({
   id: b.id,
   num: String(i + 1).padStart(2, "0"),
   title: b.title,
   remember: b.remember,
 }));
+
+export const SPECIAL_RADER: FasRad[] = MAJ_2026_BLOCKS
+  .filter((b) => b.kind !== "live")
+  .map((b) => ({ id: b.id, num: "", title: b.title, remember: b.remember }));

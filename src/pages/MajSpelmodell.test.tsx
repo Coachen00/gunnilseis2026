@@ -38,11 +38,11 @@ describe("MajSpelmodell page", () => {
   it("förklarar vad modellen är, varför den finns och hur den används", () => {
     renderPage();
     expect(screen.getByRole("heading", { name: /vad är en spelmodell/i })).toBeInTheDocument();
-    expect(screen.getAllByText(/vårt gemensamma språk för matchen/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/gemensamma språk/i).length).toBeGreaterThan(0);
     for (const heading of [
       /varför vi behöver den/i,
       /vår identitet i en mening/i,
-      /de sex delarna/i,
+      /fyra skeden och två särdelar/i,
       /vad gör spelaren först/i,
       /hur detta tränas/i,
       /hur detta syns i match/i,
@@ -50,7 +50,7 @@ describe("MajSpelmodell page", () => {
     ]) {
       expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
     }
-    for (const step of ["Skede", "Matchsignal", "Spelarhandling", "Laghandling", "Träning", "Matchtecken"]) {
+    for (const step of ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"]) {
       expect(screen.getAllByText(step).length).toBeGreaterThan(0);
     }
   });

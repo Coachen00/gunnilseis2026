@@ -34,6 +34,7 @@ export interface MediaAsset {
 
 export interface MajBlock {
   id: string;
+  kind: "live" | "cross-cutting" | "dead-ball";
   number: string;
   navLabel: string;
   title: string;
@@ -53,7 +54,7 @@ export const MAJ_2026_HERO = {
   eyebrow: "Spelmodellen 2026",
   title: "Så spelar Gunnilse",
   description:
-    "Vår spelmodell är vårt gemensamma språk för matchen. Den säger vad vi gör när vi har bollen, när motståndaren har bollen, när vi vinner bollen, när vi tappar bollen och när spelet står still.",
+    "Var förberedd. Vår spelmodell är vårt gemensamma språk för de fyra levande skedena, identiteten som följer med överallt och fasta situationer när bollen är död.",
 } as const;
 
 export const MAJ_2026_NAV_CARDS: Array<{ id: string; label: string; number: string }> = [
@@ -156,6 +157,7 @@ const principle = (
 export const MAJ_2026_BLOCKS: MajBlock[] = [
   {
     id: "forsvarsspel",
+    kind: "live",
     number: "01",
     navLabel: "Försvarsspel",
     title: "Försvarsspel",
@@ -188,6 +190,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
   },
   {
     id: "overgang-anfall",
+    kind: "live",
     number: "02",
     navLabel: "Övergång till anfall",
     title: "När vi vinner bollen",
@@ -219,6 +222,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
   },
   {
     id: "anfallsspel",
+    kind: "live",
     number: "03",
     navLabel: "Anfallsspel",
     title: "Anfallsspel",
@@ -254,6 +258,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
   },
   {
     id: "overgang-forsvar",
+    kind: "live",
     number: "04",
     navLabel: "Övergång till försvar",
     title: "När vi tappar bollen",
@@ -285,6 +290,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
   },
   {
     id: "identitet",
+    kind: "cross-cutting",
     number: "05",
     navLabel: "Identitet",
     title: "Identitet",
@@ -318,6 +324,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
   },
   {
     id: "fasta-situationer",
+    kind: "dead-ball",
     number: "06",
     navLabel: "Fasta situationer",
     title: "Fasta situationer",

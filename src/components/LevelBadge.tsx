@@ -3,7 +3,7 @@
  *
  * Nivåerna (hierarkisk koherens, minst→mest):
  *   0 GRUNDEN    — fyra ord + en mening. Det enda alla MÅSTE kunna.
- *   1 SEX FASER  — en rad per spelfas (blockens "kom ihåg").
+ *   1 FYRA SKEDEN — en rad per levande skede (blockens "kom ihåg").
  *   2 PRINCIPER  — 3–5 principer per fas.
  *   3 FÖRDJUPNING — detaljer, övningar, film, träningsperioder.
  *
@@ -18,7 +18,7 @@ export type PedagogicLevel = 0 | 1 | 2 | 3;
 
 const LEVELS: Record<PedagogicLevel, { label: string; klass: string }> = {
   0: { label: "Nivå 0 · Grunden", klass: "border-amber-500/60 bg-amber-400/15 text-amber-800" },
-  1: { label: "Nivå 1 · Sex faser", klass: "border-amber-500/40 bg-amber-400/[0.08] text-amber-700" },
+  1: { label: "Nivå 1 · Fyra skeden", klass: "border-amber-500/40 bg-amber-400/[0.08] text-amber-700" },
   2: { label: "Nivå 2 · Principer", klass: "border-border bg-muted/60 text-foreground/70" },
   3: { label: "Nivå 3 · Fördjupning", klass: "border-border bg-background text-muted-foreground" },
 };
