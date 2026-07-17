@@ -1,57 +1,59 @@
-/**
- * LevelBadge — genomgående nivåmärkning för sajtens pedagogiska hierarki.
- *
- * Nivåerna (hierarkisk koherens, minst→mest):
- *   0 GRUNDEN    — fyra ord + en mening. Det enda alla MÅSTE kunna.
- *   1 FYRA SKEDEN — en rad per levande skede (blockens "kom ihåg").
- *   2 PRINCIPER  — 3–5 principer per fas.
- *   3 FÖRDJUPNING — detaljer, övningar, film, träningsperioder.
- *
- * Samma badge används på alla sidor så att läsaren alltid vet var i
- * trappan hen befinner sig. Färgerna stegrar från guld (grunden, varmast
- * och viktigast) mot neutralt (fördjupning).
- */
-
 import { cn } from "@/lib/utils";
+import {
+  LEGACY_LEVEL_TO_SPELMODELL_LEVEL_ID,
+  SPELMODELL_LEVELS,
+  type SpelmodellLevelId,
+} from "@/data/spelmodellLevels";
 
 export type PedagogicLevel = 0 | 1 | 2 | 3;
+export type LevelBadgeValue = PedagogicLevel | SpelmodellLevelId;
 
-const LEVELS: Record<PedagogicLevel, { label: string; klass: string }> = {
-  0: { label: "Nivå 0 · Grunden", klass: "border-amber-500/60 bg-amber-400/15 text-amber-800" },
-  1: { label: "Nivå 1 · Fyra skeden", klass: "border-amber-500/40 bg-amber-400/[0.08] text-amber-700" },
-  2: { label: "Nivå 2 · Principer", klass: "border-border bg-muted/60 text-foreground/70" },
-  3: { label: "Nivå 3 · Fördjupning", klass: "border-border bg-background text-muted-foreground" },
+const LEVEL_STYLES: Record<SpelmodellLevelId, string> = {
+  novis: "border-amber-500/60 bg-amber-400/15 text-amber-800",
+  "level-1": "border-amber-500/45 bg-amber-400/[0.1] text-amber-700",
+  "level-2": "border-sky-300 bg-sky-50 text-sky-900",
+  "level-3": "border-emerald-300 bg-emerald-50 text-emerald-900",
+  "level-4": "border-violet-300 bg-violet-50 text-violet-900",
+  "level-5": "border-rose-300 bg-rose-50 text-rose-900",
+  advanced: "border-border bg-background text-muted-foreground",
 };
 
 export default function LevelBadge({
   level,
   className,
 }: {
-  level: PedagogicLevel;
+  level: LevelBadgeValue;
   className?: string;
 }) {
-  const def = LEVELS[level];
+  const normalizedLevelId =
+    typeof level === "number" ? LEGACY_LEVEL_TO_SPELMODELL_LEVEL_ID[level] : level;
+  const stepIndex = Math.max(
+    0,
+    SPELMODELL_LEVELS.findIndex((item) => item.id === normalizedLevelId)
+  );
+  const badge = SPELMODELL_LEVELS[stepIndex];
+
   return (
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-sm border px-2 py-1 font-mono text-[10px] font-black uppercase tracking-[0.18em]",
-        def.klass,
+        LEVEL_STYLES[normalizedLevelId],
         className
       )}
     >
       <span className="flex items-end gap-[2px]" aria-hidden="true">
-        {([0, 1, 2, 3] as const).map((i) => (
+        {SPELMODELL_LEVELS.map((_, index) => (
           <span
-            key={i}
+            key={index}
             className={cn(
               "w-[3px] rounded-[1px]",
-              i <= level ? "bg-current opacity-90" : "bg-current opacity-25"
+              index <= stepIndex ? "bg-current opacity-90" : "bg-current opacity-25"
             )}
-            style={{ height: 4 + i * 2 }}
+            style={{ height: 4 + index * 2 }}
           />
         ))}
       </span>
-      {def.label}
+      {badge.label}
     </span>
   );
 }
