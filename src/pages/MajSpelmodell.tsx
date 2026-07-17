@@ -158,6 +158,7 @@ const BLOCK_ICON: Record<string, typeof Shield> = {
 };
 
 const BLOCK_EYEBROW: Record<string, string> = {
+  storyn: "Taket över spelmodellen",
   forsvarsspel: "När motståndaren har bollen",
   "overgang-anfall": "I sekunden bollen är vår",
   anfallsspel: "När vi har bollen",

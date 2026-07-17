@@ -13,7 +13,7 @@ import MatchRadar from "@/components/home/MatchRadar";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
-  { num: "02", title: "Spelmodell", sub: "Sex faser, en idé", href: "/spelmodell" },
+  { num: "02", title: "Spelmodell", sub: "Fyra skeden, en story", href: "/spelmodell" },
   { num: "03", title: "Laget", sub: "Trupp, vård, tävlingar", href: "/laget" },
   { num: "04", title: "Coach", sub: "Prisma, planer, taktiktavla", href: "/coach" },
 ];
@@ -129,7 +129,7 @@ const Hem = () => {
         tone="white"
         eyebrow="Kapitel 02"
         title="Spelmodell"
-        definition="Sex spelfaser beskriver hur vi agerar med och utan boll — försvar, omställningar, anfall, identitet och fasta situationer, ett lag och en idé."
+        definition="Fyra levande skeden beskriver hur vi agerar med och utan boll. Identiteten följer med överallt och fasta situationer ligger separat när bollen är död."
         highlight="ett lag och en idé"
       >
         <KedjaSteps
@@ -152,7 +152,7 @@ const Hem = () => {
             },
           ]}
         />
-        <KedjaClimax label="Vårt svar" text="Sex faser. En idé." />
+        <KedjaClimax label="Vårt svar" text="Fyra skeden. Var förberedd." />
         <VidareLank to="/spelmodell" label="Hela spelmodellen" />
       </KedjaSection>
 

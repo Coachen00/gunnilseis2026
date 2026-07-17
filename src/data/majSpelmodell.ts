@@ -58,12 +58,13 @@ export const MAJ_2026_HERO = {
 } as const;
 
 export const MAJ_2026_NAV_CARDS: Array<{ id: string; label: string; number: string }> = [
+  { id: "storyn", number: "00", label: "Storyn" },
   { id: "forsvarsspel", number: "01", label: "Försvarsspel" },
   { id: "overgang-anfall", number: "02", label: "När vi vinner bollen" },
   { id: "anfallsspel", number: "03", label: "Anfallsspel" },
   { id: "overgang-forsvar", number: "04", label: "När vi tappar bollen" },
-  { id: "identitet", number: "05", label: "Identitet" },
-  { id: "fasta-situationer", number: "06", label: "Fasta situationer" },
+  { id: "identitet", number: "T1", label: "Identitet · tvärgående" },
+  { id: "fasta-situationer", number: "D1", label: "Fasta · död boll" },
 ];
 
 export const MAJ_2026_EFFECT_LOGIC: EffectLogicBlock[] = [
@@ -292,7 +293,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     id: "identitet",
     kind: "cross-cutting",
     number: "05",
-    navLabel: "Identitet",
+    navLabel: "Identitet · tvärgående",
     title: "Identitet",
     kidExplanation:
       "Identiteten är hur vi spelar oavsett resultat, motståndare och väder. Det är saker som syns i varje aktion — i hur vi rör oss och hur vi pratar.",
@@ -326,7 +327,7 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     id: "fasta-situationer",
     kind: "dead-ball",
     number: "06",
-    navLabel: "Fasta situationer",
+    navLabel: "Fasta · död boll",
     title: "Fasta situationer",
     kidExplanation:
       "Hörnor, frisparkar, inkast, avspark — de är planerade. Du vet redan innan domaren blåser var du ska vara och vad du ska göra.",

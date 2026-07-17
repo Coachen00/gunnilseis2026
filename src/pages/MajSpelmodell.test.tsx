@@ -73,7 +73,7 @@ describe("MajSpelmodell page", () => {
     }
   });
 
-  it("renderar alla sex blocksektioner med korrekt id för scrollankare", () => {
+  it("renderar alla modellsektioner med korrekt id för scrollankare", () => {
     renderPage();
     for (const block of MAJ_2026_BLOCKS) {
       expect(document.getElementById(block.id)).toBeInTheDocument();
