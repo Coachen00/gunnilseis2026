@@ -92,35 +92,6 @@ const Hem = () => {
         <KedjaNav items={WORLDS} />
       </KedjaHero>
 
-      <KedjaSection
-        id="storyn"
-        tone="white"
-        eyebrow="Kategori 00 · Storyn"
-        title="Var förberedd"
-        definition="Berättelsen bakom spelmodellen: vad jag vill bygga, vad jag förstår och vad jag riskerar att missa."
-        highlight="vad jag riskerar att missa"
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <article className="border border-kedja-border bg-kedja-paper p-5">
-            <h3 className="text-lg font-black tracking-tight text-kedja-ink">Det jag vill göra</h3>
-            <p className="mt-2 text-sm leading-relaxed text-kedja-deep/80">Bygga en modell som gör det lättare att förstå matchen, välja vad som är viktigast och agera tillsammans.</p>
-          </article>
-          <article className="border border-kedja-border bg-kedja-paper p-5">
-            <h3 className="text-lg font-black tracking-tight text-kedja-ink">Det jag förstår</h3>
-            <p className="mt-2 text-sm leading-relaxed text-kedja-deep/80">Standards, ledarskap, träningskultur och matchobservationer måste hänga ihop i samma kedja.</p>
-          </article>
-          <article className="border border-kedja-border bg-kedja-paper p-5">
-            <h3 className="text-lg font-black tracking-tight text-kedja-ink">Det jag riskerar att missa</h3>
-            <p className="mt-2 text-sm leading-relaxed text-kedja-deep/80">Fler ord och principer hjälper inte om spelaren inte vet vad den ska se och göra härnäst.</p>
-          </article>
-          <article className="border border-kedja-border bg-kedja-paper p-5">
-            <h3 className="text-lg font-black tracking-tight text-kedja-ink">Kedjan</h3>
-            <p className="mt-2 text-sm font-bold leading-relaxed text-kedja-deep/80">Standards → ledarskap → träningskultur → matchtillstånd → prioritering → beteende → lärande.</p>
-          </article>
-        </div>
-        <VidareLank to="/spelmodell#storyn" label="Öppna hela Storyn" />
-      </KedjaSection>
-
       <MatchRadar />
 
       <KedjaSection

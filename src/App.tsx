@@ -22,6 +22,7 @@ const Hem = lazy(() => import("./pages/Hem"));
 const Period1 = lazy(() => import("./pages/Period1"));
 const Spelide = lazy(() => import("./pages/Spelide"));
 const MajSpelmodell = lazy(() => import("./pages/MajSpelmodell"));
+const Storyn = lazy(() => import("./pages/Storyn"));
 const SommarUppstart = lazy(() => import("./pages/SommarUppstart"));
 const Forsvar = lazy(() => import("./pages/Forsvar"));
 const Anfall = lazy(() => import("./pages/Anfall"));
@@ -147,6 +148,7 @@ const App = () => (
 
           {/* Hubbar — en landningssida per värld */}
           <Route path="/spelmodell" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
+          <Route path="/storyn" element={<Protected routeName="Storyn"><Storyn /></Protected>} />
           <Route path="/spelmodell/planens-ytor" element={<Protected routeName="Planens ytor"><PlanensYtor /></Protected>} />
           <Route path="/spelmodell/lager" element={<Protected routeName="Spelmodellens lager"><SpelmodellLager /></Protected>} />
           <Route path="/laget" element={<Protected routeName="Laget"><Laget /></Protected>} />
@@ -191,6 +193,19 @@ const App = () => (
           <Route path="/matchblad" element={<PrintRoute routeName="Matchblad"><Matchblad /></PrintRoute>} />
           <Route path="/motstandaranalys" element={<PrintRoute routeName="Motståndaranalys"><Motstandaranalys /></PrintRoute>} />
           <Route path="/taktiktavla" element={<PrintRoute routeName="Taktiktavla"><Taktiktavla /></PrintRoute>} />
+          {/* Dev-only: taktiktavlan utan inlogg så lokala verktyg/agenter kan verifiera UI:t. Byggs aldrig in i produktion. */}
+          {import.meta.env.DEV && (
+            <Route
+              path="/taktiktavla-demo"
+              element={
+                <ErrorBoundary routeName="Taktiktavla (demo)">
+                  <Suspense fallback={<PageFallback />}>
+                    <Taktiktavla />
+                  </Suspense>
+                </ErrorBoundary>
+              }
+            />
+          )}
 
           {/* Endast /admin är fortfarande inloggnings-skyddad — ledar-panel */}
           <Route

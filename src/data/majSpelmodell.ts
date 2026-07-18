@@ -58,7 +58,6 @@ export const MAJ_2026_HERO = {
 } as const;
 
 export const MAJ_2026_NAV_CARDS: Array<{ id: string; label: string; number: string }> = [
-  { id: "storyn", number: "00", label: "Storyn" },
   { id: "forsvarsspel", number: "01", label: "Försvarsspel" },
   { id: "overgang-anfall", number: "02", label: "När vi vinner bollen" },
   { id: "anfallsspel", number: "03", label: "Anfallsspel" },
