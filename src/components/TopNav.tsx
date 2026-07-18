@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import LogoutButton from "@/components/LogoutButton";
 import NavDropdown, { NavGroup } from "@/components/NavDropdown";
 import { getSharedAccessUser, subscribeSharedAccess, type SharedAccessUser } from "@/lib/sharedAccess";
+import { isOwnerEmail } from "@/lib/owner";
 
 type SimpleItem = { kind: "link"; to: string; label: string; featured?: boolean };
 type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
@@ -140,6 +141,7 @@ const TopNav = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const isLoggedIn = Boolean(user || sharedUser);
+  const isOwner = isOwnerEmail(user?.email);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -228,6 +230,14 @@ const TopNav = () => {
 
         {/* Desktop nav — endast inloggade ser strukturen */}
         <nav className={cn("hidden items-center gap-1", isLoggedIn ? "lg:flex" : "lg:hidden")}>
+          {isOwner && (
+            <NavLink
+              to="/storyn"
+              className={({ isActive }) => cn("rounded-md px-3 py-2 text-sm font-bold transition-colors", isActive ? "bg-amber-100 text-amber-800" : "text-kedja-ink hover:bg-amber-50")}
+            >
+              Storyn
+            </NavLink>
+          )}
           {navItems.map((item) => {
             if (item.kind === "dropdown") {
               return (
@@ -326,6 +336,15 @@ const TopNav = () => {
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
+          {isOwner && (
+            <NavLink
+              to="/storyn"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => cn("block rounded-lg px-3 py-2.5 text-sm font-bold", isActive ? "bg-amber-100 text-amber-800" : "text-kedja-ink hover:bg-amber-50")}
+            >
+              Storyn · privat
+            </NavLink>
+          )}
           {navItems.map((item) => {
             if (item.kind === "dropdown") {
               const isOpen = mobileOpenGroup === item.label;
