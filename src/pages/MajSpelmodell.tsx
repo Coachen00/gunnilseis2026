@@ -53,6 +53,17 @@ import KedjaHero from "@/components/kedja/KedjaHero";
 import KedjaNav from "@/components/kedja/KedjaNav";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
+import LevelPath from "@/components/spelmodell/LevelPath";
+import ConceptMap, {
+  type ConceptMapEdge,
+  type ConceptMapNode,
+} from "@/components/spelmodell/ConceptMap";
+import {
+  LIVE_PHASE_IDS,
+  SPELMODELL_LEVELS,
+  SPELMODELL_SPECIAL_LAYERS,
+  type SpelmodellLevelId,
+} from "@/data/spelmodellLevels";
 
 /** Renderar bara children om inloggad användare är admin. Tyst annars. */
 const AdminOnly = ({ children }: { children: React.ReactNode }) => {
@@ -99,6 +110,139 @@ const MODEL_INTRO = [
 const MODEL_FLOW = ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"] as const;
 const MATCH_STATE_FACTORS = ["Resultat", "Tid", "Motståndarpress", "Spelarstatus", "Numerär"] as const;
 const PRIORITIES = ["Behåll", "Öka risk", "Skydda", "Byt plan"] as const;
+
+const NOVICE_LEVEL = SPELMODELL_LEVELS.find((level) => level.id === "novis")!;
+const NOVICE_MAP_CONCEPTS = NOVICE_LEVEL.concepts;
+const NOVICE_MAP_NODES: readonly ConceptMapNode[] = [
+  {
+    id: NOVICE_LEVEL.id,
+    label: NOVICE_LEVEL.label,
+    kind: "level",
+    detail: NOVICE_LEVEL.purpose,
+  },
+  ...NOVICE_MAP_CONCEPTS.map((concept, index) => ({
+    id: `novis-concept-${index}`,
+    label: concept,
+    kind: "concept" as const,
+    detail: "Ett grundbegrepp som hjälper dig att orientera dig och välja nästa handling.",
+  })),
+];
+const NOVICE_MAP_EDGES: readonly ConceptMapEdge[] = NOVICE_MAP_CONCEPTS.map((_, index) => ({
+  from: NOVICE_LEVEL.id,
+  to: `novis-concept-${index}`,
+  label: "börja här",
+}));
+
+const LIVE_PHASE_LINKS = [
+  { phase: LIVE_PHASE_IDS[0], label: "Försvarsspel", href: "#forsvarsspel" },
+  { phase: LIVE_PHASE_IDS[1], label: "När vi vinner bollen", href: "#overgang-anfall" },
+  { phase: LIVE_PHASE_IDS[2], label: "Anfallsspel", href: "#anfallsspel" },
+  { phase: LIVE_PHASE_IDS[3], label: "När vi tappar bollen", href: "#overgang-forsvar" },
+] as const;
+
+const LIVE_BLOCK_IDS = new Set([
+  "forsvarsspel",
+  "overgang-anfall",
+  "anfallsspel",
+  "overgang-forsvar",
+]);
+
+function LevelOverview() {
+  const [selectedLevelId, setSelectedLevelId] = useState<SpelmodellLevelId>("novis");
+  const selectedLevel = SPELMODELL_LEVELS.find((level) => level.id === selectedLevelId)!;
+
+  return (
+    <section
+      data-testid="level-overview-section"
+      className="border-b border-kedja-border bg-kedja-paper py-14 md:py-18"
+      aria-labelledby="level-overview-title"
+    >
+      <div className="container space-y-10">
+        <div className="max-w-3xl">
+          <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
+            Din väg genom spelmodellen
+          </p>
+          <h2 id="level-overview-title" className="mt-3 text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">
+            Börja där du är
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-kedja-deep/75 md:text-lg">
+            Ta en nivå i taget. Välj nivå för att se vad du ska förstå och kunna göra på planen.
+          </p>
+        </div>
+
+        <LevelPath
+          levels={SPELMODELL_LEVELS}
+          selectedLevelId={selectedLevelId}
+          onSelect={setSelectedLevelId}
+        />
+
+        <article className="border border-kedja-border bg-white p-5 md:p-7">
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-amber-700">
+            {selectedLevel.label}
+          </p>
+          <h3 className="mt-2 text-2xl font-black tracking-tight text-kedja-ink">{selectedLevel.purpose}</h3>
+          <p className="mt-3 text-sm leading-relaxed text-kedja-deep/75">När du är klar: {selectedLevel.playerOutcome}</p>
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {selectedLevel.concepts.map((concept) => (
+              <li key={concept} className="rounded-full border border-kedja-border bg-kedja-paper px-3 py-2 text-sm font-semibold text-kedja-ink">
+                {concept}
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        {selectedLevel.id === "novis" ? (
+          <div data-testid="novice-overview">
+            <ConceptMap
+              title="Novis · orientera dig på planen"
+              nodes={NOVICE_MAP_NODES}
+              edges={NOVICE_MAP_EDGES}
+              fallbackTitle="Textversion av Novis-kartan"
+            />
+          </div>
+        ) : null}
+
+        <div data-testid="live-phases-overview" aria-labelledby="live-phases-title">
+          <h3 id="live-phases-title" className="text-2xl font-black tracking-tight text-kedja-ink">
+            Fyra levande skeden
+          </h3>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-kedja-deep/75">
+            Börja med att känna igen vad som händer med bollen. Gå sedan till rätt skede.
+          </p>
+          <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {LIVE_PHASE_LINKS.map((item, index) => (
+              <a
+                key={item.phase}
+                href={item.href}
+                className="min-h-11 border border-kedja-border bg-white p-4 transition-colors hover:border-amber-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+              >
+                <span className="font-mono text-[10px] font-black text-amber-700">{String(index + 1).padStart(2, "0")}</span>
+                <span className="mt-2 block font-black text-kedja-ink">{item.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div data-testid="special-layers-overview" aria-labelledby="special-layers-title">
+          <h3 id="special-layers-title" className="text-2xl font-black tracking-tight text-kedja-ink">
+            Lager som följer eller pausar spelet
+          </h3>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {SPELMODELL_SPECIAL_LAYERS.map((layer) => (
+              <article key={layer.id} className="border border-kedja-border bg-white p-4">
+                <h4 className="font-black text-kedja-ink">{layer.label}</h4>
+                {layer.id === "identitet" ? (
+                  <p className="mt-1 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">Tvärgående</p>
+                ) : null}
+                <p className="mt-2 text-sm leading-relaxed text-kedja-deep/75">{layer.purpose}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 const STORYN_LAYERS = [
   {
@@ -408,7 +552,12 @@ function BlockMediaOverview({ items }: { items: MediaAsset[] }) {
 
 function ModelIntro() {
   return (
-    <section id="vad-ar-spelmodellen" className="scroll-mt-24 border-b border-kedja-border bg-kedja-paper py-14 md:py-18">
+    <section
+      id="vad-ar-spelmodellen"
+      data-testid="spelmodell-how-it-works"
+      className="scroll-mt-24 border-b border-kedja-border bg-kedja-paper py-14 md:py-18"
+      aria-labelledby="spelmodell-how-it-works-title"
+    >
       <div className="container">
         <div className="mb-6 flex items-center gap-3">
           <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
@@ -416,6 +565,9 @@ function ModelIntro() {
             Vi vet vad vi ska göra innan situationen händer
           </p>
         </div>
+        <h2 id="spelmodell-how-it-works-title" className="mb-6 text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">
+          Så arbetar du med spelmodellen
+        </h2>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {MODEL_INTRO.map((item) => (
             <article key={item.title} className="border border-kedja-border bg-white p-5">
@@ -1181,6 +1333,25 @@ function BlockSection({ block, num }: { block: MajBlock; num: string }) {
             {block.kidExplanation}
           </p>
 
+          {LIVE_BLOCK_IDS.has(block.id) ? (
+            <div
+              data-testid={`flow-strip-${block.id}`}
+              className="mb-10 border border-amber-500/40 bg-amber-50 p-5"
+            >
+              <ol className="grid gap-3 md:grid-cols-4">
+                {MODEL_FLOW.map((step, index) => (
+                  <li key={step} className="flex items-center gap-2 text-sm font-black text-kedja-ink">
+                    <span className="font-mono text-[10px] text-amber-700">{String(index + 1).padStart(2, "0")}</span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-4 border-t border-amber-500/25 pt-4 text-sm font-semibold leading-relaxed text-kedja-ink/75">
+                Läs matchtillståndet genom {MATCH_STATE_FACTORS.join(" · ")}.
+              </p>
+            </div>
+          ) : null}
+
           {tacticalSteps.length > 0 && (
             <div className="mb-10 max-w-2xl">
               <KedjaSteps
@@ -1517,7 +1688,7 @@ const MajSpelmodell = () => {
   return (
   <div className="relative -mt-px bg-kedja-paper text-kedja-ink">
     <Hero />
-    <StorynSection />
+    <LevelOverview />
     <ModelIntro />
     {/* Stegrande ordning: nivå 0+1 (Grunden) → nivå 1 (snabbversion) →
         nivå 2 (blocken) → nivå 3 (filmbibliotek + övrigt). */}

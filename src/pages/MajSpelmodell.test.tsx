@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, describe, expect, it } from "vitest";
 import MajSpelmodell from "./MajSpelmodell";
@@ -9,6 +9,7 @@ import {
   MAJ_2026_NAV_CARDS,
   MAJ_2026_PRINCIPLE_MEDIA,
 } from "@/data/majSpelmodell";
+import { SPELMODELL_LEVELS } from "@/data/spelmodellLevels";
 
 const REQUIRED_PRINCIPLE_FIELDS = [
   "definition",
@@ -35,31 +36,68 @@ describe("MajSpelmodell page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");
   });
 
-  it("förklarar vad modellen är, varför den finns och hur den används", () => {
+  it("visar nivåöversikten med exakt sju nivåer i rätt ordning", () => {
     renderPage();
-    expect(screen.getByRole("heading", { name: /vad är en spelmodell/i })).toBeInTheDocument();
-    expect(screen.getAllByText(/gemensamma språk/i).length).toBeGreaterThan(0);
-    for (const heading of [
-      /varför vi behöver den/i,
-      /vår identitet i en mening/i,
-      /fyra skeden och två särdelar/i,
-      /vad gör spelaren först/i,
-      /hur detta tränas/i,
-      /hur detta syns i match/i,
-      /hur vi följer upp/i,
-    ]) {
-      expect(screen.getByRole("heading", { name: heading })).toBeInTheDocument();
-    }
-    for (const step of ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"]) {
-      expect(screen.getAllByText(step).length).toBeGreaterThan(0);
-    }
+
+    const levelOverview = screen.getByTestId("level-overview-section");
+    const levelButtons = within(levelOverview).getAllByRole("button");
+
+    expect(levelButtons.map((button) => button.textContent?.trim())).toEqual(
+      SPELMODELL_LEVELS.map((level) => level.label)
+    );
   });
 
-  it("visar Storyn som egen översta kategori", () => {
+  it("visar Novis med konceptkarta/textfallback och Level 1 med exakt fyra levande skeden", () => {
     renderPage();
-    expect(screen.getByRole("heading", { name: /var förberedd/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /det jag vill göra/i })).toBeInTheDocument();
-    expect(screen.getByText(/standards → ledarskap → träningskultur/i)).toBeInTheDocument();
+
+    const noviceOverview = screen.getByTestId("novice-overview");
+    for (const term of [
+      "Planens ytor",
+      "Korridorer",
+      "Gyllene zonen",
+      "Assistytan",
+      "Spelbredd",
+      "Speldjup",
+      "Spelavstånd",
+      "Spelbarhet",
+    ]) {
+      expect(within(noviceOverview).getAllByText(term).length).toBeGreaterThan(0);
+    }
+    expect(within(noviceOverview).getByRole("heading", { name: /textversion av novis-kartan/i })).toBeInTheDocument();
+
+    const livePhases = screen.getByTestId("live-phases-overview");
+    expect(within(livePhases).getAllByRole("link")).toHaveLength(4);
+    expect(within(livePhases).getByText("Försvarsspel")).toBeInTheDocument();
+    expect(within(livePhases).getByText("När vi vinner bollen")).toBeInTheDocument();
+    expect(within(livePhases).getByText("Anfallsspel")).toBeInTheDocument();
+    expect(within(livePhases).getByText("När vi tappar bollen")).toBeInTheDocument();
+  });
+
+  it("placerar Så arbetar du med spelmodellen direkt efter nivåöversikten", () => {
+    renderPage();
+
+    const levelOverview = screen.getByTestId("level-overview-section");
+    const howItWorks = screen.getByTestId("spelmodell-how-it-works");
+
+    expect(levelOverview.nextElementSibling).toBe(howItWorks);
+    expect(within(howItWorks).getByRole("heading", { name: /så arbetar du med spelmodellen/i })).toBeInTheDocument();
+    for (const step of ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"]) {
+      expect(within(howItWorks).getByText(step)).toBeInTheDocument();
+    }
+    expect(within(howItWorks).getByText(/resultat/i)).toBeInTheDocument();
+    expect(within(howItWorks).getByText(/tid/i)).toBeInTheDocument();
+    expect(within(howItWorks).getByText(/motståndarpress/i)).toBeInTheDocument();
+    expect(within(howItWorks).getByText(/spelarstatus/i)).toBeInTheDocument();
+    expect(within(howItWorks).getByText(/numerär/i)).toBeInTheDocument();
+  });
+
+  it("visar fasta situationer separat och markerar identitet och målvaktsperspektiv som tvärgående lager", () => {
+    renderPage();
+
+    const specialLayers = screen.getByTestId("special-layers-overview");
+    expect(within(specialLayers).getByText("Fasta situationer · död boll")).toBeInTheDocument();
+    expect(within(specialLayers).getByText("Identitet")).toBeInTheDocument();
+    expect(within(specialLayers).getByText("Målvaktsperspektiv · tvärgående")).toBeInTheDocument();
   });
 
   it("legacy-url /maj-2026 renderar samma huvudmodell utan krasch", () => {
@@ -67,7 +105,7 @@ describe("MajSpelmodell page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");
   });
 
-  it("renderar alla sex navkort som ankarlänkar", () => {
+  it("renderar alla navkort som ankarlänkar", () => {
     renderPage();
     for (const card of MAJ_2026_NAV_CARDS) {
       // FilmLibrary lägger till parallella länkar med samma label-text
@@ -97,6 +135,18 @@ describe("MajSpelmodell page", () => {
   it("renderar snabbversionen DETTA SKA DU GÖRA PÅ PLANEN", () => {
     renderPage();
     expect(screen.getByRole("heading", { name: /detta ska du göra på planen/i })).toBeInTheDocument();
+  });
+
+  it("håller privat Storyn-copy borta från den publika spelmodellen", () => {
+    renderPage();
+    for (const hiddenText of [
+      "Det jag vill göra",
+      "Det jag förstår",
+      "Det jag missar",
+      "Idéer under utveckling",
+    ]) {
+      expect(screen.queryByText(hiddenText)).not.toBeInTheDocument();
+    }
   });
 
   it("varje block är en kollapsad accordion-trigger by default — inget block-innehåll syns på initial render", () => {
@@ -140,10 +190,29 @@ describe("MajSpelmodell page", () => {
     }
   });
 
+  it("varje levande skede visar samma arbetskedja med matchtillståndets faktorer", () => {
+    renderPage();
+
+    for (const blockId of ["forsvarsspel", "overgang-anfall", "anfallsspel", "overgang-forsvar"]) {
+      fireEvent.click(screen.getByTestId(`block-trigger-${blockId}`));
+      const flowStrip = screen.getByTestId(`flow-strip-${blockId}`);
+
+      for (const label of ["Spelprincip", "Matchtillstånd", "Prioritering", "Beteende"]) {
+        expect(within(flowStrip).getByText(label)).toBeInTheDocument();
+      }
+
+      expect(within(flowStrip).getByText(/resultat/i)).toBeInTheDocument();
+      expect(within(flowStrip).getByText(/tid/i)).toBeInTheDocument();
+      expect(within(flowStrip).getByText(/motståndarpress/i)).toBeInTheDocument();
+      expect(within(flowStrip).getByText(/spelarstatus/i)).toBeInTheDocument();
+      expect(within(flowStrip).getByText(/numerär/i)).toBeInTheDocument();
+    }
+  });
+
   it("visar ordlista och håller störande interncopy borta från huvudmodellen", () => {
     renderPage();
     for (const term of ["Spelmodell", "Spelidé", "Princip", "Roll", "Trigger", "Scanning", "Positionering", "Press", "Understöd", "Spelvändning", "Yta", "Tredje man", "Omställning", "Spelbarhet", "Relationer"]) {
-      expect(screen.getByRole("heading", { name: term })).toBeInTheDocument();
+      expect(screen.getAllByRole("heading", { name: term }).length).toBeGreaterThan(0);
     }
     expect(screen.queryByText(new RegExp("pseudo" + "kontring", "i"))).not.toBeInTheDocument();
     const hiddenPlaceholderPattern = new RegExp(
