@@ -102,9 +102,13 @@
     let pitchResizeObserver = null;
     let boardAutosaveTimer = null;
     let lastAutosavedState = '';
+    let undoStack = [];
+    let redoStack = [];
+    let restoringState = false;
+    const historyLimit = 50;
 
     function boardContext() {
-        return window.__TACTICS_BOARD_CONTEXT || null;
+        return window.__TACTICS_BOARD_CONTEXT || 'standalone';
     }
 
     function setAutosaveStatus(message, tone = 'saved') {
@@ -246,6 +250,8 @@
         initFrameDelaySlider();
         setZoom();
         updateAllToggleButtons();
+        updateHistoryButtons();
+        document.addEventListener('keydown', handleKeydown);
         loadBoardState();
         if (boardContext()) boardAutosaveTimer = window.setInterval(saveBoardState, 1000);
         if ('ResizeObserver' in window) {
@@ -360,9 +366,23 @@
             piece.innerHTML = '';
         }
 
-        piece.onmousedown = handlePieceClick;
+        piece.onpointerdown = handlePieceClick;
+        if (type === 'ball' || type === 'cone') {
+            piece.title = 'Dubbelklicka för att ta bort';
+            piece.ondblclick = function () { deletePiece(this); };
+        }
         pitch.appendChild(piece);
         return piece;
+    }
+
+    function deletePiece(piece) {
+        if (!piece || (piece.dataset.kind !== 'ball' && piece.dataset.kind !== 'cone')) return;
+        pushHistory();
+        drawings = drawings.filter((drawing) => drawing.attachedTo !== piece.id);
+        links = links.filter((link) => link.id1 !== piece.id && link.id2 !== piece.id);
+        piece.remove();
+        renderLinks();
+        renderAllDrawings();
     }
 
     function getPieceMetrics(piece) {
@@ -440,6 +460,7 @@
     function togglePlayerBench(id) {
         const piece = document.getElementById(id);
         if (!piece) return;
+        pushHistory();
         const onField = !isPieceBenched(piece);
         if (onField) {
             piece.dataset.lastFieldX = piece.dataset.x || piece.style.left;
@@ -466,6 +487,7 @@
     }
 
     function setTeamAvailability(team, shouldBeOnField) {
+        pushHistory();
         const pieces = Array.from(document.querySelectorAll(`.piece.${team}`));
         if (shouldBeOnField) {
             const savedPositions = benchMemory[team];
@@ -489,6 +511,7 @@
     }
 
     function clearPlayers() {
+        pushHistory();
         setTeamAvailability('home', false);
         setTeamAvailability('away', false);
         document.querySelectorAll('.ball').forEach((ball, index) => {
@@ -497,10 +520,12 @@
     }
 
     function addBall() {
+        pushHistory();
         createPiece('ball', '', 49 + (Math.random() * 4), 48 + (Math.random() * 5), `ball-${itemCounter++}`, 'logical');
     }
 
     function addCone() {
+        pushHistory();
         createPiece('cone', '', 41 + (Math.random() * 18), 3, `cone-${itemCounter++}`, 'logical');
     }
 
@@ -569,6 +594,7 @@
         const coords = formations[formation];
         if (!coords) return;
 
+        pushHistory();
         const players = Array.from(document.querySelectorAll(`.piece.${team}`));
         lastFormation[team] = formation;
 
@@ -644,6 +670,7 @@
     }
 
     function clearLinks() {
+        pushHistory();
         links = [];
         if (linkStartNode) linkStartNode.classList.remove('linking');
         linkStartNode = null;
@@ -654,6 +681,12 @@
         if (drawingActive) {
             const mode = document.getElementById('drawMode').value;
             if (mode === 'eraser') {
+                if (this.dataset.kind === 'ball' || this.dataset.kind === 'cone') {
+                    deletePiece(this);
+                    event.preventDefault();
+                    return;
+                }
+                pushHistory();
                 drawings = drawings.filter((drawing) => drawing.attachedTo !== this.id);
                 renderAllDrawings();
                 event.preventDefault();
@@ -682,6 +715,7 @@
                 this.classList.add('linking');
             } else {
                 if (linkStartNode !== this) {
+                    pushHistory();
                     links.push({ id1: linkStartNode.id, id2: this.id });
                 }
                 linkStartNode.classList.remove('linking');
@@ -690,14 +724,15 @@
             return;
         }
 
+        pushHistory();
         activeItem = this;
         activeItem.style.transition = 'none';
         const pos = getMousePos(event);
         const box = getPieceMetrics(activeItem);
         dragOffsetX = pos.x - box.centerX;
         dragOffsetY = pos.y - box.centerY;
-        document.onmousemove = moveDrag;
-        document.onmouseup = stopDrag;
+        document.onpointermove = moveDrag;
+        document.onpointerup = stopDrag;
     }
 
     function moveDrag(event) {
@@ -712,8 +747,8 @@
             if (activeItem.dataset.kind === 'home') updatePlayerToggleButton(activeItem.id);
         }
         activeItem = null;
-        document.onmousemove = null;
-        document.onmouseup = null;
+        document.onpointermove = null;
+        document.onpointerup = null;
     }
 
     function toggleDrawing() {
@@ -1012,12 +1047,13 @@
     }
 
     function startDrawingDrag(index, point) {
+        pushHistory();
         activeDrawingIndex = index;
         activeDrawingStart = point;
         activeDrawingSnapshot = cloneData(drawings[index]);
         pitch.style.cursor = 'grabbing';
-        document.onmousemove = moveDrawingDrag;
-        document.onmouseup = stopDrawingDrag;
+        document.onpointermove = moveDrawingDrag;
+        document.onpointerup = stopDrawingDrag;
     }
 
     function moveDrawingDrag(event) {
@@ -1045,8 +1081,8 @@
         activeDrawingIndex = -1;
         activeDrawingStart = null;
         activeDrawingSnapshot = null;
-        document.onmousemove = null;
-        document.onmouseup = null;
+        document.onpointermove = null;
+        document.onpointerup = null;
         if (!drawingActive) pitch.style.cursor = 'default';
     }
 
@@ -1221,20 +1257,120 @@
         renderAllDrawings();
     }
 
+    function capturePieces() {
+        return Array.from(document.querySelectorAll('.piece')).map((piece) => {
+            const nameEl = piece.querySelector('.name');
+            const box = getPieceMetrics(piece);
+            return {
+                id: piece.id,
+                kind: piece.dataset.kind,
+                num: piece.dataset.num,
+                x: box.centerX,
+                y: box.centerY,
+                name: nameEl ? nameEl.innerText : ''
+            };
+        });
+    }
+
+    function captureBoardSnapshot() {
+        return {
+            pieces: capturePieces(),
+            drawings: cloneData(drawings),
+            links: cloneData(links)
+        };
+    }
+
+    function applyBoardSnapshot(snapshot) {
+        if (!snapshot) return;
+        restoringState = true;
+        try {
+            applyPieceState(snapshot.pieces || []);
+            drawings = cloneData(snapshot.drawings || []);
+            links = cloneData(snapshot.links || []);
+            renderLinks();
+            renderAllDrawings();
+        } finally {
+            restoringState = false;
+        }
+    }
+
+    function updateHistoryButtons() {
+        const undoBtn = document.getElementById('undoBtn');
+        const redoBtn = document.getElementById('redoBtn');
+        if (undoBtn) undoBtn.disabled = undoStack.length === 0;
+        if (redoBtn) redoBtn.disabled = redoStack.length === 0;
+    }
+
+    function pushHistory() {
+        if (restoringState) return;
+        const snapshot = captureBoardSnapshot();
+        const top = undoStack[undoStack.length - 1];
+        if (top && JSON.stringify(top) === JSON.stringify(snapshot)) return;
+        undoStack.push(snapshot);
+        if (undoStack.length > historyLimit) undoStack.shift();
+        redoStack = [];
+        updateHistoryButtons();
+    }
+
+    function undoBoard() {
+        if (!undoStack.length) return;
+        redoStack.push(captureBoardSnapshot());
+        applyBoardSnapshot(undoStack.pop());
+        updateHistoryButtons();
+    }
+
+    function redoBoard() {
+        if (!redoStack.length) return;
+        undoStack.push(captureBoardSnapshot());
+        applyBoardSnapshot(redoStack.pop());
+        updateHistoryButtons();
+    }
+
+    function handleKeydown(event) {
+        const target = event.target;
+        if (target && target.matches && target.matches('input, textarea, select')) return;
+        const key = (event.key || '').toLowerCase();
+        if ((event.ctrlKey || event.metaKey) && key === 'z' && !event.shiftKey) {
+            event.preventDefault();
+            undoBoard();
+        } else if ((event.ctrlKey || event.metaKey) && (key === 'y' || (key === 'z' && event.shiftKey))) {
+            event.preventDefault();
+            redoBoard();
+        } else if (event.key === 'Escape') {
+            if (drawingActive) toggleDrawing();
+            if (linkMode) toggleLinkMode();
+        }
+    }
+
+    function resetBoard() {
+        if (!window.confirm('Nollställ tavlan? Ritverk, länkar, sparade rutor och autosparat läge rensas.')) return;
+        pushHistory();
+        document.querySelectorAll('.piece.ball, .piece.cone').forEach((piece) => piece.remove());
+        drawings = [];
+        links = [];
+        clearTimeline();
+        restoringState = true;
+        try {
+            applyFormation('home', '4-4-2');
+            applyFormation('away', '4-4-2');
+        } finally {
+            restoringState = false;
+        }
+        updateItemCounter();
+        renderLinks();
+        renderAllDrawings();
+        try {
+            localStorage.removeItem('gunnilse:taktiktavla:state:' + encodeURIComponent(boardContext()));
+        } catch {
+            /* lagring otillgänglig */
+        }
+        lastAutosavedState = '';
+        setAutosaveStatus('Nollställd');
+    }
+
     function captureFrameState() {
         return {
-            pieces: Array.from(document.querySelectorAll('.piece')).map((piece) => {
-                const nameEl = piece.querySelector('.name');
-                const box = getPieceMetrics(piece);
-                return {
-                    id: piece.id,
-                    kind: piece.dataset.kind,
-                    num: piece.dataset.num,
-                    x: box.centerX,
-                    y: box.centerY,
-                    name: nameEl ? nameEl.innerText : ''
-                };
-            }),
+            pieces: capturePieces(),
             drawings: cloneData(drawings),
             links: cloneData(links),
             layers: getLayerState(),
@@ -1302,6 +1438,7 @@
             frames[index] = captureFrameState();
             button.classList.add('saved');
         } else {
+            pushHistory();
             applyFrameState(frames[index]);
         }
 
@@ -1319,15 +1456,27 @@
 
     async function playMovie() {
         const buttons = document.querySelectorAll('.frame-btn');
-        for (let i = 0; i < totalFrames; i++) {
-            if (!frames[i]) continue;
-            handleFrameClick(i, buttons[i], false);
-            await new Promise((resolve) => setTimeout(resolve, frameDelayMs));
+        pushHistory();
+        const duration = Math.min(Math.max(frameDelayMs * 0.6, 300), 1000);
+        const easing = 'cubic-bezier(0.25, 1, 0.5, 1)';
+        document.querySelectorAll('.piece').forEach((piece) => {
+            piece.style.transition = `left ${duration}ms ${easing}, top ${duration}ms ${easing}`;
+        });
+        restoringState = true;
+        try {
+            for (let i = 0; i < totalFrames; i++) {
+                if (!frames[i]) continue;
+                handleFrameClick(i, buttons[i], false);
+                await new Promise((resolve) => setTimeout(resolve, frameDelayMs));
+            }
+        } finally {
+            restoringState = false;
         }
         buttons.forEach((button) => button.classList.remove('active'));
     }
 
     function clearCanvas() {
+        pushHistory();
         drawings = [];
         activeDrawingIndex = -1;
         activeDrawingStart = null;
@@ -1370,7 +1519,7 @@
         }, 300);
     }
 
-    pitch.addEventListener('mousedown', (event) => {
+    pitch.addEventListener('pointerdown', (event) => {
         if (event.target.classList.contains('name') || event.target.classList.contains('piece')) return;
 
         const pos = getMousePos(event);
@@ -1397,11 +1546,12 @@
         if (mode === 'free') {
             currentFreehandPoints = [{ x: pos.x, y: pos.y }];
         } else if (mode === 'eraser') {
+            pushHistory();
             eraseDrawingsAlongPath(pos.x, pos.y, pos.x, pos.y);
         }
     });
 
-    pitch.addEventListener('mousemove', (event) => {
+    pitch.addEventListener('pointermove', (event) => {
         if (!isDrawing) return;
 
         const pos = getMousePos(event);
@@ -1447,7 +1597,18 @@
         drawShape(tCtx, shapeStartX, shapeStartY, pos.x, pos.y, mode, color, fillColor, fill, arrow, curveSettings);
     });
 
-    window.addEventListener('mouseup', (event) => {
+    window.addEventListener('pointercancel', () => {
+        if (isDrawing) {
+            isDrawing = false;
+            currentFreehandPoints = [];
+            drawingAttachedTo = null;
+            clearTempCanvas();
+        }
+        if (activeItem) stopDrag();
+        if (activeDrawingIndex >= 0) stopDrawingDrag();
+    });
+
+    window.addEventListener('pointerup', (event) => {
         if (!isDrawing) return;
 
         isDrawing = false;
@@ -1469,6 +1630,7 @@
         if (drawingAttachedTo) {
             const piece = document.getElementById(drawingAttachedTo);
             if (piece) {
+                pushHistory();
                 const box = getPieceMetrics(piece);
                 if (mode === 'text') {
                     drawings.push({
@@ -1501,6 +1663,7 @@
 
         if (mode === 'free') {
             if (currentFreehandPoints.length > 1) {
+                pushHistory();
                 drawings.push({
                     mode: 'free',
                     points: cloneData(currentFreehandPoints),
@@ -1516,6 +1679,7 @@
         }
 
         if (mode === 'text') {
+            pushHistory();
             drawings.push({
                 mode,
                 x1: pos.x,
@@ -1528,6 +1692,7 @@
             return;
         }
 
+        pushHistory();
         drawings.push({
             mode,
             x1: startX,
@@ -1578,8 +1743,8 @@
         });
 
         tacticBoardListeners.length = 0;
-        document.onmousemove = null;
-        document.onmouseup = null;
+        document.onpointermove = null;
+        document.onpointerup = null;
     };
 
 
@@ -1663,4 +1828,15 @@
   window.playMovie = playMovie;
   window.clearCanvas = clearCanvas;
   window.takeScreenshot = takeScreenshot;
+  window.capturePieces = capturePieces;
+  window.captureBoardSnapshot = captureBoardSnapshot;
+  window.applyBoardSnapshot = applyBoardSnapshot;
+  window.pushHistory = pushHistory;
+  window.undoBoard = undoBoard;
+  window.redoBoard = redoBoard;
+  window.updateHistoryButtons = updateHistoryButtons;
+  window.handleKeydown = handleKeydown;
+  window.resetBoard = resetBoard;
+  window.deletePiece = deletePiece;
+  window.saveBoardState = saveBoardState;
 })();

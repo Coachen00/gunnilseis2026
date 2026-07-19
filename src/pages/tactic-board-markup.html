@@ -95,6 +95,7 @@
                             <button type="button" onclick="addBall()" class="btn-ball">&#9917; Boll</button>
                             <button type="button" onclick="addCone()" class="btn-cone">+ Kon</button>
                         </div>
+                        <p class="tactic-panel-hint">Dubbelklicka p&aring; en boll eller kon f&ouml;r att ta bort den.</p>
                     </div>
                     <div class="tactic-panel-section">
                         <span class="tactic-section-title">R&ouml;da laget (1&ndash;11)</span>
@@ -245,6 +246,7 @@
                     <p class="tactic-panel-hint">Spara en bild av nuvarande tavla med alla lager.</p>
                     <div class="quick-actions stacked">
                         <button type="button" onclick="takeScreenshot()" class="btn-primary">Spara tavlan</button>
+                        <button type="button" onclick="resetBoard()" class="btn-warn">Nollst&auml;ll tavlan</button>
                     </div>
                     <div class="slider-group">
                         <span>Spelar-storlek</span>
@@ -257,6 +259,7 @@
     </aside>
 
     <main class="tactic-board-main">
+        <div class="tactic-quick-bar"><button type="button" id="undoBtn" onclick="undoBoard()" disabled title="Ctrl+Z">&#10554; &Aring;ngra</button><button type="button" id="redoBtn" onclick="redoBoard()" disabled title="Ctrl+Y">&#10555; G&ouml;r om</button></div>
         <div id="capture-wrapper">
             <div id="capture-area">
                 <div class="tactics-board" data-scene="training_pitch">

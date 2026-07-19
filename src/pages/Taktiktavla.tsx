@@ -234,11 +234,9 @@ const Taktiktavla = () => {
         </div>
       )}
 
-      {contextId && (
-        <div id="tactics-autosave-status" className="border-b border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-center text-xs font-semibold text-emerald-200">
-          Autosparar arbetsläget …
-        </div>
-      )}
+      <div id="tactics-autosave-status" className="border-b border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-center text-xs font-semibold text-emerald-200">
+        Autosparar arbetsläget …
+      </div>
 
       <TacticsLibrary latestImage={latestImage} />
 

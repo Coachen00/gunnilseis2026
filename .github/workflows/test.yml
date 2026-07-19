@@ -21,12 +21,10 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Lint
-        run: bunx eslint . --max-warnings=0
-        continue-on-error: true
+        run: bunx eslint .
 
       - name: Type check
         run: bunx tsc --noEmit
-        continue-on-error: true
 
       - name: Run tests
         run: bun run test

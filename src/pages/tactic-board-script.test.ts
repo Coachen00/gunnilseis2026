@@ -18,6 +18,11 @@ declare global {
     getMousePos?: (event: { clientX: number; clientY: number }) => { x: number; y: number };
     setPieceCenter?: (piece: HTMLElement, x: number, y: number) => void;
     syncCanvasesToPitch?: () => void;
+    undoBoard?: () => void;
+    redoBoard?: () => void;
+    saveBoardState?: () => void;
+    deletePiece?: (piece: HTMLElement) => void;
+    addBall?: () => void;
   }
 }
 
@@ -82,6 +87,7 @@ describe("tactic-board-script logical coordinates", () => {
   afterEach(() => {
     window.__cleanupTacticBoard?.();
     document.body.innerHTML = "";
+    localStorage.clear();
     vi.unstubAllGlobals();
   });
 
@@ -121,5 +127,57 @@ describe("tactic-board-script logical coordinates", () => {
 
     expect(Number(player?.dataset.x)).toBeCloseTo(25);
     expect(Number(player?.dataset.y)).toBeCloseTo(30);
+  });
+
+  it("undoes and redoes formation changes", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.applyFormation?.("home", "4-4-2");
+    const player = document.querySelector<HTMLElement>("#home-5");
+    const before = { x: player?.dataset.x, y: player?.dataset.y };
+
+    window.applyFormation?.("home", "4-3-3");
+    const after = { x: player?.dataset.x, y: player?.dataset.y };
+    expect(after).not.toEqual(before);
+
+    window.undoBoard?.();
+    expect({ x: player?.dataset.x, y: player?.dataset.y }).toEqual(before);
+
+    window.redoBoard?.();
+    expect({ x: player?.dataset.x, y: player?.dataset.y }).toEqual(after);
+  });
+
+  it("removes deleted balls together with their drawings and links", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.addBall?.();
+    const ball = document.querySelector<HTMLElement>(".piece.ball");
+    expect(ball).toBeTruthy();
+
+    window.deletePiece?.(ball as HTMLElement);
+    expect(document.querySelector(".piece.ball")).toBeNull();
+
+    window.undoBoard?.();
+    expect(document.querySelector(".piece.ball")).toBeTruthy();
+  });
+
+  it("saves board state to localStorage and restores it on next mount", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.applyFormation?.("home", "4-3-3");
+    window.saveBoardState?.();
+
+    const raw = localStorage.getItem("gunnilse:taktiktavla:state:standalone");
+    expect(raw).toBeTruthy();
+
+    const player = document.querySelector<HTMLElement>("#home-5");
+    const saved = { x: player?.dataset.x, y: player?.dataset.y };
+
+    window.__cleanupTacticBoard?.();
+    document.body.innerHTML = "";
+
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+    const restored = document.querySelector<HTMLElement>("#home-5");
+    expect({ x: restored?.dataset.x, y: restored?.dataset.y }).toEqual(saved);
   });
 });

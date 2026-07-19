@@ -18,7 +18,7 @@ export interface ViewProps {
   onNavigate: (section: Section) => void;
 }
 
-const views: Record<Section, ReturnType<typeof lazy<ComponentType<any>>>> = {
+const views: Record<Section, ReturnType<typeof lazy<ComponentType<ViewProps>>>> = {
   oversikt: lazy(() => import('./views/Oversikt')),
   larprogram: lazy(() => import('./views/Larprogram')),
   larsteg: lazy(() => import('./views/Larsteg')),

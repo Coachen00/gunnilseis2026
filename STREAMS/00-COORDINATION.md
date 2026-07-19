@@ -1,5 +1,13 @@
 # Parallellt arbete — koordinering
 
+> **Aktuellt flöde:** Den här filen beskriver det äldre stream/worktree-upplägget.
+> Använd inte stream-branches eller sökvägarna längre. Repo:t ligger i
+> `C:\Scripts\fotboll\gunnilseis2026`, `main` är enda aktiva arbetsgren och
+> `origin/main` är det som deployas. Följ i stället `README.md`.
+
+> Gamla `STREAMS/*-START-*.txt` är historiska arbetsinstruktioner. De ska inte
+> användas som startpromptar för nya jobb.
+
 4 streams (A, B, C, D) jobbar samtidigt på olika delar av `gunnilseis2026`. Varje stream har egen scope, egen git-branch **och egen worktree-katalog**.
 
 ## Varför worktrees per stream?

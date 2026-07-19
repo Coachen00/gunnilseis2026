@@ -538,6 +538,7 @@
             justify-content: center;
             font-weight: bold;
             cursor: grab;
+            touch-action: none;
             z-index: 100;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
             transform: translate(-50%, -50%);
@@ -1511,9 +1512,44 @@
 /* === Main / capture-area === */
 .tactic-board-page .tactic-board-main {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-width: 0;
+}
+
+.tactic-board-page .tactic-quick-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    max-width: 1560px;
+    padding: 8px 24px 0;
+    box-sizing: border-box;
+}
+
+.tactic-board-page .tactic-quick-bar button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tactic-board-page .tactic-quick-bar button:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tactic-board-page .tactic-quick-bar button:disabled {
+    opacity: 0.4;
+    cursor: default;
 }
 
 .tactic-board-page .tactic-board-main #capture-wrapper {

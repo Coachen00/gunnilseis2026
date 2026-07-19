@@ -12,6 +12,10 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
+concurrency:
+  group: svenskalag-sync
+  cancel-in-progress: false
+
 env:
   SUPABASE_URL: https://fojviymdmhjlpyrpjexp.supabase.co
 
@@ -38,7 +42,4 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{}')
           echo "Squad sync response: $response"
-          # Squad-funktionen kanske inte är deployad än — varna men misslyckas inte
-          if ! echo "$response" | grep -q '"ok":true'; then
-            echo "::warning::Squad sync svarade inte ok=true. Är funktionen deployad? Svar: $response"
-          fi
+          echo "$response" | grep -q '"ok":true' || { echo "::error::Squad sync failed"; exit 1; }
