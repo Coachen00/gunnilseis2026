@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 // Innehållsidor — lazy så vi inte skickar 800 KB JS för en första sidladdning på mobil.
 const Hem = lazy(() => import("./pages/Hem"));
 const Period1 = lazy(() => import("./pages/Period1"));
+const Period2 = lazy(() => import("./pages/Period2"));
 const Spelide = lazy(() => import("./pages/Spelide"));
 const MajSpelmodell = lazy(() => import("./pages/MajSpelmodell"));
 const Storyn = lazy(() => import("./pages/Storyn"));
@@ -156,6 +157,7 @@ const App = () => (
           <Route path="/coach/traningsplanering-host-2026" element={<PrintRoute routeName="Träningsplanering"><TrainingPlan /></PrintRoute>} />
 
           <Route path="/period/1" element={<Protected routeName="Period 1"><Period1 /></Protected>} />
+          <Route path="/period/2" element={<Protected routeName="Period 2"><Period2 /></Protected>} />
           <Route path="/maj-2026" element={<Protected routeName="Spelmodell"><MajSpelmodell /></Protected>} />
           <Route path="/spelmodell/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />
           <Route path="/maj-2026/uppstart" element={<Protected routeName="Sommaruppstart 2026"><SommarUppstart /></Protected>} />

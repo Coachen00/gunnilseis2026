@@ -1723,6 +1723,13 @@ const MajSpelmodell = () => {
               Träna det
               <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
             </Link>
+            <Link
+              to="/period/2"
+              className="inline-flex items-center gap-2 border border-kedja-border bg-white px-5 py-3 font-mono text-[11px] font-black uppercase tracking-[0.22em] text-kedja-ink transition-colors hover:border-[#f5c242] hover:text-amber-600"
+            >
+              Träna det – Period 2
+              <ArrowRight className="h-4 w-4" strokeWidth={2.4} />
+            </Link>
           </div>
         </div>
       </div>
