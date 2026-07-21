@@ -40,7 +40,7 @@ const CoachTrainingPlanning = () => (
       <div className="grid gap-3 md:grid-cols-3">
         <InfoCard icon={<Clock3 />} title="Tre pass" text="Måndag, onsdag och torsdag 18:30–20:00. Varje block har ansvarig ledare." />
         <InfoCard icon={<Film />} title="Video som lärloop" text="Match → klipp → måndagsfråga → träningsfokus → ny match." />
-        <InfoCard icon={<CheckCircle2 />} title="Identitet överallt" text="Dueller, andrabollsspel, ta ytan, prata med passningen och scanning." />
+        <InfoCard icon={<CheckCircle2 />} title="Identitet överallt" text="Scanning, ta ytan, prata med passningen, duellspel och andrabollsspel." />
       </div>
     </SectionReveal>
 

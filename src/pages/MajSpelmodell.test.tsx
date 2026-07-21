@@ -10,6 +10,7 @@ import {
   MAJ_2026_PRINCIPLE_MEDIA,
 } from "@/data/majSpelmodell";
 import { SPELMODELL_LEVELS } from "@/data/spelmodellLevels";
+import { IDENTITY } from "@/data/identity";
 
 const REQUIRED_PRINCIPLE_FIELDS = [
   "definition",
@@ -100,6 +101,14 @@ describe("MajSpelmodell page", () => {
     expect(within(specialLayers).getByText("Målvaktsperspektiv · tvärgående")).toBeInTheDocument();
   });
 
+  it("använder samma fem identitetsbeteenden som Identitetssidan", () => {
+    const identityBlock = MAJ_2026_BLOCKS.find((block) => block.id === "identitet");
+
+    expect(identityBlock?.principles.map((principle) => principle.label)).toEqual(
+      IDENTITY.map((item) => item.title)
+    );
+  });
+
   it("legacy-url /maj-2026 renderar samma huvudmodell utan krasch", () => {
     renderPage("/maj-2026");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Så spelar Gunnilse");
@@ -132,9 +141,9 @@ describe("MajSpelmodell page", () => {
     }
   });
 
-  it("renderar snabbversionen DETTA SKA DU GÖRA PÅ PLANEN", () => {
+  it("renderar snabbversionen Nästa beslut på planen", () => {
     renderPage();
-    expect(screen.getByRole("heading", { name: /detta ska du göra på planen/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /nästa beslut på planen/i })).toBeInTheDocument();
   });
 
   it("håller privat Storyn-copy borta från den publika spelmodellen", () => {

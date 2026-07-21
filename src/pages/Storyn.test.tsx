@@ -25,10 +25,10 @@ describe("Storyn private page", () => {
     useSessionMock.mockReturnValue({ data: { user: { email: "leojsjoqvist@gmail.com" } }, isLoading: false });
     renderPage();
 
-    expect(screen.getByRole("heading", { name: "Storyn" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Var förberedd" })).toBeInTheDocument();
-    expect(screen.getByText("Det jag vill göra")).toBeInTheDocument();
-    expect(screen.getByText(/Standards → ledarskap → träningskultur/)).toBeInTheDocument();
+    expect(screen.getByText("Storyn · övergripande riktning")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Var förberedd/ })).toBeInTheDocument();
+    expect(screen.getAllByText("Riktning").length).toBeGreaterThan(0);
+    expect(screen.getByText(/Standard, ledarskap, träning/)).toBeInTheDocument();
   });
 
   it("visar inte privat material för annan användare", () => {

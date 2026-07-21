@@ -4,7 +4,7 @@ import KedjaNav from "@/components/kedja/KedjaNav";
 const NAV_ITEMS = [
   { num: "01", title: "Trupp", sub: "Spelare", href: "/truppen" },
   { num: "02", title: "Spelarvård", sub: "Hälsa", href: "/spelarvard" },
-  { num: "03", title: "Personliga träningsscheman - Semester 2026", sub: "Sommar", href: "/semestern-2026" },
+  { num: "03", title: "Personliga träningsscheman", sub: "Semester 2026", href: "/semestern-2026" },
   { num: "04", title: "Tävlingar", sub: "Säsong", href: "/tavlingar" },
 ];
 

@@ -98,7 +98,7 @@ const CATEGORIES: FilmCategory[] = [
   {
     id: "identitet",
     label: "Identitet",
-    description: "Duellspel, andrabollsspel, djupledslöpningar, värdigt kroppsspråk.",
+    description: "Scanning, ta ytan, prata med passningen, duellspel och andrabollsspel.",
     accent: "violet",
     blockIds: ["identitet"],
     jumpTo: "#identitet",

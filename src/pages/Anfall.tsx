@@ -145,7 +145,7 @@ const Anfall = () => {
         </div>
         <KedjaClimax
           label="Identiteten"
-          text="Plan B är identitetens spel — Andrabollsspel + Dueller — inte ett avsteg från idén."
+          text="Plan B använder samma identitet — scanning, duellspel och andrabollsspel — utan att överge vår spelidé."
         />
       </KedjaSection>
 

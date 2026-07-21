@@ -44,9 +44,9 @@ export const MATCHGENOMGANG_DEFAULT_SLIDES: MatchgenomgangSlide[] = [
     id: "identitet",
     no: "02",
     title: "Identitet",
-    words: "Dueller · Andrabollar · Djupled",
-    visual: "Tre hårda block med ikon/silhuett.",
-    imagePrompt: "Three-panel tactical board: duel collision, loose ball zone, deep run behind back line.",
+    words: "Scanning · Yta · Passning · Duell · Andraboll",
+    visual: "Fem sammanhängande beteenden med tydlig nästa aktion.",
+    imagePrompt: "Five-part tactical board: scanning, open space, purposeful pass, duel and second ball.",
     accent: "gold",
   },
   {

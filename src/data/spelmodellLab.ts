@@ -725,7 +725,7 @@ export const SESSION_PRESETS: SessionPreset[] = [
     id: "aterstart",
     label: "Återstart efter match",
     minutes: 60,
-    goal: "Få tillbaka identitet, dueller och enkla beslut.",
+    goal: "Få tillbaka identiteten: se bilden, vinn duellen och ta nästa enkla beslut.",
     recommendedPrinciples: ["duell-fore-plan", "andraboll-landningsyta", "lopvilja-utan-boll"],
     recommendedScenario: "tappar-dueller",
   },

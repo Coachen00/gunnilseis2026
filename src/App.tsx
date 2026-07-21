@@ -188,7 +188,7 @@ const App = () => (
           <Route path="/under-process/forberedelsesteg" element={<Protected routeName="Förberedelsesteg"><Forberedelsesteg /></Protected>} />
           <Route path="/under-process/5-upphojt-i-fem" element={<Protected routeName="5 upphöjt i fem"><FemUpphojtFem /></Protected>} />
           {/* Helskärms-deck (owner-only, gate i sidan) — utan Layout-chrome */}
-          <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodell Neon"><UnderProcessDeck /></PrintRoute>} />
+          <Route path="/under-process/spelmodell-neon" element={<PrintRoute routeName="Spelmodellpresentation"><UnderProcessDeck /></PrintRoute>} />
 
           {/* Print-optimerade tools — också inloggnings-skyddade, men utan Layout-chrome (A4) */}
           <Route path="/traningsplan" element={<PrintRoute routeName="Träningsplan"><TrainingPlan /></PrintRoute>} />

@@ -33,7 +33,7 @@ const NULAGE_PHASES = [
 ];
 
 const NAV_ITEMS = [
-  { num: "01", title: "Nuläge", sub: "Fyra skeden", href: "#nulage" },
+  { num: "01", title: "Nuläge", sub: "Fyra levande lägen", href: "#nulage" },
   { num: "02", title: "Anfall", sub: "Fem principer i sekvens", href: "#anfall" },
   { num: "03", title: "Övriga skeden", sub: "Försvar, omställningar, målvakt", href: "#ovriga-skeden" },
   { num: "04", title: "Generellt", sub: "Vår spelkarta", href: "#generellt" },
@@ -90,7 +90,7 @@ const Spelide = () => (
       id="nulage"
       tone="paper"
       eyebrow="Kapitel 01"
-      title="En enkel spelidé i fyra skeden."
+      title="En enkel spelidé i fyra levande lägen."
       definition="Samma ord i träning, matchgenomgång och analys."
       highlight="Samma ord"
     >

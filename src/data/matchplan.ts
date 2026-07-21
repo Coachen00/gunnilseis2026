@@ -346,7 +346,7 @@ export const COHERENCE: CoherenceSection[] = [
     num: "05",
     title: "Identitet",
     eyebrow: "Veckans krav",
-    principles: ["Dueller", "Andrabollar", "Djupled"],
+    principles: ["Scanning", "Yta", "Prata med passningen", "Duellspel", "Andrabollsspel"],
     bullets: [
       "Vi sätter rytmen, höjer rösten och äger intensiteten — hemma som borta.",
       "Andrabollsspelet vinner vi som lag — närmaste attackerar, övriga tätar.",

@@ -223,7 +223,7 @@ const Login = () => {
               <ul className="space-y-2 text-sm text-kedja-ink/90">
                 <li className="flex items-center gap-2">
                   <PlayCircle className="h-4 w-4 shrink-0 text-kedja-green" strokeWidth={2.2} />
-                  Hela spelmodellen — sex spelfaser, identitet och fasta situationer
+                  Hela spelmodellen — fyra levande lägen, identitet, målvaktsperspektiv och fasta situationer
                 </li>
                 <li className="flex items-center gap-2">
                   <CalendarClock className="h-4 w-4 shrink-0 text-kedja-green" strokeWidth={2.2} />

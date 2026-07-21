@@ -58,7 +58,7 @@ const RULES = [
 
 const SLIDES: SlideSpec[] = [
   ["01", "Veckans match", `${MATCH_META.opponent} · ${MATCH_META.kickoff.split(" · ")[1] ?? ""}`, "Full-bleed mörk matchplan/tunnel med gul titel.", "Cinematic dark football matchday tunnel, yellow club light, serious dressing-room mood.", "hero", "gold"],
-  ["02", "Identitet", "Dueller · Andrabollar · Djupled", "Tre hårda block med ikon/silhuett.", "Three-panel tactical board: duel collision, loose ball zone, deep run behind back line.", "identity", "gold"],
+  ["02", "Identitet", "Scanning · Yta · Passning · Duell · Andraboll", "Fem beteenden i samma kedja.", "Five-part tactical board: scanning, open space, purposeful pass, duel and second ball.", "identity", "gold"],
   ["03", "Duellspel", "Upp flera nivåer", "Närkamp i centrum, röd riskmarkering.", "Top-down football duel graphic, two player markers colliding, red warning halo.", "duel", "red"],
   ["04", "Andrabollar", "Först på nästa boll", "Landningsyta ringas in, tre egna attackerar.", "Loose second ball, yellow landing circle, three player markers collapsing toward ball.", "second", "green"],
   ["05", "Djupled", "Spring bakom", "Backlinje, blå löpning bakom, gul passning.", "Defensive line, one deep run arrow behind line, yellow pass arrow.", "depth", "blue"],
@@ -220,7 +220,7 @@ function PitchLines() {
 
 function BoardLayer({ kind, tone }: { kind: VisualKind; tone: (typeof ACCENTS)[Accent] }) {
   if (kind === "hero") return <Tag text="MATCH" tone={tone} />;
-  if (kind === "identity") return <Blocks labels={["DUELL", "2:A", "DJUP"]} tone={tone} />;
+  if (kind === "identity") return <Blocks labels={["SE", "YTA", "PASS", "DUELL", "2:A"]} tone={tone} />;
   if (kind === "corridors") return <Corridors tone={tone} />;
   if (kind === "formation") return <Formation tone={tone} />;
   if (kind === "zones") return <Zones tone={tone} />;
@@ -258,7 +258,10 @@ function Tag({ text, tone }: { text: string; tone: (typeof ACCENTS)[Accent] }) {
 
 function Blocks({ labels, tone }: { labels: string[]; tone: (typeof ACCENTS)[Accent] }) {
   return (
-    <div className="absolute inset-x-5 top-1/2 grid -translate-y-1/2 grid-cols-3 gap-2">
+    <div
+      className="absolute inset-x-5 top-1/2 grid -translate-y-1/2 gap-2"
+      style={{ gridTemplateColumns: `repeat(${labels.length}, minmax(0, 1fr))` }}
+    >
       {labels.map((label) => (
         <div key={label} className={cn("rounded border px-2 py-4 text-center text-xs font-black", tone.border, tone.bg, tone.text)}>
           {label}

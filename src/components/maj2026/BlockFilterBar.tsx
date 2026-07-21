@@ -14,7 +14,7 @@ const BLOCK_ICON: Record<string, LucideIcon> = {
 
 /**
  * BlockFilterBar — sticky horisontell snabbnavigering. Spelaren på mobil ser
- * en alltid-närvarande lista med de fyra skedena och de två särdelarna.
+ * en alltid-närvarande lista med de fyra levande lägena och delarna runt dem.
  *
  * - Sticky strax under TopNav-höjden (top-16).
  * - Inkluderar en "Filmer"-genvej direkt till första blocket med film

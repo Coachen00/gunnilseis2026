@@ -109,7 +109,7 @@ const REMINDERS: { title: string; items: string[] }[] = [
   { title: "Ledarskap", items: ["Relation → påverkan → process", "Tydlighet → följa upp → återkoppling", "Forming → performing"] },
   { title: "Principer anfall", items: ["Skydda mot kontring", "Spela in bollen", "Spela ut bollen", "Ta med den framåt", "Fyll på i/runt box"] },
   { title: "Försvar", items: ["Högt med triggers", "Principer är gällande"] },
-  { title: "Vår identitet", items: ["Andrabollsspel", "Duellspel", "Aldrig mellan två spelare", "Felvända löpningar", "Spring alltid i djupled"] },
+  { title: "Vår identitet", items: ["Scanning", "Yta", "Prata med passningen", "Duellspel", "Andrabollsspel"] },
   { title: "Ytor", items: ["Korridorer", "Spelytor", "Assistytan & gyllene zonen"] },
   { title: "Essensen", items: ["Tid", "Yta", "Individuell skicklighet"] },
   { title: "Hindrar framgång", items: ["Bristande kunskap", "Fatigue"] },

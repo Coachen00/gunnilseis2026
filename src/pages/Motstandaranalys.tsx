@@ -102,7 +102,7 @@ const STEPS: Step[] = [
     fields: [["a", "Startformation & övergångar", "T.ex. 3-4-3 försvar → 3-2-5 anfall"]],
   },
   {
-    id: "steg3", title: "Steg 3 · Spelets 3 faser", note: "Hur tar de sig framåt?", bg: "#FFD700", fg: "#1e3a8a",
+    id: "steg3", title: "Steg 3 · Motståndarens anfallsfaser", note: "Hur tar de sig framåt?", bg: "#FFD700", fg: "#1e3a8a",
     fields: [
       ["a", "1. Uppbyggnadsfas", "Kort/långt från målvakt?"],
       ["b", "2. Mellanfas", "Mittfältsrotationer? Bredd/djup? Vilka ytor?"],

@@ -37,21 +37,26 @@ const spelmodellGroups: NavGroup[] = [
     ],
   },
   {
-    label: "Skeden",
+    label: "Matchens lägen",
     children: [
       { label: "Anfall", to: "/anfall" },
       { label: "Spelvändningar", to: "/anfall/spelvandningar", hint: "Central → yttre yta" },
       { label: "Försvar", to: "/forsvar" },
       { label: "Omställning anfall", to: "/omstallning-anfall" },
       { label: "Omställning försvar", to: "/omstallning-forsvar" },
-      { label: "Fasta situationer", to: "/fasta" },
     ],
   },
   {
     label: "Spelaren",
     children: [
       { label: "Identitet", to: "/identitet", hint: "Fem beteenden i varje match" },
-      { label: "Roller", to: "/roller", hint: "Din uppgift i varje skede" },
+      { label: "Roller", to: "/roller", hint: "Din uppgift i varje levande läge" },
+    ],
+  },
+  {
+    label: "Eget upplägg",
+    children: [
+      { label: "Fasta situationer", to: "/fasta", hint: "När bollen är död" },
     ],
   },
 ];
@@ -233,9 +238,22 @@ const TopNav = () => {
           {isOwner && (
             <NavLink
               to="/storyn"
-              className={({ isActive }) => cn("rounded-md px-3 py-2 text-sm font-bold transition-colors", isActive ? "bg-amber-100 text-amber-800" : "text-kedja-ink hover:bg-amber-50")}
+              className={({ isActive }) => cn(
+                "relative rounded-md px-3 py-2 text-sm font-semibold transition-colors",
+                isActive ? "text-kedja-ink" : "text-kedja-deep hover:text-kedja-green",
+              )}
             >
-              Storyn
+              {({ isActive }) => (
+                <>
+                  Storyn
+                  <span
+                    className={cn(
+                      "absolute left-3 right-3 -bottom-0.5 h-[3px] rounded-full bg-kedja-lime transition-all duration-300",
+                      isActive ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+                    )}
+                  />
+                </>
+              )}
             </NavLink>
           )}
           {navItems.map((item) => {
@@ -340,9 +358,12 @@ const TopNav = () => {
             <NavLink
               to="/storyn"
               onClick={() => setOpen(false)}
-              className={({ isActive }) => cn("block rounded-lg px-3 py-2.5 text-sm font-bold", isActive ? "bg-amber-100 text-amber-800" : "text-kedja-ink hover:bg-amber-50")}
+              className={({ isActive }) => cn(
+                "block rounded-lg px-3 py-2.5 text-sm font-semibold",
+                isActive ? "bg-kedja-mint/40 text-kedja-ink border-l-2 border-kedja-lime" : "text-kedja-deep hover:bg-kedja-mint/40 hover:text-kedja-ink border-l-2 border-transparent",
+              )}
             >
-              Storyn · privat
+              Storyn
             </NavLink>
           )}
           {navItems.map((item) => {

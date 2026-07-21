@@ -28,7 +28,6 @@ import offensivHorna from "@/assets/offensiv-horna.png";
 import defensivHorna from "@/assets/defensiv-horna.png";
 import formation433 from "@/assets/formation-433.png";
 import spelytorPlanbild from "@/assets/spelytor-planbild.png";
-import spelbarhetInfografik from "@/assets/spelbarhet-infografik.png";
 import hornaTyper from "@/assets/horna-typer.png";
 import forsvarMotHorna from "@/assets/forsvar-mot-horna.png";
 
@@ -131,11 +130,11 @@ export const IdentitetSection = () => (
     <SectionHeader badge="Identitet" title="Vilka vill vi vara?" subtitle="Det här är vilka vi är varje dag — lagets uppförande på planen." />
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
       {[
-        { emoji: "⚔️", title: "Duellspel", text: "Du ska aldrig förlora en duell – i sämsta fall oavgjort." },
-        { emoji: "🎯", title: "Andrabollsspel", text: "Om bollen saknar ägare – TA DEN!" },
-        { emoji: "⚡", title: "Felvända löpningar", text: "Vid bollförlust – direkt omställning!" },
-        { emoji: "👁️", title: "Spelbarhet", text: "Rörelse utan boll och position i farligaste ytan." },
-        { emoji: "🏃", title: "Spring alltid i djupled!", text: "Alltid – oavsett läge.", accent: true },
+        { emoji: "👁️", title: "Scanning", text: "Titta innan bollen kommer – se nästa bild tidigt." },
+        { emoji: "↗️", title: "Yta", text: "Förstå, ta och skydda den yta som hjälper nästa aktion." },
+        { emoji: "↔️", title: "Prata med passningen", text: "Låt fot, fart och riktning hjälpa nästa spelare." },
+        { emoji: "⚔️", title: "Duellspel", text: "Vinn duellen – eller lämna ingen enkel fortsättning." },
+        { emoji: "🎯", title: "Andrabollsspel", text: "Läs studsen – ta nästa boll före motståndaren.", accent: true },
       ].map((item) => (
         <div key={item.title} className="space-y-3">
           <div className={`bg-card/85 backdrop-blur-sm rounded-xl p-5 border ${item.accent ? "border-accent/25" : "border-border"} shadow-sm card-hover`}>
@@ -150,11 +149,7 @@ export const IdentitetSection = () => (
               {item.text.includes("–") ? `–${item.text.split("–").slice(1).join("–")}` : ""}
             </p>
           </div>
-          {item.title === "Spelbarhet" ? (
-            <ExpandableImage src={spelbarhetInfografik} alt="Spelbarhet infografik" />
-          ) : (
-            <ImagePlaceholder title={item.title} description={`Bild/film: ${item.title}`} compact />
-          )}
+          <ImagePlaceholder title={item.title} description={`Bild eller film som visar ${item.title.toLowerCase()}.`} compact />
         </div>
       ))}
     </div>
@@ -163,11 +158,11 @@ export const IdentitetSection = () => (
 
     <AccordionSection title="Visa G/IG-mallar — Identitet">
       <div className="space-y-3">
-        <GIGTemplate cueTitel="Duellspel" definition="Du ska aldrig förlora en duell – i sämsta fall oavgjort." narAnvands="Varje duellsituation på planen" handling="Gå in med 100% — vinn kropp, vinn boll, eller åtminstone oavgjort." gVillkor="Duellvinst ≥ 50% individuellt" igVillkor="Duellvinst < 40% eller undviker dueller" />
-        <GIGTemplate cueTitel="Andrabollsspel" definition="Om bollen saknar ägare – TA DEN!" narAnvands="Efter varje duell, nickduell, lös boll" handling="Reagera direkt. Ta bollen. Ingen passivitet." gVillkor="Laget vinner ≥ 60% av andrabollar" igVillkor="Laget förlorar andrabollar konsekvent" />
-        <GIGTemplate cueTitel="Felvända löpningar" definition="Vid bollförlust – direkt omställning!" narAnvands="Varje gång vi förlorar bollen" handling="Direkt omställning. Löp tillbaka / mot boll omedelbart." gVillkor="Omställning påbörjad inom 2s" igVillkor="Spelare stannar kvar / reagerar inte vid bollförlust" />
-        <GIGTemplate cueTitel="Spelbarhet" definition="Rörelse utan boll och position i farligaste ytan." narAnvands="Alltid när lagkamrat har boll" handling="Rörelse utan boll för att bli spelbar i farlig yta." gVillkor="≥ 2 passningsalternativ vid varje bollinnehav" igVillkor="Spelare statisk utan rörelse" />
-        <GIGTemplate cueTitel="Spring alltid i djupled!" definition="Alltid – oavsett läge." narAnvands="Varje anfallssituation" handling="Alltid löp i djupled — skapa djup oavsett om boll kommer eller ej." gVillkor="≥ 3 djupledslöpningar per 10 min per spelare" igVillkor="Inga djupledslöpningar under en halvlek" />
+        <GIGTemplate cueTitel="Scanning" definition="Titta innan bollen kommer — se nästa bild tidigt." narAnvands="När bollen flyttas och innan egen mottagning" handling="Titta över axeln, bestäm dig och scanna igen när bilden ändras." gVillkor="Första touch bort från press eller till fri yta" igVillkor="Mottagning utan förhandsbild" />
+        <GIGTemplate cueTitel="Ta ytan" definition="Förstå, ta och skydda ytan som hjälper nästa aktion." narAnvands="Med och utan boll" handling="Ta första touch eller löpning in i en yta som skapar nästa alternativ." gVillkor="Laget skapar ett nytt spelbart alternativ" igVillkor="Spelare springer in i redan upptagen yta" />
+        <GIGTemplate cueTitel="Prata med passningen" definition="Låt fot, fart och riktning hjälpa nästa spelare." narAnvands="När du väljer passning" handling="Bestäm vad mottagaren ska kunna göra före du slår passningen." gVillkor="Mottagaren kan agera framåt på första eller andra touch" igVillkor="Passningen lämnar mottagaren i omedelbar press" />
+        <GIGTemplate cueTitel="Duellspel" definition="Vinn duellen — eller lämna ingen enkel fortsättning." narAnvands="Varje duellsituation på planen" handling="Gå in beslutsamt, skydda ytan och följ situationen till nästa boll." gVillkor="Laget vinner fler dueller än motståndaren" igVillkor="Spelare undviker eller släpper duellen" />
+        <GIGTemplate cueTitel="Andrabollsspel" definition="Läs studsen och ta nästa boll före motståndaren." narAnvands="Efter duell, nickduell, block eller räddning" handling="Närmaste attackerar, nästa tätar och laget använder vinsten." gVillkor="Laget är först på lösa bollar runt duellen" igVillkor="Laget förlorar andrabollar konsekvent" />
       </div>
     </AccordionSection>
   </section>

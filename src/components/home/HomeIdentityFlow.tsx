@@ -28,7 +28,7 @@ const IDENTITY_STEPS: IdentityStep[] = [
   },
   {
     number: "02",
-    title: "Ta yta",
+    title: "Yta",
     short: "Förstå hotet innan du flyttar dig.",
     cue: "Vilken yta hjälper laget mest nu?",
     action: "Ta yta med ett syfte: skapa tid, stäng hotet eller öppna nästa passning.",
@@ -55,7 +55,7 @@ const IDENTITY_STEPS: IdentityStep[] = [
   },
   {
     number: "05",
-    title: "Andrabollar",
+    title: "Andrabollsspel",
     short: "Var först där nästa boll landar.",
     cue: "Vad händer efter första duellen?",
     action: "Läs studsen tidigt, flytta innan bollen släpps och ta nästa aktion framåt.",

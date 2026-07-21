@@ -13,7 +13,7 @@ import MatchRadar from "@/components/home/MatchRadar";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
-  { num: "02", title: "Spelmodell", sub: "Fyra skeden, en story", href: "/spelmodell" },
+  { num: "02", title: "Spelmodell", sub: "Fyra lägen, ett språk", href: "/spelmodell" },
   { num: "03", title: "Laget", sub: "Trupp, vård, tävlingar", href: "/laget" },
   { num: "04", title: "Coach", sub: "Prisma, planer, taktiktavla", href: "/coach" },
 ];
@@ -129,7 +129,7 @@ const Hem = () => {
         tone="white"
         eyebrow="Kapitel 02"
         title="Spelmodell"
-        definition="Fyra levande skeden beskriver hur vi agerar med och utan boll. Identiteten följer med överallt och fasta situationer ligger separat när bollen är död."
+        definition="Fyra levande lägen beskriver hur vi agerar när vi försvarar, vinner boll, anfaller eller tappar boll. Identitet och målvaktsperspektiv följer med; fasta situationer ligger separat när bollen är död."
         highlight="ett lag och en idé"
       >
         <KedjaSteps
@@ -152,7 +152,7 @@ const Hem = () => {
             },
           ]}
         />
-        <KedjaClimax label="Vårt svar" text="Fyra skeden. Var förberedd." />
+        <KedjaClimax label="Vårt svar" text="Fyra levande lägen. Var förberedd." />
         <VidareLank to="/spelmodell" label="Hela spelmodellen" />
       </KedjaSection>
 

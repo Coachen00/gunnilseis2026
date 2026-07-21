@@ -124,7 +124,7 @@ export const MAJ_2026_QUICK_ACTIONS: PlayerQuickAction[] = [
   },
   {
     scenario: "Oavsett matchbild",
-    actions: ["Vinn dueller", "Vinn andrabollar", "Spring i djupled", "Visa värdigt kroppsspråk"],
+    actions: ["Titta innan", "Ta ytan", "Säg något med passen", "Vinn duellen", "Ta andrabollen"],
   },
   {
     scenario: "På fasta situationer",
@@ -297,29 +297,31 @@ export const MAJ_2026_BLOCKS: MajBlock[] = [
     kidExplanation:
       "Identiteten är hur vi spelar oavsett resultat, motståndare och väder. Det är saker som syns i varje aktion — i hur vi rör oss och hur vi pratar.",
     playerInstruction:
-      "Vinn din duell. Vinn andrabollen. Spring i djupled. Visa värdigt kroppsspråk — i medgång och motgång.",
+      "Titta innan. Ta ytan. Säg något med passen. Vinn duellen. Ta andrabollen.",
     doList: [
-      "Vinn dueller — gå in i varje 50/50",
-      "Vinn andrabollar — var närmast när bollen släpps",
-      "Spring i djupled — sträck spelet och skapa luckor",
-      "Visa värdigt kroppsspråk — peppa, inte gnälla",
+      "Scanna innan bollen kommer — se motståndare, yta och medspelare",
+      "Ta eller skydda ytan — med och utan boll",
+      "Prata med passningen — välj fot, fart och riktning med mening",
+      "Vinn duellen — eller lämna ingen enkel fortsättning",
+      "Ta andrabollen — läs studsen före den kommer",
     ],
     dontList: [
-      "Backa ur en duell",
-      "Stå still efter ett huvudspel",
-      "Spring bara fötterna utan att hota djupet",
-      "Klaga på domare eller medspelare",
+      "Ta emot utan att ha sett bilden",
+      "Springa in i upptagen yta utan att skapa ett nytt alternativ",
+      "Slå en passning som lämnar mottagaren i press",
+      "Backa ur duellen eller stanna efter första kontakten",
     ],
     mediaTitle: "Identitetsmoment från säsongen",
-    mediaDescription: "Kort montage som visar duell, andraboll, djupled, kroppsspråk.",
-    illustrationCaption: "Fyra ikoner kopplade till de fyra identitetsbeteendena.",
-    remember: "Dueller. Andrabollar. Djupled. Värdigt kroppsspråk.",
+    mediaDescription: "Kort montage som visar scanning, yta, passning, duell och andraboll.",
+    illustrationCaption: "Fem ikoner kopplade till identitetens fem beteenden.",
+    remember: "Titta. Ta ytan. Säg något. Vinn duellen. Ta andrabollen.",
     accent: "yellow",
     principles: [
+      principle("scanning", "Scanning", "Titta innan bollen kommer — se nästa bild tidigt.", "Scanningen gör att spelaren kan välja innan bollen landar.", "Bollen är på väg till dig eller någon annan flyttar den.", "Titta över axeln, bestäm dig och scanna igen om bilden ändras.", "Närmaste spelare visar alternativ utifrån det de ser.", "Träna mottagningar där spelaren måste se signalen före första touch.", "Vi tar fler första toucher bort från press."),
+      principle("yta", "Yta", "Förstå, ta och skydda ytan som ger nästa aktion.", "Ytan flyttar sig när bollen och motståndaren flyttar sig.", "En fri yta öppnas mellan lagdelar, bakom backlinjen eller ute vid sidan.", "Ta första touch eller löpning in i rätt yta.", "Laget skapar bredd, djup och ett nytt passningsalternativ.", "Träna spel där poäng kommer när spelaren tar ny yta i rätt tempo.", "Vi hittar och använder fri yta innan pressen hinner fram."),
+      principle("prata-med-passningen", "Prata med passningen", "Låt fot, fart och riktning hjälpa nästa spelare.", "Passningen berättar för mottagaren om den ska vända, driva eller skydda.", "En medspelare är spelbar men behöver rätt bild för nästa aktion.", "Välj rätt fot, fart och riktning innan du slår passningen.", "Nästa spelare får en passning som går att använda, inte bara nå.", "Träna passningar där mottagaren måste välja handling utifrån passens kvalitet.", "Fler mottagare kan agera framåt på första eller andra touch."),
       principle("duellspel", "Duellspel", "Vinn varje 50/50 — kropp först, boll sen.", "Duellen är när två spelare slåss om samma yta eller boll.", "Bollen är lös, passningen är svag eller motståndaren tar emot nära dig.", "Gå in beslutsamt och avsluta situationen.", "När en går i duell säkrar nästa spelare andrabollen.", "Träna närkampsspel med direkt andraboll efter varje duell.", "Vi vinner fler dueller än motståndaren."),
       principle("andrabollsspel", "Andrabollsspel", "Var närmast när bollen släpps — läs studsen innan den händer.", "Andrabollen är nästa boll efter duell, nick, block eller räddning.", "Bollen är på väg att studsa, rensas eller falla mellan lag.", "Rör dig innan bollen landar och ta första touch framåt om möjligt.", "Laget samlar spelare runt duellen, inte bara i duellen.", "Träna långa bollar där poängen kommer på andra aktionen.", "Vi är först på lösa bollar runt dueller."),
-      principle("djupledslopningar", "Djupledslöpningar", "Spring bakom backlinjen — du får bollen eller öppnar ytan.", "Djupledslöpningen hotar ytan bakom deras backlinje.", "Bollhållaren är rättvänd eller deras backlinje står still.", "Starta löpningen med timing och full fart.", "En spelare hotar bakom, en visar fötter, en säkrar bakom.", "Träna rättvänd spelare som måste hitta löpning eller tredje man.", "Vi hotar bakom flera gånger per halvlek."),
-      principle("vardigt-kroppssprak", "Värdigt kroppsspråk", "Peppa, inte gnälla — i medgång och motgång.", "Kroppsspråket ska hjälpa nästa aktion, inte förstora misstaget.", "Vi släpper in mål, missar passning, får domslut emot eller blir trötta.", "Prata kort, positivt och rikta fokus mot nästa aktion.", "Laget samlar energi snabbt och undviker gnällkedjor.", "Träna stopp efter misstag: fem sekunder att organisera nästa aktion.", "Vi återgår till uppgift direkt efter misstag."),
     ],
   },
   {
@@ -436,9 +438,6 @@ export const MAJ_2026_PRINCIPLE_MEDIA: Record<string, Record<string, MediaAsset[
       U("https://youtu.be/PSP_YpetKYc", "2:a bollsspel — var beredd på lång boll"),
       U("https://youtu.be/q5Y4ThoZqK4", "Identitet. 2a boll, Ihab, bollvinst"),
       M("2a-bollsspel-misslyckat.png", "2:a bollsspel — misslyckat", "image"),
-    ],
-    "vardigt-kroppssprak": [
-      M("identitet-vardigt-kroppssprak.mp4", "Identitet — värdigt kroppsspråk"),
     ],
   },
 };

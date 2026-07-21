@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, Maximize2, X } from "lucide-react";
+import { ImageOff, Maximize2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ImagePlaceholderProps {
@@ -16,12 +16,14 @@ const ImagePlaceholder = ({ title, description, className, compact = false, src,
 
   if (!src) {
     return (
-      <div className={cn("rounded-md border border-border bg-card/45 p-4", className)}>
+      <div className={cn("relative overflow-hidden rounded-md border border-dashed border-kedja-border bg-kedja-paper px-4 py-5", compact ? "min-h-28" : "min-h-40", className)}>
+        <div className="absolute inset-x-0 top-0 h-1 bg-kedja-lime" aria-hidden="true" />
         <div className="flex items-center gap-3">
-          <Camera className="h-4 w-4 flex-shrink-0 text-muted-foreground" strokeWidth={1.75} />
+          <ImageOff className="h-4 w-4 flex-shrink-0 text-kedja-green" strokeWidth={1.75} />
           <div className="min-w-0">
-            <p className="text-sm font-bold leading-snug text-foreground">{title}</p>
-            {description && <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{description}</p>}
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.18em] text-kedja-green">Bildmaterial saknas</p>
+            <p className="mt-1 text-sm font-bold leading-snug text-foreground">{title}</p>
+            {description && <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{description}</p>}
           </div>
         </div>
       </div>

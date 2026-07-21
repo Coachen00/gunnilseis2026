@@ -68,7 +68,7 @@ export const PERIOD_2: Period = {
         "Vi blir svårare att kontra.",
         "Vi håller tätare mellan lagdelarna.",
         "Vi bygger vidare på Period 1:s restförsvar.",
-        "Vi får en komplett spelmodell över alla fyra skeden.",
+        "Vi får en komplett spelmodell över alla fyra levande lägen.",
       ],
     },
   ],

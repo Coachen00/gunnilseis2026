@@ -45,7 +45,7 @@ const UnderProcessDeck = () => {
       </span>
       <iframe
         src={DECK_SRC}
-        title="Spelmodell Neon — interaktivt deck"
+        title="Spelmodellpresentation — interaktivt deck"
         className="h-full w-full border-0"
         allow="fullscreen"
       />

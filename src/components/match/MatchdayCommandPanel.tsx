@@ -123,8 +123,8 @@ const PHASE_CUES: PhaseCue[] = [
   {
     id: "identity",
     label: "Identitet",
-    headline: "Kampen avgör tonen",
-    definition: "Duellerna måste upp, andrabollarna ska ägas och djupled måste starta även utan boll.",
+    headline: "Fem beteenden sätter tonen",
+    definition: "Se bilden, ta ytan, hjälp med passningen och vinn både duellen och nästa boll.",
     Icon: Swords,
     tone: "gold",
     board: "duel",

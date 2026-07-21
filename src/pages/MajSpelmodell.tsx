@@ -14,7 +14,6 @@ import {
   X,
   Eye,
   Footprints,
-  Crown,
   Box,
   CornerDownLeft,
   Film,
@@ -86,8 +85,8 @@ const MODEL_INTRO = [
     text: "Vi är ett lag som skyddar mitten, spelar framåt när läget finns, fyller boxen och reagerar direkt när bollen byter ägare.",
   },
   {
-    title: "Fyra skeden och två särdelar",
-    text: "Försvar, omställning till anfall, anfall, omställning till försvar — plus identiteten som följer med överallt och fasta situationer när bollen är död.",
+    title: "Fyra levande lägen och tre delar runt dem",
+    text: "Försvar, bollvinst, anfall och bolltapp är matchens levande lägen. Identitet och målvaktsperspektiv följer med genom allt, medan fasta situationer har ett eget upplägg när bollen är död.",
   },
   {
     title: "Vad gör spelaren först?",
@@ -160,13 +159,13 @@ function LevelOverview() {
       <div className="container space-y-10">
         <div className="max-w-3xl">
           <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
-            Din väg genom spelmodellen
+            Välj rätt djup
           </p>
           <h2 id="level-overview-title" className="mt-3 text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">
-            Börja där du är
+            Börja med nästa beslut
           </h2>
           <p className="mt-4 text-base leading-relaxed text-kedja-deep/75 md:text-lg">
-            Ta en nivå i taget. Välj nivå för att se vad du ska förstå och kunna göra på planen.
+            Välj den nivå som hjälper dig nu. Börja enkelt och gå djupare först när nästa nivå behövs i träning eller match.
           </p>
         </div>
 
@@ -204,10 +203,10 @@ function LevelOverview() {
 
         <div data-testid="live-phases-overview" aria-labelledby="live-phases-title">
           <h3 id="live-phases-title" className="text-2xl font-black tracking-tight text-kedja-ink">
-            Fyra levande skeden
+            Matchens fyra lägen
           </h3>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-kedja-deep/75">
-            Börja med att känna igen vad som händer med bollen. Gå sedan till rätt skede.
+            Känn igen vad som händer med bollen och välj sedan rätt prioritering.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
             {LIVE_PHASE_LINKS.map((item, index) => (
@@ -225,15 +224,15 @@ function LevelOverview() {
 
         <div data-testid="special-layers-overview" aria-labelledby="special-layers-title">
           <h3 id="special-layers-title" className="text-2xl font-black tracking-tight text-kedja-ink">
-            Lager som följer eller pausar spelet
+            Två tvärgående perspektiv och fasta situationer
           </h3>
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {SPELMODELL_SPECIAL_LAYERS.map((layer) => (
               <article key={layer.id} className="border border-kedja-border bg-white p-4">
                 <h4 className="font-black text-kedja-ink">{layer.label}</h4>
-                {layer.id === "identitet" ? (
-                  <p className="mt-1 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">Tvärgående</p>
-                ) : null}
+                <p className="mt-1 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">
+                  {layer.id === "fasta-situationer" ? "Eget upplägg" : "Tvärgående"}
+                </p>
                 <p className="mt-2 text-sm leading-relaxed text-kedja-deep/75">{layer.purpose}</p>
               </article>
             ))}
@@ -978,15 +977,16 @@ function OvergangForsvarPitch() {
 }
 
 const IDENTITET_CARDS = [
-  { title: "Duell", Icon: Swords, color: "#cf3a3a", desc: "Vinn närkampen. Aldrig backa från en boll vi själva sagt är vår." },
-  { title: "Andraboll", Icon: Footprints, color: "#f5c242", desc: "Läs duellen innan den händer. Var först på den lösa bollen." },
-  { title: "Djupled", Icon: ArrowUpRight, color: "#3a6fc6", desc: "Spring bakom backlinjen. Hota djupet. Öppna ytan framför." },
-  { title: "Kroppsspråk", Icon: Crown, color: "#5ec98a", desc: "Bär laget i nästa sekund. Beslut. Energi. Ansvar." },
+  { title: "Scanning", Icon: Eye, color: "#3a6fc6", desc: "Titta innan bollen kommer och se nästa bild tidigt." },
+  { title: "Yta", Icon: ArrowUpRight, color: "#5ec98a", desc: "Förstå, ta och skydda ytan som hjälper nästa aktion." },
+  { title: "Prata med passningen", Icon: ArrowRight, color: "#8b5cf6", desc: "Låt fot, fart och riktning hjälpa nästa spelare." },
+  { title: "Duellspel", Icon: Swords, color: "#cf3a3a", desc: "Vinn närkampen och lämna ingen enkel fortsättning." },
+  { title: "Andrabollsspel", Icon: Footprints, color: "#f5c242", desc: "Läs duellen innan den händer och ta nästa boll." },
 ];
 
 function IdentitetGrid() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {IDENTITET_CARDS.map((c) => {
         const Icon = c.Icon;
         return (
@@ -1473,7 +1473,7 @@ function EffektlogikStrip() {
           <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Effektlogik</p>
         </div>
         <h2 className="mb-12 max-w-3xl text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-4xl">
-          Från vad vi har — till vad vi blir.
+          Från förutsättningar till effekt.
         </h2>
 
         <div className="grid grid-cols-1 items-stretch gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]">
@@ -1526,10 +1526,10 @@ function SpelarenSnabbversion() {
               <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
               <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">Spelarens snabbversion</p>
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">DETTA SKA DU GÖRA PÅ PLANEN</h2>
+            <h2 className="text-3xl font-black uppercase tracking-tight text-kedja-ink md:text-5xl">Nästa beslut på planen</h2>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-kedja-ink/65">
-            Fyra levande skeden. Tre–fyra ord per kommando. Identitet och fasta situationer ligger bredvid, inte som extra skeden.
+            Fyra levande lägen. Tre–fyra ord per coachrop. Identitet och målvaktsperspektiv följer med; fasta har ett eget upplägg.
           </p>
         </div>
 
@@ -1650,10 +1650,10 @@ const MajSpelmodell = () => {
       <div className="container">
         <LevelBadge level={2} className="mb-3" />
         <h2 className="text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
-          Blocken — principerna per fas
+          Principerna per matchläge
         </h2>
         <p className="mb-6 mt-2 max-w-2xl text-sm leading-relaxed text-kedja-deep/70">
-          Öppna en fas i taget. Varje block fördjupar sin rad från Grunden.
+          Öppna ett läge i taget. Varje block går från situation till coachrop, beteende och vad vi följer upp i match.
         </p>
       </div>
     </div>
@@ -1684,14 +1684,14 @@ const MajSpelmodell = () => {
           <div className="mb-3 flex items-center gap-3">
             <span className="h-[2px] w-10 bg-amber-500" aria-hidden="true" />
             <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-amber-700">
-              Övrigt
+              Referensmaterial
             </p>
           </div>
           <h2 className="mb-4 max-w-3xl text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
-            Filmer & bilder utan princip-koppling
+            Material som ännu saknar koppling
           </h2>
           <p className="mb-10 max-w-2xl text-sm leading-relaxed text-kedja-deep/70 md:text-base">
-            Material som inte hör till ett specifikt block eller en specifik princip — hero-takes, identifierande klipp och referensbilder. Sortera senare vid behov.
+            Här ligger filmer och bilder som ännu inte är kopplade till ett specifikt block. Flytta dem när materialets funktion blivit tydlig.
           </p>
           <MediaGrid items={MAJ_2026_OVRIGT_MEDIA} columns={3} />
         </div>
@@ -1703,9 +1703,9 @@ const MajSpelmodell = () => {
       <div className="container">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
-            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Slut</p>
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">Nästa steg</p>
             <h2 className="mt-2 max-w-2xl text-2xl font-black uppercase tracking-tight text-kedja-ink md:text-3xl">
-              Fyra skeden. Två särdelar. En story.
+              Fyra lägen. Två tvärgående lager. Ett gemensamt språk.
             </h2>
           </div>
           <div className="flex flex-wrap gap-3">
