@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <title>Öppnar Spelmodellen…</title>
+    <script>
+      (() => {
+        const requestedRoute = window.location.pathname + window.location.search + window.location.hash;
+        window.location.replace(`/?__route=${encodeURIComponent(requestedRoute)}`);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

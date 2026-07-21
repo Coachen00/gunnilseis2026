@@ -37,9 +37,6 @@ jobs:
       # SPA-fallback: GitHub Pages serverar 404.html för okända paths.
       # Genom att göra 404.html till en kopia av index.html laddas React Router
       # och hanterar routen klientsida — refresh på /forsvar funkar direkt.
-      - name: SPA 404 fallback
-        run: cp dist/index.html dist/404.html
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:

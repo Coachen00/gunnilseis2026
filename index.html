@@ -46,6 +46,14 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      (() => {
+        const route = new URLSearchParams(window.location.search).get("__route");
+        if (route && /^\/(?!\/)/.test(route)) {
+          window.history.replaceState(null, "", route);
+        }
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
