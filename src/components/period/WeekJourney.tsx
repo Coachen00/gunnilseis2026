@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { PERIOD_1 } from "@/data/period1";
+import { PERIOD_1, type Period } from "@/data/period1";
 
-const WeekJourney = ({ to = "/period/1?tab=passen" }: { to?: string }) => (
+const WeekJourney = ({
+  to = "/period/1?tab=passen",
+  period = PERIOD_1,
+}: {
+  to?: string;
+  period?: Period;
+}) => (
   <ol className="grid gap-2 sm:grid-cols-3 lg:grid-cols-6">
-    {PERIOD_1.weeks.map((week) => (
+    {period.weeks.map((week) => (
       <li key={week.weekNumber}>
         <Link
           to={`${to}#vecka-${week.weekNumber}`}

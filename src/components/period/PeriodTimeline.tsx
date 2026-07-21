@@ -1,8 +1,14 @@
 import { PERIOD_1_TIMELINE } from "@/data/period1";
 
-const PeriodTimeline = () => (
+type TimelineEntry = { week: number; label: string };
+
+const PeriodTimeline = ({
+  timeline = PERIOD_1_TIMELINE,
+}: {
+  timeline?: ReadonlyArray<TimelineEntry>;
+}) => (
   <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
-    {PERIOD_1_TIMELINE.map((step) => (
+    {timeline.map((step) => (
       <li
         key={step.week}
         className="rounded-lg border border-border bg-card/40 p-3 transition hover:border-accent/40"
