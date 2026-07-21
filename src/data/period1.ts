@@ -55,7 +55,7 @@ export interface EffectLogicBlock {
 }
 
 export interface Period {
-  id: "period-1";
+  id: "period-1" | "period-2";
   title: string;
   dateRange: string;
   objective: string;

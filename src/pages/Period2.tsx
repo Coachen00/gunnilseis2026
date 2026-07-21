@@ -1,3 +1,4 @@
+// ponytail: medveten kopia av Period1.tsx — parametrisera till PeriodPage först när period 3 finns.
 import { Link, useSearchParams } from "react-router-dom";
 import {
   AlertTriangle,
@@ -23,15 +24,14 @@ import ReferenceCard from "@/components/period/ReferenceCard";
 import SessionAccordion from "@/components/period/SessionAccordion";
 import WeekCard from "@/components/period/WeekCard";
 import WeekJourney from "@/components/period/WeekJourney";
+import { aggregateCommonErrors, aggregateKpis, totalSessions } from "@/data/period1";
 import {
-  PERIOD_1,
-  PERIOD_1_COACH_LANGUAGE,
-  PERIOD_1_PRINCIPLES,
-  PERIOD_1_REFERENCES,
-  aggregateCommonErrors,
-  aggregateKpis,
-  totalSessions,
-} from "@/data/period1";
+  PERIOD_2,
+  PERIOD_2_COACH_LANGUAGE,
+  PERIOD_2_PRINCIPLES,
+  PERIOD_2_REFERENCES,
+  PERIOD_2_TIMELINE,
+} from "@/data/period2";
 
 const TABS = [
   { value: "kartan", label: "Kartan", Icon: Map },
@@ -46,13 +46,13 @@ type TabValue = (typeof TABS)[number]["value"];
 const isTab = (s: string | null): s is TabValue =>
   TABS.some((t) => t.value === s);
 
-const Period1 = () => {
+const Period2 = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initial = searchParams.get("tab");
   const tab: TabValue = isTab(initial) ? initial : "kartan";
-  const total = totalSessions(PERIOD_1);
-  const errors = aggregateCommonErrors(PERIOD_1);
-  const kpis = aggregateKpis(PERIOD_1);
+  const total = totalSessions(PERIOD_2);
+  const errors = aggregateCommonErrors(PERIOD_2);
+  const kpis = aggregateKpis(PERIOD_2);
 
   const handleTabChange = (value: string) => {
     if (!isTab(value)) return;
@@ -66,7 +66,7 @@ const Period1 = () => {
     <div className="bg-kedja-paper">
       <div className="container pt-8">
         <Link
-          to="/#period-1"
+          to="/#period-2"
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-kedja-green transition hover:text-kedja-ink"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -75,9 +75,9 @@ const Period1 = () => {
       </div>
 
       <KedjaHero
-        eyebrow={`Period 1 · ${PERIOD_1.dateRange}`}
-        title="Diagonalt spel från korridor till korridor"
-        lead="Vi flyttar bollen diagonalt från en korridor till en annan. Mål: attrahera press, hitta rättvänd spelare, attackera kanten, fyll boxen."
+        eyebrow={`Period 2 · ${PERIOD_2.dateRange}`}
+        title="Vinna bollen och slå till"
+        lead="Vi vinner bollen på våra villkor och slår till innan motståndaren är organiserad. Mål: press på utlösare, återerövra direkt, spela framåt först, säkra bakom bollen."
       />
 
       <article className="container py-12 md:py-16">
@@ -99,8 +99,8 @@ const Period1 = () => {
         <TabsContent value="kartan" className="space-y-8">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
             <PeriodGraphic
-              kind="diagonal-pattern"
-              label="Grundstruktur: MV → YB → MF → OM → YF"
+              kind="pitch"
+              label="Grundstruktur: Press → Återerövring → Omställning → Säkring"
             />
             <div className="rounded-xl border border-kedja-border bg-white/35 p-5">
               <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-kedja-deep/70">
@@ -121,7 +121,7 @@ const Period1 = () => {
                 </div>
                 <div className="flex justify-between gap-4">
                   <dt className="text-kedja-deep/70">Uppföljning</dt>
-                  <dd className="font-bold text-kedja-ink">{PERIOD_1.followUp.dateRange}</dd>
+                  <dd className="font-bold text-kedja-ink">{PERIOD_2.followUp.dateRange}</dd>
                 </div>
               </dl>
               <div className="mt-5 flex flex-col gap-2">
@@ -139,6 +139,13 @@ const Period1 = () => {
                 >
                   Fördjupa dig i principerna
                 </button>
+                <Link
+                  to="/period/1"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-md border border-kedja-border bg-kedja-paper/40 px-4 text-sm font-bold text-kedja-ink transition hover:border-kedja-green/45"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  Period 1 – Diagonalt spel
+                </Link>
               </div>
             </div>
           </div>
@@ -147,25 +154,25 @@ const Period1 = () => {
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-kedja-deep/70">
               Resan – sex veckor
             </p>
-            <WeekJourney to="/period/1?tab=passen" />
+            <WeekJourney period={PERIOD_2} to="/period/2?tab=passen" />
           </div>
 
           <div>
             <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-kedja-deep/70">
               Tema vecka för vecka
             </p>
-            <PeriodTimeline />
+            <PeriodTimeline timeline={PERIOD_2_TIMELINE} />
           </div>
         </TabsContent>
 
         {/* PRINCIPEN — Nivå 2 förståelse */}
         <TabsContent value="principen" className="space-y-4">
           <p className="max-w-2xl text-sm leading-relaxed text-kedja-deep/70">
-            Tio koncept som hänger ihop. Varje princip har en mening en spelare förstår direkt —
+            Åtta koncept för press och omställning. Varje princip har en mening en spelare förstår direkt —
             klicka <em>Visa princip</em> för tränarnivån och en grafik.
           </p>
           <div className="grid gap-3 lg:grid-cols-2">
-            {PERIOD_1_PRINCIPLES.map((principle, i) => (
+            {PERIOD_2_PRINCIPLES.map((principle, i) => (
               <PeriodPrincipleCard key={principle.slug} principle={principle} index={i} />
             ))}
           </div>
@@ -178,13 +185,13 @@ const Period1 = () => {
             passen.
           </p>
           <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {PERIOD_1.weeks.map((week) => (
+            {PERIOD_2.weeks.map((week) => (
               <li key={week.weekNumber}>
-                <WeekCard week={week} anchorBase="/period/1?tab=passen#vecka" />
+                <WeekCard week={week} anchorBase="/period/2?tab=passen#vecka" />
               </li>
             ))}
           </ol>
-          <PeriodTimeline />
+          <PeriodTimeline timeline={PERIOD_2_TIMELINE} />
         </TabsContent>
 
         {/* PASSEN — Nivå 3 träningsdetaljer */}
@@ -193,7 +200,7 @@ const Period1 = () => {
             Alla {total} pass grupperade per vecka. Klicka på ett pass för att fälla ut full mall:
             syfte, övningar, cues, vanliga fel, KPI och grafik.
           </p>
-          {PERIOD_1.weeks.map((week) => (
+          {PERIOD_2.weeks.map((week) => (
             <section key={week.weekNumber} id={`vecka-${week.weekNumber}`} className="scroll-mt-24">
               <header className="mb-4 flex flex-wrap items-baseline justify-between gap-3 border-b border-kedja-border pb-3">
                 <div>
@@ -223,7 +230,7 @@ const Period1 = () => {
               <Target className="h-5 w-5 text-kedja-green" />
               Effektlogik
             </h2>
-            <EffectLogic blocks={PERIOD_1.effectLogic} />
+            <EffectLogic blocks={PERIOD_2.effectLogic} />
           </section>
 
           <section>
@@ -235,7 +242,7 @@ const Period1 = () => {
               Vi kopierar inte — vi anpassar. Tre lag som inspirerat principerna.
             </p>
             <div className="grid gap-4 lg:grid-cols-3">
-              {PERIOD_1_REFERENCES.map((ref) => (
+              {PERIOD_2_REFERENCES.map((ref) => (
                 <ReferenceCard key={ref.team} reference={ref} />
               ))}
             </div>
@@ -247,7 +254,7 @@ const Period1 = () => {
               Tränarens språk
             </h2>
             <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
-              {PERIOD_1_COACH_LANGUAGE.map((cue) => (
+              {PERIOD_2_COACH_LANGUAGE.map((cue) => (
                 <li
                   key={cue}
                   className="rounded-lg border border-kedja-border bg-white/35 px-3 py-2 text-sm font-semibold text-kedja-ink/85"
@@ -294,10 +301,10 @@ const Period1 = () => {
 
           <section className="rounded-xl border border-kedja-border bg-white/35 p-6">
             <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-kedja-green">
-              {PERIOD_1.followUp.dateRange}
+              {PERIOD_2.followUp.dateRange}
             </p>
             <h2 className="text-2xl font-black tracking-normal text-kedja-ink">
-              {PERIOD_1.followUp.title}
+              {PERIOD_2.followUp.title}
             </h2>
             <div className="mt-5 grid gap-6 md:grid-cols-2">
               <div>
@@ -305,7 +312,7 @@ const Period1 = () => {
                   Reflektion
                 </h3>
                 <ul className="space-y-1.5 text-sm leading-relaxed text-kedja-ink/85">
-                  {PERIOD_1.followUp.bullets.map((b) => (
+                  {PERIOD_2.followUp.bullets.map((b) => (
                     <li key={b} className="flex items-baseline gap-2">
                       <span className="text-kedja-green">›</span>
                       {b}
@@ -318,7 +325,7 @@ const Period1 = () => {
                   Självskattning · spelare
                 </h3>
                 <ol className="space-y-1.5 text-sm leading-relaxed text-kedja-ink/85">
-                  {PERIOD_1.followUp.selfRating.map((r, i) => (
+                  {PERIOD_2.followUp.selfRating.map((r, i) => (
                     <li key={r} className="flex items-baseline gap-2">
                       <span className="font-mono text-xs text-kedja-deep/70">{i + 1}.</span>
                       {r}
@@ -327,12 +334,6 @@ const Period1 = () => {
                 </ol>
               </div>
             </div>
-            <Link
-              to="/period/2"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-kedja-green transition hover:text-kedja-ink"
-            >
-              Nästa period: Vinna bollen och slå till <ArrowRight className="h-4 w-4" />
-            </Link>
           </section>
         </TabsContent>
       </Tabs>
@@ -341,4 +342,4 @@ const Period1 = () => {
   );
 };
 
-export default Period1;
+export default Period2;
