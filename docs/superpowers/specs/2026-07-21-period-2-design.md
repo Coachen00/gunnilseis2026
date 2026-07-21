@@ -85,7 +85,7 @@ Datum följer mönstret mån/ons/tor från höstplanens veckostarter.
 
 - dateRange: `14/9–30/9`
 - title: `Repetition, video och uppföljning`
-- bullets: video på 3 bra gemensamma pressstarter; 3 återerövringar inom 5
+- bullets: video på 3 bra gemensamma press-starter; 3 återerövringar inom 5
   sekunder; lagets bästa omställning till anfall; en sekvens där sprint hem
   räddar en kontring; nästa periods fokus.
 - selfRating (jag-form, speglar veckorna): förstår när vi pressar; vet min
