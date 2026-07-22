@@ -8,7 +8,7 @@
  *
  * Versionera cachenamnet när formatet ändras så aktiva SWs städas.
  */
-const CACHE_VERSION = "v5";
+const CACHE_VERSION = "v6";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 
@@ -63,19 +63,14 @@ function networkFirst(request, timeoutMs = 4000) {
 }
 
 async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) {
-    fetch(request)
-      .then((response) => {
-        caches.open(RUNTIME_CACHE).then((cache) => cache.put(request, response));
-      })
-      .catch(() => undefined);
-    return cached;
+  try {
+    const response = await fetch(request, { cache: "no-store" });
+    const cache = await caches.open(RUNTIME_CACHE);
+    cache.put(request, response.clone()).catch(() => undefined);
+    return response;
+  } catch {
+    return (await caches.match(request)) || Response.error();
   }
-  const response = await fetch(request);
-  const cache = await caches.open(RUNTIME_CACHE);
-  cache.put(request, response.clone()).catch(() => undefined);
-  return response;
 }
 
 self.addEventListener("fetch", (event) => {
