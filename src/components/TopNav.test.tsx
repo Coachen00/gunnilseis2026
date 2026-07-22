@@ -44,6 +44,7 @@ describe("TopNav spelmodell-länkar", () => {
     expect(screen.getByRole("link", { name: "Planera veckan" })).toHaveAttribute("href", "/coach#veckan");
     expect(screen.getByRole("link", { name: "Gör matchen tydlig" })).toHaveAttribute("href", "/coach#matchen");
     expect(screen.getByRole("link", { name: /veckans arbetsyta/i })).toHaveAttribute("href", "/spelmodell-labb");
+    expect(screen.getByRole("link", { name: /taktiktavla/i })).toHaveAttribute("href", "/taktiktavla");
     expect(screen.getByRole("link", { name: /motståndaranalys/i })).toHaveAttribute("href", "/motstandaranalys");
   });
 });

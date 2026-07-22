@@ -90,6 +90,7 @@ const coachGroups: NavGroup[] = [
     children: [
       { label: "Veckans arbetsyta", to: "/spelmodell-labb", hint: "Bygg veckans matchbild" },
       { label: "Träningsplan", to: "/traningsplan", hint: "A4-versionen på planen" },
+      { label: "Taktiktavla", to: "/taktiktavla", hint: "Rita upp matchbilden" },
     ],
   },
   {
