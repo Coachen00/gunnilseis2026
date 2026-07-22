@@ -7,6 +7,7 @@ import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
 import KedjaQuote from "@/components/kedja/KedjaQuote";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 /** Fyra makroskeden — samma innehåll som tidigare CurrentStateSection. */
 const NULAGE_PHASES = [
@@ -84,9 +85,10 @@ const Spelide = () => (
       instruction="Läs uppifrån och ner, eller hoppa direkt dit du vill."
     >
       <KedjaNav items={NAV_ITEMS} />
-    </KedjaHero>
+      </KedjaHero>
+      <CoachTacticsAnimation variant="spelide" />
 
-    <KedjaSection
+      <KedjaSection
       id="nulage"
       tone="paper"
       eyebrow="Kapitel 01"

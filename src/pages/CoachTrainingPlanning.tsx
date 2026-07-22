@@ -6,6 +6,7 @@ import PageHero from "@/components/PageHero";
 import SectionHeader from "@/components/SectionHeader";
 import SectionReveal from "@/components/SectionReveal";
 import { AUTUMN_SOURCE, AUTUMN_WEEKS, COACH_ROLES, TRAINING_METHOD } from "@/data/coachTrainingAutumn2026";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 const formatDate = (value: string) => new Intl.DateTimeFormat("sv-SE", { weekday: "short", day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00`));
 
@@ -22,6 +23,7 @@ const CoachTrainingPlanning = () => (
     </PageHero>
 
     <div className="container pb-section print:hidden">
+      <CoachTacticsAnimation variant="traningsplanering" />
       <div className="flex flex-wrap gap-3">
         <button onClick={() => window.print()} className="inline-flex h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-primary-foreground">
           <Printer className="h-4 w-4" /> Skriv ut planen

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Image as ImageIcon, BookOpen } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 import { usePrintForm, Field, Area, Collapsible, PrintToolbarActions, labelCls, type PrintForm } from "@/lib/printForm";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 const STORAGE_KEY = "gunnilse:matchblad:v1";
 
@@ -144,6 +145,10 @@ const Matchblad = () => {
           <PrintToolbarActions form={form} clearLabel="Rensa blad" />
           <LogoutButton />
         </div>
+      </div>
+
+      <div className="max-w-[1050px] mx-auto print:hidden">
+        <CoachTacticsAnimation variant="matchblad" />
       </div>
 
       <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#FFD700] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none">

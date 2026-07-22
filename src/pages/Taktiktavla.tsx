@@ -6,6 +6,7 @@ import LogoutButton from "@/components/LogoutButton";
 import TacticsBitmapBackdrop from "@/components/tactics/TacticsBitmapBackdrop";
 import TacticsLibrary from "@/components/tactics/TacticsLibrary";
 import { getLatestTacticsImage } from "@/lib/tacticsBoardStorage";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 import {
   TACTICS_BOARD_ASSETS,
   TACTICS_SCENE_ORDER,
@@ -227,6 +228,10 @@ const Taktiktavla = () => {
           </div>
         </div>
       </section>
+
+      <div className="mx-auto max-w-7xl px-4">
+        <CoachTacticsAnimation variant="taktiktavla" />
+      </div>
 
       {loadError && (
         <div className="border-b border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-xs text-amber-100">

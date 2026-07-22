@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Image as ImageIcon, BookOpen } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 import { usePrintForm, Field, Area, Collapsible, PrintToolbarActions, labelCls, type PrintForm } from "@/lib/printForm";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 const STORAGE_KEY = "gunnilse:motstandaranalys:v1";
 
@@ -168,6 +169,10 @@ const Motstandaranalys = () => {
           <PrintToolbarActions form={form} clearLabel="Rensa analys" />
           <LogoutButton />
         </div>
+      </div>
+
+      <div className="max-w-[1050px] mx-auto print:hidden">
+        <CoachTacticsAnimation variant="motstandaranalys" />
       </div>
 
       <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#1e3a8a] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none">

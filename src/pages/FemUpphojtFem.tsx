@@ -5,6 +5,7 @@ import SectionReveal from "@/components/SectionReveal";
 import SegmentNav, { type SegmentItem } from "@/components/SegmentNav";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { isOwnerEmail } from "@/lib/owner";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 const segments: SegmentItem[] = [
   { id: "oversikt", label: "Översikt" },
@@ -48,6 +49,7 @@ const FemUpphojtFem = () => {
         <div className="container pb-section text-sm font-semibold text-kedja-deep/70">Verifierar coachåtkomst…</div>
       ) : !isOwner ? <Locked /> : (
         <main className="container pb-section">
+          <CoachTacticsAnimation variant="femupphojt" />
           <SegmentNav items={segments} ariaLabel="På 5⁵-sidan" className="mb-8" />
           <SectionReveal>
             <section id="oversikt" className="scroll-mt-32 border border-kedja-border bg-white p-6 md:p-8">

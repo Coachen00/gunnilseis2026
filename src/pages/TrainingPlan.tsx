@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Printer, Plus, Trash2, RotateCcw, BookOpen, ImagePlus, ExternalLink } from "lucide-react";
 import LogoutButton from "@/components/LogoutButton";
 import { getLatestTacticsImage, getTacticsImage, removeTacticsImage } from "@/lib/tacticsBoardStorage";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 const STORAGE_KEY = "gunnilse:traningsplan:v1";
 
@@ -243,6 +244,10 @@ const TrainingPlan = () => {
           </button>
           <LogoutButton />
         </div>
+      </div>
+
+      <div className="max-w-[1050px] mx-auto print:hidden">
+        <CoachTacticsAnimation variant="traningsplan" />
       </div>
 
       <div className="max-w-[1050px] mx-auto bg-white rounded-2xl border-[3px] border-[#FFD700] overflow-hidden shadow-lg print:border-none print:shadow-none print:rounded-none">

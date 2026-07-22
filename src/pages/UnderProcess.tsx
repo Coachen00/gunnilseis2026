@@ -3,6 +3,7 @@ import KedjaHero from "@/components/kedja/KedjaHero";
 import SectionReveal from "@/components/SectionReveal";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { isOwnerEmail } from "@/lib/owner";
+import CoachTacticsAnimation from "@/components/coach/CoachTacticsAnimation";
 
 type Step = {
   number: string;
@@ -99,6 +100,7 @@ const UnderProcess = () => {
         <Locked />
       ) : (
         <main className="container pb-section">
+          <CoachTacticsAnimation variant="prisma" />
           <div className="mb-8 grid gap-3 border border-kedja-border bg-white p-5 md:grid-cols-3 md:p-7">
             <div>
               <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-amber-700">Riktning</p>
