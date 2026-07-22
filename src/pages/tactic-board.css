@@ -463,10 +463,10 @@
             height: 100%;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            border-left: 1px solid rgba(255, 255, 255, 0.28);
-            border-right: 1px solid rgba(255, 255, 255, 0.28);
-            box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.12);
+            align-items: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.38);
+            border-right: 1px solid rgba(255, 255, 255, 0.38);
+            box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.16);
         }
 
         .tactic-board-page #layer-korridorer .corridor-band {
@@ -478,20 +478,19 @@
         }
 
         .tactic-board-page .corridor-band-outer {
-            background: linear-gradient(90deg, rgba(45, 132, 180, 0.06), rgba(45, 132, 180, 0.13), rgba(45, 132, 180, 0.06));
+            background: linear-gradient(90deg, rgba(30, 116, 180, 0.14), rgba(30, 116, 180, 0.25), rgba(30, 116, 180, 0.14));
         }
 
         .tactic-board-page .corridor-band-inner {
-            background: linear-gradient(90deg, rgba(34, 197, 94, 0.04), rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.04));
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.18), rgba(34, 197, 94, 0.08));
         }
 
         .tactic-board-page .corridor-band-center {
-            background: linear-gradient(90deg, rgba(245, 158, 11, 0.06), rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.06));
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.08));
         }
 
         .tactic-board-page .corridor-label {
-            margin-top: 10px;
-            padding: 4px 7px;
+            padding: 8px 10px;
             border-radius: 6px;
             background: rgba(7, 19, 14, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.24);
