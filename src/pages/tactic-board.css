@@ -399,17 +399,15 @@
         }
 
         .tactic-board-page .zone-box {
-            padding: 6px;
+            padding: 4px;
             color: rgba(255, 255, 255, 0.96);
             text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
             border: 1px solid;
-            backdrop-filter: blur(2px);
         }
 
         .tactic-board-page .golden-zone {
-            background: linear-gradient(145deg, rgba(245, 158, 11, 0.72), rgba(180, 83, 9, 0.52));
-            border-color: rgba(255, 220, 130, 0.94);
-            box-shadow: inset 0 0 0 1px rgba(255, 245, 200, 0.16), 0 6px 18px rgba(120, 64, 0, 0.16);
+            background: rgba(245, 158, 11, 0.5);
+            border-color: rgba(255, 225, 148, 0.92);
         }
 
         .tactic-board-page .zone-box .zone-title {
@@ -422,32 +420,21 @@
         }
 
         .tactic-board-page .assist-zone {
-            background: linear-gradient(145deg, rgba(13, 148, 136, 0.34), rgba(15, 118, 110, 0.22));
-            border-color: rgba(130, 246, 224, 0.76);
-            box-shadow: inset 0 0 0 1px rgba(220, 255, 248, 0.1);
+            background: rgba(14, 116, 144, 0.28);
+            border-color: rgba(165, 243, 252, 0.72);
+            color: rgba(236, 254, 255, 0.92);
+            font-size: clamp(8px, 0.64vw, 11px);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
         }
 
-        .tactic-board-page .assist-zone::after {
-            content: "";
-            position: absolute;
-            inset: 6px;
-            border: 1px solid rgba(215, 255, 247, 0.22);
-            border-radius: 8px;
+        .tactic-board-page .assist-zone-front span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
         }
 
         .tactic-board-page .zone-cluster-label {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 18px;
-            border-bottom: 1px solid rgba(210, 255, 246, 0.55);
-            color: rgba(224, 255, 248, 0.92);
-            font-size: clamp(8px, 0.62vw, 11px);
-            font-weight: 800;
-            letter-spacing: 0.14em;
-            line-height: 1;
-            text-transform: uppercase;
+            display: none;
         }
 
         .tactic-board-page .box-zone {
@@ -462,15 +449,12 @@
             top: 0;
             height: 100%;
             display: flex;
+            align-items: flex-start;
             justify-content: center;
-            align-items: center;
-            border-left: 1px solid rgba(255, 255, 255, 0.38);
-            border-right: 1px solid rgba(255, 255, 255, 0.38);
-            box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.16);
+            border-right: 1px solid rgba(255, 255, 255, 0.42);
         }
 
         .tactic-board-page #layer-korridorer .corridor-band {
-            top: 0 !important;
             bottom: auto !important;
             height: 100% !important;
             border-top: 0 !important;
@@ -478,63 +462,62 @@
         }
 
         .tactic-board-page .corridor-band-outer {
-            background: linear-gradient(90deg, rgba(30, 116, 180, 0.14), rgba(30, 116, 180, 0.25), rgba(30, 116, 180, 0.14));
+            background: rgba(14, 116, 144, 0.2);
         }
 
         .tactic-board-page .corridor-band-inner {
-            background: linear-gradient(90deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.18), rgba(34, 197, 94, 0.08));
+            background: rgba(5, 150, 105, 0.13);
         }
 
         .tactic-board-page .corridor-band-center {
-            background: linear-gradient(90deg, rgba(245, 158, 11, 0.08), rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.08));
+            background: rgba(245, 158, 11, 0.14);
         }
 
         .tactic-board-page .corridor-label {
-            padding: 8px 10px;
-            border-radius: 6px;
-            background: rgba(7, 19, 14, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            color: rgba(255, 255, 255, 0.94);
+            margin-top: 8px;
+            padding: 3px 5px;
+            border-radius: 4px;
+            background: rgba(7, 19, 14, 0.62);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: rgba(255, 255, 255, 0.88);
             font-weight: 800;
-            font-size: clamp(8px, 0.72vw, 12px);
+            font-size: clamp(8px, 0.55vw, 10px);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
         }
 
         .tactic-board-page .play-zone {
-            flex-direction: column;
             position: absolute;
-            border-right: 3px solid rgba(255, 255, 255, 0.45);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+            left: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.52);
             overflow: hidden;
         }
 
         .tactic-board-page .play-zone::before {
-            content: "";
-            position: absolute;
-            inset: 14px;
-            border: 1px dashed rgba(255, 255, 255, 0.38);
-            border-radius: 18px;
+            display: none;
         }
 
         .tactic-board-page .zone-origin {
-            background: linear-gradient(180deg, rgba(255, 99, 132, 0.32), rgba(255, 75, 43, 0.18));
+            background: rgba(14, 116, 144, 0.12);
         }
 
         .tactic-board-page .zone-one {
-            background: linear-gradient(180deg, rgba(59, 130, 246, 0.34), rgba(14, 165, 233, 0.18));
+            background: rgba(14, 116, 144, 0.17);
         }
 
         .tactic-board-page .zone-two {
-            background: linear-gradient(180deg, rgba(34, 197, 94, 0.28), rgba(16, 185, 129, 0.18));
+            background: rgba(14, 116, 144, 0.22);
         }
 
         .tactic-board-page .zone-three {
-            background: linear-gradient(180deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.16));
-            border-right: none;
+            background: rgba(14, 116, 144, 0.28);
+        }
+
+        .tactic-board-page .zone-origin {
+            border-bottom: none;
         }
 
         .tactic-board-page .play-zone-content {
@@ -543,8 +526,76 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            padding: 0 18px;
+            gap: 5px;
+            padding: 0 10px;
+        }
+
+        .tactic-board-page #layer-spelytor .zone-title {
+            padding: 5px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            background: rgba(7, 19, 14, 0.62);
+            font-size: clamp(9px, 0.76vw, 13px);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .tactic-board-page #layer-spelytor .zone-sub {
+            max-width: 160px;
+            font-size: clamp(7px, 0.58vw, 10px);
+            line-height: 1.35;
+            text-align: center;
+        }
+
+        .tactic-board-page .attack-direction-label {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 4;
+            padding: 4px 9px;
+            border-radius: 4px;
+            background: rgba(7, 19, 14, 0.7);
+            color: rgba(255, 255, 255, 0.92);
+            font-size: clamp(8px, 0.62vw, 11px);
+            font-weight: 800;
+            letter-spacing: 0.12em;
+        }
+
+        .tactic-board-page .attack-direction-label span {
+            margin-left: 5px;
+            color: #67e8f9;
+        }
+
+        .tactic-board-page .third-band {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+            background: rgba(14, 116, 144, 0.14);
+        }
+
+        .tactic-board-page .third-band-center {
+            background: rgba(8, 145, 178, 0.22);
+        }
+
+        .tactic-board-page .third-band:last-child {
+            border-bottom: 0;
+        }
+
+        .tactic-board-page .third-band span {
+            margin-right: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: rgba(7, 19, 14, 0.65);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(8px, 0.62vw, 11px);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            white-space: nowrap;
         }
 
         .tactic-board-page .zone-title {
@@ -2302,19 +2353,6 @@
     border-radius: 50%;
     background: radial-gradient(circle at 32% 28%, #ef7771 0 20%, #a9272d 52%, #641b21 100%);
     box-shadow: 0 3px 7px rgba(39, 9, 13, 0.42);
-    animation: zoneOpponentScan 3.8s ease-in-out infinite;
-}
-
-.tactic-board-page .zone-opponents span:nth-child(2) {
-    animation-delay: -1.2s;
-}
-
-.tactic-board-page .zone-opponents span:nth-child(3) {
-    animation-delay: -2.4s;
-}
-
-.tactic-board-page .zone-opponents span:nth-child(4) {
-    animation-delay: -0.6s;
 }
 
 .tactic-board-page .opponent-formation {
@@ -2363,14 +2401,3 @@
     border-color: rgba(40, 30, 15, 0.7);
 }
 
-@keyframes zoneOpponentScan {
-    0%, 100% { margin-left: 0; margin-top: 0; }
-    50% { margin-left: 4px; margin-top: -3px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .tactic-board-page .zone-opponents span {
-        animation: none;
-    }
-}
-    

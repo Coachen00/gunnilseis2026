@@ -52,8 +52,9 @@
                     <div class="tactic-panel-section">
                         <span class="tactic-section-title">Visa p&aring; planen</span>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-korridorer" onchange="toggleLayer('layer-korridorer', this.checked)"> Korridorer</label>
-                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Golden Zone &amp; assistytor</label>
-                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor vs 4-4-2</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-spelytor" onchange="toggleLayer('layer-spelytor', this.checked)"> Spelytor</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-tredjedelar" onchange="toggleLayer('layer-tredjedelar', this.checked)"> Tredjedelar</label>
+                        <label class="layer-option"><input type="checkbox" data-layer-target="layer-golden" onchange="toggleLayer('layer-golden', this.checked)"> Gold Zone &amp; assistytor</label>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-assistv" onchange="toggleLayer('layer-assistv', this.checked)"> Creation / Assist-V</label>
                         <label class="layer-option"><input type="checkbox" data-layer-target="layer-straffzoner" onchange="toggleLayer('layer-straffzoner', this.checked)"> Zoner straffomr&aring;de</label>
                     </div>
@@ -288,52 +289,59 @@
                         <div class="line goal-box-r"></div>
 
                     <div id="layer-korridorer" class="layer" style="display:none; z-index:2;">
-                        <div class="corridor-band corridor-band-outer" style="left:0%; width:20.35%;"><span class="corridor-label">Ytterkorridor</span></div>
-                        <div class="corridor-band corridor-band-inner" style="left:20.35%; width:16.18%;"><span class="corridor-label">Innerkorridor</span></div>
-                        <div class="corridor-band corridor-band-center" style="left:36.53%; width:26.94%;"><span class="corridor-label">Central korridor</span></div>
-                        <div class="corridor-band corridor-band-inner" style="left:63.47%; width:16.18%;"><span class="corridor-label">Innerkorridor</span></div>
-                        <div class="corridor-band corridor-band-outer" style="left:79.65%; width:20.35%;"><span class="corridor-label">Ytterkorridor</span></div>
+                        <div class="corridor-band corridor-band-outer" aria-label="Yttre korridor" style="left:0%; width:20.35%;"><span class="corridor-label">Yttre</span></div>
+                        <div class="corridor-band corridor-band-inner" aria-label="Inre korridor" style="left:20.35%; width:16.18%;"><span class="corridor-label">Inre</span></div>
+                        <div class="corridor-band corridor-band-center" aria-label="Central korridor" style="left:36.53%; width:26.94%;"><span class="corridor-label">Central</span></div>
+                        <div class="corridor-band corridor-band-inner" aria-label="Inre korridor" style="left:63.47%; width:16.18%;"><span class="corridor-label">Inre</span></div>
+                        <div class="corridor-band corridor-band-outer" aria-label="Yttre korridor" style="left:79.65%; width:20.35%;"><span class="corridor-label">Yttre</span></div>
                     </div>
 
                     <div id="layer-spelytor" class="layer" style="display:none; z-index:2;">
+                        <div class="attack-direction-label" aria-hidden="true">ANFALL <span>↑</span></div>
                         <div class="opponent-formation" aria-label="Motståndare i 4-4-2">
-                            <span class="opponent-player" style="left:28%; top:35%;"></span>
-                            <span class="opponent-player" style="left:28%; top:65%;"></span>
-                            <span class="opponent-player" style="left:52%; top:14%;"></span>
-                            <span class="opponent-player" style="left:52%; top:38%;"></span>
-                            <span class="opponent-player" style="left:52%; top:62%;"></span>
-                            <span class="opponent-player" style="left:52%; top:86%;"></span>
-                            <span class="opponent-player" style="left:76%; top:14%;"></span>
-                            <span class="opponent-player" style="left:76%; top:38%;"></span>
-                            <span class="opponent-player" style="left:76%; top:62%;"></span>
-                            <span class="opponent-player" style="left:76%; top:86%;"></span>
-                            <span class="opponent-player opponent-goalkeeper" style="left:94%; top:50%;"></span>
+                            <span class="opponent-player" style="left:38%; top:33.3333%;"></span>
+                            <span class="opponent-player" style="left:62%; top:33.3333%;"></span>
+                            <span class="opponent-player" style="left:14%; top:50%;"></span>
+                            <span class="opponent-player" style="left:38%; top:50%;"></span>
+                            <span class="opponent-player" style="left:62%; top:50%;"></span>
+                            <span class="opponent-player" style="left:86%; top:50%;"></span>
+                            <span class="opponent-player" style="left:14%; top:66.6667%;"></span>
+                            <span class="opponent-player" style="left:38%; top:66.6667%;"></span>
+                            <span class="opponent-player" style="left:62%; top:66.6667%;"></span>
+                            <span class="opponent-player" style="left:86%; top:66.6667%;"></span>
+                            <span class="opponent-player opponent-goalkeeper" style="left:50%; top:94%;"></span>
                         </div>
-                        <div class="zone play-zone zone-origin" style="left:0%; width:28%; height:100%;">
+                        <div class="zone play-zone zone-origin" style="top:66.6667%; height:33.3333%; width:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Utg&aring;ngsyta</span>
                                 <span class="zone-sub">Framf&ouml;r forwards</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-one" style="left:28%; width:24%; height:100%;">
+                        <div class="zone play-zone zone-one" style="top:50%; height:16.6667%; width:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 1</span>
                                 <span class="zone-sub">Mellan forwards och mittf&auml;lt</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-two" style="left:52%; width:24%; height:100%;">
+                        <div class="zone play-zone zone-two" style="top:33.3333%; height:16.6667%; width:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 2</span>
                                 <span class="zone-sub">Mellan mittf&auml;lt och backlinje</span>
                             </div>
                         </div>
-                        <div class="zone play-zone zone-three" style="left:76%; width:24%; height:100%;">
+                        <div class="zone play-zone zone-three" style="top:0%; height:33.3333%; width:100%;">
                             <div class="play-zone-content">
                                 <span class="zone-title">Spelyta 3</span>
                                 <span class="zone-sub">Bakom backlinjen, framför målvakten</span>
                             </div>
                         </div>
 
+                    </div>
+
+                    <div id="layer-tredjedelar" class="layer" style="display:none; z-index:2;">
+                        <div class="third-band third-band-outer" style="top:0%; height:33.3333%;"><span>Sista / första tredjedelen</span></div>
+                        <div class="third-band third-band-center" style="top:33.3333%; height:33.3334%;"><span>Centrala tredjedelen</span></div>
+                        <div class="third-band third-band-outer" style="top:66.6667%; height:33.3333%;"><span>Första / sista tredjedelen</span></div>
                     </div>
 
                     <div id="layer-assistv" class="layer" style="display:none; z-index:3;">
@@ -354,19 +362,15 @@
                     </div>
 
                     <div id="layer-golden" class="layer" style="display:none; z-index:4;">
-                        <div class="zone-cluster-label" aria-hidden="true" style="left:0%; top:14%; width:15%;">ASSISTYTA</div>
-                        <div class="zone zone-box golden-zone" aria-label="Golden zone vänster" style="left:0%; top:37.1429%; width:10%; height:25.7143%;"><span class="zone-title">GOLDEN ZONE</span></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta vänster övre" style="left:0%; top:21.4286%; width:15%; height:15.7143%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta vänster nedre" style="left:0%; top:62.8571%; width:15%; height:15.7143%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta vänster inre övre" style="left:15%; top:21.4286%; width:7.7273%; height:57.1429%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta vänster central" style="left:22.7273%; top:21.4286%; width:7.2727%; height:57.1429%;"></div>
+                        <div class="zone zone-box golden-zone" aria-label="Gold Zone vänster" style="left:5%; top:37.1429%; width:10%; height:25.7143%;"><span class="zone-title">GOLD ZONE</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-wide" aria-label="Assistyta vänster övre" style="left:0%; top:21.4286%; width:15%; height:15.7143%;"><span>ASSIST</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-wide" aria-label="Assistyta vänster nedre" style="left:0%; top:62.8571%; width:15%; height:15.7143%;"><span>ASSIST</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-front" aria-label="Assistyta framför vänster straffområde" style="left:15%; top:21.4286%; width:10%; height:57.1429%;"><span>ASSIST</span></div>
 
-                        <div class="zone-cluster-label" aria-hidden="true" style="right:0%; top:14%; width:15%;">ASSISTYTA</div>
-                        <div class="zone zone-box golden-zone" aria-label="Golden zone höger" style="right:0%; top:37.1429%; width:10%; height:25.7143%;"><span class="zone-title">GOLDEN ZONE</span></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta höger övre" style="right:0%; top:21.4286%; width:15%; height:15.7143%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta höger nedre" style="right:0%; top:62.8571%; width:15%; height:15.7143%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta höger inre övre" style="right:15%; top:21.4286%; width:7.7273%; height:57.1429%;"></div>
-                        <div class="zone zone-box assist-zone" aria-label="Assistyta höger central" style="right:22.7273%; top:21.4286%; width:7.2727%; height:57.1429%;"></div>
+                        <div class="zone zone-box golden-zone" aria-label="Gold Zone höger" style="right:5%; top:37.1429%; width:10%; height:25.7143%;"><span class="zone-title">GOLD ZONE</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-wide" aria-label="Assistyta höger övre" style="right:0%; top:21.4286%; width:15%; height:15.7143%;"><span>ASSIST</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-wide" aria-label="Assistyta höger nedre" style="right:0%; top:62.8571%; width:15%; height:15.7143%;"><span>ASSIST</span></div>
+                        <div class="zone zone-box assist-zone assist-zone-front" aria-label="Assistyta framför höger straffområde" style="right:15%; top:21.4286%; width:10%; height:57.1429%;"><span>ASSIST</span></div>
                     </div>
 
                     <div id="layer-straffzoner" class="layer" style="display:none; z-index:5;">
