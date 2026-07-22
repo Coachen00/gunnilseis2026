@@ -54,6 +54,7 @@ const sections: Array<{
       { label: "Veckans arbetsyta", to: "/spelmodell-labb", support: "Bygg veckans matchbild" },
       { label: "Träningsplanering", to: "/coach/traningsplanering-host-2026", support: "Fyra moment per pass" },
       { label: "Träningsplan", to: "/traningsplan", support: "A4-versionen på planen" },
+      { label: "Taktiktavla", to: "/taktiktavla", support: "Visa relationer och sekvenser" },
     ],
   },
   {
@@ -72,7 +73,6 @@ const sections: Array<{
     links: [
       { label: "Motståndaranalys", to: "/motstandaranalys", support: "Se hot, möjligheter och vår plan" },
       { label: "Matchblad", to: "/matchblad", support: "Gör trupp och fokuspunkter tydliga" },
-      { label: "Taktiktavla", to: "/taktiktavla", support: "Visa relationer och sekvenser" },
     ],
   },
 ];

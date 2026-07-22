@@ -26,8 +26,8 @@ describe("Coach", () => {
 
     const expectations = [
       ["Sätt riktningen: verktyg", ["/spelide", "/under-process", "/under-process/5-upphojt-i-fem"]],
-      ["Planera veckan: verktyg", ["/spelmodell-labb", "/coach/traningsplanering-host-2026", "/traningsplan"]],
-      ["Gör matchen tydlig: verktyg", ["/motstandaranalys", "/matchblad", "/taktiktavla"]],
+    ["Planera veckan: verktyg", ["/spelmodell-labb", "/coach/traningsplanering-host-2026", "/traningsplan", "/taktiktavla"]],
+    ["Gör matchen tydlig: verktyg", ["/motstandaranalys", "/matchblad"]],
     ] as const;
 
     for (const [label, paths] of expectations) {
