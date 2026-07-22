@@ -123,9 +123,9 @@ const PrincipleItem = ({
             <div className="mt-5 border-t border-border pt-4">
               <div className="mb-2 flex items-baseline justify-between gap-3">
                 <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-muted-foreground">
-                  Bilder & filmer
+                  Lägg till exempel
                 </span>
-                <span className="text-[10px] text-muted-foreground">Små platshållare · klicka för att expandera</span>
+                <span className="text-[10px] text-muted-foreground">Välj en ruta för att lägga till bild eller film</span>
               </div>
               <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {[
@@ -135,7 +135,7 @@ const PrincipleItem = ({
                   <MediaSlot
                     key={`${phase}-${index}-${mediaIndex}-${area}`}
                     slotKey={`spelmodell:${phase}:princip:${index}:media:${mediaIndex}`}
-                    title={area}
+                    title={mediaIndex === 0 ? "Hela situationen" : `Visa: ${area}`}
                     description={`${PHASES[phase].label} - ${area}`}
                     compact
                   />

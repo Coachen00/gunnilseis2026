@@ -447,7 +447,8 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
     <div className="inline-flex rounded-md border border-border bg-background/50 p-0.5">
       <button
         type="button"
-        title="Foto"
+        title="Välj foto"
+        aria-label="Välj foto"
         onClick={() => setModeAndPersist("image")}
         className={cn(
           "inline-flex h-6 items-center justify-center gap-1 rounded px-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors",
@@ -460,7 +461,8 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
       </button>
       <button
         type="button"
-        title="Film"
+        title="Välj film"
+        aria-label="Välj film"
         onClick={() => setModeAndPersist("video")}
         className={cn(
           "inline-flex h-6 items-center justify-center gap-1 rounded px-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors",
@@ -582,7 +584,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
         <ModeIcon className="h-4 w-4" />
       </div>
       <div className="relative mt-2 text-[11px] font-black uppercase tracking-[0.16em] text-foreground">
-        Lägg till media
+        {mode === "video" ? "Lägg till film" : "Lägg till bild"}
       </div>
       {!compact && (
         <p className="relative mt-1 max-w-[240px] text-xs leading-relaxed text-muted-foreground">
@@ -638,22 +640,22 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-lg border border-border/80 bg-gradient-to-br from-card via-card to-muted/20 shadow-sm ring-1 ring-white/[0.03] transition-all duration-200 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5",
+        "group relative overflow-hidden rounded-lg border border-border/80 bg-card shadow-sm transition-all duration-200 hover:border-primary/40 hover:shadow-md hover:shadow-primary/5",
         className
       )}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/70 to-transparent" />
 
-      <div className={cn("flex items-start justify-between gap-3", compact ? "px-3 pt-3 pb-2" : "px-4 pt-4 pb-3")}>
+      <div className={cn(compact ? "flex flex-col gap-2 px-3 pt-3 pb-2" : "flex items-start justify-between gap-3 px-4 pt-4 pb-3")}>
         <div className="flex min-w-0 items-start gap-2.5">
           <div className="grid h-8 w-8 flex-shrink-0 place-items-center rounded-md border border-primary/20 bg-primary/10 text-primary">
             <ModeIcon className="h-4 w-4" />
           </div>
           <div className="min-w-0">
-            <h4 className={cn("truncate font-semibold leading-tight text-foreground", compact ? "text-xs" : "text-sm")}>
+            <h4 className={cn("font-semibold leading-tight text-foreground", compact ? "line-clamp-2 text-xs" : "truncate text-sm")}>
               {title}
             </h4>
-            <div className="mt-1 flex flex-wrap gap-1.5">
+            <div className={cn("mt-1 flex flex-wrap gap-1.5", compact && "hidden")}>
               <span className="rounded border border-border bg-background/50 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">
                 {mode === "video" ? "Film" : "Foto"}
               </span>
@@ -665,7 +667,7 @@ export default function MediaSlot({ matchId, slotKey, title, description, captio
           </div>
         </div>
 
-        <div className="flex flex-shrink-0 items-center gap-1">
+        <div className={cn("flex flex-shrink-0 items-center gap-1", compact && "w-full justify-end border-t border-border/70 pt-2")}>
           {modeButtons(true)}
           <button
             type="button"

@@ -102,12 +102,12 @@ const AttackingPrincipleCard = ({ principle: p }: Props) => (
       <section className="md:col-span-2 border-t border-border pt-4">
         <div className="mb-3 flex items-baseline justify-between gap-3">
           <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
-            Bilder & filmer
+            Lägg till exempel
           </h4>
-          <span className="text-[10px] text-muted-foreground">Matchklipp och bildsekvenser</span>
+          <span className="text-[10px] text-muted-foreground">Välj en ruta för att lägga till bild eller film</span>
         </div>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {["Matchklipp", "Bildsekvens", "Inte godkänt"].map((label, index) => (
+          {["Hela situationen", "Visa ett viktigt ögonblick", "Visa vad vi ska göra"].map((label, index) => (
             <MediaSlot
               key={`${p.slug}-${index}`}
               slotKey={`spelmodell:anfall:${p.slug}:media:${index}`}
