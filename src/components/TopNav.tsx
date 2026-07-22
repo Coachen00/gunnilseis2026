@@ -75,21 +75,29 @@ const lagetGroups: NavGroup[] = [
   },
 ];
 
-/* Coach — ledar-/ägarmaterial. Diskret men tydligt. */
 const coachGroups: NavGroup[] = [
   {
-    label: "Coach",
-    to: "/coach",
+    label: "Riktning & språk",
+    to: "/coach#riktning",
     children: [
+      { label: "Spelidé", to: "/spelide", hint: "Riktningen bakom alla val" },
       { label: "Prisma 2026", to: "/under-process", hint: "Hela tankesystemet" },
-      { label: "5⁵", to: "/under-process/5-upphojt-i-fem", hint: "Minnesskelettet" },
-      { label: "Spelidé", to: "/spelide", hint: "Vi kommer förberedda" },
-      { label: "Spelmodell-labb", to: "/spelmodell-labb", hint: "Bygg veckans matchbild" },
-      { label: "Träningsplanering", to: "/coach/traningsplanering-host-2026", hint: "Fyra moment per pass" },
-      { label: "Träningsplan", to: "/traningsplan", hint: "A4 för passet" },
+    ],
+  },
+  {
+    label: "Planera veckan",
+    to: "/coach#veckan",
+    children: [
+      { label: "Veckans arbetsyta", to: "/spelmodell-labb", hint: "Bygg veckans matchbild" },
+      { label: "Träningsplan", to: "/traningsplan", hint: "A4-versionen på planen" },
+    ],
+  },
+  {
+    label: "Gör matchen tydlig",
+    to: "/coach#matchen",
+    children: [
+      { label: "Motståndaranalys", to: "/motstandaranalys", hint: "Se hot, möjligheter och vår plan" },
       { label: "Matchblad", to: "/matchblad", hint: "Trupp och fokuspunkter" },
-      { label: "Motståndaranalys", to: "/motstandaranalys", hint: "Styrkor, svagheter och plan" },
-      { label: "Taktiktavla", to: "/taktiktavla", hint: "Flytta spelare och rita sekvenser" },
     ],
   },
 ];
