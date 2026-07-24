@@ -36,6 +36,73 @@
     const boardBounds = { x: 8, y: 14, width: 84, height: 72 };
     const formationOrder = ['4-4-2', '4-3-3', '4-2-3-1', '4-1-4-1', '4-3-1-2', '4-4-1-1', '3-5-2', '3-4-3', '3-4-2-1', '3-4-1-2', '5-3-2', '5-4-1'];
     const layerIds = ['layer-korridorer', 'layer-golden', 'layer-spelytor', 'layer-assistv', 'layer-straffzoner'];
+    const OBJECT_KINDS = ['ball', 'cone', 'hurdle', 'ring', 'ladder', 'pole', 'mannequin', 'mini-goal', 'bib-green', 'bib-blue', 'bib-red'];
+    const OBJECT_SELECTOR = OBJECT_KINDS.map((k) => '.piece.' + k).join(', ');
+    const OBJECT_LABELS = { ball: 'Boll', cone: 'Kon', hurdle: 'Häck', ring: 'Ring', ladder: 'Stege', pole: 'Käpp', mannequin: 'Dummy', 'mini-goal': 'Minimål', 'bib-green': 'Väst', 'bib-blue': 'Väst', 'bib-red': 'Väst' };
+    const BIB_COLORS = {
+        'bib-green': { light: '#8fd14a', dark: '#5fa128' },
+        'bib-blue': { light: '#3f93e0', dark: '#1f66ad' },
+        'bib-red': { light: '#f04a41', dark: '#b81f1c' }
+    };
+    const BIB_PATH = 'M14,14 L34,14 C34,30 66,30 66,14 L86,14 L86,44 C86,52 74,52 74,54 L80,112 L20,112 L26,54 C26,52 14,52 14,44 Z';
+    function bibSvgMarkup(kind, id) {
+        const c = BIB_COLORS[kind] || BIB_COLORS['bib-green'];
+        const gid = 'bibg-' + id;
+        const mid = 'bibm-' + id;
+        return '<svg class="bib-svg" viewBox="0 0 100 118" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="pointer-events:none;display:block;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.45))">'
+            + '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">'
+            + '<stop offset="0" stop-color="' + c.light + '"/><stop offset="1" stop-color="' + c.dark + '"/></linearGradient>'
+            + '<pattern id="' + mid + '" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.6" cy="1.6" r="0.9" fill="rgba(0,0,0,0.14)"/></pattern></defs>'
+            + '<path d="' + BIB_PATH + '" fill="url(#' + gid + ')" stroke="#101418" stroke-width="4.5" stroke-linejoin="round"/>'
+            + '<path d="' + BIB_PATH + '" fill="url(#' + mid + ')" stroke="none"/>'
+            + '</svg>';
+    }
+    const MAT_SVG_KINDS = ['cone', 'hurdle', 'ring', 'ladder'];
+    function materialSvgMarkup(kind, id) {
+        const open = '<svg class="mat-svg" viewBox="0 0 %VB%" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="pointer-events:none;display:block;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,0.42))">';
+        if (kind === 'cone') {
+            const g = 'coneg-' + id;
+            return open.replace('%VB%', '100 120')
+                + '<defs><linearGradient id="' + g + '" x1="0" y1="0" x2="1" y2="0">'
+                + '<stop offset="0" stop-color="#f5813a"/><stop offset="0.5" stop-color="#ef6a20"/><stop offset="1" stop-color="#cf5216"/></linearGradient></defs>'
+                + '<ellipse cx="50" cy="110" rx="41" ry="9" fill="#b8420f"/>'
+                + '<path d="M30,106 Q50,99 70,106 L57,34 Q53,19 50,19 Q47,19 43,34 Z" fill="url(#' + g + ')" stroke="#8f3209" stroke-width="1.6" stroke-linejoin="round"/>'
+                + '<path d="M39,64 Q50,60 61,64 L58.4,49 Q50,46 41.6,49 Z" fill="#ffe4cb" opacity="0.92"/>'
+                + '<ellipse cx="50" cy="108" rx="26" ry="5" fill="#d9531a"/>'
+                + '</svg>';
+        }
+        if (kind === 'hurdle') {
+            return open.replace('%VB%', '120 100')
+                + '<rect x="9" y="82" width="36" height="10" rx="5" fill="#141414"/>'
+                + '<rect x="75" y="82" width="36" height="10" rx="5" fill="#141414"/>'
+                + '<path d="M27,88 L27,28 Q27,18 37,18 L83,18 Q93,18 93,28 L93,88" fill="none" stroke="#e9edf0" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>'
+                + '<path d="M27,88 L27,28 Q27,18 37,18 L83,18 Q93,18 93,28 L93,88" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>'
+                + '<rect x="22.5" y="60" width="9" height="10" rx="2" fill="#141414"/>'
+                + '<rect x="88.5" y="60" width="9" height="10" rx="2" fill="#141414"/>'
+                + '</svg>';
+        }
+        if (kind === 'ring') {
+            return open.replace('%VB%', '100 100')
+                + '<circle cx="50" cy="50" r="39" fill="none" stroke="#b8901a" stroke-width="15"/>'
+                + '<circle cx="50" cy="50" r="39" fill="none" stroke="#f2c630" stroke-width="11"/>'
+                + '<circle cx="50" cy="50" r="39" fill="none" stroke="#ffe98a" stroke-width="3.5" opacity="0.85"/>'
+                + '</svg>';
+        }
+        if (kind === 'ladder') {
+            let rungs = '';
+            for (let i = 0; i < 6; i++) {
+                const x = 16 + i * 24.5;
+                rungs += '<rect x="' + x + '" y="9" width="10" height="42" rx="2" fill="#f2c230" stroke="#111" stroke-width="1"/>';
+            }
+            return open.replace('%VB%', '160 60')
+                + rungs
+                + '<rect x="4" y="6" width="152" height="8" rx="4" fill="#161616"/>'
+                + '<rect x="4" y="46" width="152" height="8" rx="4" fill="#161616"/>'
+                + '</svg>';
+        }
+        return '';
+    }
+    let objWheelTimer = null;
     const zoomPresets = {
         full: { originX: 50, originY: 50, scale: 1 },
         'third-l': { originX: 22, originY: 50, scale: 1.65 },
@@ -253,6 +320,7 @@
         updateHistoryButtons();
         document.addEventListener('keydown', handleKeydown);
         loadBoardState();
+        restoreBackgroundImage();
         if (boardContext()) boardAutosaveTimer = window.setInterval(saveBoardState, 1000);
         if ('ResizeObserver' in window) {
             pitchResizeObserver = new ResizeObserver(() => {
@@ -367,22 +435,173 @@
         }
 
         piece.onpointerdown = handlePieceClick;
-        if (type === 'ball' || type === 'cone') {
-            piece.title = 'Dubbelklicka för att ta bort';
+        if (OBJECT_KINDS.includes(type)) {
+            piece.classList.add('training-object');
+            piece.title = 'Scrolla för att ändra storlek · dubbelklicka för att ta bort';
             piece.ondblclick = function () { deletePiece(this); };
+            piece.dataset.scale = piece.dataset.scale || '1';
+
+            if (BIB_COLORS[type]) {
+                const bibWrap = document.createElement('span');
+                bibWrap.className = 'bib-wrap';
+                bibWrap.innerHTML = bibSvgMarkup(type, id);
+                piece.appendChild(bibWrap);
+            } else if (MAT_SVG_KINDS.includes(type)) {
+                const matWrap = document.createElement('span');
+                matWrap.className = 'mat-wrap';
+                matWrap.innerHTML = materialSvgMarkup(type, id);
+                piece.appendChild(matWrap);
+            }
+
+            const controls = document.createElement('span');
+            controls.className = 'obj-controls';
+
+            const minusBtn = document.createElement('button');
+            minusBtn.type = 'button';
+            minusBtn.className = 'obj-btn obj-btn-minus';
+            minusBtn.title = 'Mindre';
+            minusBtn.innerText = '−';
+            minusBtn.onpointerdown = (e) => e.stopPropagation();
+            minusBtn.onclick = (e) => { e.stopPropagation(); resizeTrainingObject(piece, -0.15); };
+
+            const plusBtn = document.createElement('button');
+            plusBtn.type = 'button';
+            plusBtn.className = 'obj-btn obj-btn-plus';
+            plusBtn.title = 'Större';
+            plusBtn.innerText = '+';
+            plusBtn.onpointerdown = (e) => e.stopPropagation();
+            plusBtn.onclick = (e) => { e.stopPropagation(); resizeTrainingObject(piece, 0.15); };
+
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'obj-btn obj-btn-delete';
+            delBtn.title = 'Ta bort';
+            delBtn.innerText = '×';
+            delBtn.onpointerdown = (e) => e.stopPropagation();
+            delBtn.onclick = (e) => { e.stopPropagation(); deletePiece(piece); };
+
+            controls.appendChild(minusBtn);
+            controls.appendChild(plusBtn);
+            controls.appendChild(delBtn);
+
+            const label = document.createElement('span');
+            label.className = 'obj-label';
+            label.innerText = OBJECT_LABELS[type] || '';
+
+            piece.appendChild(controls);
+            piece.appendChild(label);
+
+            piece.style.setProperty('--obj-scale', piece.dataset.scale);
+            piece.addEventListener('wheel', function (event) {
+                event.preventDefault();
+                handleObjectWheel(piece, event.deltaY < 0 ? 0.08 : -0.08);
+            }, { passive: false });
         }
         pitch.appendChild(piece);
         return piece;
     }
 
     function deletePiece(piece) {
-        if (!piece || (piece.dataset.kind !== 'ball' && piece.dataset.kind !== 'cone')) return;
+        if (!piece || !OBJECT_KINDS.includes(piece.dataset.kind)) return;
         pushHistory();
         drawings = drawings.filter((drawing) => drawing.attachedTo !== piece.id);
         links = links.filter((link) => link.id1 !== piece.id && link.id2 !== piece.id);
         piece.remove();
         renderLinks();
         renderAllDrawings();
+    }
+
+    function clearTrainingMaterial() {
+        const pieces = Array.from(document.querySelectorAll(OBJECT_SELECTOR));
+        if (!pieces.length) return;
+        pushHistory();
+        pieces.forEach((piece) => {
+            drawings = drawings.filter((drawing) => drawing.attachedTo !== piece.id);
+            links = links.filter((link) => link.id1 !== piece.id && link.id2 !== piece.id);
+            piece.remove();
+        });
+        renderLinks();
+        renderAllDrawings();
+    }
+
+    let sceneBeforeCustomImage = 'training_pitch';
+
+    function bgImageKey() {
+        return 'gunnilse:taktiktavla:bg:' + encodeURIComponent(boardContext());
+    }
+
+    function setBackgroundImage(dataUrl, skipPersist) {
+        const img = document.getElementById('tactics-custom-image');
+        const board = document.querySelector('.tactics-board');
+        const sel = document.getElementById('sceneSelect');
+        if (!img || !board) return;
+        if (board.dataset.scene && board.dataset.scene !== 'custom_image') {
+            sceneBeforeCustomImage = board.dataset.scene;
+        }
+        img.src = dataUrl;
+        img.style.display = 'block';
+        board.classList.add('has-bg-image');
+        if (sel) sel.value = 'custom_image';
+        board.dataset.scene = 'custom_image';
+        // React äger den faktiska scen-renderingen (backdrop) — håll dess state i synk
+        // så vi inte hamnar i ett läge där HTML-toolbaren och React-scenen driftar isär.
+        window.__setTacticsScene?.('custom_image');
+        if (!skipPersist) {
+            try { localStorage.setItem(bgImageKey(), dataUrl); } catch (_) {}
+        }
+        syncCanvasesToPitch();
+        renderAllDrawings();
+        renderLinks();
+    }
+
+    function importBackgroundImage(input) {
+        const file = input && input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => setBackgroundImage(e.target.result);
+        reader.readAsDataURL(file);
+        input.value = '';
+    }
+
+    function clearBackgroundImage() {
+        const img = document.getElementById('tactics-custom-image');
+        const board = document.querySelector('.tactics-board');
+        const sel = document.getElementById('sceneSelect');
+        const fallbackScene = sceneBeforeCustomImage || 'training_pitch';
+        if (img) { img.removeAttribute('src'); img.style.display = 'none'; }
+        if (board) board.classList.remove('has-bg-image');
+        if (sel && sel.value === 'custom_image') sel.value = fallbackScene;
+        if (board) board.dataset.scene = sel ? sel.value : fallbackScene;
+        window.__setTacticsScene?.(fallbackScene);
+        try { localStorage.removeItem(bgImageKey()); } catch (_) {}
+    }
+
+    function restoreBackgroundImage() {
+        try {
+            const d = localStorage.getItem(bgImageKey());
+            if (d) setBackgroundImage(d, true);
+        } catch (_) {}
+    }
+
+    function applyObjectScale(piece, delta) {
+        const current = parseFloat(piece.dataset.scale || '1');
+        const next = Math.min(2.4, Math.max(0.45, +(current + delta).toFixed(2)));
+        piece.dataset.scale = String(next);
+        piece.style.setProperty('--obj-scale', next);
+    }
+
+    function resizeTrainingObject(idOrPiece, delta) {
+        const piece = typeof idOrPiece === 'string' ? document.getElementById(idOrPiece) : idOrPiece;
+        if (!piece) return;
+        pushHistory();
+        applyObjectScale(piece, delta);
+    }
+
+    function handleObjectWheel(piece, delta) {
+        if (!objWheelTimer) pushHistory();
+        clearTimeout(objWheelTimer);
+        objWheelTimer = setTimeout(() => { objWheelTimer = null; }, 500);
+        applyObjectScale(piece, delta);
     }
 
     function getPieceMetrics(piece) {
@@ -538,6 +757,9 @@
             pole: { x: 50, y: 38 },
             mannequin: { x: 62, y: 50 },
             'mini-goal': { x: 50, y: 68 },
+            'bib-green': { x: 44, y: 56 },
+            'bib-blue': { x: 50, y: 56 },
+            'bib-red': { x: 56, y: 56 },
         };
         const preset = presets[type];
         if (!preset) return;
@@ -681,7 +903,7 @@
         if (drawingActive) {
             const mode = document.getElementById('drawMode').value;
             if (mode === 'eraser') {
-                if (this.dataset.kind === 'ball' || this.dataset.kind === 'cone') {
+                if (OBJECT_KINDS.includes(this.dataset.kind)) {
                     deletePiece(this);
                     event.preventDefault();
                     return;
@@ -1267,7 +1489,8 @@
                 num: piece.dataset.num,
                 x: box.centerX,
                 y: box.centerY,
-                name: nameEl ? nameEl.innerText : ''
+                name: nameEl ? nameEl.innerText : '',
+                scale: piece.dataset.scale ? parseFloat(piece.dataset.scale) : null
             };
         });
     }
@@ -1345,7 +1568,7 @@
     function resetBoard() {
         if (!window.confirm('Nollställ tavlan? Ritverk, länkar, sparade rutor och autosparat läge rensas.')) return;
         pushHistory();
-        document.querySelectorAll('.piece.ball, .piece.cone').forEach((piece) => piece.remove());
+        document.querySelectorAll(OBJECT_SELECTOR).forEach((piece) => piece.remove());
         drawings = [];
         links = [];
         clearTimeline();
@@ -1382,7 +1605,7 @@
 
     function updateItemCounter() {
         let highest = 0;
-        document.querySelectorAll('.piece.ball, .piece.cone').forEach((piece) => {
+        document.querySelectorAll(OBJECT_SELECTOR).forEach((piece) => {
             const match = piece.id.match(/-(\d+)$/);
             if (match) highest = Math.max(highest, Number(match[1]));
         });
@@ -1392,7 +1615,7 @@
     function applyPieceState(pieceState) {
         const stateMap = new Map(pieceState.map((entry) => [entry.id, entry]));
 
-        document.querySelectorAll('.piece.ball, .piece.cone').forEach((piece) => {
+        document.querySelectorAll(OBJECT_SELECTOR).forEach((piece) => {
             if (!stateMap.has(piece.id)) piece.remove();
         });
 
@@ -1405,6 +1628,11 @@
             }
 
             setPieceCenter(piece, centerX, centerY);
+
+            if (OBJECT_KINDS.includes(entry.kind) && entry.scale) {
+                piece.dataset.scale = String(entry.scale);
+                piece.style.setProperty('--obj-scale', entry.scale);
+            }
 
             const nameEl = piece.querySelector('.name');
             if (nameEl) nameEl.innerText = entry.name || 'Namn';
@@ -1773,6 +2001,10 @@
   window.addBall = addBall;
     window.addCone = addCone;
     window.addTrainingObject = addTrainingObject;
+    window.resizeTrainingObject = resizeTrainingObject;
+    window.clearTrainingMaterial = clearTrainingMaterial;
+    window.importBackgroundImage = importBackgroundImage;
+    window.clearBackgroundImage = clearBackgroundImage;
   window.setPlayerSize = setPlayerSize;
   window.updateToolSettingsLabels = updateToolSettingsLabels;
   window.updateToolOptionsVisibility = updateToolOptionsVisibility;

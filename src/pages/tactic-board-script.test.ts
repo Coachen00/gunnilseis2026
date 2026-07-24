@@ -13,7 +13,7 @@ declare global {
   interface Window {
     __cleanupTacticBoard?: () => void;
     applyFormation?: (team: string, formation: string) => void;
-    captureFrameState?: () => { pieces: Array<{ id: string; x: number; y: number }> };
+    captureFrameState?: () => { pieces: Array<{ id: string; x: number; y: number; scale?: number | null }> };
     applyFrameState?: (frame: unknown) => void;
     getMousePos?: (event: { clientX: number; clientY: number }) => { x: number; y: number };
     setPieceCenter?: (piece: HTMLElement, x: number, y: number) => void;
@@ -23,6 +23,11 @@ declare global {
     saveBoardState?: () => void;
     deletePiece?: (piece: HTMLElement) => void;
     addBall?: () => void;
+    addTrainingObject?: (kind: string) => void;
+    resizeTrainingObject?: (idOrPiece: string | HTMLElement, delta: number) => void;
+    clearTrainingMaterial?: () => void;
+    importBackgroundImage?: (input: HTMLInputElement) => void;
+    clearBackgroundImage?: () => void;
   }
 }
 
@@ -179,5 +184,73 @@ describe("tactic-board-script logical coordinates", () => {
     runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
     const restored = document.querySelector<HTMLElement>("#home-5");
     expect({ x: restored?.dataset.x, y: restored?.dataset.y }).toEqual(saved);
+  });
+
+  it("exposes the generalized training-object API on window", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    expect(typeof window.addTrainingObject).toBe("function");
+    expect(typeof window.resizeTrainingObject).toBe("function");
+    expect(typeof window.clearTrainingMaterial).toBe("function");
+    expect(typeof window.importBackgroundImage).toBe("function");
+    expect(typeof window.clearBackgroundImage).toBe("function");
+  });
+
+  it("resizes a training object within the 0.45–2.4 clamp via resizeTrainingObject", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.addBall?.();
+    const ball = document.querySelector<HTMLElement>(".piece.ball");
+    expect(ball).toBeTruthy();
+    expect(ball?.dataset.scale).toBe("1");
+
+    window.resizeTrainingObject?.(ball as HTMLElement, 0.15);
+    expect(Number(ball?.dataset.scale)).toBeCloseTo(1.15);
+
+    for (let i = 0; i < 20; i++) window.resizeTrainingObject?.(ball as HTMLElement, 0.5);
+    expect(Number(ball?.dataset.scale)).toBeLessThanOrEqual(2.4);
+
+    for (let i = 0; i < 20; i++) window.resizeTrainingObject?.(ball as HTMLElement, -0.5);
+    expect(Number(ball?.dataset.scale)).toBeGreaterThanOrEqual(0.45);
+  });
+
+  it("clears all training material via clearTrainingMaterial but keeps players", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.applyFormation?.("home", "4-4-2");
+    window.addBall?.();
+    window.addTrainingObject?.("cone");
+    expect(document.querySelector(".piece.ball")).toBeTruthy();
+    expect(document.querySelector(".piece.cone")).toBeTruthy();
+
+    window.clearTrainingMaterial?.();
+
+    expect(document.querySelector(".piece.ball")).toBeNull();
+    expect(document.querySelector(".piece.cone")).toBeNull();
+    expect(document.querySelector("#home-0")).toBeTruthy();
+
+    window.undoBoard?.();
+    expect(document.querySelector(".piece.ball")).toBeTruthy();
+    expect(document.querySelector(".piece.cone")).toBeTruthy();
+  });
+
+  it("persists and restores training-object scale through capture/apply frame state", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.addBall?.();
+    const ball = document.querySelector<HTMLElement>(".piece.ball");
+    window.resizeTrainingObject?.(ball as HTMLElement, 0.3);
+    expect(Number(ball?.dataset.scale)).toBeCloseTo(1.3);
+
+    const frame = window.captureFrameState?.();
+    const ballEntry = frame?.pieces.find((p) => p.id === ball?.id);
+    expect(ballEntry?.scale).toBeCloseTo(1.3);
+
+    window.resizeTrainingObject?.(ball as HTMLElement, -0.3);
+    expect(Number(ball?.dataset.scale)).toBeCloseTo(1.0);
+
+    window.applyFrameState?.(frame);
+    const restoredBall = document.querySelector<HTMLElement>(".piece.ball");
+    expect(Number(restoredBall?.dataset.scale)).toBeCloseTo(1.3);
   });
 });

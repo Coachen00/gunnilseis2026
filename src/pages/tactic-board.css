@@ -2207,6 +2207,21 @@
     background: radial-gradient(circle at 30% 30%, #fff, #b7bec0);
 }
 
+.tactic-board-page .material-bib-green::before,
+.tactic-board-page .material-bib-blue::before,
+.tactic-board-page .material-bib-red::before {
+    width: 16px;
+    height: 18px;
+    top: 3px;
+    border-radius: 0;
+    box-shadow: none;
+    clip-path: polygon(14% 8%, 34% 8%, 50% 26%, 66% 8%, 86% 8%, 86% 40%, 74% 48%, 80% 100%, 20% 100%, 26% 48%, 14% 40%);
+}
+
+.tactic-board-page .material-bib-green::before { background: #7cc043; }
+.tactic-board-page .material-bib-blue::before { background: #2f7fd1; }
+.tactic-board-page .material-bib-red::before { background: #e23b34; }
+
 .tactic-board-page .piece.hurdle {
     width: 40px;
     height: 20px;
@@ -2261,6 +2276,162 @@
 .tactic-board-page .piece.mini-goal {
     z-index: 105;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.38);
+}
+
+.tactic-board-page .piece.training-object {
+    --obj-scale: 1;
+    z-index: 105;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.38);
+    transform: translate(-50%, -50%) scale(var(--obj-scale));
+    transition: left 0.8s cubic-bezier(0.25, 1, 0.5, 1), top 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.12s ease-out;
+    overflow: visible;
+}
+
+.tactic-board-page .piece.training-object::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 78%;
+    height: 7px;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 72%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.tactic-board-page .piece.training-object .obj-label {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: rgba(8, 14, 17, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: rgba(255, 255, 255, 0.94);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+}
+
+.tactic-board-page .piece.training-object:hover .obj-label,
+.tactic-board-page .piece.training-object:focus-within .obj-label {
+    opacity: 1;
+}
+
+.tactic-board-page .piece.training-object .obj-controls {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(10, 16, 19, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease-out;
+}
+
+.tactic-board-page .piece.training-object:hover .obj-controls,
+.tactic-board-page .piece.training-object:focus-within .obj-controls {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tactic-board-page .piece.training-object .obj-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background: rgba(15, 23, 26, 0.96);
+    color: white;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.tactic-board-page .piece.training-object .obj-btn:hover {
+    background: rgba(55, 199, 112, 0.88);
+    border-color: rgba(255, 255, 255, 0.65);
+}
+
+.tactic-board-page .piece.training-object .obj-btn-delete:hover {
+    background: rgba(239, 83, 80, 0.92);
+}
+
+.tactic-board-page .piece.bib-green,
+.tactic-board-page .piece.bib-blue,
+.tactic-board-page .piece.bib-red {
+    width: 38px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.tactic-board-page .piece.bib-green .bib-wrap,
+.tactic-board-page .piece.bib-blue .bib-wrap,
+.tactic-board-page .piece.bib-red .bib-wrap {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+}
+
+.tactic-board-page .piece.bib-green::after,
+.tactic-board-page .piece.bib-blue::after,
+.tactic-board-page .piece.bib-red::after {
+    bottom: 0;
+    width: 66%;
+}
+
+.tactic-board-page .piece.cone,
+.tactic-board-page .piece.hurdle,
+.tactic-board-page .piece.ring,
+.tactic-board-page .piece.ladder {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    clip-path: none;
+    border-radius: 0;
+    border-top: none;
+    border-bottom: none;
+}
+
+.tactic-board-page .piece.cone { width: 27px; height: 32px; }
+.tactic-board-page .piece.hurdle { width: 52px; height: 43px; }
+.tactic-board-page .piece.ring { width: 35px; height: 35px; }
+.tactic-board-page .piece.ladder { width: 66px; height: 25px; }
+
+.tactic-board-page .piece .mat-wrap {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+}
+
+.tactic-board-page .piece.cone::after,
+.tactic-board-page .piece.hurdle::after,
+.tactic-board-page .piece.ring::after,
+.tactic-board-page .piece.ladder::after {
+    bottom: -1px;
+    width: 60%;
+    height: 6px;
 }
 
 .tactic-board-page .piece.player-piece {
@@ -2399,5 +2570,62 @@
 .tactic-board-page .tactics-board[data-scene="whiteboard"] #pitch::before,
 .tactic-board-page .tactics-board[data-scene="neutral_analysis"] #pitch::before {
     border-color: rgba(40, 30, 15, 0.7);
+}
+
+/* --- Egen bild / print screen som bakgrund (analysläge) --- */
+.tactic-board-page .tactics-custom-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #0d1417;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+}
+
+.tactic-board-page .tactics-board.has-bg-image .tactics-custom-image {
+    display: block;
+}
+
+.tactic-board-page .custom-bg-placeholder {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    pointer-events: none;
+}
+
+.tactic-board-page .tactics-board[data-scene="custom_image"]:not(.has-bg-image) .custom-bg-placeholder {
+    display: flex;
+}
+
+.tactic-board-page .tactics-board[data-scene="custom_image"] .tactics-backdrop {
+    background: #0d1417;
+}
+
+.tactic-board-page .tactics-board[data-scene="custom_image"] .tactics-backdrop > svg,
+.tactic-board-page .tactics-board[data-scene="custom_image"] .tactics-backdrop__tone {
+    display: none;
+}
+
+.tactic-board-page .tactics-board[data-scene="custom_image"] #pitch > .line,
+.tactic-board-page .tactics-board[data-scene="custom_image"] #pitch > .goal,
+.tactic-board-page .tactics-board[data-scene="custom_image"] #pitch > .center-spot,
+.tactic-board-page .tactics-board[data-scene="custom_image"] .bench-strip {
+    display: none;
+}
+
+.tactic-board-page .tactics-board[data-scene="custom_image"] #pitch::before {
+    display: none;
 }
 

@@ -392,3 +392,25 @@ export const NeutralAnalysisScene = ({ className, style }: SceneRendererProps) =
     </g>
   </svg>
 );
+
+/* =================================================================
+   SCEN 7 — CUSTOM_IMAGE
+   Minimal mörk basyta för analysläget. Den faktiska uppladdade bilden
+   renderas inte här — den ligger i statisk markup (#tactics-custom-image)
+   som ett syskon till backdrop-roten, se tactic-board-markup.html och
+   tactic-board-script.js (setBackgroundImage/clearBackgroundImage).
+   Denna scen är bara en säker mörk fallback bakom den, så
+   TacticsBitmapBackdrop aldrig renderar tomt/kraschar för scenen.
+   ================================================================= */
+export const CustomImageScene = ({ className, style }: SceneRendererProps) => (
+  <svg
+    viewBox="0 0 1600 900"
+    preserveAspectRatio="xMidYMid slice"
+    className={className}
+    style={style}
+    aria-hidden="true"
+    role="presentation"
+  >
+    <rect width="1600" height="900" fill="#0d1417" />
+  </svg>
+);

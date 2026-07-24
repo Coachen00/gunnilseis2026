@@ -5,6 +5,7 @@ import {
 } from "@/data/tacticsBoardAssets";
 import {
   CoachboardScene,
+  CustomImageScene,
   NeutralAnalysisScene,
   WhiteboardScene,
 } from "@/components/tactics/PaintedScenes";
@@ -21,6 +22,9 @@ const SVG_SCENES: Partial<Record<TacticsBoardScene, React.FC<{ className?: strin
   whiteboard: WhiteboardScene,
   coachboard: CoachboardScene,
   neutral_analysis: NeutralAnalysisScene,
+  // custom_image: bara en minimal mörk fallback-yta — den riktiga bilden
+  // renderas via #tactics-custom-image, utanför den här React-roten.
+  custom_image: CustomImageScene,
   // training_pitch finns både som bitmap (default) och svg-fallback.
   // SVG-versionen kan användas via `_svg_training_pitch` om så önskas i framtiden.
 };

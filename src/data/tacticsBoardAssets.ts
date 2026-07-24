@@ -94,6 +94,14 @@ export const TACTICS_BOARD_ASSETS = {
     objectPosition: "50% 50%",
     boardBounds: { x: 5, y: 6, width: 90, height: 88 },
   },
+  custom_image: {
+    label: "Egen bild / print screen",
+    description: "Egen uppladdad bild eller print screen som bakgrund — för analysläge.",
+    kind: "svg",
+    fallback: "#0d1417",
+    objectPosition: "50% 50%",
+    boardBounds: { x: 5, y: 6, width: 90, height: 88 },
+  },
 } as const satisfies Record<string, TacticsBoardAsset>;
 
 export type TacticsBoardScene = keyof typeof TACTICS_BOARD_ASSETS;
@@ -105,6 +113,7 @@ export const TACTICS_SCENE_ORDER: TacticsBoardScene[] = [
   "match_overview",
   "coachboard",
   "neutral_analysis",
+  "custom_image",
 ];
 
 export function getTacticsBoardAsset(scene: TacticsBoardScene): TacticsBoardAsset {
