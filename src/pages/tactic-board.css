@@ -205,10 +205,11 @@
 
         .tactic-board-page .tactics-board {
             /* Stort overview — använder all tillgänglig bredd inom panel-utrymmet,
-               upp till 1500px. Aspect 16:9 behålls. */
+               upp till 1500px. Aspect 1.3235 ger #pitch (84% × 72%) proportionen
+               1.54 = 105×68 m; med 16:9 blir spelytan 2.07 och alla zoner fel. */
             width: 100%;
             max-width: 1500px;
-            aspect-ratio: 16 / 9;
+            aspect-ratio: 1.3235;
             position: relative;
             overflow: hidden;
             background: #6f9b52;

@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { TACTICS_BOARD_ASSETS } from "./tacticsBoardAssets";
+import { TACTICS_BOARD_ASSETS, TACTICS_SCENE_ORDER } from "./tacticsBoardAssets";
 
 describe("TACTICS_BOARD_ASSETS", () => {
-  it("defines the training pitch bitmap scene with stable board bounds", () => {
+  it("defines the training pitch scene with stable board bounds", () => {
     expect(TACTICS_BOARD_ASSETS.training_pitch).toMatchObject({
+      kind: "svg",
       fallback: "#6f9b52",
       objectPosition: "50% 50%",
       boardBounds: {
@@ -13,14 +14,13 @@ describe("TACTICS_BOARD_ASSETS", () => {
         height: 72,
       },
     });
-    expect(TACTICS_BOARD_ASSETS.training_pitch.src).toContain("training-pitch-realistic.png");
-    expect(TACTICS_BOARD_ASSETS.training_pitch.fallbackSrc).toContain("training-pitch-painted.png");
   });
 
-  it("uses bitmap scenes for the other full-pitch backgrounds", () => {
-    expect(TACTICS_BOARD_ASSETS.night_pitch).toMatchObject({ kind: "bitmap" });
-    expect(TACTICS_BOARD_ASSETS.match_overview).toMatchObject({ kind: "bitmap" });
-    expect(TACTICS_BOARD_ASSETS.night_pitch.src).toContain("night-pitch-realistic.png");
-    expect(TACTICS_BOARD_ASSETS.match_overview.src).toContain("match-overview-realistic.png");
+  it("keeps every scene svg-renderad så inga planlinjer bakas in i bakgrunden", () => {
+    for (const scene of TACTICS_SCENE_ORDER) {
+      const asset = TACTICS_BOARD_ASSETS[scene];
+      expect(asset.kind, scene).toBe("svg");
+      expect(asset.src, scene).toBeUndefined();
+    }
   });
 });

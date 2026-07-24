@@ -6,7 +6,10 @@ import {
 import {
   CoachboardScene,
   CustomImageScene,
+  MatchOverviewScene,
   NeutralAnalysisScene,
+  NightPitchScene,
+  TrainingPitchPaintedScene,
   WhiteboardScene,
 } from "@/components/tactics/PaintedScenes";
 
@@ -15,18 +18,20 @@ type TacticsBitmapBackdropProps = {
 };
 
 /**
- * Mappar svg-scener till sin React-komponent. Bitmap-scener
- * (currently bara training_pitch) hanteras via <img>-vägen nedan.
+ * Mappar scener till sin React-komponent. Alla scener är svg — de foto-
+ * realistiska bitmaparna hade planlinjer inbakade i bilden, vilket krockade
+ * med CSS-linjerna på #pitch. <img>-vägen finns kvar för custom_image.
  */
 const SVG_SCENES: Partial<Record<TacticsBoardScene, React.FC<{ className?: string; style?: CSSProperties }>>> = {
+  training_pitch: TrainingPitchPaintedScene,
   whiteboard: WhiteboardScene,
+  night_pitch: NightPitchScene,
+  match_overview: MatchOverviewScene,
   coachboard: CoachboardScene,
   neutral_analysis: NeutralAnalysisScene,
   // custom_image: bara en minimal mörk fallback-yta — den riktiga bilden
   // renderas via #tactics-custom-image, utanför den här React-roten.
   custom_image: CustomImageScene,
-  // training_pitch finns både som bitmap (default) och svg-fallback.
-  // SVG-versionen kan användas via `_svg_training_pitch` om så önskas i framtiden.
 };
 
 const TacticsBitmapBackdrop = ({ scene }: TacticsBitmapBackdropProps) => {

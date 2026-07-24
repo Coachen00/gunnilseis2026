@@ -64,7 +64,11 @@ export const TrainingPitchPaintedScene = ({ className, style }: SceneRendererPro
   >
     <Defs id="tp" />
     {/* Bas-tone: varm gräsgrön */}
-    <rect width="1600" height="900" fill="#4d8a3a" />
+    <linearGradient id="tp-grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stopColor="#78a659" />
+      <stop offset="1" stopColor="#5f8c45" />
+    </linearGradient>
+    <rect width="1600" height="900" fill="url(#tp-grass)" />
     {/* Vertikala stripes — målade som om de var klippta */}
     {Array.from({ length: 9 }).map((_, i) => (
       <rect
@@ -83,8 +87,8 @@ export const TrainingPitchPaintedScene = ({ className, style }: SceneRendererPro
     </radialGradient>
     <rect width="1600" height="900" fill="url(#tp-light)" />
     {/* Målat brus */}
-    <rect width="1600" height="900" filter={`url(#tp-paint)`} fill="#3f7530" opacity="0.45" />
-    <rect width="1600" height="900" filter={`url(#tp-grain)`} opacity="0.5" />
+    {/* Ingen brus-textur här — prototypen har rent klippt gräs så CSS-linjerna
+        på #pitch läser skarpt mot bakgrunden. */}
   </svg>
 );
 

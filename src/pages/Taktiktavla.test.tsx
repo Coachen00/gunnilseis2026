@@ -48,7 +48,10 @@ describe("Taktiktavla", () => {
     expect(backdrop).toBeInTheDocument();
     expect(backdropImage).toBeInTheDocument();
     expect(backdrop).toHaveStyle({ pointerEvents: "none" });
-    expect(backdrop?.querySelector("svg")).not.toBeInTheDocument();
+    // Scenerna ritas som inline-svg utan planlinjer; linjerna kommer från CSS på
+    // #pitch. En raster-bild i backdropen betyder inbakade linjer som krockar.
+    expect(backdrop?.querySelector("svg")).toBeInTheDocument();
+    expect(backdrop?.querySelector("img")).not.toBeInTheDocument();
     expect(pitch).toHaveClass("tactics-interaction-layer");
     expect(backdrop?.compareDocumentPosition(pitch as Node)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     expect(document.querySelector(".tactics-board")?.firstElementChild).toHaveAttribute(

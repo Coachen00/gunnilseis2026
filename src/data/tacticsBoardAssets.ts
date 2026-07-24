@@ -1,8 +1,3 @@
-import trainingPitchPaintedFallback from "@/assets/tactics/training-pitch-painted.png";
-import trainingPitchRealistic from "@/assets/tactics/training-pitch-realistic.png";
-import nightPitchRealistic from "@/assets/tactics/night-pitch-realistic.png";
-import matchOverviewRealistic from "@/assets/tactics/match-overview-realistic.png";
-
 export type TacticsBoardBounds = {
   x: number;
   y: number;
@@ -43,9 +38,7 @@ export const TACTICS_BOARD_ASSETS = {
   training_pitch: {
     label: "Träningsplan",
     description: "Varm gräsmatta i sommarljus — välbekant träningsmiljö.",
-    kind: "bitmap",
-    src: trainingPitchRealistic,
-    fallbackSrc: trainingPitchPaintedFallback,
+    kind: "svg",
     fallback: "#6f9b52",
     objectPosition: "50% 50%",
     boardBounds: { x: 8, y: 14, width: 84, height: 72 },
@@ -60,20 +53,16 @@ export const TACTICS_BOARD_ASSETS = {
   },
   night_pitch: {
     label: "Kvällsmatch",
-    description: "Fotorealistisk träningsplan under strålkastare.",
-    kind: "bitmap",
-    src: nightPitchRealistic,
-    fallbackSrc: trainingPitchPaintedFallback,
+    description: "Träningsplan under strålkastare.",
+    kind: "svg",
     fallback: "#2a5236",
     objectPosition: "50% 50%",
     boardBounds: { x: 8, y: 14, width: 84, height: 72 },
   },
   match_overview: {
     label: "Matchplan ovanifrån",
-    description: "Fotorealistisk helplan sedd från arenans läktare.",
-    kind: "bitmap",
-    src: matchOverviewRealistic,
-    fallbackSrc: trainingPitchPaintedFallback,
+    description: "Helplan sedd från arenans läktare.",
+    kind: "svg",
     fallback: "#3f8d3f",
     objectPosition: "50% 50%",
     boardBounds: { x: 8, y: 14, width: 84, height: 72 },
