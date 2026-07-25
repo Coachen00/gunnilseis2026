@@ -301,13 +301,13 @@ export const AnfallsspelSection = () => (
       </div>
       <ExpandableImage src={spelytorPlanbild} alt="Spelytor — planbild med zoner" />
 
-      <div className="mt-10 mb-10">
-        <KorridorerDiagram />
+      <div className="mt-10">
+        <SpelytorDiagram />
       </div>
 
-      <SectionHeader badge="Korridorer" title="Inre & Yttre Korridorer" subtitle="Vi spelar alltid via inre korridor när möjligt. Yttre = sista utväg." className="mb-8" />
+      <SectionHeader badge="Korridorer" title="Inre & Yttre Korridorer" subtitle="Vi spelar alltid via inre korridor när möjligt. Yttre = sista utväg." className="mb-8 mt-14" />
       <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-        <SpelytorDiagram />
+        <KorridorerDiagram />
         <GoldenZoneDiagram />
       </div>
     </div>

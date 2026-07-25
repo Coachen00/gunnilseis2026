@@ -8,9 +8,6 @@ interface SpelytorDiagramProps {
 const SpelytorDiagram = ({ className }: SpelytorDiagramProps) => {
   return (
     <div className={cn("relative", className)}>
-      <h4 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-2">
-        Spelytor (dynamiska)
-      </h4>
       <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
         Spelytorna är inte fasta zoner — de är ytorna <strong className="text-foreground">mellan motståndarens lagdelar</strong> (back–mitt, mitt–anfall). När motståndaren rör sig, rör sig ytorna med dem.
       </p>
