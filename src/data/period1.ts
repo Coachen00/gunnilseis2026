@@ -46,7 +46,6 @@ export interface Week {
   learningGoal: string;
   sessions: Session[];
   kpi: string;
-  graphic: GraphicType;
 }
 
 export interface EffectLogicBlock {
@@ -145,7 +144,6 @@ export const PERIOD_1: Period = {
       learningGoal:
         "Spelarna ska förstå diagonalt spel, fem korridorer, öppen kropp och första passningsmönstret MV → YB → MF.",
       kpi: "Minst 10 lyckade diagonala passningar in bakom första presslinjen per spelmoment.",
-      graphic: "corridor-map",
       sessions: [
         {
           day: "Måndag",
@@ -209,7 +207,6 @@ export const PERIOD_1: Period = {
       theme: "Attrahera press",
       learningGoal: "Vi spelar inte diagonalt direkt varje gång. Vi lockar press först.",
       kpi: "Minst 6 situationer per spel där laget först lockar press och sedan spelar ur den.",
-      graphic: "attract-fix-release",
       sessions: [
         {
           day: "Måndag",
@@ -274,7 +271,6 @@ export const PERIOD_1: Period = {
       learningGoal:
         "Tredje man används när direkt passning är stängd. Vi vill inte ta emot felvänd i onödan.",
       kpi: "Minst 5 tredje man-aktioner som leder till rättvänd spelare eller spelvändning.",
-      graphic: "third-man",
       sessions: [
         {
           day: "Måndag",
@@ -340,7 +336,6 @@ export const PERIOD_1: Period = {
       theme: "Spelvändning",
       learningGoal: "Flytta bollen från en korridor till en annan med kontroll och timing.",
       kpi: "Minst 4 spelvändningar som leder till 1v1, 2v1 eller 2v2 på kanten.",
-      graphic: "corridor-map",
       sessions: [
         {
           day: "Måndag",
@@ -404,7 +399,6 @@ export const PERIOD_1: Period = {
       theme: "Sista tredjedelen",
       learningGoal: "Vad händer efter att vi frigjort yttern? Assistytan + fyll boxen.",
       kpi: "Minst 6 attacker in i assistyta efter diagonal progression.",
-      graphic: "final-third",
       sessions: [
         {
           day: "Måndag",
@@ -470,7 +464,6 @@ export const PERIOD_1: Period = {
       learningGoal:
         "Spela hela mönstret matchlikt. Förstå säkerheten bakom bollen och återerövring.",
       kpi: "Återerövra inom 6 sekunder efter bolltapp eller stoppa kontring genom restförsvar.",
-      graphic: "rest-defense",
       sessions: [
         {
           day: "Måndag",

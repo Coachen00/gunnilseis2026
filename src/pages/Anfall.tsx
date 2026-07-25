@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import FasTrappa from "@/components/FasTrappa";
 import AttackingPrincipleCard from "@/components/AttackingPrincipleCard";
+import { AnfallsspelSection } from "@/components/sections/TacticsSections";
 import { PHASE_CUES } from "@/data/phaseCues";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { MATCH_META } from "@/data/matchplan";
@@ -150,6 +151,12 @@ const Anfall = () => {
       </KedjaSection>
 
       <KedjaQuote text="Vi gör inte mål med en man i boxen." highlight="mål" />
+
+      <div className="bg-white py-24">
+        <div className="container">
+          <AnfallsspelSection />
+        </div>
+      </div>
 
       <div className="bg-kedja-paper py-24">
         <div className="container space-y-10">
