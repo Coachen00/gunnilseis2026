@@ -234,6 +234,16 @@ describe("tactic-board-script logical coordinates", () => {
     expect(document.querySelector(".piece.cone")).toBeTruthy();
   });
 
+  it("undoes a placed training object", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    window.addTrainingObject?.("cone");
+    expect(document.querySelector(".piece.cone")).toBeTruthy();
+
+    window.undoBoard?.();
+    expect(document.querySelector(".piece.cone")).toBeNull();
+  });
+
   it("persists and restores training-object scale through capture/apply frame state", () => {
     runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
 
