@@ -312,35 +312,38 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Alla planlinjer i procent av 105 × 68 m (pitchGeometry-specen).
+           Straffområdets och målgårdens kanter ÄR korridorgränserna — de
+           måste därför räknas ur samma mått, annars glider lagren isär. */
         .tactic-board-page .penalty-box-l {
-            width: 15%;
-            height: 57.1429%;
+            width: 15.71%;
+            height: 59.29%;
             left: 0;
-            top: 21.4286%;
+            top: 20.35%;
             border-left: none;
         }
 
         .tactic-board-page .penalty-box-r {
-            width: 15%;
-            height: 57.1429%;
+            width: 15.71%;
+            height: 59.29%;
             right: 0;
-            top: 21.4286%;
+            top: 20.35%;
             border-right: none;
         }
 
         .tactic-board-page .goal-box-l {
-            width: 5%;
-            height: 25.7143%;
+            width: 5.24%;
+            height: 26.94%;
             left: 0;
-            top: 37.1429%;
+            top: 36.53%;
             border-left: none;
         }
 
         .tactic-board-page .goal-box-r {
-            width: 5%;
-            height: 25.7143%;
+            width: 5.24%;
+            height: 26.94%;
             right: 0;
-            top: 37.1429%;
+            top: 36.53%;
             border-right: none;
         }
 
@@ -352,11 +355,11 @@
         }
 
         .tactic-board-page .center-circle {
-            width: 16.3636%;
-            height: 25.7143%;
+            width: 17.43%;
+            height: 26.91%;
             border-radius: 50%;
-            left: 41.8182%;
-            top: 37.1429%;
+            left: 41.29%;
+            top: 36.54%;
         }
 
         .tactic-board-page .center-spot {
@@ -371,10 +374,7 @@
 
         .tactic-board-page .layer {
             position: absolute;
-            top: 14%;
-            left: 8%;
-            width: 84%;
-            height: 72%;
+            inset: 0;
             pointer-events: none;
             z-index: 5;
             overflow: hidden;
@@ -447,19 +447,16 @@
 
         .tactic-board-page .corridor-band {
             position: absolute;
-            top: 0;
-            height: 100%;
+            left: 0;
+            width: 100%;
             display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            border-right: 1px solid rgba(255, 255, 255, 0.42);
+            align-items: center;
+            justify-content: flex-start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.42);
         }
 
-        .tactic-board-page #layer-korridorer .corridor-band {
-            bottom: auto !important;
-            height: 100% !important;
-            border-top: 0 !important;
-            border-bottom: 0 !important;
+        .tactic-board-page #layer-korridorer .corridor-band:last-child {
+            border-bottom: 0;
         }
 
         .tactic-board-page .corridor-band-outer {
@@ -475,7 +472,7 @@
         }
 
         .tactic-board-page .corridor-label {
-            margin-top: 8px;
+            margin-left: 8px;
             padding: 3px 5px;
             border-radius: 4px;
             background: rgba(7, 19, 14, 0.62);
@@ -486,14 +483,16 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             white-space: nowrap;
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
         }
 
         .tactic-board-page .play-zone {
             position: absolute;
-            left: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.52);
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.52);
             overflow: hidden;
         }
 
@@ -518,7 +517,7 @@
         }
 
         .tactic-board-page .zone-origin {
-            border-bottom: none;
+            border-right: none;
         }
 
         .tactic-board-page .play-zone-content {
@@ -569,12 +568,12 @@
 
         .tactic-board-page .third-band {
             position: absolute;
-            left: 0;
-            width: 100%;
+            top: 0;
+            height: 100%;
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+            align-items: flex-end;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.55);
             background: rgba(14, 116, 144, 0.14);
         }
 
@@ -583,11 +582,11 @@
         }
 
         .tactic-board-page .third-band:last-child {
-            border-bottom: 0;
+            border-right: 0;
         }
 
         .tactic-board-page .third-band span {
-            margin-right: 8px;
+            margin-bottom: 8px;
             padding: 4px 8px;
             border-radius: 4px;
             background: rgba(7, 19, 14, 0.65);

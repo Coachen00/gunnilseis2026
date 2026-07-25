@@ -234,6 +234,52 @@ describe("tactic-board-script logical coordinates", () => {
     expect(document.querySelector(".piece.cone")).toBeTruthy();
   });
 
+  // CORRIDORS ur design-systemets pitchGeometry: y-gränser i meter på 68 m bredd,
+  // liggande 105×68-plan med anfall mot höger. Korridorerna delar BREDDEN — låg
+  // tidigare på x-axeln, vilket gav 105 m-proportioner på ett 68 m-mått.
+  it("lägger korridorerna längs planens bredd med specens mått", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    const bands = Array.from(document.querySelectorAll<HTMLElement>("#layer-korridorer .corridor-band"));
+    expect(bands).toHaveLength(5);
+
+    const spec: Array<[number, number]> = [
+      [0, 13.84],
+      [13.84, 24.84],
+      [24.84, 43.16],
+      [43.16, 54.16],
+      [54.16, 68],
+    ];
+
+    bands.forEach((band, i) => {
+      const [yMin, yMax] = spec[i];
+      expect(parseFloat(band.style.top)).toBeCloseTo((yMin / 68) * 100, 1);
+      expect(parseFloat(band.style.height)).toBeCloseTo(((yMax - yMin) / 68) * 100, 1);
+      expect(band.style.left).toBe("");
+      expect(band.style.width).toBe("");
+    });
+  });
+
+  it("lägger tredjedelarna längs planens längd med specens mått", () => {
+    runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
+
+    const bands = Array.from(document.querySelectorAll<HTMLElement>("#layer-tredjedelar .third-band"));
+    expect(bands).toHaveLength(3);
+
+    const spec: Array<[number, number]> = [
+      [0, 35],
+      [35, 70],
+      [70, 105],
+    ];
+
+    bands.forEach((band, i) => {
+      const [xMin, xMax] = spec[i];
+      expect(parseFloat(band.style.left)).toBeCloseTo((xMin / 105) * 100, 1);
+      expect(parseFloat(band.style.width)).toBeCloseTo(((xMax - xMin) / 105) * 100, 1);
+      expect(band.style.top).toBe("");
+    });
+  });
+
   it("undoes a placed training object", () => {
     runBoardScript({ left: 80, top: 140, width: 840, height: 720 });
 
