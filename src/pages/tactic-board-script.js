@@ -749,6 +749,7 @@
     }
 
     function addTrainingObject(type) {
+        pushHistory();
         const presets = {
             cone: { x: 38, y: 44 },
             hurdle: { x: 50, y: 52 },
