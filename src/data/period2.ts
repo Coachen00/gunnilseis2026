@@ -81,7 +81,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Spelaren känner igen våra press-utlösare och vet när laget går i press tillsammans — inte en och en.",
       kpi: "Antal gemensamma press-starter på rätt utlösare per spelperiod.",
-      graphic: "pitch",
       sessions: [
         {
           day: "Måndag",
@@ -147,7 +146,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Direkt återerövring i fem sekunder efter tapp — närmaste spelare pressar bollen, nästa två stänger passningsvägarna.",
       kpi: "Antal återerövringar inom 5 sekunder efter tapp.",
-      graphic: "rest-defense",
       sessions: [
         {
           day: "Måndag",
@@ -213,7 +211,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Första passningen efter bollvinst går framåt när det är möjligt — spelaren scannar redan före bollvinsten.",
       kpi: "Antal omställningar med spel framåt inom de 2 första passningarna.",
-      graphic: "diagonal-pattern",
       sessions: [
         {
           day: "Måndag",
@@ -278,7 +275,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Vid tapp vet alla sin roll: närmast pressar, resten sprintar hem innanför boll-linjen. Restförsvaret från Period 1 blir på riktigt.",
       kpi: "Antal kontringar emot som stoppas innan vår box.",
-      graphic: "rest-defense",
       sessions: [
         {
           day: "Måndag",
@@ -343,7 +339,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Laget flyttar i sidled som en enhet, håller korta avstånd mellan lagdelarna och säkrar under bollen.",
       kpi: "Antal spelperioder utan genombrottspass genom vårt mittblock.",
-      graphic: "corridor-map",
       sessions: [
         {
           day: "Måndag",
@@ -408,7 +403,6 @@ export const PERIOD_2: Period = {
       learningGoal:
         "Hela kedjan i spel: press på utlösare → bollvinst → spel framåt → och när vi tappar: återerövring eller sprint hem.",
       kpi: "Helhet: alla KPI:er från vecka 1–5 aktiva.",
-      graphic: "pitch",
       sessions: [
         {
           day: "Måndag",
