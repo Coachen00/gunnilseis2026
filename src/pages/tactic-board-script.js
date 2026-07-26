@@ -35,7 +35,7 @@
     const logicalBoard = { width: 100, height: 100 };
     const boardBounds = { x: 8, y: 14, width: 84, height: 72 };
     const formationOrder = ['4-4-2', '4-3-3', '4-2-3-1', '4-1-4-1', '4-3-1-2', '4-4-1-1', '3-5-2', '3-4-3', '3-4-2-1', '3-4-1-2', '5-3-2', '5-4-1'];
-    const layerIds = ['layer-korridorer', 'layer-golden', 'layer-spelytor', 'layer-assistv', 'layer-straffzoner'];
+    const layerIds = ['layer-korridorer', 'layer-golden', 'layer-spelytor', 'layer-straffzoner'];
     const OBJECT_KINDS = ['ball', 'cone', 'hurdle', 'ring', 'ladder', 'pole', 'mannequin', 'mini-goal', 'bib-green', 'bib-blue', 'bib-red'];
     const OBJECT_SELECTOR = OBJECT_KINDS.map((k) => '.piece.' + k).join(', ');
     const OBJECT_LABELS = { ball: 'Boll', cone: 'Kon', hurdle: 'Häck', ring: 'Ring', ladder: 'Stege', pole: 'Käpp', mannequin: 'Dummy', 'mini-goal': 'Minimål', 'bib-green': 'Väst', 'bib-blue': 'Väst', 'bib-red': 'Väst' };

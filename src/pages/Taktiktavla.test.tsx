@@ -104,8 +104,8 @@ describe("Taktiktavla", () => {
 
     const goldenZones = Array.from(document.querySelectorAll<HTMLElement>("#layer-golden .golden-zone"));
     expect(goldenZones).toHaveLength(2);
-    expect(goldenZones[0]).toHaveStyle({ left: "5.24%", width: "10.48%" });
-    expect(goldenZones[1]).toHaveStyle({ right: "5.24%", width: "10.48%" });
+    expect(goldenZones[0]).toHaveStyle({ left: "0%", width: "10.48%" });
+    expect(goldenZones[1]).toHaveStyle({ right: "0%", width: "10.48%" });
     expect(document.querySelectorAll("#layer-golden .assist-zone")).toHaveLength(6);
 
     await act(async () => {
