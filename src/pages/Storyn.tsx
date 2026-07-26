@@ -83,7 +83,7 @@ export default function Storyn() {
     <div className="bg-kedja-paper">
         <KedjaHero
           eyebrow="Storyn · så spelar vi"
-          title={<>Var <span className="mark-lime">förberedd.</span></>}
+          title={<>Vilka är <span className="mark-lime">Gunnilse IS 2026</span></>}
           lead="Det här är fotbollen vi spelar och skälet till att vi spelar den så. Läs den innan du läser modellen."
           instruction="Läs uppifrån och ner. Fördjupa sedan i Spelmodell eller Coach."
         >

@@ -17,6 +17,8 @@ describe("Storyn", () => {
   it("öppnar med berättelsen om hur vi spelar, före modellkapitlen", () => {
     renderPage();
 
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Vilka är Gunnilse IS 2026");
+
     const eyebrows = screen.getAllByText(/^Storyn \d\d$/).map((el) => el.textContent);
     expect(eyebrows[0]).toBe("Storyn 01");
 
