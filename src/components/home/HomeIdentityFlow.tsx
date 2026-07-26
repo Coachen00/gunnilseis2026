@@ -173,7 +173,6 @@ function HomeAccess({ isAuthed }: { isAuthed: boolean }) {
   const links = isAuthed
     ? [
         { label: "Öppna spelmodellen", to: "/spelmodell" },
-        { label: "Se veckans träning", to: "/semestern-2026" },
         { label: "Gå till laget", to: "/laget" },
       ]
     : [{ label: "Logga in till laget", to: "/login" }];
