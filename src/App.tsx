@@ -82,7 +82,7 @@ const HomeRoute = () => {
   if (!isAuthed) {
     return (
       <main className="home-public">
-        <HomePhotoCarousel hideCaption />
+        <HomePhotoCarousel />
         <div className="home-public__content">
           <span className="home-photo-carousel__eyebrow">Gunnilse herr · 2026</span>
           <h1>Välkommen till Gunnilse herr 2026</h1>

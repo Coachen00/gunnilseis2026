@@ -12,10 +12,9 @@ const PHOTOS = [
 
 interface HomePhotoCarouselProps {
   compact?: boolean;
-  hideCaption?: boolean;
 }
 
-export default function HomePhotoCarousel({ compact = false, hideCaption = false }: HomePhotoCarouselProps) {
+export default function HomePhotoCarousel({ compact = false }: HomePhotoCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -60,13 +59,6 @@ export default function HomePhotoCarousel({ compact = false, hideCaption = false
         ))}
       </div>
       <div className="home-photo-carousel__veil" aria-hidden="true" />
-      {!hideCaption && (
-        <div className="home-photo-carousel__caption">
-          <span className="home-photo-carousel__eyebrow">Gunnilse herr · 2026</span>
-          <strong>Dagens viktigaste</strong>
-          <span>Vi bygger tillsammans.</span>
-        </div>
-      )}
       <div className="home-photo-carousel__controls" aria-label="Välj bild">
         {PHOTOS.map((photo, index) => (
           <button

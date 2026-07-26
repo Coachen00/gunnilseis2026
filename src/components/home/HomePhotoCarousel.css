@@ -96,26 +96,6 @@
   background: linear-gradient(90deg, rgba(3, 12, 8, 0.76), rgba(3, 12, 8, 0.12) 68%, rgba(3, 12, 8, 0.18));
 }
 
-.home-photo-carousel__caption {
-  position: absolute;
-  left: clamp(1.5rem, 8vw, 8rem);
-  bottom: clamp(4.5rem, 12vh, 8rem);
-  display: grid;
-  gap: 0.45rem;
-  max-width: 34rem;
-}
-
-.home-photo-carousel__caption strong {
-  font-size: clamp(2.25rem, 6vw, 5.6rem);
-  line-height: 0.95;
-  letter-spacing: -0.045em;
-}
-
-.home-photo-carousel__caption > span:last-child {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: clamp(1rem, 1.8vw, 1.35rem);
-}
-
 .home-photo-carousel__eyebrow {
   color: #e2fbce;
   font-size: 0.72rem;
@@ -163,11 +143,6 @@
 
   .home-photo-carousel__slide {
     object-position: 58% center;
-  }
-
-  .home-photo-carousel__caption {
-    left: 1.5rem;
-    right: 1.5rem;
   }
 
   .home-photo-carousel__controls {
