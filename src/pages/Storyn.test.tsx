@@ -1,16 +1,9 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import Storyn from "./Storyn";
 
-const useSessionMock = vi.hoisted(() => vi.fn());
-
-vi.mock("@/hooks/useSession", () => ({ useSession: useSessionMock }));
-
-afterEach(() => {
-  cleanup();
-  useSessionMock.mockReset();
-});
+afterEach(cleanup);
 
 function renderPage() {
   return render(
@@ -20,31 +13,30 @@ function renderPage() {
   );
 }
 
-describe("Storyn private page", () => {
-  it("visar hela berättelsen för exakt ägarkonto", () => {
-    useSessionMock.mockReturnValue({ data: { user: { email: "leojsjoqvist@gmail.com" } }, isLoading: false });
+describe("Storyn", () => {
+  it("öppnar med berättelsen om hur vi spelar, före modellkapitlen", () => {
     renderPage();
 
-    expect(screen.getByText("Storyn · övergripande riktning")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Var förberedd/ })).toBeInTheDocument();
+    const eyebrows = screen.getAllByText(/^Storyn \d\d$/).map((el) => el.textContent);
+    expect(eyebrows[0]).toBe("Storyn 01");
+
+    const headings = screen.getAllByRole("heading", { level: 2 }).map((el) => el.textContent);
+    expect(headings.slice(0, 3)).toEqual(["Så spelar vi", "Varför", "Nittio minuter"]);
+    expect(headings.indexOf("Så spelar vi")).toBeLessThan(headings.indexOf("Riktning"));
+  });
+
+  it("namnger det höga aggressiva försvarsspelet och triggern", () => {
+    renderPage();
+
+    expect(screen.getByText(/högt och aggressivt/)).toBeInTheDocument();
+    expect(screen.getByText(/tre korridorer/)).toBeInTheDocument();
+    expect(screen.getByText(/väntar på triggern/)).toBeInTheDocument();
+  });
+
+  it("behåller modellkapitlen efter berättelsen", () => {
+    renderPage();
+
     expect(screen.getAllByText("Riktning").length).toBeGreaterThan(0);
     expect(screen.getByText(/Standard, ledarskap, träning/)).toBeInTheDocument();
-  });
-
-  it("visar inte privat material för annan användare", () => {
-    useSessionMock.mockReturnValue({ data: { user: { email: "annan@gmail.com" } }, isLoading: false });
-    renderPage();
-
-    expect(screen.queryByRole("heading", { name: "Storyn" })).not.toBeInTheDocument();
-    expect(screen.queryByText("Det jag vill göra")).not.toBeInTheDocument();
-    expect(screen.getByText("Begränsat innehåll")).toBeInTheDocument();
-  });
-
-  it("visar inte privat material för delad åtkomst utan Supabase-session", () => {
-    useSessionMock.mockReturnValue({ data: null, isLoading: false });
-    renderPage();
-
-    expect(screen.queryByText("Var förberedd")).not.toBeInTheDocument();
-    expect(screen.getByText("Begränsat innehåll")).toBeInTheDocument();
   });
 });

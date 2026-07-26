@@ -7,7 +7,6 @@ import { supabase } from "@/integrations/supabase/client";
 import LogoutButton from "@/components/LogoutButton";
 import NavDropdown, { NavGroup } from "@/components/NavDropdown";
 import { getSharedAccessUser, subscribeSharedAccess, type SharedAccessUser } from "@/lib/sharedAccess";
-import { isOwnerEmail } from "@/lib/owner";
 
 type SimpleItem = { kind: "link"; to: string; label: string; featured?: boolean };
 type DropdownItem = { kind: "dropdown"; label: string; groups: NavGroup[]; activePathPrefixes: string[]; variant?: "wide" | "narrow" };
@@ -153,7 +152,6 @@ const TopNav = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const isLoggedIn = Boolean(user || sharedUser);
-  const isOwner = isOwnerEmail(user?.email);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -242,7 +240,7 @@ const TopNav = () => {
 
         {/* Desktop nav — endast inloggade ser strukturen */}
         <nav className={cn("hidden items-center gap-1", isLoggedIn ? "lg:flex" : "lg:hidden")}>
-          {isOwner && (
+          {isLoggedIn && (
             <NavLink
               to="/storyn"
               className={({ isActive }) => cn(
@@ -361,7 +359,7 @@ const TopNav = () => {
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
-          {isOwner && (
+          {isLoggedIn && (
             <NavLink
               to="/storyn"
               onClick={() => setOpen(false)}

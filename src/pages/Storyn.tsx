@@ -1,11 +1,34 @@
 import { Link } from "react-router-dom";
-import OwnerOnly from "@/components/OwnerOnly";
 import KedjaHero from "@/components/kedja/KedjaHero";
 import KedjaNav from "@/components/kedja/KedjaNav";
 import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
 
 const chapters = [
+  {
+    id: "sa-spelar-vi",
+    title: "Så spelar vi",
+    sub: "FOTBOLLEN VI VILL SE",
+    definition: "Du ska känna igen oss efter tio minuter, utan att någon berättar vilka vi är.",
+    highlight: "efter tio minuter",
+    text: "Tekniskt, tydligt och snabbt med boll. Bollen går framåt så fort riktningen finns. Utan boll försvarar vi högt och aggressivt: tre korridorer, tryck mot långsidan, kväv dem där. Vi jagar inte hela matchen. Vi väntar på triggern, och när den kommer går alla i samma sekund, också den som står längst från bollen.",
+  },
+  {
+    id: "varfor",
+    title: "Varför",
+    sub: "DET VI TROR PÅ",
+    definition: "Vi spelar det spel vi tror på, och elva spelare som läser samma bild väljer samma sekund.",
+    highlight: "väljer samma sekund",
+    text: "Identitet och kultur bär spelet, kollektiv intelligens gör det möjligt. Utvecklingen är långsiktig, resultaten vill vi ha nu, och de två sakerna står inte mot varandra hos oss.",
+  },
+  {
+    id: "nittio-minuter",
+    title: "Nittio minuter",
+    sub: "NÄR DET ÄR TUNGT",
+    definition: "Vid 5–0 och vid 0–5 spelar vi likadant.",
+    highlight: "spelar vi likadant",
+    text: "Vi kom överens om hur vi spelar, och vi viker inte från det när ställningen blir fel. Vi är en familj på plan: den som tappar bollen får en lagkamrat vid sin sida innan huvudet hinner sjunka. Kroppsspråket håller. Vi pratar så att den bredvid blir starkare.",
+  },
   {
     id: "riktning",
     title: "Riktning",
@@ -57,13 +80,12 @@ export default function Storyn() {
   }));
 
   return (
-    <OwnerOnly>
-      <div className="bg-kedja-paper">
+    <div className="bg-kedja-paper">
         <KedjaHero
-          eyebrow="Storyn · övergripande riktning"
+          eyebrow="Storyn · så spelar vi"
           title={<>Var <span className="mark-lime">förberedd.</span></>}
-          lead="Storyn håller ihop varför vi bygger modellen, vad den ska hjälpa laget att göra och hur vi vet att den fungerar."
-          instruction="Läs från riktning till lärloop. Fördjupa sedan i Spelmodell eller Coach."
+          lead="Det här är fotbollen vi spelar och skälet till att vi spelar den så. Läs den innan du läser modellen."
+          instruction="Läs uppifrån och ner. Fördjupa sedan i Spelmodell eller Coach."
         >
           <KedjaNav items={navItems} />
         </KedjaHero>
@@ -96,7 +118,6 @@ export default function Storyn() {
             <KedjaClimax label="Den röda tråden" text="Se → förstå → agera → observera → lär." connector={false} />
           </div>
         </section>
-      </div>
-    </OwnerOnly>
+    </div>
   );
 }
