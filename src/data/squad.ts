@@ -39,6 +39,7 @@ export const SQUAD: Player[] = [
   { name: "Daniel Matin", position: "DEF" },
   { name: "Meysam Hoseni", position: "DEF" },
   { name: "Nayef Mohammad", position: "DEF" },
+  { name: "Omar Burhan", position: "DEF" },
   { name: "Pascal Jabbour", position: "DEF" },
   { name: "Rayan Fedaila", position: "DEF" },
   { name: "Rinor Zenullah", position: "DEF" },
