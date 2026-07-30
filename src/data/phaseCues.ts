@@ -25,7 +25,7 @@ export const PHASE_CUES: Record<"forsvar" | "omstallning-anfall" | "anfall" | "o
     rules: [
       "Vi står kompakt i 4-3-3 — aldrig öppna mitten.",
       "Vi styr alltid pressen åt en sida (helst deras vänsterback).",
-      "Första försvarare bryter inte — hen styr. Andra försvarare bryter.",
+      "Första försvarare bryter inte — han styr. Andra försvarare bryter.",
       "Andrabollar vinner vi som lag — närmaste spelare attackerar, övriga tätar runtom.",
     ],
     cues: [
@@ -78,7 +78,7 @@ export const PHASE_CUES: Record<"forsvar" | "omstallning-anfall" | "anfall" | "o
     rules: [
       "Närmaste spelare pressar boll direkt — ingen tvekan.",
       "Övriga stänger passningsvägar i samma riktning.",
-      "Forwarden är vår första försvarare — hen pressar bakåt om bollen rör sig framåt.",
+      "Forwarden är vår första försvarare — han pressar bakåt om bollen rör sig framåt.",
       "Efter ~5 sekunder utan återerövring: hela laget faller ned och centrerar.",
     ],
     cues: [

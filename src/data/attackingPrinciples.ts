@@ -90,7 +90,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       "Att spela in är inte målet i sig — det är triggern för nästa pass. Mottagaren behöver inte vända själv; det räcker att vi flyttar in bollen och tvingar deras led ur balans.",
     tittaEfter: [
       "Står en medspelare mellan deras led — i halvyta eller centralt?",
-      "Är hen rättvänd, eller kan hen öppna kroppen mot motståndarmål utan press?",
+      "Är han rättvänd, eller kan han öppna kroppen mot motståndarmål utan press?",
       "Är passningslinjen fri, eller bryts den av en av deras innermittfältare?",
     ],
     goraDetta: [
@@ -107,7 +107,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
     ovning: {
       rubrik: "Tredje man bryter linjen",
       beskrivning:
-        "Rondo 6v3 med två motståndarled. Bonuspoäng när passningen går till en spelare som står mellan led och hen kan slå pass vidare på första touch.",
+        "Rondo 6v3 med två motståndarled. Bonuspoäng när passningen går till en spelare som står mellan led och han kan slå pass vidare på första touch.",
     },
     coachrop: ["In!", "Mellan!", "Hitta 10!"],
     aktiverarIdentitet: ["prata-med-passningen"],
@@ -154,7 +154,7 @@ export const ATTACKING_PRINCIPLES: AttackingPrinciple[] = [
       "Drivet eller djupledspasset tvingar deras backlinje att backa, vilket öppnar centrala korridoren igen (princip 2) och boxytan (princip 5). Sidledsväxlar nu = bortkastat tempo.",
     tittaEfter: [
       "Är ytan framför mig öppen i minst 5 meter?",
-      "Springer en medspelare i djupled — kan jag slå hen?",
+      "Springer en medspelare i djupled — kan jag slå honom?",
       "Är försvararen tung, felställd eller bakvänd?",
     ],
     goraDetta: [
