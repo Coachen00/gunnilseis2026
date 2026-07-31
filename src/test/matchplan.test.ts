@@ -3,19 +3,23 @@ import {
   CALLED_SQUAD,
   MATCH_META,
   MATCH_PRESENTATION_URL,
+  MATCH_SCHEDULE,
   FOCUS,
   COHERENCE,
   FORMATION,
   PRACTICAL_INFO,
   SAMLING_TIME,
   computeSamlingTime,
+  kickoffOffset,
   parseKickoffDate,
   MATCH_KICKOFF_DATE,
   MATCH_KICKOFF_ISO,
   PAST_OPPONENT_NAMES,
   resolveWeeklyMatch,
   SEASON_BREAK,
+  type MatchMeta,
 } from "@/data/matchplan";
+import { SQUAD } from "@/data/squad";
 import { ATTACKING_PRINCIPLES } from "@/data/attackingPrinciples";
 import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
 
@@ -31,16 +35,16 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på nästa match Partille IF FK (höstpremiär borta) under uppehållet", () => {
-    expect(MATCH_META.opponent).toBe("Partille IF FK");
-    expect(MATCH_META.kickoff).toMatch(/15:00/);
-    expect(MATCH_META.venue).toContain("Lexby");
-    expect(MATCH_META.competition).toContain("Division 4A");
-    expect(MATCH_META.home).toBe(false);
+  it("MATCH_META pekar på veckans match Fässbergs IF (träningsmatch hemma)", () => {
+    expect(MATCH_META.opponent).toBe("Fässbergs IF");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
+    expect(MATCH_META.competition).toBe("Träningsmatch");
+    expect(MATCH_META.home).toBe(true);
   });
 
-  it("SEASON_BREAK är aktivt under sommaruppehållet", () => {
-    expect(SEASON_BREAK.active).toBe(true);
+  it("SEASON_BREAK är avstängt när truppen är kallad", () => {
+    expect(SEASON_BREAK.active).toBe(false);
     expect(SEASON_BREAK.lastResult).toContain("6–0");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
@@ -62,19 +66,47 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("ingen trupp kallad under uppehållet, Idris fortsatt kapten", () => {
+  it("15 spelare kallade mot Fässberg, Idris fortsatt kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(15);
     // Inga dubbletter i kallad trupp
     const all = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
     expect(new Set(all).size).toBe(all.length);
+    // Kaptenen måste vara kallad — annars är rollkortet fel
+    expect(all).toContain("Idris Abdi");
+    // Minst en målvakt i truppen
+    expect(all.some((n) => SQUAD.find((p) => p.name === n)?.position === "GK")).toBe(true);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
   });
 
-  it("SAMLING_TIME är 13:15 för Partille (borta 15:00 → 1h45 före)", () => {
-    expect(SAMLING_TIME).toBe("13:15");
+  it("alla kallade namn finns i truppen (stavning matchar squad.ts)", () => {
+    const squadNames = new Set(SQUAD.map((p) => p.name));
+    const unknown = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench].filter(
+      (n) => !squadNames.has(n)
+    );
+    expect(unknown).toEqual([]);
+  });
+
+  it("SAMLING_TIME är 11:30 för Fässberg (hemma 13:00 → 1h30 före)", () => {
+    expect(SAMLING_TIME).toBe("11:30");
+  });
+
+  it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
+    const times = MATCH_SCHEDULE.map((s) => s.time);
+    expect(times[0]).toBe(SAMLING_TIME);
+    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("13:00"); // avspark
+    // Byt avspark → schemat följer med
+    const kvall: MatchMeta = {
+      opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
+      competition: "Z", absent: [],
+    };
+    expect(kickoffOffset(-40, kvall)).toBe("18:20");
+    expect(kickoffOffset(0, kvall)).toBe("19:00");
+    expect(kickoffOffset(-40, { ...kvall, kickoff: "Söndag · saknar tid" })).toBe("");
   });
 
   it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
@@ -147,7 +179,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Partille 8 aug) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Fässberg 1 aug) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
@@ -156,17 +188,16 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(true);
-    // Stenkullen (27 juni) ligger nu före veckans match (Partille 8 aug) → past opponent.
+    // Stenkullen (27 juni) ligger före veckans match (Fässberg 1 aug) → past opponent.
     expect(PAST_OPPONENT_NAMES.has("stenkullen goik")).toBe(true);
-    // Men INTE Partille själv — trots att vi mötte dem hemma i premiären (18 apr).
-    // Veckans egna motståndare får aldrig flaggas som stale.
-    expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(false);
+    // Men INTE Fässberg själv — veckans egna motståndare får aldrig flaggas som stale.
+    expect(PAST_OPPONENT_NAMES.has("fässbergs if")).toBe(false);
   });
 
-  it("resolveWeeklyMatch väljer höstpremiären mot Partille (8 aug), inte premiären (18 apr)", () => {
+  it("resolveWeeklyMatch hittar träningsmatchen mot Fässberg (1 aug)", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Partille IF FK");
-    expect(wm?.id).toBe("2026-08-08-partille");
+    expect(wm?.opponent).toBe("Fässbergs IF");
+    expect(wm?.id).toBe("2026-08-01-fassbergs");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -175,7 +206,7 @@ describe("matchplan", () => {
       "forutsattningar",
       "kallad-trupp",
       "forra-match",
-      "partille",
+      "motstandare",
       "identitet",
       "anfall",
       "forsvar",
@@ -192,7 +223,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte veckans match (Partille)", () => {
+  it("stale Vardar-rad i framtiden blockerar inte veckans match (Fässberg)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -208,7 +239,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Partille IF FK");
+    expect(matches[0].opponent).toBe("Fässbergs IF");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -226,7 +257,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Partille IF FK");
+    expect(matches[0].opponent).toBe("Fässbergs IF");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

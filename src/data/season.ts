@@ -3,8 +3,9 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-06-29 (Stenkullen GoIK 6–0 hemma — vårsäsongens sista match.
- *                    Sommaruppehåll, träning åter 28 juli, höstpremiär Partille IF FK borta 8 aug).
+ * Senast uppdaterad: 2026-07-31 (uppehållet slut. Träningsmatch hemma mot Fässbergs IF
+ *                    lör 1 aug 13:00 — Fässberg spelar Division 4B, alltså ingen seriematch.
+ *                    Höstpremiär: Partille IF FK borta 8 aug 15:00).
  */
 
 export type MatchScorer = {
@@ -195,7 +196,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Fässbergs IF",
     homeAway: "home",
     competition: "Träningsmatch",
-    venue: "Hjällbovallen",
+    venue: "Hjällbovallen 1 Gräs",
   },
   {
     id: "2026-08-08-partille",
