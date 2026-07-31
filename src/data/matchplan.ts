@@ -238,7 +238,7 @@ export const MATCH_PLAN_SHORT: PlanCard[] = [
     title: "Så försvarar vi",
     accent: "red",
     bullets: [
-      "Hemma — vi sätter tempot, men stäng mitten först. Kompakta led, inget jagande på låsta passningar.",
+      "Presshöjden styrs av villkoret: höga linjer + kompakta led → vi går högt och direkt. Utdragna → samla först, pressa sen.",
       "YB på YB. Lås bollsida och stoppa spelvändning.",
       "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
     ],
@@ -310,7 +310,7 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
   bench: [
     // Målvakt
-    "Kamal Fekhouri",
+    "Redwan Mangal",
     // Backar
     "Adnan Hadzialic",
     "Ahmad Soheyl Matin",
@@ -336,9 +336,9 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
 };
 
 export const FOCUS: string[] = [
-  "Generalrep — vi spelar som om det vore serien. Kraven sätts idag, inte nästa lördag mot Partille.",
-  "Först på andrabollen. Efter fem veckors uppehåll avgörs matchbilden av vem som vill mer i duellen.",
-  "Samla → lås → vinn. Ingen tokpress innan vi är kompakta, hur mycket benen än kliar.",
+  "Planens indelning — korridorer, spelytor, assistytan, gyllene zonen. Vet var du står och vilken yta du ska attackera. Utan den kartan är resten bara spring.",
+  "Presspelet — vi vinner bollen högt och direkt. Första pressen inom en sekund, och den kommer med full kraft.",
+  "Identitet — duellen och andrabollen är våra arenor. Vinn din, varje gång, så vinner vi matchen.",
 ];
 
 /* Ingen startelva spikad — laget rullar och alla får speltid i träningsmatchen.
@@ -365,7 +365,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["18 spelare", "Kapten", "Alla spelar"],
     bullets: [
-      "18 kallade: Kamal Fekhouri (mv), Adnan Hadzialic, Ahmad Soheyl Matin, Daniel Matin, Nayef Mohammad, Pascal Jabbour, Rayan Fedaila, Vedad Dzambegovic, Ahmad Aljafari, Benjamin Arapovic, Idris Abdi, Mustafa Ayoub, Aldin Zeljkovic, Haris Avdiu, Kamal Mustafa, Leodon Johansson, Yosef Ismail, Darvan Ayoub.",
+      "18 kallade: Redwan Mangal (mv), Adnan Hadzialic, Ahmad Soheyl Matin, Daniel Matin, Nayef Mohammad, Pascal Jabbour, Rayan Fedaila, Vedad Dzambegovic, Ahmad Aljafari, Benjamin Arapovic, Idris Abdi, Mustafa Ayoub, Aldin Zeljkovic, Haris Avdiu, Kamal Mustafa, Leodon Johansson, Yosef Ismail, Darvan Ayoub.",
       "Idris Abdi är fortsatt lagkapten.",
       "Ingen startelva spikad — laget rullar och alla får speltid. Kroppen först: säg till direkt om något känns.",
     ],
@@ -426,13 +426,14 @@ export const COHERENCE: CoherenceSection[] = [
     id: "forsvar",
     num: "07",
     title: "Försvar",
-    eyebrow: "Samla → lås → vinn",
-    principles: ["Samla först", "Höga linjer", "Tre korridorer"],
+    eyebrow: "Villkor → lås → vinn",
+    principles: ["Villkoret först", "Höga linjer", "Tre korridorer"],
     bullets: [
-      "Ingen tokpress innan vi är kompakta. Bollvinnarpress först när linjerna är höga.",
-      "Styr pressen åt en sida (kolla motståndaranalys för rätt presssida inför matchen).",
-      "YB på YB — lås bollsida, stoppa spelvändning.",
+      "Villkoret för hög press: linjerna höga OCH leden kompakta. Är det uppfyllt går vi direkt, högt och med full kraft — det är så vi vinner bollen på deras planhalva.",
+      "Är vi utdragna eller nyss omställda: samla först, pressa sen. Tokpress ur obalans är det enda som ger dem djupled.",
+      "Styr pressen åt en sida. YB på YB — lås bollsida, stoppa spelvändning.",
     ],
+    note: "Hög press och \"samla först\" är inte två olika planer — det är samma plan med ett villkor. Läs laget, inte bollen.",
   },
   {
     id: "omst-forsvar",

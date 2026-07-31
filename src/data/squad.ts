@@ -32,6 +32,9 @@ export const SQUAD: Player[] = [
   { name: "Ali Carneil", position: "GK" },
   { name: "Kamal Fekhouri", position: "GK" },
   { name: "Parsa Ahang", position: "GK" },
+  // Ny 2026-07-31 — ännu inte upplagd på svenskalag.se, så syncen skriver
+  // inte in honom. Se supabase/redwan-mangal.sql (samma mönster som Omar).
+  { name: "Redwan Mangal", position: "GK" },
 
   // Backar
   { name: "Adnan Hadzialic", position: "DEF" },
