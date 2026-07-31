@@ -26,7 +26,12 @@ describe("App routes", () => {
     render(<App />);
 
     expect(await screen.findByRole("heading", { name: "Välkommen till Gunnilse herr 2026" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Logga in" })).toHaveAttribute("href", "/login");
+
+    // Både glasnavigeringen och hero-CTA:n erbjuder inloggning — båda ska peka rätt.
+    const loginLinks = screen.getAllByRole("link", { name: "Logga in" });
+    expect(loginLinks).toHaveLength(2);
+    loginLinks.forEach((link) => expect(link).toHaveAttribute("href", "/login"));
+
     expect(screen.queryByText("Spelmodell")).not.toBeInTheDocument();
   });
 });

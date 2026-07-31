@@ -13,7 +13,7 @@
  */
 
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ArrowRight, Calendar, X } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { MATCH_KICKOFF_DATE, MATCH_META } from "@/data/matchplan";
@@ -41,6 +41,7 @@ function formatCountdown(diffMs: number): string {
 export default function MatchdayBanner() {
   const reduced = Boolean(useReducedMotion());
   const { isAuthed, loading: authLoading } = useAuthSession();
+  const location = useLocation();
   const kickoff = useMemo(() => MATCH_KICKOFF_DATE, []);
   const [now, setNow] = useState<Date>(() => new Date());
   const [dismissed, setDismissed] = useState<boolean>(() => {
@@ -102,7 +103,9 @@ export default function MatchdayBanner() {
     <div
       role="status"
       aria-live="polite"
-      className={`relative border-b border-amber-500/30 bg-gradient-to-r ${ringTint}`}
+      /* På `/` ligger navigeringen fixerad över heron och tar ingen plats i
+         flödet — bannern måste därför själv kliva ner under den. */
+      className={`relative border-b border-amber-500/30 bg-gradient-to-r ${ringTint} ${location.pathname === "/" ? "mt-16" : ""}`}
     >
       <div className="container flex items-center gap-3 py-2.5 md:py-3">
         <motion.span

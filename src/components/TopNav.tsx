@@ -152,6 +152,10 @@ const TopNav = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const isLoggedIn = Boolean(user || sharedUser);
+  /* Förstasidan har en helskärmshero — navigeringen ligger fixerad ovanpå bilden
+     som glaspill tills man scrollat förbi, då återgår den till den vanliga baren. */
+  const overHero = location.pathname === "/";
+  const glass = overHero && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -216,10 +220,13 @@ const TopNav = () => {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 w-full transition-all duration-300",
-        scrolled
-          ? "bg-kedja-paper/95 backdrop-blur-xl border-b border-kedja-border shadow-[0_1px_0_0_rgba(12,52,44,0.08)]"
-          : "bg-kedja-paper/80 backdrop-blur-md border-b border-kedja-border/60"
+        "top-0 z-40 w-full transition-all duration-300",
+        overHero ? "fixed" : "sticky",
+        glass
+          ? "bg-transparent border-b border-transparent"
+          : scrolled
+            ? "bg-kedja-paper/95 backdrop-blur-xl border-b border-kedja-border shadow-[0_1px_0_0_rgba(12,52,44,0.08)]"
+            : "bg-kedja-paper/80 backdrop-blur-md border-b border-kedja-border/60"
       )}
     >
       <div className="container flex items-center justify-between gap-4 h-16">
@@ -229,23 +236,47 @@ const TopNav = () => {
           className="flex items-center gap-2.5 group flex-shrink-0 transition-opacity hover:opacity-80"
           aria-label="Gunnilse IS — Hem"
         >
-          <div className="w-8 h-8 rounded-[6px] bg-kedja-ink text-kedja-lime flex items-center justify-center font-mono font-black text-sm leading-none">
+          <div
+            className={cn(
+              "w-8 h-8 rounded-[6px] bg-kedja-ink text-kedja-lime flex items-center justify-center font-mono font-black text-sm leading-none",
+              glass && "ring-1 ring-white/40"
+            )}
+          >
             G
           </div>
-          <span className="font-bold text-base tracking-tight text-kedja-ink hidden sm:inline">
+          <span className={cn("font-bold text-base tracking-tight hidden sm:inline", glass ? "text-white" : "text-kedja-ink")}>
             Gunnilse IS
-            <span className="text-kedja-green ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle">2026</span>
+            <span
+              className={cn(
+                "ml-1.5 font-mono text-[10px] uppercase tracking-[0.2em] font-semibold align-middle",
+                glass ? "text-kedja-lime" : "text-kedja-green"
+              )}
+            >
+              2026
+            </span>
           </span>
         </Link>
 
         {/* Desktop nav — endast inloggade ser strukturen */}
-        <nav className={cn("hidden items-center gap-1", isLoggedIn ? "lg:flex" : "lg:hidden")}>
+        {/* Strukturen renderas inte alls för oinloggade — tidigare låg den i DOM
+            och doldes med CSS, vilket läckte hela sidkartan till besökare. */}
+        {isLoggedIn && (
+        <nav
+          className={cn(
+            "hidden lg:flex items-center gap-1",
+            /* Mörk glaspill, inte ljus — en ljus pill mot himlen i bilderna
+               mätte 3.5:1 mot vit text, den mörka ger ~10:1. */
+            glass && "rounded-full border border-white/15 bg-kedja-ink/35 px-2 backdrop-blur-xl"
+          )}
+        >
           {isLoggedIn && (
             <NavLink
               to="/storyn"
               className={({ isActive }) => cn(
                 "relative rounded-md px-3 py-2 text-sm font-semibold transition-colors",
-                isActive ? "text-kedja-ink" : "text-kedja-deep hover:text-kedja-green",
+                glass
+                  ? isActive ? "text-white" : "text-white/85 hover:text-white"
+                  : isActive ? "text-kedja-ink" : "text-kedja-deep hover:text-kedja-green",
               )}
             >
               {({ isActive }) => (
@@ -270,6 +301,7 @@ const TopNav = () => {
                   groups={item.groups}
                   variant={item.variant}
                   activePathPrefixes={item.activePathPrefixes}
+                  onDark={glass}
                 />
               );
             }
@@ -283,8 +315,10 @@ const TopNav = () => {
                     "relative px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
                     item.featured
                       ? "bg-kedja-ink text-kedja-lime font-black shadow-sm hover:bg-kedja-deep"
-                      : "text-kedja-deep hover:text-kedja-green",
-                    isActive && (item.featured ? "bg-kedja-deep" : "text-kedja-ink")
+                      : glass
+                        ? "text-white/85 hover:text-white"
+                        : "text-kedja-deep hover:text-kedja-green",
+                    isActive && (item.featured ? "bg-kedja-deep" : glass ? "text-white" : "text-kedja-ink")
                   )
                 }
               >
@@ -303,35 +337,51 @@ const TopNav = () => {
             );
           })}
         </nav>
+        )}
 
         {/* Right cluster */}
         <div className="flex items-center gap-2">
           {user && isAdmin && (
             <Link
               to="/admin"
-              className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
+              className={cn(
+                "hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors",
+                glass
+                  ? "text-white/80 hover:text-white hover:bg-white/15"
+                  : "text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50"
+              )}
             >
               <Lock className="w-3.5 h-3.5" /> Admin
             </Link>
           )}
           {isLoggedIn ? (
             <div className="hidden md:flex items-center gap-2">
-              <span className="max-w-36 truncate text-xs font-semibold text-kedja-deep">
+              <span className={cn("max-w-36 truncate text-xs font-semibold", glass ? "text-white/80" : "text-kedja-deep")}>
                 {displayName}
               </span>
-              <LogoutButton />
+              <LogoutButton className={glass ? "text-white/80 hover:text-white hover:bg-white/15" : undefined} />
             </div>
           ) : (
             <div className="hidden md:flex items-center gap-1.5">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 py-2 text-sm font-semibold transition-colors",
+                  glass
+                    ? "rounded-full border border-white/30 text-white hover:bg-white/15"
+                    : "rounded-md text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/50"
+                )}
               >
                 <LogIn className="w-4 h-4" /> Logga in
               </Link>
               <Link
                 to="/login?mode=signup"
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-bold bg-kedja-ink text-kedja-lime hover:bg-kedja-deep transition-colors"
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 py-2 text-sm font-bold transition-colors",
+                  glass
+                    ? "rounded-full bg-white text-kedja-ink hover:bg-kedja-lime"
+                    : "rounded-md bg-kedja-ink text-kedja-lime hover:bg-kedja-deep"
+                )}
               >
                 <UserPlus className="w-4 h-4" /> Registrera
               </Link>
@@ -341,7 +391,10 @@ const TopNav = () => {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-kedja-ink hover:bg-kedja-mint/50 transition-colors"
+              className={cn(
+                "lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md transition-colors",
+                glass ? "text-white hover:bg-white/15" : "text-kedja-ink hover:bg-kedja-mint/50"
+              )}
               aria-label={open ? "Stäng meny" : "Öppna meny"}
               aria-expanded={open}
             >
@@ -351,11 +404,13 @@ const TopNav = () => {
         </div>
       </div>
 
-      {/* Mobile menu — endast inloggade har en meny att öppna */}
+      {/* Mobile menu — endast inloggade har en meny att öppna, och den renderas
+          inte alls annars så sidkartan inte ligger i DOM för besökare. */}
+      {isLoggedIn && (
       <div
         className={cn(
           "lg:hidden overflow-hidden transition-all duration-300 ease-out border-t border-kedja-border bg-kedja-paper",
-          isLoggedIn && open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
+          open ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0 border-transparent"
         )}
       >
         <nav className="container py-3 flex flex-col gap-1">
@@ -447,31 +502,15 @@ const TopNav = () => {
               <Lock className="w-4 h-4" /> Admin
             </Link>
           )}
-          {isLoggedIn ? (
-            <div className="pt-2 border-t border-kedja-border mt-2">
-              <div className="px-3 pb-2 text-xs font-semibold text-kedja-deep">
-                {displayName}
-              </div>
-              <LogoutButton className="w-full justify-start" />
+          <div className="pt-2 border-t border-kedja-border mt-2">
+            <div className="px-3 pb-2 text-xs font-semibold text-kedja-deep">
+              {displayName}
             </div>
-          ) : (
-            <div className="pt-2 border-t border-kedja-border mt-2 grid gap-2">
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-kedja-deep hover:text-kedja-ink hover:bg-kedja-mint/40 transition-colors"
-              >
-                <LogIn className="w-4 h-4" /> Logga in
-              </Link>
-              <Link
-                to="/login?mode=signup"
-                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-bold bg-kedja-ink text-kedja-lime hover:bg-kedja-deep transition-colors"
-              >
-                <UserPlus className="w-4 h-4" /> Registrera
-              </Link>
-            </div>
-          )}
+            <LogoutButton className="w-full justify-start" />
+          </div>
         </nav>
       </div>
+      )}
     </header>
   );
 };

@@ -22,9 +22,11 @@ interface NavDropdownProps {
   variant?: "wide" | "narrow";
   /** Paths considered "active" for highlighting the trigger */
   activePathPrefixes?: string[];
+  /** Triggern ligger på mörk botten (glaspillen över förstasidans hero) */
+  onDark?: boolean;
 }
 
-const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [] }: NavDropdownProps) => {
+const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [], onDark = false }: NavDropdownProps) => {
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const closeTimer = useRef<number | null>(null);
@@ -80,8 +82,8 @@ const NavDropdown = ({ label, groups, variant = "wide", activePathPrefixes = [] 
         aria-expanded={open}
         className={cn(
           "relative inline-flex items-center gap-1 px-3 py-2 text-sm font-semibold rounded-md transition-colors duration-200",
-          "text-muted-foreground hover:text-foreground",
-          (isActive || open) && "text-foreground"
+          onDark ? "text-white/85 hover:text-white" : "text-muted-foreground hover:text-foreground",
+          (isActive || open) && (onDark ? "text-white" : "text-foreground")
         )}
       >
         {label}

@@ -4,14 +4,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import AuthGuard from "./components/AuthGuard";
 import Layout from "./components/Layout";
 import ErrorBoundary from "./components/ErrorBoundary";
+import TopNav from "./components/TopNav";
 import { createAppQueryClient } from "./lib/queryClient";
 import { useAuthSession } from "./hooks/useAuthSession";
-import HomePhotoCarousel from "./components/home/HomePhotoCarousel";
+import HomeHero from "./components/home/HomeHero";
 import MatchRadar from "./components/home/MatchRadar";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
@@ -81,19 +81,15 @@ const HomeRoute = () => {
 
   if (!isAuthed) {
     return (
-      <main className="home-public">
-        <div className="home-public__hero">
-          <HomePhotoCarousel />
-          <div className="home-public__content">
-            <h1>Välkommen till Gunnilse herr 2026</h1>
-            <Link
-              to="/login"
-              className="home-public__cta"
-            >
-              Logga in
-            </Link>
-          </div>
-        </div>
+      <main className="bg-kedja-paper">
+        <TopNav />
+        <HomeHero
+          eyebrow="Gunnilse IS · Division 4A Herr · 2026"
+          srTitle="Välkommen till Gunnilse herr 2026"
+          lead="Spelmodell, matchplan och trupp samlat på ett ställe. Logga in för att se hela säsongens material."
+          ctaLabel="Logga in"
+          ctaTo="/login"
+        />
         <MatchRadar />
       </main>
     );
