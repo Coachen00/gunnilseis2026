@@ -274,6 +274,47 @@ export const SEASON_MATCHES: SeasonMatch[] = [
   },
 ];
 
+export type PlayedMatch = SeasonMatch & { ourScore: number; theirScore: number };
+
+export type SeasonRecord = {
+  played: PlayedMatch[];
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+};
+
+export function isPlayed(m: SeasonMatch): m is PlayedMatch {
+  return m.ourScore != null && m.theirScore != null;
+}
+
+export function matchOutcome(m: PlayedMatch): "vinst" | "oavgjord" | "forlust" {
+  if (m.ourScore > m.theirScore) return "vinst";
+  if (m.ourScore < m.theirScore) return "forlust";
+  return "oavgjord";
+}
+
+/** Sammanräkning av spelade matcher, nyast först. */
+export function seasonRecord(matches: SeasonMatch[]): SeasonRecord {
+  const played = matches
+    .filter(isPlayed)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return played.reduce<SeasonRecord>(
+    (acc, m) => {
+      const outcome = matchOutcome(m);
+      if (outcome === "vinst") acc.wins += 1;
+      else if (outcome === "forlust") acc.losses += 1;
+      else acc.draws += 1;
+      acc.goalsFor += m.ourScore;
+      acc.goalsAgainst += m.theirScore;
+      return acc;
+    },
+    { played, wins: 0, draws: 0, losses: 0, goalsFor: 0, goalsAgainst: 0 },
+  );
+}
+
 export function nextMatch(matches: SeasonMatch[], now = new Date()): SeasonMatch | null {
   const future = matches
     .filter((m) => new Date(m.date) >= now)
