@@ -17,6 +17,7 @@ import {
   PAST_OPPONENT_NAMES,
   resolveWeeklyMatch,
   SEASON_BREAK,
+  TRIAL_PLAYERS,
   type MatchMeta,
 } from "@/data/matchplan";
 import { SQUAD } from "@/data/squad";
@@ -66,9 +67,9 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("15 spelare kallade mot Fässberg, Idris fortsatt kapten", () => {
+  it("18 spelare kallade mot Fässberg, Idris fortsatt kapten", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(15);
+    expect(CALLED_SQUAD.bench).toHaveLength(18);
     // Inga dubbletter i kallad trupp
     const all = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
     expect(new Set(all).size).toBe(all.length);
@@ -81,12 +82,22 @@ describe("matchplan", () => {
     );
   });
 
-  it("alla kallade namn finns i truppen (stavning matchar squad.ts)", () => {
+  it("alla kallade namn finns i truppen eller är registrerade provspelare", () => {
     const squadNames = new Set(SQUAD.map((p) => p.name));
     const unknown = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench].filter(
-      (n) => !squadNames.has(n)
+      (n) => !squadNames.has(n) && !TRIAL_PLAYERS.has(n)
     );
     expect(unknown).toEqual([]);
+  });
+
+  it("provspelare står bara i TRIAL_PLAYERS, aldrig i SQUAD", () => {
+    // squad.ts speglar Gunnilses egen trupp på svenskalag.se — en inlånad
+    // spelare som hamnar där dyker upp på /truppen och i syncen.
+    const squadNames = new Set(SQUAD.map((p) => p.name));
+    for (const n of TRIAL_PLAYERS) expect(squadNames.has(n)).toBe(false);
+    // Och en provspelare som inte längre kallas ska städas bort ur listan
+    const called = new Set([...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench]);
+    for (const n of TRIAL_PLAYERS) expect(called.has(n)).toBe(true);
   });
 
   it("SAMLING_TIME är 11:30 för Fässberg (hemma 13:00 → 1h30 före)", () => {

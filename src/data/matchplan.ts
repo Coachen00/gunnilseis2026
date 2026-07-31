@@ -290,10 +290,22 @@ export const PRACTICAL_INFO = {
     "Samling 11:30 på Hjällbovallen — ombytta och klara. Mental start före uppvärmning.",
 } as const;
 
+/**
+ * Spelare som får kallas utan att finnas i `data/squad.ts` — provspelare och
+ * inlånade som tränar med oss men tillhör en annan förening.
+ *
+ * Finns för att `CALLED_SQUAD` är fri text utan join mot truppen: utan den här
+ * listan skulle stavfelsskyddet i `matchplan.test.ts` antingen falla på en
+ * legitim provspelare, eller behöva stängas av helt. De läggs INTE i squad.ts —
+ * den listan speglar Gunnilses egen trupp på svenskalag.se.
+ */
+export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Darvan Ayoub"]);
+
 /* Kallad trupp till träningsmatchen mot Fässbergs IF (1 aug).
- * 15 spelare, ingen startelva spikad — `starting` tom → Veckans match visar
+ * 18 spelare, ingen startelva spikad — `starting` tom → Veckans match visar
  * en numrerad lista "Kallade spelare" i stället för formationsplan.
- * Namnen ska stavas exakt som i `data/squad.ts` (fri text, ingen join). */
+ * Namnen ska stavas exakt som i `data/squad.ts` (fri text, ingen join),
+ * eller finnas i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
   bench: [
@@ -301,6 +313,7 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
     "Kamal Fekhouri",
     // Backar
     "Adnan Hadzialic",
+    "Ahmad Soheyl Matin",
     "Daniel Matin",
     "Nayef Mohammad",
     "Pascal Jabbour",
@@ -313,9 +326,12 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
     "Mustafa Ayoub",
     // Anfall
     "Aldin Zeljkovic",
+    "Haris Avdiu",
     "Kamal Mustafa",
     "Leodon Johansson",
     "Yosef Ismail",
+    // Provspelare
+    "Darvan Ayoub",
   ],
 };
 
@@ -347,9 +363,9 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["15 spelare", "Kapten", "Alla spelar"],
+    principles: ["18 spelare", "Kapten", "Alla spelar"],
     bullets: [
-      "15 kallade: Kamal Fekhouri (mv), Adnan Hadzialic, Daniel Matin, Nayef Mohammad, Pascal Jabbour, Rayan Fedaila, Vedad Dzambegovic, Ahmad Aljafari, Benjamin Arapovic, Idris Abdi, Mustafa Ayoub, Aldin Zeljkovic, Kamal Mustafa, Leodon Johansson, Yosef Ismail.",
+      "18 kallade: Kamal Fekhouri (mv), Adnan Hadzialic, Ahmad Soheyl Matin, Daniel Matin, Nayef Mohammad, Pascal Jabbour, Rayan Fedaila, Vedad Dzambegovic, Ahmad Aljafari, Benjamin Arapovic, Idris Abdi, Mustafa Ayoub, Aldin Zeljkovic, Haris Avdiu, Kamal Mustafa, Leodon Johansson, Yosef Ismail, Darvan Ayoub.",
       "Idris Abdi är fortsatt lagkapten.",
       "Ingen startelva spikad — laget rullar och alla får speltid. Kroppen först: säg till direkt om något känns.",
     ],
@@ -447,10 +463,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "10",
     title: "Fasta",
     eyebrow: "Kort ansvar",
-    principles: ["Bekräftas", "Hybrid", "Andraboll"],
+    principles: ["Haris", "Hybrid", "Andraboll"],
     bullets: [
       "Försvar: hörna, inläggsfrispark, målchansfrispark, inkast — hybrid (zon + 2 man) + andraboll.",
-      "Anfall: Haris och Galvan är inte kallade — hörnor och inläggsfrisparkar bekräftas på genomgången. Målchansfrispark: bestäm själva.",
+      "Anfall: hörnor och inläggsfrisparkar Haris. Galvan är inte kallad — andrahandsval bekräftas på genomgången. Målchansfrispark: bestäm själva.",
       "Inkast: djupt = tryck + direkt återerövring.",
     ],
   },
