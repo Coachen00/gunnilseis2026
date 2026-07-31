@@ -1,0 +1,259 @@
+.home-hero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #07120d;
+  color: #fff;
+  isolation: isolate;
+}
+
+.home-hero__slides,
+.home-hero__slide,
+.home-hero__veil {
+  position: absolute;
+  inset: 0;
+}
+
+.home-hero__slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1100ms ease, transform 8s ease;
+}
+
+.home-hero__slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Jätteordet ligger mellan bild och slöja — slöjan äter underkanten så att
+   texten ser ut att sjunka ner i motivet, samma effekt som en urklippt förgrund. */
+.home-hero__wordmark {
+  position: absolute;
+  top: clamp(6rem, 16vh, 11rem);
+  right: clamp(1.5rem, 6vw, 6rem);
+  left: clamp(1.5rem, 6vw, 6rem);
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: clamp(3.6rem, 17vw, 15rem);
+  font-weight: 900;
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  text-align: center;
+  text-shadow: 0 2px 60px rgba(3, 12, 8, 0.45);
+  mask-image: linear-gradient(180deg, #000 42%, rgba(0, 0, 0, 0.15) 96%);
+  -webkit-mask-image: linear-gradient(180deg, #000 42%, rgba(0, 0, 0, 0.15) 96%);
+}
+
+.home-hero__veil {
+  background:
+    linear-gradient(180deg, rgba(3, 12, 8, 0.34) 0%, rgba(3, 12, 8, 0) 34%),
+    linear-gradient(0deg, rgba(3, 12, 8, 0.88) 0%, rgba(3, 12, 8, 0.22) 42%, rgba(3, 12, 8, 0) 66%);
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 2;
+  align-self: flex-end;
+  width: min(46rem, 100%);
+  padding: 0 clamp(1.5rem, 6vw, 6rem) clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.home-hero__eyebrow {
+  margin: 0 0 1.5rem;
+  color: #e2fbce;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.home-hero__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 4vw, 3rem);
+  margin: 0 0 2.25rem;
+  max-width: 34rem;
+}
+
+.home-hero__statValue {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.home-hero__statLabel {
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.home-hero__action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+}
+
+.home-hero__cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3.25rem;
+  padding: 0 0.4rem 0 1.6rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #07120d;
+  font-size: 0.95rem;
+  font-weight: 800;
+  transition: background-color 200ms ease, transform 200ms ease;
+}
+
+.home-hero__cta:hover {
+  background: #e2fbce;
+  transform: translateY(-2px);
+}
+
+.home-hero__cta:focus-visible {
+  outline: 3px solid #e2fbce;
+  outline-offset: 4px;
+}
+
+.home-hero__ctaIcon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1.5px solid rgba(7, 18, 13, 0.18);
+  border-radius: 999px;
+}
+
+.home-hero__lead {
+  max-width: 26rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.home-hero__next {
+  position: absolute;
+  right: clamp(1.5rem, 6vw, 6rem);
+  bottom: clamp(2.5rem, 6vh, 4.5rem);
+  z-index: 2;
+  width: clamp(9rem, 17vw, 13rem);
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 1.1rem;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition: transform 200ms ease, background-color 200ms ease;
+}
+
+.home-hero__next:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.home-hero__next:focus-visible {
+  outline: 3px solid #e2fbce;
+  outline-offset: 4px;
+}
+
+.home-hero__next img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.7rem;
+  object-fit: cover;
+}
+
+.home-hero__nextMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.25rem 0.15rem;
+}
+
+.home-hero__counter {
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-hero__bars {
+  display: flex;
+  flex: 1;
+  gap: 0.2rem;
+}
+
+.home-hero__bars span {
+  height: 0.2rem;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+.home-hero__bars span.is-active {
+  background: #e2fbce;
+}
+
+/* Låga fönster (landskap på mobil, delad skärm): jätteordet är vw-baserat och
+   skulle annars växa ner i statraden. */
+@media (max-height: 700px) {
+  .home-hero__wordmark {
+    top: 4.5rem;
+    font-size: clamp(2.6rem, 11vw, 7rem);
+  }
+
+  .home-hero__stats {
+    margin-bottom: 1.5rem;
+  }
+
+  .home-hero__statValue {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .home-hero__content {
+    width: 100%;
+    padding-bottom: clamp(8.5rem, 22vh, 11rem);
+  }
+
+  .home-hero__next {
+    width: 7.5rem;
+    bottom: clamp(1.5rem, 4vh, 2.5rem);
+    right: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .home-hero__wordmark {
+    top: clamp(4.5rem, 12vh, 8rem);
+  }
+
+  .home-hero__slide {
+    object-position: 58% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__slide {
+    transition: opacity 200ms ease;
+    transform: none;
+  }
+
+  .home-hero__cta:hover,
+  .home-hero__next:hover {
+    transform: none;
+  }
+}

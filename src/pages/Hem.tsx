@@ -3,12 +3,11 @@ import { ArrowRight, LogIn } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { getForraMatch, type ForraMatch } from "@/data/forraMatch";
 import { MATCH_META } from "@/data/matchplan";
-import KedjaHero from "@/components/kedja/KedjaHero";
 import KedjaNav from "@/components/kedja/KedjaNav";
 import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
-import HomePhotoCarousel from "@/components/home/HomePhotoCarousel";
+import HomeHero from "@/components/home/HomeHero";
 import MatchRadar from "@/components/home/MatchRadar";
 
 const WORLDS = [
@@ -76,21 +75,22 @@ const Hem = () => {
 
   return (
     <div className="bg-kedja-paper">
-      <HomePhotoCarousel compact />
-      <KedjaHero
-        eyebrow="Gunnilse IS · Spelmodell 2026"
-        title={
-          <>
-            Ett lag.
-            <br />
-            En <em className="mark-lime not-italic">idé</em>.
-          </>
-        }
-        lead="Gunnilse IS Division 4A Herrar — vår spelmodell, vår taktik och våra matcher, samlade på ett ställe. Logga in för att se veckans matchplan, kallad trupp och hela säsongens material."
-        instruction="Läs uppifrån och ner, eller hoppa direkt dit du vill."
-      >
-        <KedjaNav items={WORLDS} />
-      </KedjaHero>
+      <HomeHero
+        eyebrow="Gunnilse IS · Division 4A Herr · 2026"
+        srTitle="Gunnilse IS Herr 2026 — ett lag, en idé"
+        lead="Vår spelmodell, vår taktik och våra matcher, samlade på ett ställe."
+        ctaLabel="Veckans match"
+        ctaTo="/match/kommande"
+      />
+
+      <section className="bg-kedja-mint">
+        <div className="mx-auto max-w-[1200px] px-6 py-14">
+          <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.3em] text-kedja-green">
+            Läs uppifrån och ner, eller hoppa direkt dit du vill
+          </p>
+          <KedjaNav items={WORLDS} />
+        </div>
+      </section>
 
       <MatchRadar />
 
