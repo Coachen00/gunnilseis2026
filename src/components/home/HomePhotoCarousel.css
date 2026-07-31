@@ -37,7 +37,7 @@
 
 .home-public__content h1 {
   max-width: 38rem;
-  margin: 1rem 0 1.25rem;
+  margin: 0 0 1.25rem;
   font-size: clamp(2.8rem, 6.5vw, 6.4rem);
   line-height: 0.95;
   letter-spacing: -0.055em;

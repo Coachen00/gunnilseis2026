@@ -85,7 +85,6 @@ const HomeRoute = () => {
         <div className="home-public__hero">
           <HomePhotoCarousel />
           <div className="home-public__content">
-            <span className="home-photo-carousel__eyebrow">Gunnilse herr · 2026</span>
             <h1>Välkommen till Gunnilse herr 2026</h1>
             <Link
               to="/login"
