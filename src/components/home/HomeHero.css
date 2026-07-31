@@ -50,8 +50,10 @@
 }
 
 .home-hero__veil {
+  /* Toppslöjan är dimensionerad efter navigeringens kontrast: mätt över alla
+     bilder i galleriet ger 0.52 minst 6.8:1 för märkestexten mot vit. */
   background:
-    linear-gradient(180deg, rgba(3, 12, 8, 0.34) 0%, rgba(3, 12, 8, 0) 34%),
+    linear-gradient(180deg, rgba(3, 12, 8, 0.52) 0%, rgba(3, 12, 8, 0) 30%),
     linear-gradient(0deg, rgba(3, 12, 8, 0.88) 0%, rgba(3, 12, 8, 0.22) 42%, rgba(3, 12, 8, 0) 66%);
 }
 

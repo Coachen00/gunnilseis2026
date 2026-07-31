@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import AuthGuard from "./components/AuthGuard";
 import Layout from "./components/Layout";
 import ErrorBoundary from "./components/ErrorBoundary";
+import TopNav from "./components/TopNav";
 import { createAppQueryClient } from "./lib/queryClient";
 import { useAuthSession } from "./hooks/useAuthSession";
 import HomeHero from "./components/home/HomeHero";
@@ -80,7 +81,8 @@ const HomeRoute = () => {
 
   if (!isAuthed) {
     return (
-      <main>
+      <main className="bg-kedja-paper">
+        <TopNav />
         <HomeHero
           eyebrow="Gunnilse IS · Division 4A Herr · 2026"
           srTitle="Välkommen till Gunnilse herr 2026"
