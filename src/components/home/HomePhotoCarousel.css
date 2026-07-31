@@ -14,9 +14,15 @@
 
 .home-public {
   position: relative;
+  background: #07120d;
+}
+
+/* Overlayen positioneras mot hero-ytan, inte mot hela sidan — annars glider
+   texten ner i MatchRadar när sidan växer. */
+.home-public__hero {
+  position: relative;
   min-height: 100svh;
   overflow: hidden;
-  background: #07120d;
 }
 
 .home-public__content {
