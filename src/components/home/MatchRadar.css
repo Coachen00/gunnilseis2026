@@ -31,7 +31,7 @@
 .match-radar__match { display: flex; align-items: center; gap: .65rem; min-width: 12rem; padding: .85rem 1.25rem; border-right: 1px solid rgba(255,255,255,.12); color: var(--radar-muted); font-size: .78rem; }
 .match-radar__match strong { color: white; font-size: .9rem; }
 .match-radar__result { display: grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: 50%; color: #0b1911; font: 800 .65rem ui-monospace, monospace; }
-.match-radar__result--vinst { background: var(--radar-lime); }.match-radar__result--förlust { background: var(--radar-red); }
+.match-radar__result--vinst { background: var(--radar-lime); }.match-radar__result--forlust { background: var(--radar-red); }.match-radar__result--oavgjord { background: var(--radar-muted); }
 .match-radar__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1rem; }
 .match-radar__chart-card { min-height: 24rem; padding: clamp(1.15rem, 3vw, 2rem); border: 1px solid rgba(255,255,255,.15); background: rgba(255,255,255,.055); }
 .match-radar__mini-label { display: block; margin-bottom: .5rem; color: var(--radar-lime); font-size: .62rem; }.match-radar h3 { margin: 0; font-size: 1.05rem; letter-spacing: -.02em; }
