@@ -38,10 +38,18 @@ describe("MatchKommande — matchdagsläge", () => {
     expect(screen.queryByText("Sommaruppehåll")).toBeNull();
   });
 
-  it("skriver ut den kallade truppen", () => {
+  it("skriver ut den kallade truppen — eller 'Kallelse kommer' när den inte är satt", () => {
     renderWithProviders(<MatchKommande />, { routerProps: { initialEntries: ["/match/kommande"] } });
     const total = CALLED_SQUAD.starting.length + CALLED_SQUAD.bench.length;
-    expect(total).toBeGreaterThan(0);
+
+    if (total === 0) {
+      // Ingen kallelse ute än — spelaren ska se att den saknas, aldrig
+      // förra matchens trupp.
+      expect(screen.getByText("Kallelse kommer")).toBeInTheDocument();
+      expect(screen.queryByText("Kallade spelare")).toBeNull();
+      return;
+    }
+
     expect(screen.queryByText("Kallelse kommer")).toBeNull();
     // Utan spikad startelva visas en numrerad lista i stället för formationsplan
     if (CALLED_SQUAD.starting.length !== 11) {

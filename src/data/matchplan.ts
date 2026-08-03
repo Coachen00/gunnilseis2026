@@ -1,9 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-07-31 — UPPEHÅLLET SLUT. Veckans match är
- * träningsmatch hemma mot Fässbergs IF (lördag 1 aug 13:00 · Hjällbovallen
- * 1 Gräs, samling 11:30). Generalrep inför höstpremiären borta mot
- * Partille IF FK 8 aug 15:00. SEASON_BREAK.active = false.
+ * Senast uppdaterad 2026-08-03 — HÖSTPREMIÄR. Veckans match är seriematch
+ * borta mot Partille IF FK (lördag 8 aug 15:00 · Lexby 1 Gräs, samling
+ * 13:30). Genrepet mot Fässbergs IF 1 aug slutade 2–4.
+ * SEASON_BREAK.active = false.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -46,11 +46,11 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Fässbergs IF",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 1 aug · 13:00",
-  competition: "Träningsmatch",
+  opponent: "Partille IF FK",
+  venue: "Lexby 1 Gräs",
+  home: false,
+  kickoff: "Lör 8 aug · 15:00",
+  competition: "Division 4A Herr",
   weather: "",
   absent: [],
 };
@@ -59,18 +59,18 @@ export const MATCH_META: MatchMeta = {
  * Säsongsuppehåll mellan vår- och höstsäsong.
  *
  * När `active` är true visar Veckans match ett uppehålls-läge i stället för
- * matchdagsdetaljer. Uppehållet är slut sedan 28 juli och truppen är kallad
- * till träningsmatchen 1 aug → `active: false`, matchdagsläget gäller igen.
+ * matchdagsdetaljer. Uppehållet är slut sedan 28 juli och serien rullar igen
+ * från 8 aug → `active: false`, matchdagsläget gäller.
  * Fälten under behålls som historik/etiketter.
  */
 export const SEASON_BREAK = {
   active: false,
-  /** Sista spelade matchen — vårsäsongens avslutning. */
-  lastResult: "Stenkullen GoIK 6–0 (hemma, 27 juni)",
+  /** Sista spelade matchen — genrepet efter uppehållet. */
+  lastResult: "Fässbergs IF 2–4 (hemma, 1 aug, träningsmatch)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Fässbergs IF · hemma · lör 1 aug 13:00 (träningsmatch)",
+  nextMatchLabel: "Partille IF FK · borta · lör 8 aug 15:00 (höstpremiär)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -166,20 +166,22 @@ export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
  * Räknar baklänges från `MATCH_META.kickoff` ("Lör 13 jun · 13:00") och
  * returnerar samlingstid som "HH:MM".
  *
- * Regel (Gunnilse IS):
- *   - Hemmamatch → samling 1h30 före avspark.
- *   - Bortamatch → samling 1h45 före avspark.
+ * Regel (Gunnilse IS): samling 1h30 före avspark, hemma som borta.
+ * Bortaregeln stod tidigare på 1h45, men kallelserna på svenskalag.se säger
+ * 1h30 även borta (Kareby 19:00/17:30, Hisingsbacka 19:15/17:45, Ytterby
+ * 19:30/18:00, Partille 15:00/13:30) — sajten visade alltså 15 min för tidigt.
  *
  * Detta är samma regel för alla matcher hela säsongen, så den ska
  * aldrig hardkodas per match. Returnerar "Se kallelse" om kickoff
  * saknar parsbart klockslag.
  */
+const SAMLING_OFFSET_MINUTES = 90;
+
 export function computeSamlingTime(meta: MatchMeta = MATCH_META): string {
   const m = meta.kickoff.match(/(\d{1,2}):(\d{2})/);
   if (!m) return "Se kallelse";
   const kickoffMinutes = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
-  const offsetMinutes = meta.home ? 90 : 105;
-  const totalMinutes = kickoffMinutes - offsetMinutes;
+  const totalMinutes = kickoffMinutes - SAMLING_OFFSET_MINUTES;
   if (totalMinutes < 0) return "Se kallelse";
   const hh = Math.floor(totalMinutes / 60);
   const mm = totalMinutes % 60;
@@ -287,7 +289,7 @@ export const PRACTICAL_INFO = {
     ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
   gatheringNote:
-    "Samling 11:30 på Hjällbovallen — ombytta och klara. Mental start före uppvärmning.",
+    "Samling 13:30 — plats enligt kallelsen på svenskalag.se. Ombytta och klara. Mental start före uppvärmning.",
 } as const;
 
 /**
@@ -301,48 +303,25 @@ export const PRACTICAL_INFO = {
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Darvan Ayoub"]);
 
-/* Kallad trupp till träningsmatchen mot Fässbergs IF (1 aug).
- * 18 spelare, ingen startelva spikad — `starting` tom → Veckans match visar
- * en numrerad lista "Kallade spelare" i stället för formationsplan.
+/* Kallad trupp till höstpremiären borta mot Partille IF FK (8 aug).
+ * Kallelsen är inte satt än — svenskalag.se säger "Ingen uppställning ifylld".
+ * Båda listorna tomma → Veckans match visar "Kallelse kommer" i stället för
+ * att skriva ut en gammal trupp. Fyll på när kallelsen går ut.
  * Namnen ska stavas exakt som i `data/squad.ts` (fri text, ingen join),
  * eller finnas i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    // Målvakt
-    "Redwan Mangal",
-    // Backar
-    "Adnan Hadzialic",
-    "Ahmad Soheyl Matin",
-    "Daniel Matin",
-    "Nayef Mohammad",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    // Mittfält
-    "Ahmad Aljafari",
-    "Benjamin Arapovic",
-    "Idris Abdi",
-    "Mustafa Ayoub",
-    // Anfall
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Kamal Mustafa",
-    "Leodon Johansson",
-    "Yosef Ismail",
-    // Provspelare
-    "Darvan Ayoub",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Planens indelning — korridorer, spelytor, assistytan, gyllene zonen. Vet var du står och vilken yta du ska attackera. Utan den kartan är resten bara spring.",
-  "Presspelet — vi vinner bollen högt och direkt. Första pressen inom en sekund, och den kommer med full kraft.",
-  "Identitet — duellen och andrabollen är våra arenor. Vinn din, varje gång, så vinner vi matchen.",
+  "Försvarsspelet tightas till. Fyra insläppta mot Fässberg är fyra för många — avstånden mellan leden, och ingen pressar ensam.",
+  "Rakare och djupare anfall. När ytan finns går vi framåt direkt — djupled och diagonal före sidled.",
+  "Poäng från minut ett. Höstpremiär borta, tvåa i tabellen, två poäng upp till Lerum. Det här är matchen som sätter tonen för hösten.",
 ];
 
-/* Ingen startelva spikad — laget rullar och alla får speltid i träningsmatchen.
- * Fyll i 4-2-3-1-positioner (11 slots) när en XI sätts inför Partille 8 aug.
+/* Ingen startelva spikad än — kallelsen till Partille är inte satt.
+ * Fyll i 4-2-3-1-positioner (11 slots) när en XI sätts.
  * FORMATION.length måste matcha CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
 
@@ -353,9 +332,9 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Träningsmatch hemma mot Fässbergs IF · Hjällbovallen 1 Gräs · lördag 1 aug 13:00. Samling 11:30.",
-      "Första matchen efter sommaruppehållet — vi har tränat sedan 28 juli.",
-      "Generalrep inför höstpremiären borta mot Partille IF FK 8 aug 15:00. Resultatet räknas inte i tabellen — matchbilden gör det.",
+      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00. Samling 13:30.",
+      "Första seriematchen på sex veckor — vi har tränat sedan 28 juli och genrepat mot Fässberg 1 aug.",
+      "Vi är tvåa med 33 poäng på 13 matcher, två bakom Lerum. Nio matcher kvar. Serien avgörs här.",
     ],
   },
   {
@@ -363,38 +342,39 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["18 spelare", "Kapten", "Alla spelar"],
+    principles: ["Kallelse kommer", "Kapten", "Kroppen först"],
     bullets: [
-      "18 kallade: Redwan Mangal (mv), Adnan Hadzialic, Ahmad Soheyl Matin, Daniel Matin, Nayef Mohammad, Pascal Jabbour, Rayan Fedaila, Vedad Dzambegovic, Ahmad Aljafari, Benjamin Arapovic, Idris Abdi, Mustafa Ayoub, Aldin Zeljkovic, Haris Avdiu, Kamal Mustafa, Leodon Johansson, Yosef Ismail, Darvan Ayoub.",
+      "Kallelsen är inte satt än — den går ut efter veckans träningar och läggs upp här och på svenskalag.se.",
       "Idris Abdi är fortsatt lagkapten.",
-      "Ingen startelva spikad — laget rullar och alla får speltid. Kroppen först: säg till direkt om något känns.",
+      "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — Stenkullen GoIK 6–0",
-    eyebrow: "Så avslutade vi våren",
+    title: "Senast spelat — Fässbergs IF 2–4",
+    eyebrow: "Genrepet efter uppehållet",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi vann 6–0 hemma mot Stenkullen GoIK (3–0 i halvtid) — Ali Carneil höll nollan och vi avslutade våren på bästa sätt.",
-      "13 matcher, 0 förluster i vårserien. Vi ligger tvåa, två poäng bakom Lerum.",
-      "Detaljerade reflektioner fylls i av tränaren på /match/forra.",
-      "Fem veckor sedan dess — kraven är desamma, rytmen måste tillbaka.",
+      "Vi förlorade 2–4 hemma mot Fässbergs IF (0–1 i halvtid) i träningsmatchen 1 aug. Idris Abdi gjorde båda målen, det andra på straff till 2–2.",
+      "Spel och chanser var ganska jämnt fördelade — Mustafa Ayoub hade ett par riktigt vassa lägen men deras målvakt räddade.",
+      "Två saker tar vi med oss: försvarsspelet ska tightas till, anfallsspelet ska bli rakare och djupare.",
+      "I serien är vi fortsatt obesegrade: 13 matcher, 10 vinster, 3 oavgjorda. Träningsmatchen räknas inte i tabellen — men den räknas i huvudet.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Fässbergs IF",
-    eyebrow: "Träningsmatch",
+    title: "Motståndare — Partille IF FK",
+    eyebrow: "Division 4A · borta",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs · lördag 1 aug 13:00.",
-      "Fässbergs IF ligger tvåa i Division 4B med 29 poäng på 14 matcher — inget sparringlag, de kommer för att vinna.",
-      "Vi har inte mött dem i serien, så ingen historik att luta sig mot. Läs matchbilden själva de första 15 minuterna: formation, presshöjd, var de vill spela.",
-      "Ingen scoutning finns upplagd — /motstandaranalys fylls i inför Partille 8 aug.",
+      "Bortamatch på Lexby 1 Gräs · lördag 8 aug 15:00.",
+      "Partille ligger sjua med 17 poäng på 13 matcher (5 vinster, 2 oavgjorda, 6 förluster).",
+      "Vi vann 3–2 hemma mot dem 18 april — en enmålsmatch där vi släppte in två. De kan spela, och de har inget att förlora mot tvåan.",
+      "Deras senaste match före uppehållet var 2–2 borta mot Floda, där Floda kvitterade på tilläggstid. De kämpar in i slutminuten.",
+      "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Nyckeln: behandla det som en seriematch. Det som gjorde oss obesegrade i våras var kraven vi ställde på varandra, inte vilken match det stod på pappret.",
+    note: "Vi tog tre poäng mot dem i våras och släppte ändå in två. Samma lag, samma krav: stäng matchen i stället för att öppna den igen.",
   },
   {
     id: "identitet",
@@ -464,10 +444,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "10",
     title: "Fasta",
     eyebrow: "Kort ansvar",
-    principles: ["Haris", "Hybrid", "Andraboll"],
+    principles: ["Hybrid", "Zon + 2 man", "Andraboll"],
     bullets: [
       "Försvar: hörna, inläggsfrispark, målchansfrispark, inkast — hybrid (zon + 2 man) + andraboll.",
-      "Anfall: hörnor och inläggsfrisparkar Haris. Galvan är inte kallad — andrahandsval bekräftas på genomgången. Målchansfrispark: bestäm själva.",
+      "Anfall: hörnor och inläggsfrisparkar bekräftas på genomgången när kallelsen är satt. Målchansfrispark: bestäm själva.",
       "Inkast: djupt = tryck + direkt återerövring.",
     ],
   },
@@ -481,9 +461,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "11:30"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Samling", "13:30"],
+      ["Matchstart", "15:00"],
+      ["Bortaplan", "Lexby 1 Gräs"],
     ],
   },
 ];

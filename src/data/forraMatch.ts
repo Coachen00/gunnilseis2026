@@ -154,6 +154,31 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
       "Alla kan sin roll i matchplanen. Inbytare gör rätt sak först — fråga om du är osäker.",
     ],
   },
+  "2026-08-01-fassbergs": {
+    summary:
+      "Vi förlorade 2–4 hemma mot Fässbergs IF (0–1 i halvtid) i genrepet efter uppehållet. Idris Abdi gjorde båda målen, det andra på straff till 2–2, innan Fässberg drog ifrån till 2–3 och 2–4. Spel och chanser var ganska jämnt fördelade — Mustafa Ayoub hade ett par riktigt vassa lägen men deras målvakt räddade. Träningsmatch: resultatet räknas inte i tabellen, matchbilden gör det.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: [
+      { badge: "Bra", title: "Det här fungerade", bullets: [] },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: [
+          "Försvarsspelet måste tightas till — fyra insläppta är för många, och två av dem kom när matchen var öppen igen efter vår kvittering.",
+          "Anfallsspelet behöver bli rakare och djupare. Vi kom till lägen, men för sällan genom att attackera djupled direkt.",
+        ],
+      },
+      { badge: "Anfall", title: "Anfall — så blev det", bullets: [] },
+      { badge: "Försvar", title: "Försvar — så blev det", bullets: [] },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "Rytmen efter fem veckors uppehåll kommer inte gratis — den ska tas tillbaka på träning, inte hoppas fram på matchdagen.",
+      "När vi kvitterat ska nästa boll vara den mest disciplinerade, inte den mest ivriga.",
+    ],
+  },
 };
 
 /* =================================================================

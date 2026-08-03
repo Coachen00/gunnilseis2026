@@ -3,9 +3,10 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-07-31 (uppehållet slut. Träningsmatch hemma mot Fässbergs IF
- *                    lör 1 aug 13:00 — Fässberg spelar Division 4B, alltså ingen seriematch.
- *                    Höstpremiär: Partille IF FK borta 8 aug 15:00).
+ * Senast uppdaterad: 2026-08-03 (träningsmatchen mot Fässbergs IF 1 aug slutade 2–4,
+ *                    halvtid 0–1. Fässberg spelar Division 4B, alltså ingen seriematch —
+ *                    den räknas inte in i matchradarn. Näst på tur: höstpremiär borta mot
+ *                    Partille IF FK lör 8 aug 15:00, Lexby 1 Gräs).
  */
 
 export type MatchScorer = {
@@ -197,6 +198,10 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Träningsmatch",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 2,
+    theirScore: 4,
+    scorers: [{ name: "Idris Abdi", goals: 2, note: "båda målen · straff till 2–2" }],
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/20667007/fassbergs-if-d4h",
   },
   {
     id: "2026-08-08-partille",
