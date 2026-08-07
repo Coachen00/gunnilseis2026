@@ -67,14 +67,24 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Partille är inte satt än — inga stale namn kvar", () => {
-    // Kallelsen läggs in när den går ut. Tills dess ska listorna vara tomma
-    // så sidan visar "Kallelse kommer" i stället för förra matchens trupp.
+  it("kallelsen till Partille är satt: 16 spelare, ingen spikad XI", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
+  });
+
+  it("kallelsen täcker varje position — minst en MV och tre backar", () => {
+    // Skyddar mot den tysta varianten av felkallelse: rätt antal namn, men
+    // laget går inte att ställa upp. Testet ska falla högt, inte på matchdagen.
+    const called = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
+    const pos = (p: string) =>
+      called.filter((n) => SQUAD.find((s) => s.name === n)?.position === p).length;
+    expect(pos("GK")).toBeGreaterThanOrEqual(1);
+    expect(pos("DEF")).toBeGreaterThanOrEqual(4); // en backlinje på fyra
+    expect(pos("MID") + pos("FWD")).toBeGreaterThanOrEqual(7);
+    expect(called).toHaveLength(pos("GK") + pos("DEF") + pos("MID") + pos("FWD"));
   });
 
   it("när en kallelse väl är ifylld är den intern-konsistent", () => {
@@ -109,8 +119,28 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 13:30 för Partille (avspark 15:00 → 1h30 före)", () => {
-    expect(SAMLING_TIME).toBe("13:30");
+  it("SAMLING_TIME är 13:15 för Partille — bortaregeln 1h45, inte en override", () => {
+    // Tiden ska HÄRLEDAS ur regeln. Står den som override är bortatillägget
+    // bokfört på fel ställe och nästa bortamatch får tyst fel samlingstid.
+    expect(MATCH_META.samling).toBeUndefined();
+    expect(MATCH_META.home).toBe(false);
+    expect(SAMLING_TIME).toBe("13:15");
+  });
+
+  it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
+    // Samlingstiden dök tidigare upp ordagrant i gatheringNote, i COHERENCE 01
+    // och i roller-tabellen. Ändrades den på ett ställe stod de andra kvar och
+    // spelaren fick två olika tider. Alla tre måste härleda ur SAMLING_TIME.
+    expect(PRACTICAL_INFO.gatheringNote).toContain(SAMLING_TIME);
+    const forutsattningar = COHERENCE.find((s) => s.id === "forutsattningar");
+    expect(forutsattningar?.bullets?.some((b) => b.includes(SAMLING_TIME))).toBe(true);
+    const samlingRole = COHERENCE.find((s) => s.id === "roller")?.roles?.find(
+      ([label]) => label === "Samling"
+    );
+    expect(samlingRole?.[1]).toContain(SAMLING_TIME);
+    // Bortamatch → samlingen sker på Hjällbovallen, inte på bortaplanen.
+    expect(MATCH_SCHEDULE[0].note).toContain("Hjällbovallen");
+    expect(PRACTICAL_INFO.gatheringNote).toContain("Hjällbovallen");
   });
 
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
@@ -129,7 +159,7 @@ describe("matchplan", () => {
     expect(kickoffOffset(-40, { ...kvall, kickoff: "Söndag · saknar tid" })).toBe("");
   });
 
-  it("computeSamlingTime räknar 1h30 före avspark, hemma som borta", () => {
+  it("computeSamlingTime räknar 1h30 hemma och 1h45 borta", () => {
     expect(
       computeSamlingTime({
         opponent: "X",
@@ -149,7 +179,7 @@ describe("matchplan", () => {
         competition: "Z",
         absent: [],
       })
-    ).toBe("17:45");
+    ).toBe("17:30"); // borta: 1h45
     expect(
       computeSamlingTime({
         opponent: "X",
@@ -160,6 +190,35 @@ describe("matchplan", () => {
         absent: [],
       })
     ).toBe("Se kallelse");
+  });
+
+  it("hemma/borta-skillnaden är exakt 15 minuter, oavsett avsparkstid", () => {
+    // Låser SJÄLVA regeln, inte ett enskilt klockslag: bortatillägget ska
+    // överleva ett matchbyte utan att någon räknar om det för hand.
+    const bas: MatchMeta = {
+      opponent: "X", venue: "Y", home: true, kickoff: "Lör 8 aug · 15:00",
+      competition: "Z", absent: [],
+    };
+    const toMin = (s: string) => {
+      const [h, m] = s.split(":").map(Number);
+      return h * 60 + m;
+    };
+    for (const kickoff of ["Lör 8 aug · 15:00", "Fre 18 sep · 19:00", "Sön 3 maj · 11:45"]) {
+      const hemma = computeSamlingTime({ ...bas, kickoff, home: true });
+      const borta = computeSamlingTime({ ...bas, kickoff, home: false });
+      expect(toMin(hemma) - toMin(borta)).toBe(15);
+    }
+  });
+
+  it("meta.samling är en nödutgång som vinner, men bara välformad", () => {
+    const bas: MatchMeta = {
+      opponent: "X", venue: "Y", home: false, kickoff: "Lör 8 aug · 15:00",
+      competition: "Z", absent: [],
+    };
+    expect(computeSamlingTime(bas)).toBe("13:15");                       // regeln
+    expect(computeSamlingTime({ ...bas, samling: "12:00" })).toBe("12:00"); // undantaget
+    // Skräp i overriden får aldrig visas för spelaren — falla tillbaka på regeln.
+    expect(computeSamlingTime({ ...bas, samling: "kvart över ett" })).toBe("13:15");
   });
 
   it("parseKickoffDate parsar svenska kickoff-strängar korrekt", () => {

@@ -1,9 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-08-03 — HÖSTPREMIÄR. Veckans match är seriematch
- * borta mot Partille IF FK (lördag 8 aug 15:00 · Lexby 1 Gräs, samling
- * 13:30). Genrepet mot Fässbergs IF 1 aug slutade 2–4.
- * SEASON_BREAK.active = false.
+ * Senast uppdaterad 2026-08-07 — HÖSTPREMIÄR. Veckans match är seriematch
+ * borta mot Partille IF FK (lördag 8 aug 15:00 · Lexby 1 Gräs). Kallelsen är
+ * ute: 16 spelare, samling 13:15 på Hjällbovallen (avresa).
+ * Genrepet mot Fässbergs IF 1 aug slutade 2–4. SEASON_BREAK.active = false.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -23,6 +23,15 @@ export type MatchMeta = {
   competition: string;
   weather?: string;
   absent: string[];
+  /**
+   * Nödutgång: samlingstid "HH:MM" som överrider klubbregeln (hemma 1h30,
+   * borta 1h45 — se `SAMLING_OFFSET_MINUTES`).
+   *
+   * Ska stå tom i normalfallet. Sätts BARA för en enskild match med avvikande
+   * upplägg. Är avvikelsen egentligen en regel hör den hemma i offseten, inte
+   * här — annars ärver nästa match den felaktiga regeln utan att någon märker.
+   */
+  samling?: string;
 };
 
 export type FormationSlot = {
@@ -53,6 +62,7 @@ export const MATCH_META: MatchMeta = {
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
+  // Ingen `samling` här: 13:15 härleds ur bortaregeln (15:00 − 1h45).
 };
 
 /**
@@ -166,22 +176,33 @@ export const PAST_OPPONENT_NAMES: ReadonlySet<string> = (() => {
  * Räknar baklänges från `MATCH_META.kickoff` ("Lör 13 jun · 13:00") och
  * returnerar samlingstid som "HH:MM".
  *
- * Regel (Gunnilse IS): samling 1h30 före avspark, hemma som borta.
- * Bortaregeln stod tidigare på 1h45, men kallelserna på svenskalag.se säger
- * 1h30 även borta (Kareby 19:00/17:30, Hisingsbacka 19:15/17:45, Ytterby
- * 19:30/18:00, Partille 15:00/13:30) — sajten visade alltså 15 min för tidigt.
+ * Regel (Gunnilse IS): **hemma 1h30, borta 1h45 före avspark.** Bortatillägget
+ * är resa: vi samlas på Hjällbovallen och åker gemensamt, så samlingen ligger
+ * 15 min tidigare än hemma.
  *
- * Detta är samma regel för alla matcher hela säsongen, så den ska
- * aldrig hardkodas per match. Returnerar "Se kallelse" om kickoff
- * saknar parsbart klockslag.
+ * Regeln stod en period på 1h30 även borta, hämtad från kallelserna på
+ * svenskalag.se. Det var fel — sajten är inte facit, klubbregeln är. Rättad
+ * 2026-08-07 på Joels besked.
+ *
+ * Detta är samma regel för alla matcher hela säsongen, så den ska aldrig
+ * hardkodas per match. Returnerar "Se kallelse" om kickoff saknar parsbart
+ * klockslag.
+ *
+ * `meta.samling` vinner över regeln men ska stå TOM i normalfallet — den är en
+ * nödutgång för enstaka matcher med avvikande upplägg (t.ex. gemensam buss från
+ * annan plats), inte platsen där bortatillägget bokförs. Bokförs en regel som
+ * undantag blir nästa match tyst fel: regeln räknar vidare på fel offset och
+ * ingen märker det förrän spelarna står på plan vid fel tid.
  */
-const SAMLING_OFFSET_MINUTES = 90;
+const SAMLING_OFFSET_MINUTES = { home: 90, away: 105 } as const;
 
 export function computeSamlingTime(meta: MatchMeta = MATCH_META): string {
+  if (meta.samling && /^\d{1,2}:\d{2}$/.test(meta.samling)) return meta.samling;
   const m = meta.kickoff.match(/(\d{1,2}):(\d{2})/);
   if (!m) return "Se kallelse";
   const kickoffMinutes = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
-  const totalMinutes = kickoffMinutes - SAMLING_OFFSET_MINUTES;
+  const totalMinutes =
+    kickoffMinutes - (meta.home ? SAMLING_OFFSET_MINUTES.home : SAMLING_OFFSET_MINUTES.away);
   if (totalMinutes < 0) return "Se kallelse";
   const hh = Math.floor(totalMinutes / 60);
   const mm = totalMinutes % 60;
@@ -289,7 +310,7 @@ export const PRACTICAL_INFO = {
     ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
   gatheringNote:
-    "Samling 13:30 — plats enligt kallelsen på svenskalag.se. Ombytta och klara. Mental start före uppvärmning.",
+    "Samling 13:15 på Hjällbovallen — vi åker gemensamt till Lexby. Ombytta och klara. Mental start före uppvärmning.",
 } as const;
 
 /**
@@ -301,17 +322,44 @@ export const PRACTICAL_INFO = {
  * legitim provspelare, eller behöva stängas av helt. De läggs INTE i squad.ts —
  * den listan speglar Gunnilses egen trupp på svenskalag.se.
  */
-export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Darvan Ayoub"]);
+/* Tömd 2026-08-07: Darvan Ayoub (Västkurd, provspel sedan aug 2026) är inte
+ * kallad till Partille. Listan ska bara innehålla provspelare som faktiskt
+ * står i CALLED_SQUAD — testet nedan kräver det, just för att listan inte ska
+ * ligga kvar och legitimera stavfel efter att provspelet tagit slut.
+ * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
+export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Kallad trupp till höstpremiären borta mot Partille IF FK (8 aug).
- * Kallelsen är inte satt än — svenskalag.se säger "Ingen uppställning ifylld".
- * Båda listorna tomma → Veckans match visar "Kallelse kommer" i stället för
- * att skriva ut en gammal trupp. Fyll på när kallelsen går ut.
- * Namnen ska stavas exakt som i `data/squad.ts` (fri text, ingen join),
- * eller finnas i TRIAL_PLAYERS ovan. */
+ * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
+ * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
+ * formationsplanen. Spikas en XI: flytta 11 namn till `starting` OCH fyll
+ * FORMATION med 11 slots — testet låser att längderna är lika.
+ * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join),
+ * eller finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    // MV
+    "Ali Carneil",
+    // Backar
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Vedad Dzambegovic",
+    // Mittfält
+    "Ahmad Aljafari",
+    "Ayub Ahmed",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mustafa Ayoub",
+    "Måns Orwén",
+    // Anfall
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Leodon Johansson",
+    "Yosef Ismail",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -332,7 +380,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00. Samling 13:30.",
+      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00. Samling 13:15 på Hjällbovallen — vi åker gemensamt.",
       "Första seriematchen på sex veckor — vi har tränat sedan 28 juli och genrepat mot Fässberg 1 aug.",
       "Vi är tvåa med 33 poäng på 13 matcher, två bakom Lerum. Nio matcher kvar. Serien avgörs här.",
     ],
@@ -342,9 +390,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse kommer", "Kapten", "Kroppen först"],
+    principles: ["16 kallade", "Kapten", "Kroppen först"],
     bullets: [
-      "Kallelsen är inte satt än — den går ut efter veckans träningar och läggs upp här och på svenskalag.se.",
+      "16 spelare kallade. Samling 13:15 på Hjällbovallen, vi åker gemensamt till Lexby.",
+      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Idris Abdi är fortsatt lagkapten.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
@@ -461,7 +510,7 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "13:30"],
+      ["Samling", "13:15 · Hjällbovallen (avresa)"],
       ["Matchstart", "15:00"],
       ["Bortaplan", "Lexby 1 Gräs"],
     ],
