@@ -2,7 +2,7 @@ import { cleanup, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import MatchKommande from "./MatchKommande";
 import { renderWithProviders } from "@/test/test-utils";
-import { CALLED_SQUAD, MATCH_META, SAMLING_TIME, SEASON_BREAK } from "@/data/matchplan";
+import { CALLED_SQUAD, GATHERING_PLACE, MATCH_META, SAMLING_TIME, SEASON_BREAK } from "@/data/matchplan";
 
 vi.mock("@/integrations/supabase/client", async () => {
   const m = await import("@/test/mocks/supabase");
@@ -34,6 +34,9 @@ describe("MatchKommande — matchdagsläge", () => {
     // Samlingstiden ska komma från MATCH_SCHEDULE[0], inte "Inför premiären"
     expect(screen.getAllByText(SAMLING_TIME).length).toBeGreaterThan(0);
     expect(screen.getByText(/Tre saker — inget annat/)).toBeInTheDocument();
+    // Samlingsplatsen måste synas i hero-kortet, inte bara i schemat längre ner:
+    // "Samling 13:15" står bredvid matchplatsen och läses annars ihop med den.
+    expect(screen.getAllByText(GATHERING_PLACE).length).toBeGreaterThan(0);
     // Uppehålls-kortet ska vara borta
     expect(screen.queryByText("Sommaruppehåll")).toBeNull();
   });

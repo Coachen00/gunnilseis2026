@@ -25,6 +25,7 @@ import {
   MATCH_PLAN_SHORT,
   MATCH_PRESENTATION_URL,
   MATCH_SCHEDULE,
+  GATHERING_PLACE,
   PRACTICAL_INFO,
   SEASON_BREAK,
   type PlanCard,
@@ -103,8 +104,16 @@ function MatchInfoCard() {
         </div>
         <div className="grid grid-cols-2 border-t border-kedja-border bg-white md:border-l md:border-t-0">
           <BigFact label="Avspark" value={kickoffTime} icon={<Clock className="h-4 w-4" />} strong />
-          <BigFact label="Samling" value={onBreak ? "Inför premiären" : (gathering?.time ?? "Se kallelse")} icon={<Users className="h-4 w-4" />} />
-          <BigFact label="Plats" value={MATCH_META.venue} icon={<MapPin className="h-4 w-4" />} wide />
+          {/* Samlingsplatsen står UNDER samlingstiden med flit: rutan bredvid
+              visar matchplatsen, och utan platsen här läser spelaren ihop
+              "Samling 13:15" med "Lexby 1 Gräs" och åker direkt till bortaplanen. */}
+          <BigFact
+            label="Samling"
+            value={onBreak ? "Inför premiären" : (gathering?.time ?? "Se kallelse")}
+            sub={onBreak ? undefined : GATHERING_PLACE}
+            icon={<Users className="h-4 w-4" />}
+          />
+          <BigFact label={MATCH_META.home ? "Matchplats" : "Matchplats (borta)"} value={MATCH_META.venue} icon={<MapPin className="h-4 w-4" />} wide />
           <BigFact label="Trupp" value={totalPlayers > 0 ? `${totalPlayers} spelare` : "Ej publicerad"} icon={<Calendar className="h-4 w-4" />} wide />
         </div>
       </div>
@@ -164,12 +173,14 @@ function BigFact({
   icon,
   label,
   value,
+  sub,
   strong = false,
   wide = false,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
+  sub?: string;
   strong?: boolean;
   wide?: boolean;
 }) {
@@ -182,6 +193,9 @@ function BigFact({
       <p className={`${strong ? "text-3xl md:text-4xl" : "text-base md:text-lg"} font-black leading-tight text-kedja-ink`}>
         {value}
       </p>
+      {sub && (
+        <p className="mt-0.5 text-sm font-bold leading-tight text-amber-800">{sub}</p>
+      )}
     </div>
   );
 }

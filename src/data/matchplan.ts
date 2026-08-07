@@ -236,8 +236,23 @@ export function kickoffOffset(minutes: number, meta: MatchMeta = MATCH_META): st
  *   - Ner + sista instruktion: avspark - 10 till avspark - 3
  *   - Upp + sista löpningar: avspark - 3
  */
+/**
+ * Var vi samlas — ALLTID Hjällbovallen, även när matchen spelas någon annanstans.
+ *
+ * Egen konstant för att hero-kortet visar "Samling 13:15" bredvid
+ * "Matchplats: Lexby 1 Gräs". Utan platsen utskriven under samlingstiden läser
+ * spelaren ihop de två och åker direkt till bortaplanen. Platsen måste stå
+ * bredvid tiden, inte bara i schemat längre ner.
+ */
+export const GATHERING_PLACE = "Hjällbovallen";
+
+/** Lång form med destination — används i schemat och i praktisk info. */
+export const GATHERING_NOTE = MATCH_META.home
+  ? `${GATHERING_PLACE} — vi spelar hemma`
+  : `${GATHERING_PLACE} — vi åker gemensamt till ${MATCH_META.venue}`;
+
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
-  { time: SAMLING_TIME, label: "Samling", note: MATCH_META.home ? "Hjällbovallen" : "Hjällbovallen (avresa)" },
+  { time: SAMLING_TIME, label: "Samling", note: GATHERING_NOTE },
   { time: "Före uppvärmning", label: "Genomgång" },
   { time: `${kickoffOffset(-40)} – ${kickoffOffset(-10)}`, label: "Aktivering" },
   { time: `${kickoffOffset(-10)} – ${kickoffOffset(-3)}`, label: "Ner + sista instruktion" },
@@ -309,8 +324,7 @@ export const PRACTICAL_INFO = {
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
-  gatheringNote:
-    "Samling 13:15 på Hjällbovallen — vi åker gemensamt till Lexby. Ombytta och klara. Mental start före uppvärmning.",
+  gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Åk INTE direkt till bortaplanen. Ombytta och klara. Mental start före uppvärmning.`,
 } as const;
 
 /**
@@ -343,7 +357,7 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
     "Ali Carneil",
     // Backar
     "Adnan Hadzialic",
-    "Pascal Jabbour",
+    "Meysam Hoseni",
     "Rayan Fedaila",
     "Vedad Dzambegovic",
     // Mittfält
@@ -380,7 +394,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00. Samling 13:15 på Hjällbovallen — vi åker gemensamt.",
+      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00.",
+      "Samling 13:15 på HJÄLLBOVALLEN — vi åker gemensamt därifrån. Ingen åker direkt till Lexby.",
       "Första seriematchen på sex veckor — vi har tränat sedan 28 juli och genrepat mot Fässberg 1 aug.",
       "Vi är tvåa med 33 poäng på 13 matcher, två bakom Lerum. Nio matcher kvar. Serien avgörs här.",
     ],
@@ -392,7 +407,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["16 kallade", "Kapten", "Kroppen först"],
     bullets: [
-      "16 spelare kallade. Samling 13:15 på Hjällbovallen, vi åker gemensamt till Lexby.",
+      "16 spelare kallade. Samling 13:15 på Hjällbovallen — vi åker gemensamt till Lexby.",
       "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Idris Abdi är fortsatt lagkapten.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
@@ -510,9 +525,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "13:15 · Hjällbovallen (avresa)"],
+      ["Samling", "13:15 · Hjällbovallen"],
       ["Matchstart", "15:00"],
-      ["Bortaplan", "Lexby 1 Gräs"],
+      ["Bortaplan (spelas här)", "Lexby 1 Gräs"],
     ],
   },
 ];

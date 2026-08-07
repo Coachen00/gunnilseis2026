@@ -9,6 +9,7 @@ import {
   FORMATION,
   PRACTICAL_INFO,
   SAMLING_TIME,
+  GATHERING_PLACE,
   computeSamlingTime,
   kickoffOffset,
   parseKickoffDate,
@@ -138,9 +139,21 @@ describe("matchplan", () => {
       ([label]) => label === "Samling"
     );
     expect(samlingRole?.[1]).toContain(SAMLING_TIME);
-    // Bortamatch → samlingen sker på Hjällbovallen, inte på bortaplanen.
-    expect(MATCH_SCHEDULE[0].note).toContain("Hjällbovallen");
-    expect(PRACTICAL_INFO.gatheringNote).toContain("Hjällbovallen");
+  });
+
+  it("samlingsplatsen är Hjällbovallen och skiljs tydligt från matchplatsen", () => {
+    // Felet som ska fångas: spelaren läser "Samling 13:15" bredvid
+    // "Lexby 1 Gräs" och åker direkt till bortaplanen.
+    expect(GATHERING_PLACE).toBe("Hjällbovallen");
+    expect(GATHERING_PLACE).not.toBe(MATCH_META.venue);
+    // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
+    expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
+    expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);
+    // Bortamatch: destinationen måste nämnas, annars vet ingen vart bussen går
+    expect(MATCH_SCHEDULE[0].note).toContain(MATCH_META.venue);
+    // ...och COHERENCE 01 måste säga det uttryckligen
+    const kontext = COHERENCE.find((s) => s.id === "forutsattningar");
+    expect(kontext?.bullets?.some((b) => b.includes("HJÄLLBOVALLEN"))).toBe(true);
   });
 
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
