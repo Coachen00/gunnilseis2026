@@ -1,9 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-08-07 — HÖSTPREMIÄR. Veckans match är seriematch
- * borta mot Partille IF FK (lördag 8 aug 15:00 · Lexby 1 Gräs). Kallelsen är
- * ute: 16 spelare, samling 13:15 på Hjällbovallen (avresa).
- * Genrepet mot Fässbergs IF 1 aug slutade 2–4. SEASON_BREAK.active = false.
+ * Senast uppdaterad 2026-08-12 — TOPPMÖTET. Veckans match är seriematch hemma
+ * mot Lerums IS (lördag 15 aug 13:00 · Hjällbovallen 1 Gräs): serieledaren mot
+ * tvåan, båda obesegrade. Kallelsen är INTE publicerad än → CALLED_SQUAD tom.
+ * Höstpremiären borta mot Partille 8 aug slutade 3–3. SEASON_BREAK.active = false.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -55,14 +55,14 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Partille IF FK",
-  venue: "Lexby 1 Gräs",
-  home: false,
-  kickoff: "Lör 8 aug · 15:00",
+  opponent: "Lerums IS",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 15 aug · 13:00",
   competition: "Division 4A Herr",
   weather: "",
-  absent: [],
-  // Ingen `samling` här: 13:15 härleds ur bortaregeln (15:00 − 1h45).
+  absent: ["Adnan Hadzialic — avstängd (rött kort mot Partille)"],
+  // Ingen `samling` här: 11:30 härleds ur hemmaregeln (13:00 − 1h30).
 };
 
 /**
@@ -75,12 +75,12 @@ export const MATCH_META: MatchMeta = {
  */
 export const SEASON_BREAK = {
   active: false,
-  /** Sista spelade matchen — genrepet efter uppehållet. */
-  lastResult: "Fässbergs IF 2–4 (hemma, 1 aug, träningsmatch)",
+  /** Sista spelade matchen — höstpremiären. */
+  lastResult: "Partille IF FK 3–3 (borta, 8 aug, höstpremiär)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Partille IF FK · borta · lör 8 aug 15:00 (höstpremiär)",
+  nextMatchLabel: "Lerums IS · hemma · lör 15 aug 13:00 (ettan möter tvåan)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -324,7 +324,7 @@ export const PRACTICAL_INFO = {
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
-  gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Åk INTE direkt till bortaplanen. Ombytta och klara. Mental start före uppvärmning.`,
+  gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Ombytta och klara. Mental start före uppvärmning.`,
 } as const;
 
 /**
@@ -337,52 +337,31 @@ export const PRACTICAL_INFO = {
  * den listan speglar Gunnilses egen trupp på svenskalag.se.
  */
 /* Tömd 2026-08-07: Darvan Ayoub (Västkurd, provspel sedan aug 2026) är inte
- * kallad till Partille. Listan ska bara innehålla provspelare som faktiskt
- * står i CALLED_SQUAD — testet nedan kräver det, just för att listan inte ska
+ * kallad. Listan ska bara innehålla provspelare som faktiskt står i
+ * CALLED_SQUAD — testet nedan kräver det, just för att listan inte ska
  * ligga kvar och legitimera stavfel efter att provspelet tagit slut.
  * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Kallad trupp till höstpremiären borta mot Partille IF FK (8 aug).
- * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
- * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
- * formationsplanen. Spikas en XI: flytta 11 namn till `starting` OCH fyll
- * FORMATION med 11 slots — testet låser att längderna är lika.
- * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join),
- * eller finns i TRIAL_PLAYERS ovan. */
+/* Kallelsen till Lerums IS (15 aug) är inte publicerad än → tom lista, så att
+ * Veckans match visar "Ej publicerad" i stället för att låta förra veckans
+ * kallelse stå kvar som om den gällde. Fyll `bench` när kallelsen är satt;
+ * spikas en XI: flytta 11 namn till `starting` OCH fyll FORMATION med 11 slots
+ * — testet låser att längderna är lika. Namnen stavas exakt som i
+ * `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS ovan.
+ * Ado Hadzialic är avstängd och ska INTE kallas (se MATCH_META.absent). */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    // MV
-    "Ali Carneil",
-    // Backar
-    "Adnan Hadzialic",
-    "Meysam Hoseni",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    // Mittfält
-    "Ahmad Aljafari",
-    "Ayub Ahmed",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mustafa Ayoub",
-    "Måns Orwén",
-    // Anfall
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Kamal Mustafa",
-    "Leodon Johansson",
-    "Yosef Ismail",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Försvarsspelet tightas till. Fyra insläppta mot Fässberg är fyra för många — avstånden mellan leden, och ingen pressar ensam.",
-  "Rakare och djupare anfall. När ytan finns går vi framåt direkt — djupled och diagonal före sidled.",
-  "Poäng från minut ett. Höstpremiär borta, tvåa i tabellen, två poäng upp till Lerum. Det här är matchen som sätter tonen för hösten.",
+  "Nollan tillbaka. Tre insläppta mot Partille är tre för många — försvarsspelet är vårt signum, inte något keepern ska rädda oss ur.",
+  "Vinn andrabollen och ställ om rakt. I våras ägde de bollen i första halvlek och vi kom till vårt via omställningar — den vägen är öppen igen.",
+  "Fyra poäng upp med åtta matcher kvar. Vinner vi är det en poäng, förlorar vi sju. Serien avgörs den här lördagen.",
 ];
 
-/* Ingen startelva spikad än — kallelsen till Partille är inte satt.
+/* Ingen startelva spikad än — kallelsen till Lerum är inte satt.
  * Fyll i 4-2-3-1-positioner (11 slots) när en XI sätts.
  * FORMATION.length måste matcha CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -394,10 +373,10 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Höstpremiär borta mot Partille IF FK · Lexby 1 Gräs · lördag 8 aug 15:00.",
-      "Samling 13:15 på HJÄLLBOVALLEN — vi åker gemensamt därifrån. Ingen åker direkt till Lexby.",
-      "Första seriematchen på sex veckor — vi har tränat sedan 28 juli och genrepat mot Fässberg 1 aug.",
-      "Vi är tvåa med 33 poäng på 13 matcher, två bakom Lerum. Nio matcher kvar. Serien avgörs här.",
+      "Toppmöte hemma mot Lerums IS · Hjällbovallen 1 Gräs · lördag 15 aug 13:00.",
+      "Samling 11:30 på HJÄLLBOVALLEN — vi spelar hemma. Ombytta och klara.",
+      "Ettan möter tvåan: Lerum 38 poäng, vi 34 efter fjorton omgångar. Båda har noll i förlustkolumnen.",
+      "Åtta matcher kvar. Vinner vi är det en poäng upp, förlorar vi sju.",
     ],
   },
   {
@@ -405,10 +384,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["16 kallade", "Kapten", "Kroppen först"],
+    principles: ["Kallelse ej satt", "Kapten", "Kroppen först"],
     bullets: [
-      "16 spelare kallade. Samling 13:15 på Hjällbovallen — vi åker gemensamt till Lexby.",
-      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
+      "Kallelsen är inte publicerad än — den sätts under veckan och läggs upp här.",
+      "Adnan \"Ado\" Hadzialic står över: andra varningen i den 86:e mot Partille.",
       "Idris Abdi är fortsatt lagkapten.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
@@ -416,29 +395,30 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — Fässbergs IF 2–4",
-    eyebrow: "Genrepet efter uppehållet",
+    title: "Senast spelat — Partille IF FK 3–3",
+    eyebrow: "Höstpremiären borta",
     principles: ["Reflektion", "Energi", "Nästa aktion"],
     bullets: [
-      "Vi förlorade 2–4 hemma mot Fässbergs IF (0–1 i halvtid) i träningsmatchen 1 aug. Idris Abdi gjorde båda målen, det andra på straff till 2–2.",
-      "Spel och chanser var ganska jämnt fördelade — Mustafa Ayoub hade ett par riktigt vassa lägen men deras målvakt räddade.",
-      "Två saker tar vi med oss: försvarsspelet ska tightas till, anfallsspelet ska bli rakare och djupare.",
-      "I serien är vi fortsatt obesegrade: 13 matcher, 10 vinster, 3 oavgjorda. Träningsmatchen räknas inte i tabellen — men den räknas i huvudet.",
+      "Vi spelade 3–3 borta mot Partille IF FK (1–1 i halvtid) 8 aug. Haris Avdiu gjorde två mål, Meysam Hoseni kvitterade i den 79:e som inbytt.",
+      "Vi ledde i den 32:a, men släppte in på hörna i den 39:e och låg sedan under både 2–1 och 3–2. Tre gånger fick vi jaga ikapp.",
+      "Ali Carneil blev matchens lirare och räddade oss från fler baklängesmål. Det är inte så vårt försvarsspel ska bäras upp.",
+      "Vi avslutade med en man mindre — Ado Hadzialic fick rött i den 86:e och är avstängd mot Lerum.",
+      "I serien är vi fortsatt obesegrade: 14 matcher, 10 vinster, 4 oavgjorda.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Partille IF FK",
-    eyebrow: "Division 4A · borta",
+    title: "Motståndare — Lerums IS",
+    eyebrow: "Division 4A · hemma",
     bullets: [
-      "Bortamatch på Lexby 1 Gräs · lördag 8 aug 15:00.",
-      "Partille ligger sjua med 17 poäng på 13 matcher (5 vinster, 2 oavgjorda, 6 förluster).",
-      "Vi vann 3–2 hemma mot dem 18 april — en enmålsmatch där vi släppte in två. De kan spela, och de har inget att förlora mot tvåan.",
-      "Deras senaste match före uppehållet var 2–2 borta mot Floda, där Floda kvitterade på tilläggstid. De kämpar in i slutminuten.",
+      "Hemmamatch på Hjällbovallen 1 Gräs · lördag 15 aug 13:00.",
+      "Lerum leder serien med 38 poäng på 14 matcher (12 vinster, 2 oavgjorda, 0 förluster).",
+      "Tio insläppta mål på fjorton matcher — seriens klart bästa försvar. Vi har gjort flest mål (42), de har släppt in minst.",
+      "Vårmötet på Rydsberg 24 april slutade 0–0. De styrde första halvlek med boll och chanser, vi tog över i andra — Sabarr Janneh var banans gigant och Ali Carneil höll nollan.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Vi tog tre poäng mot dem i våras och släppte ändå in två. Samma lag, samma krav: stäng matchen i stället för att öppna den igen.",
+    note: "0–0 i våras säger vad matchen är: två lag som inte förlorar. Den som vinner gör det på en detalj — en fast situation, en andraboll, en omställning.",
   },
   {
     id: "identitet",
@@ -525,9 +505,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "13:15 · Hjällbovallen"],
-      ["Matchstart", "15:00"],
-      ["Bortaplan (spelas här)", "Lexby 1 Gräs"],
+      ["Samling", "11:30 · Hjällbovallen"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan (spelas här)", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

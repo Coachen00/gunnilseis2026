@@ -37,17 +37,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match Partille IF FK (seriematch borta)", () => {
-    expect(MATCH_META.opponent).toBe("Partille IF FK");
-    expect(MATCH_META.kickoff).toMatch(/15:00/);
-    expect(MATCH_META.venue).toContain("Lexby");
+  it("MATCH_META pekar på veckans match Lerums IS (seriematch hemma)", () => {
+    expect(MATCH_META.opponent).toBe("Lerums IS");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toBe("Division 4A Herr");
-    expect(MATCH_META.home).toBe(false);
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("2–4");
+    expect(SEASON_BREAK.lastResult).toContain("3–3");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,9 +68,11 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Partille är satt: 16 spelare, ingen spikad XI", () => {
+  it("kallelsen till Lerum är inte publicerad än — tom lista, ingen spikad XI", () => {
+    // Förra veckans kallelse får ALDRIG ligga kvar och läsas som veckans:
+    // spelaren ser sitt namn och tror sig kallad. Tom lista → "Ej publicerad".
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
@@ -80,6 +82,7 @@ describe("matchplan", () => {
     // Skyddar mot den tysta varianten av felkallelse: rätt antal namn, men
     // laget går inte att ställa upp. Testet ska falla högt, inte på matchdagen.
     const called = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
+    if (called.length === 0) return; // kallelsen inte publicerad än
     const pos = (p: string) =>
       called.filter((n) => SQUAD.find((s) => s.name === n)?.position === p).length;
     expect(pos("GK")).toBeGreaterThanOrEqual(1);
@@ -120,12 +123,12 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 13:15 för Partille — bortaregeln 1h45, inte en override", () => {
-    // Tiden ska HÄRLEDAS ur regeln. Står den som override är bortatillägget
-    // bokfört på fel ställe och nästa bortamatch får tyst fel samlingstid.
+  it("SAMLING_TIME är 11:30 för Lerum — hemmaregeln 1h30, inte en override", () => {
+    // Tiden ska HÄRLEDAS ur regeln. Står den som override är hemma/borta-
+    // tillägget bokfört på fel ställe och nästa match får tyst fel samlingstid.
     expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.home).toBe(false);
-    expect(SAMLING_TIME).toBe("13:15");
+    expect(MATCH_META.home).toBe(true);
+    expect(SAMLING_TIME).toBe("11:30");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -150,7 +153,7 @@ describe("matchplan", () => {
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
     expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);
     // Bortamatch: destinationen måste nämnas, annars vet ingen vart bussen går
-    expect(MATCH_SCHEDULE[0].note).toContain(MATCH_META.venue);
+    if (!MATCH_META.home) expect(MATCH_SCHEDULE[0].note).toContain(MATCH_META.venue);
     // ...och COHERENCE 01 måste säga det uttryckligen
     const kontext = COHERENCE.find((s) => s.id === "forutsattningar");
     expect(kontext?.bullets?.some((b) => b.includes("HJÄLLBOVALLEN"))).toBe(true);
@@ -159,9 +162,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("14:20 – 14:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("14:50 – 14:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("15:00"); // avspark
+    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("13:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -271,7 +274,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Partille 8 aug) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Lerum 15 aug) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
@@ -280,18 +283,20 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(true);
-    // Stenkullen (27 juni) och Fässberg (1 aug) ligger före veckans match → past opponents.
+    // Stenkullen (27 juni), Fässberg (1 aug) och Partille (8 aug) ligger före
+    // veckans match → past opponents.
     expect(PAST_OPPONENT_NAMES.has("stenkullen goik")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("fässbergs if")).toBe(true);
-    // Men INTE Partille själv — veckans egna motståndare får aldrig flaggas som
-    // stale, trots vårmötet 18 april.
-    expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(true);
+    // Men INTE Lerum själv — veckans egna motståndare får aldrig flaggas som
+    // stale, trots vårmötet 24 april.
+    expect(PAST_OPPONENT_NAMES.has("lerums is")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar höstpremiären mot Partille (8 aug), inte vårmötet", () => {
+  it("resolveWeeklyMatch hittar returmötet med Lerum (15 aug), inte vårmötet", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Partille IF FK");
-    expect(wm?.id).toBe("2026-08-08-partille");
+    expect(wm?.opponent).toBe("Lerums IS");
+    expect(wm?.id).toBe("2026-08-15-lerum");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -317,7 +322,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte veckans match (Partille)", () => {
+  it("stale Vardar-rad i framtiden blockerar inte veckans match (Lerum)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -333,7 +338,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("Partille IF FK");
+    expect(matches[0].opponent).toBe("Lerums IS");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -351,7 +356,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Partille IF FK");
+    expect(matches[0].opponent).toBe("Lerums IS");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

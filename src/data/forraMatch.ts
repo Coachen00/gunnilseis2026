@@ -179,6 +179,46 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
       "När vi kvitterat ska nästa boll vara den mest disciplinerade, inte den mest ivriga.",
     ],
   },
+  "2026-08-08-partille": {
+    summary:
+      "Vi spelade 3–3 borta mot Partille IF FK (1–1 i halvtid) i höstpremiären. Haris Avdiu gjorde två mål — 0–1 i den 32:a och kvitteringen till 2–2 — och inbytte Meysam Hoseni satte 3–3 i den 79:e. Tre gånger fick vi jaga ikapp. Ali Carneil blev matchens lirare. Fortsatt obesegrade i serien, men två tappade poäng.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "Tre mål borta och vi gav aldrig upp matchen — vi kvitterade tre gånger, sist med tio minuter kvar.",
+          "Vi skapade de vassaste lägena i slutet, med bland annat en stolpträff när matchen stod och vägde.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: [
+          "Tre insläppta är tre för många. Försvarsspelet startar när motståndaren har bollen — det är vårt signum och den här dagen var det inte det.",
+          "Utan storspel av keepern hade det blivit fler baklängesmål. Räddningar ska vara sista utvägen, inte planen.",
+          "Disciplin i slutskedet: vi spelade de sista minuterna med en man mindre.",
+        ],
+      },
+      { badge: "Anfall", title: "Anfall — så blev det", bullets: [] },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: [
+          "Deras 1–1 kom på hörna. Fasta situationer är fortsatt en läcka att täppa till.",
+        ],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "Vi vinner inte matcher på att kvittera tre gånger — vi vinner dem på att inte hamna under.",
+      "Nästa aktion efter en kvittering avgör: håll bollen och laget samlat i stället för att jaga fram nästa mål direkt.",
+      "En andra varning i den 86:e kostar mer än en match — den kostar nästa också.",
+    ],
+  },
 };
 
 /* =================================================================

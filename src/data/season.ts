@@ -3,10 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-08-03 (träningsmatchen mot Fässbergs IF 1 aug slutade 2–4,
- *                    halvtid 0–1. Fässberg spelar Division 4B, alltså ingen seriematch —
- *                    den räknas inte in i matchradarn. Näst på tur: höstpremiär borta mot
- *                    Partille IF FK lör 8 aug 15:00, Lexby 1 Gräs).
+ * Senast uppdaterad: 2026-08-12 (höstpremiären borta mot Partille IF FK 8 aug slutade
+ *                    3–3, halvtid 1–1. Haris Avdiu två mål, Meysam Hoseni kvitterade i
+ *                    den 79:e. Serien: 14 matcher, 10 vinster, 4 oavgjorda, 0 förluster —
+ *                    tvåa på 34 poäng, fyra bakom Lerums IS. Näst på tur: toppmötet hemma
+ *                    mot Lerums IS lör 15 aug 13:00, Hjällbovallen 1 Gräs).
  */
 
 export type MatchScorer = {
@@ -210,6 +211,12 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Lexby 1 Gräs",
+    ourScore: 3,
+    theirScore: 3,
+    scorers: [
+      { name: "Haris Avdiu", goals: 2, note: "0–1 i 32:a, 2–2 andra halvlek" },
+      { name: "Meysam Hoseni", goals: 1, note: "kvitterade till 3–3 i 79:e som inbytt" },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901106/partille-if-fk",
   },
   {

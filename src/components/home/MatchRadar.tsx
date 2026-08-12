@@ -24,13 +24,16 @@ const seriesThrough = record.played[0]
     )
   : "";
 
+/* Partilles 2–2-kvittering (8 aug) saknar minutangivelse i referatet — den föll
+ * mellan deras 2–1 i 53:e och 3–2 i 65:e, och ligger här i 46–60. Får vi
+ * exakt minut, flytta den till 61–75 om det visar sig vara efter minut 60. */
 export const goalMinutes = [
   { bucket: "0–15", for: 6, against: 2 },
   { bucket: "16–30", for: 3, against: 0 },
-  { bucket: "31–45+", for: 9, against: 2 },
-  { bucket: "46–60", for: 4, against: 1 },
-  { bucket: "61–75", for: 7, against: 1 },
-  { bucket: "76–90+", for: 10, against: 5 },
+  { bucket: "31–45+", for: 10, against: 3 },
+  { bucket: "46–60", for: 5, against: 2 },
+  { bucket: "61–75", for: 7, against: 2 },
+  { bucket: "76–90+", for: 11, against: 5 },
 ];
 
 const scorers = [
