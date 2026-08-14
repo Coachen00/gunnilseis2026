@@ -260,62 +260,6 @@ export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string 
   { time: kickoffOffset(0), label: "Avspark" },
 ];
 
-/* Matchplan i korthet — fyra kort som spelaren scannar precis före avspark. */
-export type PlanCard = {
-  id: string;
-  eyebrow: string;
-  title: string;
-  bullets: string[];
-  accent: "red" | "blue" | "amber" | "green";
-};
-
-export const MATCH_PLAN_SHORT: PlanCard[] = [
-  {
-    id: "forsvar",
-    eyebrow: "Utan boll",
-    title: "Så försvarar vi",
-    accent: "red",
-    bullets: [
-      "Presshöjden styrs av villkoret: höga linjer + kompakta led → vi går högt och direkt. Utdragna → samla först, pressa sen.",
-      "YB på YB. Lås bollsida och stoppa spelvändning.",
-      "Vinn andrabollen som lag — närmaste attackerar, övriga tätar.",
-    ],
-  },
-  {
-    id: "anfall",
-    eyebrow: "Med boll",
-    title: "Så anfaller vi",
-    accent: "blue",
-    bullets: [
-      "Skydda kontring — 6:an står, MB håller avstånd.",
-      "Spela in centralt → ut → ta med framåt.",
-      "Fyll boxen vid inlägg: 9 straffp, motsatt ytter bortre, 8 första, 10 cutback.",
-    ],
-  },
-  {
-    id: "omstallning",
-    eyebrow: "I sekunden",
-    title: "Så ställer vi om",
-    accent: "amber",
-    bullets: [
-      "Bollvinst: första tanken framåt — diagonal eller djup.",
-      "Bolltapp: närmaste pressar inom 1 sekund — jakten startar direkt.",
-      "Forwarden styr första pressen så resten kan flytta efter.",
-    ],
-  },
-  {
-    id: "fasta",
-    eyebrow: "Stillastående",
-    title: "Fasta situationer",
-    accent: "green",
-    bullets: [
-      "Anfall: ansvar och variant bekräftas på genomgången.",
-      "Försvar: hybrid (zon + 2 man) + andraboll.",
-      "Inkast djupt = tryck + direkt återerövring.",
-    ],
-  },
-];
-
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
   responsibilities: [
