@@ -2,7 +2,7 @@
  *
  * Senast uppdaterad 2026-08-12 — TOPPMÖTET. Veckans match är seriematch hemma
  * mot Lerums IS (lördag 15 aug 13:00 · Hjällbovallen 1 Gräs): serieledaren mot
- * tvåan, båda obesegrade. Kallelsen är INTE publicerad än → CALLED_SQUAD tom.
+ * tvåan, båda obesegrade. Kallelsen är ute: 16 spelare, samling 11:30.
  * Höstpremiären borta mot Partille 8 aug slutade 3–3. SEASON_BREAK.active = false.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
@@ -343,16 +343,38 @@ export const PRACTICAL_INFO = {
  * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Kallelsen till Lerums IS (15 aug) är inte publicerad än → tom lista, så att
- * Veckans match visar "Ej publicerad" i stället för att låta förra veckans
- * kallelse stå kvar som om den gällde. Fyll `bench` när kallelsen är satt;
- * spikas en XI: flytta 11 namn till `starting` OCH fyll FORMATION med 11 slots
- * — testet låser att längderna är lika. Namnen stavas exakt som i
- * `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS ovan.
- * Ado Hadzialic är avstängd och ska INTE kallas (se MATCH_META.absent). */
+/* Kallad trupp till toppmötet hemma mot Lerums IS (15 aug).
+ * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
+ * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
+ * formationsplanen. Spikas en XI: flytta 11 namn till `starting` OCH fyll
+ * FORMATION med 11 slots — testet låser att längderna är lika.
+ * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join),
+ * eller finns i TRIAL_PLAYERS ovan.
+ * Ado Hadzialic är avstängd och står därför inte i listan (se MATCH_META.absent). */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    // MV
+    "Ali Carneil",
+    // Backar
+    "Daniel Matin",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Sabarr Janneh",
+    "Vedad Dzambegovic",
+    // Mittfält
+    "Ahmad Aljafari",
+    "Ayub Ahmed",
+    "Benjamin Arapovic",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mustafa Ayoub",
+    "Måns Orwén",
+    // Anfall
+    "Kamal Mustafa",
+    "Leodon Johansson",
+    "Yosef Ismail",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -384,9 +406,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse ej satt", "Kapten", "Kroppen först"],
+    principles: ["16 kallade", "Kapten", "Kroppen först"],
     bullets: [
-      "Kallelsen är inte publicerad än — den sätts under veckan och läggs upp här.",
+      "16 spelare kallade. Samling 11:30 på Hjällbovallen — vi spelar hemma.",
+      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Adnan \"Ado\" Hadzialic står över: andra varningen i den 86:e mot Partille.",
       "Idris Abdi är fortsatt lagkapten.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",

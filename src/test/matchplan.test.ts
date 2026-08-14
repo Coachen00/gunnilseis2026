@@ -68,14 +68,22 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Lerum är inte publicerad än — tom lista, ingen spikad XI", () => {
-    // Förra veckans kallelse får ALDRIG ligga kvar och läsas som veckans:
-    // spelaren ser sitt namn och tror sig kallad. Tom lista → "Ej publicerad".
+  it("kallelsen till Lerum är satt: 16 spelare, ingen spikad XI", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
+  });
+
+  it("avstängda spelare står inte i kallelsen", () => {
+    // Ado Hadzialic är avstängd mot Lerum. Står han kvar i listan tror han sig
+    // kallad — och vi upptäcker det först när domaren stryker honom.
+    const called = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
+    for (const entry of MATCH_META.absent) {
+      const name = entry.split("—")[0].trim();
+      expect(called).not.toContain(name);
+    }
   });
 
   it("kallelsen täcker varje position — minst en MV och tre backar", () => {
