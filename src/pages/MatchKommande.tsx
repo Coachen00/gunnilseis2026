@@ -4,10 +4,9 @@
  * Strikt struktur (per Spelmodellen-spec):
  *   1. Matchinfo       — motståndare, hemma/borta, plats, avspark, samling
  *   2. Kallad trupp    — startelva + avbytare tydligt separerade
- *   3. Matchplan       — 4 kort: försvar, anfall, omställning, fasta
- *   4. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
- *   5. Praktisk info   — schema, ansvar
- *   6. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
+ *   3. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
+ *   4. Praktisk info   — schema, ansvar
+ *   5. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
  *
  * Inga upprepningar. Inga långa textstycken. Allt scannbart före match
  * från mobilen på resan till planen.
@@ -22,23 +21,13 @@ import {
   CALLED_SQUAD,
   FOCUS,
   MATCH_META,
-  MATCH_PLAN_SHORT,
   MATCH_PRESENTATION_URL,
   MATCH_SCHEDULE,
   GATHERING_PLACE,
   PRACTICAL_INFO,
   SEASON_BREAK,
-  type PlanCard,
 } from "@/data/matchplan";
 import { SPELARVARD_INTRO, SPELARVARD_TITLE } from "@/data/spelarvard";
-
-/* ---------- color tokens per plan-accent ---------- */
-const ACCENT: Record<PlanCard["accent"], { bar: string; text: string; bg: string; ring: string }> = {
-  red:   { bar: "bg-rose-500",    text: "text-rose-700",    bg: "bg-rose-50",    ring: "border-rose-200" },
-  blue:  { bar: "bg-sky-500",     text: "text-sky-700",     bg: "bg-sky-50",     ring: "border-sky-200" },
-  amber: { bar: "bg-amber-500",   text: "text-amber-700",   bg: "bg-amber-50",   ring: "border-amber-200" },
-  green: { bar: "bg-emerald-500", text: "text-emerald-700", bg: "bg-emerald-50", ring: "border-emerald-200" },
-};
 
 /* =================================================================
    SECTIONS
@@ -316,57 +305,6 @@ function KalladTrupp() {
   );
 }
 
-function MatchplanIKorthet() {
-  return (
-    <article>
-      <header className="mb-5 flex items-end justify-between gap-3 md:mb-6">
-        <div>
-          <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
-            Matchplan i korthet
-          </p>
-          <h2 className="mt-1 text-2xl font-black tracking-tight text-kedja-ink md:text-3xl">
-            Hur vi spelar matchen
-          </h2>
-        </div>
-      </header>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {MATCH_PLAN_SHORT.map((card) => {
-          const a = ACCENT[card.accent];
-          return (
-            <div
-              key={card.id}
-              className={`overflow-hidden rounded-xl border ${a.ring} bg-white`}
-            >
-              <div className={`flex items-center gap-3 ${a.bg} px-5 py-3`}>
-                <span className={`h-[2px] w-6 ${a.bar}`} aria-hidden="true" />
-                <p className={`font-mono text-[10px] font-black uppercase tracking-[0.22em] ${a.text}`}>
-                  {card.eyebrow}
-                </p>
-              </div>
-              <div className="p-5">
-                <h3 className="mb-3 text-lg font-black tracking-tight text-kedja-ink md:text-xl">
-                  {card.title}
-                </h3>
-                <ul className="space-y-2.5">
-                  {card.bullets.map((b, i) => (
-                    <li key={i} className="grid grid-cols-[22px_1fr] items-baseline gap-2">
-                      <span className={`font-mono text-[10px] font-black ${a.text}`}>
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="text-sm leading-relaxed text-kedja-ink/90">{b}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </article>
-  );
-}
-
 function TreViktigaste() {
   return (
     <article className="rounded-2xl border border-amber-400/60 bg-gradient-to-br from-kedja-mint/50 to-white p-6 md:p-8">
@@ -498,10 +436,6 @@ const MatchKommande = () => (
           <TreViktigaste />
         </SectionReveal>
       )}
-
-      <SectionReveal>
-        <MatchplanIKorthet />
-      </SectionReveal>
 
       <SectionReveal>
         <PraktiskInfo />
