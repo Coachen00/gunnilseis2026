@@ -418,7 +418,7 @@ export const COHERENCE: CoherenceSection[] = [
       "2. Spela in bollen — sök rättvänd medspelare i halvytan, mellan deras led.",
       "3. Spela ut — trångt centralt? Vänd via 6/MB till motsatt ytter och spela in på nya sidan.",
       "4. Ta med framåt — yta öppen? Driv eller passa framåt med fart, inte i sidled.",
-      "5. Fyll på i box — minst 4 av oss i/runt boxen vid inlägg. 9 straffp, motsatt ytter bortre, 8 första, 10 cutback, 1 hänger 18 m.",
+      "5. Fyll på i box — minst 4 av oss i/runt boxen vid inlägg. 9 straffp, motsatt ytter bortre, 8 första, 10 cutback, 6:an hänger 18 m för andrabollen.",
     ],
   },
   {
