@@ -83,7 +83,7 @@ export const PHASE_CUES: Record<"forsvar" | "omstallning-anfall" | "anfall" | "o
     ],
     cues: [
       { trigger: "Vi tappar bollen", action: "Närmaste spelare pressar boll inom 1 sekund" },
-      { trigger: "Press misslyckas inom 5s", action: "Hela laget ned och in — återetablera 4-3-3-block" },
+      { trigger: "Press misslyckas inom 5s", action: "Hela laget ned och in — återetablera 4-3-3" },
       { trigger: "Motståndaren har rättvänd spelare framåt", action: "Backlinjen backar — stäng djupet först" },
       { trigger: "Vi vinner andrabollen", action: "Direkt offensiv omställning — se cues för 'till anfall'" },
     ],
