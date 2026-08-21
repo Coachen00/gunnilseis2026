@@ -226,6 +226,11 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 1,
+    theirScore: 3,
+    scorers: [
+      { name: "Leodon Johansson", goals: 1, note: "reducering i 89:e som inbytt, assist Pascal Jabbour" },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901107/lerums-is",
   },
   {
@@ -234,7 +239,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "KF Velebit",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "",
+    venue: "Velebit IP",
   },
   {
     id: "2026-08-29-kareby",

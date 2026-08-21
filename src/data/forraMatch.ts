@@ -219,6 +219,49 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
       "En andra varning i den 86:e kostar mer än en match — den kostar nästa också.",
     ],
   },
+
+  "2026-08-15-lerum": {
+    summary:
+      "Vi förlorade toppmötet hemma mot Lerums IS 1–3 — säsongens första serieförlust. Jämn match, men deras mål i den 36:e och 42:a blev tunga att bära in i paus. Inbytte Leodon Johansson reducerade i den 89:e på assist av Pascal Jabbour. Idris Abdi var kapten och matchens lirare.",
+    truppen: [],
+    ejTillgangliga: ["Adnan Hadzialic — avstängd (rött kort mot Partille)"],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "Idris Abdi bar bindeln och höll sin höga lägstanivå genom hela matchen.",
+          "Ali Carneil stod för flera klassingripanden, bland annat en dubbelräddning i andra halvlek.",
+          "Benjamin Arapovic slet outtröttligt på mitten.",
+          "Vi lyfte efter justeringarna i paus och tog över mer av matchen sista halvtimmen.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: [
+          "Två insläppta på sex minuter i slutet av första halvlek — tappade vi matchen där.",
+          "Omställnings- och duellspelet lyfte först efter halvtimmen i andra. Det måste sitta från avspark.",
+          "Lerum hade den hetaste viljan. Inställningen får aldrig vara skillnaden.",
+        ],
+      },
+      { badge: "Anfall", title: "Anfall — så blev det", bullets: [] },
+      { badge: "Försvar", title: "Försvar — så blev det", bullets: [] },
+      {
+        badge: "Omställningar",
+        title: "Omställningar",
+        bullets: [
+          "Omställningsspelet var en av knapparna vi skruvade på i paus — bättre i andra, men för sent.",
+        ],
+      },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "Sex dåliga minuter räcker för att förlora ett toppmöte — koncentrationen ska hålla i 90.",
+      "Viljan är en färdighet. Den som vill mest vinner duellerna, andrabollarna och till slut matchen.",
+      "Svaret på en förlust är nästa aktion — inte nästa ursäkt.",
+    ],
+  },
 };
 
 /* =================================================================

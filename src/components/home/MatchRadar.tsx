@@ -26,20 +26,22 @@ const seriesThrough = record.played[0]
 
 /* Partilles 2–2-kvittering (8 aug) saknar minutangivelse i referatet — den föll
  * mellan deras 2–1 i 53:e och 3–2 i 65:e, och ligger här i 46–60. Får vi
- * exakt minut, flytta den till 61–75 om det visar sig vara efter minut 60. */
+ * exakt minut, flytta den till 61–75 om det visar sig vara efter minut 60.
+ * Lerums tredje mål (15 aug) saknar också minut — det föll i andra halvlek
+ * före vår reducering i 89:e och ligger här i 61–75. Flytta vid besked. */
 export const goalMinutes = [
   { bucket: "0–15", for: 6, against: 2 },
   { bucket: "16–30", for: 3, against: 0 },
-  { bucket: "31–45+", for: 10, against: 3 },
+  { bucket: "31–45+", for: 10, against: 5 },
   { bucket: "46–60", for: 5, against: 2 },
-  { bucket: "61–75", for: 7, against: 2 },
-  { bucket: "76–90+", for: 11, against: 5 },
+  { bucket: "61–75", for: 7, against: 3 },
+  { bucket: "76–90+", for: 12, against: 5 },
 ];
 
 const scorers = [
   { name: "Haris Avdiu", goals: 16, assists: 1 },
   { name: "Idris Abdi", goals: 8, assists: 0 },
-  { name: "Leodon Johansson", goals: 7, assists: 1 },
+  { name: "Leodon Johansson", goals: 8, assists: 1 },
   { name: "Yosef Ismail", goals: 6, assists: 3 },
   { name: "Kamal Mustafa", goals: 5, assists: 6 },
 ];
