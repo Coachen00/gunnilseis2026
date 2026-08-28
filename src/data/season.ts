@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-08-12 (höstpremiären borta mot Partille IF FK 8 aug slutade
- *                    3–3, halvtid 1–1. Haris Avdiu två mål, Meysam Hoseni kvitterade i
- *                    den 79:e. Serien: 14 matcher, 10 vinster, 4 oavgjorda, 0 förluster —
- *                    tvåa på 34 poäng, fyra bakom Lerums IS. Näst på tur: toppmötet hemma
- *                    mot Lerums IS lör 15 aug 13:00, Hjällbovallen 1 Gräs).
+ * Senast uppdaterad: 2026-08-28 (bortamatchen mot KF Velebit 22 aug slutade 0–5, halvtid
+ *                    0–1. Andra raka förlusten efter 1–3 hemma mot Lerum. Serien: 16
+ *                    matcher, 10 vinster, 4 oavgjorda, 2 förluster — tvåa på 34 poäng, tio
+ *                    bakom Lerums IS. Näst på tur: Kareby IS hemma lör 29 aug 13:00,
+ *                    Hjällbovallen 1 Gräs).
  */
 
 export type MatchScorer = {
@@ -239,7 +239,10 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "KF Velebit",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "Velebit IP",
+    venue: "Velebit IP 1 Gräs",
+    ourScore: 0,
+    theirScore: 5,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901108/kf-velebit",
   },
   {
     id: "2026-08-29-kareby",

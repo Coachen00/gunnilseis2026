@@ -1,9 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-08-21 — veckans match är seriematch borta mot
- * KF Velebit (lördag 22 aug 15:00 · Velebit IP). Toppmötet hemma mot Lerum
- * 15 aug slutade 1–3 — första serieförlusten. 16 spelare kallade, elvan spikad
- * (4-3-3). Samling 13:15 på Hjällbovallen, gemensam avfärd.
+ * Senast uppdaterad 2026-08-28 — veckans match är seriematch hemma mot
+ * Kareby IS (lördag 29 aug 13:00 · Hjällbovallen 1 Gräs). Bortamatchen mot
+ * KF Velebit 22 aug slutade 0–5 — andra raka förlusten. Samling 11:30 på
+ * Hjällbovallen.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -55,14 +55,14 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "KF Velebit",
-  venue: "Velebit IP",
-  home: false,
-  kickoff: "Lör 22 aug · 15:00",
+  opponent: "Kareby IS",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 29 aug · 13:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
-  // Ingen `samling` här: 13:15 härleds ur bortaregeln (15:00 − 1h45).
+  // Ingen `samling` här: 11:30 härleds ur hemmaregeln (13:00 − 1h30).
 };
 
 /**
@@ -75,12 +75,12 @@ export const MATCH_META: MatchMeta = {
  */
 export const SEASON_BREAK = {
   active: false,
-  /** Sista spelade matchen — toppmötet. */
-  lastResult: "Lerums IS 1–3 (hemma, 15 aug, första serieförlusten)",
+  /** Sista spelade matchen. */
+  lastResult: "KF Velebit 0–5 (borta, 22 aug, andra raka förlusten)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "KF Velebit · borta · lör 22 aug 15:00 (Velebit IP)",
+  nextMatchLabel: "Kareby IS · hemma · lör 29 aug 13:00 (Hjällbovallen 1 Gräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -287,60 +287,47 @@ export const PRACTICAL_INFO = {
  * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Kallad trupp till bortamatchen mot KF Velebit (22 aug).
- * 16 spelare kallade och startelvan spikad — 4-3-3 med Benji som ensam sexa,
- * Idris och Ihab framför. FORMATION nedan har 11 slots; testet låser att
- * längderna är lika. Namnen stavas exakt som i `data/squad.ts` (fri text,
- * ingen join), eller finns i TRIAL_PLAYERS ovan.
- * Ado Hadzialic är tillbaka efter avtjänad avstängning och startar som mittback. */
+/* Kallad trupp till hemmamatchen mot Kareby IS (29 aug).
+ * 16 spelare kallade — Ali i mål, men ingen spikad startelva än (starting
+ * tom tills XI sätts, samma mönster som Lerum-veckan). Namnen stavas exakt
+ * som i `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS
+ * ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
-  starting: [
+  starting: [],
+  bench: [
     // MV
     "Ali Carneil",
     // Backar
-    "Rayan Fedaila",
-    "Ahmad Aljafari",
     "Adnan Hadzialic",
-    "Pascal Jabbour",
-    // Mittfält
-    "Benjamin Arapovic",
-    "Idris Abdi",
-    "Ihab Naser",
-    // Anfall
-    "Kamal Mustafa",
-    "Yosef Ismail",
-    "Leodon Johansson",
-  ],
-  bench: [
     "Daniel Matin",
     "Meysam Hoseni",
-    "Haris Avdiu",
+    "Rayan Fedaila",
     "Vedad Dzambegovic",
+    // Mittfält
+    "Ahmad Aljafari",
+    "Idris Abdi",
+    "Ihab Naser",
     "Mustafa Ayoub",
+    "Måns Orwén",
+    // Anfall
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Leodon Johansson",
+    "Yosef Ismail",
   ],
 };
 
 export const FOCUS: string[] = [
-  "Svaret på Lerum. Första förlusten ändrar ingenting i hur vi spelar — den ändrar hur snabbt vi måste svara. Nästa aktion, inte förra matchen.",
-  "Rakare framåt. Mot Lerum fastnade vi i sidled när framåt fanns. Djupled och diagonal före sidledsväxeln — varje gång läget finns.",
-  "Vinn duellerna och omställningarna. Det var där Lerum tog matchen, och det är där Velebit borta avgörs — vinn andrabollar och ställ om rakt.",
+  "Svaret på Velebit. 0–5 var ingen taktisk fråga — det var inställning. Den sätts före avspark, inte när vi ligger under.",
+  "Vinn duellerna och andrabollarna. Velebit sprang på varje boll, möjlig som omöjlig. På Hjällbovallen är det vi som gör det.",
+  "Håll ihop i 90. Tre insläppta på tolv minuter i slutet — koncentrationen ska bära hela vägen, oavsett ställning.",
 ];
 
-/* Startelvan mot KF Velebit — 4-3-3. Benji ensam sexa, Idris och Ihab
- * framför honom. FORMATION.length måste matcha CALLED_SQUAD.starting.length. */
-export const FORMATION: FormationSlot[] = [
-  { id: "mv", n: 1, name: "Ali", label: "MV", x: 50, y: 6 },
-  { id: "hb", n: 2, name: "Rayan", label: "HB", x: 85, y: 26 },
-  { id: "mb-h", n: 5, name: "Ahmad", label: "MB", x: 62, y: 22 },
-  { id: "mb-v", n: 4, name: "Ado", label: "MB", x: 38, y: 22 },
-  { id: "vb", n: 3, name: "Pascal", label: "VB", x: 15, y: 26 },
-  { id: "sexa", n: 6, name: "Benji", label: "CM", x: 50, y: 42 },
-  { id: "atta", n: 8, name: "Idris", label: "CM", x: 35, y: 58 },
-  { id: "tia", n: 10, name: "Ihab", label: "CM", x: 65, y: 58 },
-  { id: "hy", n: 7, name: "Kamal", label: "HY", x: 85, y: 76 },
-  { id: "nia", n: 9, name: "Yosef", label: "F", x: 50, y: 82 },
-  { id: "vy", n: 11, name: "Leo", label: "VY", x: 15, y: 76 },
-];
+/* Ingen startelva spikad än mot Kareby — bara Ali given i mål.
+ * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
+ * CALLED_SQUAD.starting.length. */
+export const FORMATION: FormationSlot[] = [];
 
 export const COHERENCE: CoherenceSection[] = [
   {
@@ -349,10 +336,10 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Seriematch borta mot KF Velebit · Velebit IP · lördag 22 aug 15:00.",
-      "Samling 13:15 på HJÄLLBOVALLEN — vi åker gemensamt. Ombytta och klara.",
-      "Vi är tvåa med 34 poäng, Lerum leder på 41 efter femton omgångar. Velebit är trea på 22.",
-      "Sju matcher kvar. Varje poäng räknas nu — vi jagar.",
+      "Seriematch hemma mot Kareby IS · Hjällbovallen 1 Gräs · lördag 29 aug 13:00.",
+      "Samling 11:30 på HJÄLLBOVALLEN. Ombytta och klara.",
+      "Vi är tvåa med 34 poäng, Lerum leder på 44 efter sexton omgångar. Kareby är femma på 22.",
+      "Sex matcher kvar. En poäng på tre matcher efter uppehållet — trenden vänder här.",
     ],
   },
   {
@@ -360,40 +347,39 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["16 kallade", "Elvan spikad", "Kroppen först"],
+    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade. Samling 13:15 på Hjällbovallen — gemensam avfärd till Velebit IP.",
-      "Startelvan är spikad (4-3-3) — se formationen ovan. Fem på bänken, alla förbereder sig som om de startar.",
-      "Idris Abdi bar bindeln mot Lerum och blev matchens lirare.",
+      "16 spelare kallade. Samling 11:30 på Hjällbovallen — ombytta och klara.",
+      "Ali Carneil står i mål. Resten av startelvan sätts på matchgenomgången.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — Lerums IS 1–3",
-    eyebrow: "Toppmötet hemma",
+    title: "Senast spelat — KF Velebit 0–5",
+    eyebrow: "Bortamötet",
     principles: ["Reflektion", "Svar", "Nästa aktion"],
     bullets: [
-      "Vi förlorade toppmötet hemma 1–3 den 15 aug — första serieförlusten. Jämn match, men deras två mål i 36:e och 42:a blev tunga att bära in i paus.",
-      "Leodon Johansson reducerade i den 89:e som inbytt, assist Pascal Jabbour.",
-      "Omställnings- och duellspelet lyfte först efter halvtimmen i andra. Lerum hade den hetaste viljan — det får aldrig vara skillnaden.",
-      "Idris Abdi var kapten och matchens lirare. Ali Carneil stod för flera klassingripanden, bland annat en dubbelräddning.",
-      "Läget: 15 matcher, 10 vinster, 4 oavgjorda, 1 förlust. Sju poäng upp till Lerum, sju matcher kvar.",
+      "Vi förlorade 0–5 borta den 22 aug — andra raka förlusten och den tyngsta insatsen på hela säsongen.",
+      "Yosef Ismail nickade i ribban i den 12:e på inlägg av Kamal Mustafa. Sedan tog Velebit över: 1–0 efter en halvtimme, 2–0 i den 56:e och tre mål mellan minut 74 och 86, varav ett på straff.",
+      "Velebit sprang på varje boll, möjlig som omöjlig. Vi hade inte den inställningen den dagen — andra halvlek förlorade vi 0–4.",
+      "Benjamin Arapovic blev matchens lirare, med Ahmad Aljafari och Idris Abdi närmast.",
+      "Läget: 16 matcher, 10 vinster, 4 oavgjorda, 2 förluster. Tio poäng upp till Lerum, sex matcher kvar.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — KF Velebit",
-    eyebrow: "Division 4A · borta",
+    title: "Motståndare — Kareby IS",
+    eyebrow: "Division 4A · hemma",
     bullets: [
-      "Bortamatch på Velebit IP · lördag 22 aug 15:00.",
-      "Velebit är trea med 22 poäng på 15 matcher (7 vinster, 1 oavgjord, 7 förluster), 25–23 i målskillnad.",
-      "Vårmötet hemma 2 maj vann vi 1–0 — tät match som avgjordes på detaljer.",
+      "Hemmamatch på Hjällbovallen 1 Gräs · lördag 29 aug 13:00.",
+      "Kareby är femma med 22 poäng på 16 matcher (5 vinster, 7 oavgjorda, 4 förluster), 36–28 i målskillnad.",
+      "Vårmötet borta 8 maj slutade 1–1 — de hänger kvar i matcher och är svåra att skaka av sig.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Trean på hemmaplan efter vår första förlust — det här är matchen där vi visar att Lerum var ett undantag, inte en riktning.",
+    note: "Sju oavgjorda av sexton — Kareby lever på att hålla matcher jämna. Vi bryter det genom att vinna andrabollarna och hålla nollan tillräckligt länge.",
   },
   {
     id: "identitet",
@@ -480,9 +466,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "13:15 · Hjällbovallen"],
-      ["Matchstart", "15:00"],
-      ["Bortaplan (spelas där)", "Velebit IP"],
+      ["Samling", "11:30 · Hjällbovallen"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

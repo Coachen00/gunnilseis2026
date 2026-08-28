@@ -262,6 +262,64 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
       "Svaret på en förlust är nästa aktion — inte nästa ursäkt.",
     ],
   },
+
+  "2026-08-22-velebit": {
+    summary:
+      "Vi förlorade 0–5 borta mot KF Velebit (0–1 i halvtid) — andra raka förlusten. Yosef Ismail nickade i ribban i den 12:e på inlägg av Kamal Mustafa, sedan tog hemmalaget över: 1–0 efter en halvtimme, 2–0 i den 56:e och tre mål mellan minut 74 och 86, varav 4–0 på straff. Benjamin Arapovic blev matchens lirare. Andra halvlek förlorade vi 0–4.",
+    truppen: [
+      "Adnan Hadzialic",
+      "Adnan Maric",
+      "Ahmad Aljafari",
+      "Ali Carneil",
+      "Benjamin Arapovic",
+      "Daniel Matin",
+      "Haris Avdiu",
+      "Idris Abdi",
+      "Ihab Naser",
+      "Kamal Mustafa",
+      "Leodon Johansson",
+      "Mustafa Ayoub",
+      "Pascal Jabbour",
+      "Rayan Fedaila",
+      "Vedad Dzambegovic",
+      "Yosef Ismail",
+    ],
+    ejTillgangliga: [],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "Yosef Ismails nick i ribban i den 12:e, framspelad av Kamal Mustafa — matchens enda riktigt stora läge för oss.",
+          "Benjamin Arapovic höll sin nivå hela vägen och blev matchens lirare, med Ahmad Aljafari och Idris Abdi närmast.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: [
+          "Inställningen. Velebit sprang på varje boll, möjlig som omöjlig — vi mötte det inte.",
+          "Tre insläppta mellan minut 74 och 86. När matchen redan var förlorad slutade vi hålla ihop.",
+          "Andra halvlek 0–4. Det är inte en spelmodellsfråga, det är en fråga om att göra jobbet i den.",
+        ],
+      },
+      { badge: "Anfall", title: "Anfall — så blev det", bullets: [] },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: [
+          "Fem insläppta, varav ett på straff. Struktur och koncentration försvann samtidigt i slutet.",
+        ],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "Inställningen hittar vi inte under matchen — den är bestämd innan vi går ut.",
+      "Ligger vi under ska laget bli tätare, inte glesare. 0–2 blev 0–5 för att vi föll isär.",
+      "En poäng på tre matcher efter uppehållet. Trenden bryts på träning och i inställning, inte i taktiktavlan.",
+    ],
+  },
 };
 
 /* =================================================================

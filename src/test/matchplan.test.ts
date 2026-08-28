@@ -37,17 +37,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match KF Velebit (seriematch borta)", () => {
-    expect(MATCH_META.opponent).toBe("KF Velebit");
-    expect(MATCH_META.kickoff).toMatch(/15:00/);
-    expect(MATCH_META.venue).toContain("Velebit IP");
+  it("MATCH_META pekar på veckans match Kareby IS (seriematch hemma)", () => {
+    expect(MATCH_META.opponent).toBe("Kareby IS");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toBe("Division 4A Herr");
-    expect(MATCH_META.home).toBe(false);
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("1–3");
+    expect(SEASON_BREAK.lastResult).toContain("0–5");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -67,17 +67,17 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Velebit är satt: 16 spelare, XI spikad", () => {
-    expect(CALLED_SQUAD.starting).toHaveLength(11);
-    expect(CALLED_SQUAD.bench).toHaveLength(5);
+  it("kallelsen till Kareby är satt: 16 spelare, ingen spikad XI", () => {
+    expect(CALLED_SQUAD.starting).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
   });
 
   it("avstängda spelare står inte i kallelsen", () => {
-    // Ado Hadzialic är avstängd mot Lerum. Står han kvar i listan tror han sig
-    // kallad — och vi upptäcker det först när domaren stryker honom.
+    // Står en avstängd spelare kvar i listan tror han sig kallad — och vi
+    // upptäcker det först när domaren stryker honom.
     const called = [...CALLED_SQUAD.starting, ...CALLED_SQUAD.bench];
     for (const entry of MATCH_META.absent) {
       const name = entry.split("—")[0].trim();
@@ -130,12 +130,12 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 13:15 för Velebit — bortaregeln 1h45, inte en override", () => {
+  it("SAMLING_TIME är 11:30 för Kareby — hemmaregeln 1h30, inte en override", () => {
     // Tiden ska HÄRLEDAS ur regeln. Står den som override är hemma/borta-
     // tillägget bokfört på fel ställe och nästa match får tyst fel samlingstid.
     expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.home).toBe(false);
-    expect(SAMLING_TIME).toBe("13:15");
+    expect(MATCH_META.home).toBe(true);
+    expect(SAMLING_TIME).toBe("11:30");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -169,9 +169,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("14:20 – 14:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("14:50 – 14:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("15:00"); // avspark
+    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("13:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -281,29 +281,29 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Velebit 22 aug) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Kareby 29 aug) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
-    expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(true);
-    // Stenkullen (27 juni), Fässberg (1 aug), Partille (8 aug) och Lerum
-    // (15 aug) ligger före veckans match → past opponents.
+    // Stenkullen (27 juni), Fässberg (1 aug), Partille (8 aug), Lerum (15 aug)
+    // och Velebit (22 aug) ligger före veckans match → past opponents.
     expect(PAST_OPPONENT_NAMES.has("stenkullen goik")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("fässbergs if")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("lerums is")).toBe(true);
-    // Men INTE Velebit själv — veckans egna motståndare får aldrig flaggas som
-    // stale, trots vårmötet 2 maj.
-    expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
+    // Men INTE Kareby själv — veckans egna motståndare får aldrig flaggas som
+    // stale, trots vårmötet 8 maj.
+    expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar returmötet med Velebit (22 aug), inte vårmötet", () => {
+  it("resolveWeeklyMatch hittar returmötet med Kareby (29 aug), inte vårmötet", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("KF Velebit");
-    expect(wm?.id).toBe("2026-08-22-velebit");
+    expect(wm?.opponent).toBe("Kareby IS");
+    expect(wm?.id).toBe("2026-08-29-kareby");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -329,7 +329,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte veckans match (Velebit)", () => {
+  it("stale Vardar-rad i framtiden blockerar inte veckans match (Kareby)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -345,7 +345,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("KF Velebit");
+    expect(matches[0].opponent).toBe("Kareby IS");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -363,7 +363,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("KF Velebit");
+    expect(matches[0].opponent).toBe("Kareby IS");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });
