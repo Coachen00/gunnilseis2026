@@ -21,7 +21,9 @@ function decode(s: string): string {
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
-    .replace(/&nbsp;/g, " ");
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, num) => String.fromCodePoint(parseInt(num, 10)));
 }
 
 function stripTags(s: string): string {
@@ -37,6 +39,12 @@ function classifyPosition(sectionHeader: string): Position | null {
   if (h.includes("ledare") || h.includes("tränare") || h.includes("stab")) return "STAFF";
   return null;
 }
+
+// Ledarrollen står inte i länktexten utan i en text-muted-span direkt efter
+// namn-länken ("Joel Sjöqvist" + "Huvudtränare"). useSquad filtrerar bort
+// ledare utan staff_role, så rollen måste plockas härifrån.
+const ROLE_AFTER_LINK = /^\s*(?:<br\s*\/?>)?\s*<span class="text-muted small">([\s\S]*?)<\/span>/i;
+const ROLE_LOOKAHEAD = 200;
 
 /**
  * Best-effort parse av svenskalag.se truppen-sida.
@@ -56,7 +64,7 @@ function parseSquad(html: string): ParsedMember[] {
     position: classifyPosition(stripTags(mm[1])),
   }));
 
-  const memberLinkPattern = /<a[^>]*href="([^"]*\/medlem\/[^"#?]+)"[^>]*>([\s\S]*?)<\/a>/gi;
+  const memberLinkPattern = /<a[^>]*href="([^"]*\/profil\/\d+)"[^>]*>([\s\S]*?)<\/a>/gi;
   const seen = new Set<string>();
 
   for (let i = 0; i < headers.length; i++) {
@@ -69,26 +77,26 @@ function parseSquad(html: string): ParsedMember[] {
     const linkMatches = Array.from(sectionHtml.matchAll(memberLinkPattern));
     for (const lm of linkMatches) {
       const href = lm[1];
-      const text = stripTags(lm[2]);
-      if (!text) continue;
-      let name = text;
-      let role: string | null = null;
-      if (cur.position === "STAFF") {
-        const split = text.split(/\s*-\s*|\s*–\s*/);
-        if (split.length >= 2) {
-          name = split[0].trim();
-          role = split.slice(1).join(" - ").trim();
-        }
-      }
+      const name = stripTags(lm[2]);
+      // Varje medlem har två länkar till samma profil — först fotot (tom text), sedan namnet.
+      if (!name) continue;
       const externalId = href;
       if (seen.has(externalId)) continue;
       seen.add(externalId);
+
+      const tail = sectionHtml.slice(
+        (lm.index ?? 0) + lm[0].length,
+        (lm.index ?? 0) + lm[0].length + ROLE_LOOKAHEAD
+      );
+      const roleMatch = tail.match(ROLE_AFTER_LINK);
+      const role = roleMatch ? stripTags(roleMatch[1]) || null : null;
+
       members.push({
         external_id: externalId,
         name,
         position: cur.position,
         is_staff: cur.position === "STAFF",
-        staff_role: role,
+        staff_role: cur.position === "STAFF" ? role : null,
         sort_order: sortOrder++,
       });
     }

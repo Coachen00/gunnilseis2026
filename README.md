@@ -116,9 +116,32 @@ Använd webbläsarens utskrift (Ctrl+P) → spara som PDF.
 | `sync-gunnilse-squad` | Cron / manuell | Synkar truppen + ledarstaben från svenskalag.se till `players`-tabellen. |
 | `sync-matchplan` | Manuell | Importerar extern matchplan-data (legacy, ersatt av inbäddad Matchplan-komponent) |
 
-### Deploya Supabase (auto via GitHub Action)
+### Deploya Supabase (manuellt via dashboarden)
 
-`deploy-supabase.yml` deployar automatiskt migrationer + edge functions när något under `supabase/**` ändras i `main`. **Engångskonfiguration**:
+**Detta är vägen som faktiskt används.** CI-deployen nedanför har aldrig körts — koden i
+`supabase/functions/` är därför inte automatiskt det som kör i prod. Kontrollera vad som är
+deployat innan du felsöker:
+
+```bash
+curl -s -o /dev/null -w "%{http_code}\n" -X OPTIONS https://fojviymdmhjlpyrpjexp.supabase.co/functions/v1/sync-gunnilse-squad
+```
+
+404 = funktionen finns inte i projektet. 200 = den finns, men kan vara en äldre version än git.
+
+- **Migrationer:** klistra in motsvarande fil från `docs/supabase-setup/*.sql` i
+  [SQL Editor](https://supabase.com/dashboard/project/fojviymdmhjlpyrpjexp/sql/new) → Run.
+- **Edge functions:** [Edge Functions](https://supabase.com/dashboard/project/fojviymdmhjlpyrpjexp/functions)
+  → välj funktionen (eller Create) → klistra in `supabase/functions/<namn>/index.ts` → Deploy.
+  Namnet måste matcha katalognamnet, annars svarar `/functions/v1/<namn>` 404.
+
+Verifiera efteråt via Actions → "Sync svenskalag.se" → Run workflow. Läs `parsed_count` i loggen,
+inte jobbets färg: kalender-jobbet har historiskt blivit grönt med `parsed_count: 0` eftersom
+workflowet bara greppar efter `"ok":true`.
+
+### Deploya Supabase (auto via GitHub Action — ej aktiverad)
+
+`deploy-supabase.yml` skulle deploya migrationer + edge functions när något under `supabase/**`
+ändras i `main`, men secreten nedan har aldrig satts, så varje körning failar. **Engångskonfiguration**:
 
 1. Hämta personal access token: https://supabase.com/dashboard/account/tokens → "Generate new token"
 2. Hämta databaslösenord: https://supabase.com/dashboard/project/fojviymdmhjlpyrpjexp/settings/database → fältet "Database password" (kan behöva resettas om bortglömt)
