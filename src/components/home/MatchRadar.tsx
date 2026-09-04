@@ -28,22 +28,24 @@ const seriesThrough = record.played[0]
  * mellan deras 2–1 i 53:e och 3–2 i 65:e, och ligger här i 46–60. Får vi
  * exakt minut, flytta den till 61–75 om det visar sig vara efter minut 60.
  * Lerums tredje mål (15 aug) saknar också minut — det föll i andra halvlek
- * före vår reducering i 89:e och ligger här i 61–75. Flytta vid besked. */
+ * före vår reducering i 89:e och ligger här i 61–75. Flytta vid besked.
+ * Karebys reducering (29 aug) står som "strax före paus" utan exakt minut —
+ * 44 och 45 hamnar i samma hink, så den är entydig ändå. */
 export const goalMinutes = [
-  { bucket: "0–15", for: 6, against: 2 },
+  { bucket: "0–15", for: 8, against: 2 },
   { bucket: "16–30", for: 3, against: 1 },
-  { bucket: "31–45+", for: 10, against: 5 },
+  { bucket: "31–45+", for: 10, against: 6 },
   { bucket: "46–60", for: 5, against: 3 },
-  { bucket: "61–75", for: 7, against: 4 },
-  { bucket: "76–90+", for: 12, against: 7 },
+  { bucket: "61–75", for: 9, against: 4 },
+  { bucket: "76–90+", for: 13, against: 7 },
 ];
 
 const scorers = [
-  { name: "Haris Avdiu", goals: 16, assists: 1 },
+  { name: "Haris Avdiu", goals: 19, assists: 1 },
   { name: "Idris Abdi", goals: 8, assists: 0 },
   { name: "Leodon Johansson", goals: 8, assists: 1 },
   { name: "Yosef Ismail", goals: 6, assists: 3 },
-  { name: "Kamal Mustafa", goals: 5, assists: 6 },
+  { name: "Kamal Mustafa", goals: 5, assists: 7 },
 ];
 
 const OUTCOME_LETTER = { vinst: "V", oavgjord: "O", forlust: "F" } as const;

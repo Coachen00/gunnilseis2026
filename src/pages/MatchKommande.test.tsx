@@ -2,7 +2,7 @@ import { cleanup, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import MatchKommande from "./MatchKommande";
 import { renderWithProviders } from "@/test/test-utils";
-import { CALLED_SQUAD, GATHERING_PLACE, MATCH_META, SAMLING_TIME, SEASON_BREAK } from "@/data/matchplan";
+import { CALLED_SQUAD, GATHERING_PLACE, MATCH_META, SAMLING_TIME, SEASON_BREAK, TRAVEL } from "@/data/matchplan";
 
 vi.mock("@/integrations/supabase/client", async () => {
   const m = await import("@/test/mocks/supabase");
@@ -39,6 +39,31 @@ describe("MatchKommande — matchdagsläge", () => {
     expect(screen.getAllByText(GATHERING_PLACE).length).toBeGreaterThan(0);
     // Uppehålls-kortet ska vara borta
     expect(screen.queryByText("Sommaruppehåll")).toBeNull();
+  });
+
+  it("visar resekortet med rätt färjelinje, avgångar och varningarna", () => {
+    // Resekortet är veckans mest tidskritiska information: missar man färjan
+    // är resten av sidan irrelevant. Testet faller om kortet slutar renderas
+    // eller om en avgångstid tappas på vägen från datan till sidan.
+    renderWithProviders(<MatchKommande />, { routerProps: { initialEntries: ["/match/kommande"] } });
+
+    if (!TRAVEL) {
+      expect(screen.queryByText("Resa · Färja")).toBeNull();
+      return;
+    }
+
+    expect(screen.getByText(TRAVEL.title)).toBeInTheDocument();
+    expect(screen.getByText(TRAVEL.ferry.line)).toBeInTheDocument();
+    expect(screen.getByText(TRAVEL.ferry.route)).toBeInTheDocument();
+    for (const dep of TRAVEL.ferry.out) {
+      expect(screen.getAllByText(dep.time).length).toBeGreaterThan(0);
+    }
+    for (const time of TRAVEL.ferry.back) {
+      expect(screen.getAllByText(time).length).toBeGreaterThan(0);
+    }
+    for (const warning of TRAVEL.warnings) {
+      expect(screen.getByText(warning)).toBeInTheDocument();
+    }
   });
 
   it("skriver ut den kallade truppen — eller 'Kallelse kommer' när den inte är satt", () => {

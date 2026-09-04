@@ -41,21 +41,22 @@ export const SQUAD: Player[] = [
   { name: "Ahmad Soheyl Matin", position: "DEF" },
   { name: "Daniel Matin", position: "DEF" },
   { name: "Meysam Hoseni", position: "DEF" },
-  { name: "Nayef Mohammad", position: "DEF" },
   { name: "Omar Burhan", position: "DEF" },
   { name: "Pascal Jabbour", position: "DEF" },
   { name: "Rayan Fedaila", position: "DEF" },
   { name: "Rinor Zenullah", position: "DEF" },
-  { name: "Sabarr Janneh", position: "DEF" },
   { name: "Vedad Dzambegovic", position: "DEF" },
 
   // Mittfältare
-  { name: "Adnan Maric", position: "MID" },
   { name: "Ahmad Aljafari", position: "MID" },
   { name: "Ayub Ahmed", position: "MID" },
   { name: "Benjamin Arapovic", position: "MID" },
   { name: "Galvan Ayoub", position: "MID" },
   { name: "Hosam Aiesh", position: "MID" },
+  // Ibrahim och Arshin står "utan position" på svenskalag.se, så syncen kan
+  // inte sätta den. Positionerna är Joels besked 2026-09-04: Ibrahim offensiv
+  // mittfältare, Arshin forward.
+  { name: "Ibrahim Haber", position: "MID" },
   { name: "Idris Abdi", position: "MID" },
   { name: "Ihab Naser", position: "MID" },
   { name: "Mustafa Ayoub", position: "MID" },
@@ -63,6 +64,7 @@ export const SQUAD: Player[] = [
 
   // Anfallare
   { name: "Aldin Zeljkovic", position: "FWD" },
+  { name: "Arshin Wosoughian", position: "FWD" },
   { name: "Haris Avdiu", position: "FWD" },
   { name: "Kamal Mustafa", position: "FWD" },
   { name: "Leodon Johansson", position: "FWD" },
@@ -71,7 +73,6 @@ export const SQUAD: Player[] = [
 
 export const STAFF: StaffMember[] = [
   { name: "Joel Sjöqvist", role: "Huvudtränare" },
-  { name: "Adnan Maric", role: "Assisterande spelande tränare" },
   { name: "Avan Rekani", role: "Sportchef" },
   { name: "Björn Ramstarke", role: "Materialförvaltare" },
 ];

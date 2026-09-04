@@ -3,17 +3,21 @@
  *
  * Strikt struktur (per Spelmodellen-spec):
  *   1. Matchinfo       — motståndare, hemma/borta, plats, avspark, samling
- *   2. Kallad trupp    — startelva + avbytare tydligt separerade
- *   3. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
- *   4. Praktisk info   — schema, ansvar
- *   5. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
+ *   2. Resa            — bara när `TRAVEL` är satt (färja, buss, avvikande väg)
+ *   3. Kallad trupp    — startelva + avbytare tydligt separerade
+ *   4. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
+ *   5. Praktisk info   — schema, ansvar
+ *   6. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
+ *
+ * Resekortet ligger näst högst upp med flit: kommer man inte fram i tid är
+ * resten av sidan meningslös.
  *
  * Inga upprepningar. Inga långa textstycken. Allt scannbart före match
  * från mobilen på resan till planen.
  */
 
 import { Link } from "react-router-dom";
-import { Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, HeartPulse, Star, Sun } from "lucide-react";
+import { AlertTriangle, Calendar, MapPin, Clock, Users, ChevronRight, ExternalLink, HeartPulse, Ship, Star, Sun } from "lucide-react";
 import SectionReveal from "@/components/SectionReveal";
 import Formation from "@/components/match/Formation";
 import KedjaHero from "@/components/kedja/KedjaHero";
@@ -26,6 +30,7 @@ import {
   GATHERING_PLACE,
   PRACTICAL_INFO,
   SEASON_BREAK,
+  TRAVEL,
 } from "@/data/matchplan";
 import { SPELARVARD_INTRO, SPELARVARD_TITLE } from "@/data/spelarvard";
 
@@ -186,6 +191,158 @@ function BigFact({
         <p className="mt-0.5 text-sm font-bold leading-tight text-amber-800">{sub}</p>
       )}
     </div>
+  );
+}
+
+/* Fyra likadana rader läses som fyra likvärdiga alternativ. Färgen säger
+ * vilken man ska ta och vilken som är för sen — noten ensam räcker inte när
+ * man skummar listan på mobilen. */
+const DEPARTURE_TONE = {
+  plain: "border-kedja-border bg-kedja-paper text-kedja-deep/70 [&>span:first-child]:text-kedja-ink",
+  recommended: "border-emerald-600/60 bg-emerald-50 text-emerald-900",
+  last: "border-amber-500/70 bg-amber-50 text-amber-900",
+  late: "border-red-400/60 bg-red-50/70 text-red-800",
+} as const;
+
+/**
+ * Resekortet — visas bara när `TRAVEL` är satt i matchplan.ts.
+ *
+ * Avgångstiderna renderas direkt ur datan. Skriv aldrig in en tid här i
+ * komponenten: står samma klockslag på två ställen ändras det ena och inte
+ * det andra, och då står två olika färjetider på samma sida.
+ */
+function ResaCard() {
+  if (!TRAVEL) return null;
+  const { ferry } = TRAVEL;
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-sky-500/50 bg-white shadow-sm">
+      <header className="border-b border-sky-500/40 bg-gradient-to-br from-sky-50 via-white to-white px-5 py-5 md:px-8 md:py-6">
+        <div className="flex items-start gap-4">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-sky-100 text-sky-800">
+            <Ship className="h-6 w-6" strokeWidth={2.2} aria-hidden="true" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="font-mono text-[11px] font-black uppercase tracking-[0.28em] text-sky-800">
+              Resa · Färja
+            </p>
+            <h2 className="mt-1 text-2xl font-black tracking-tight text-kedja-ink md:text-3xl">
+              {TRAVEL.title}
+            </h2>
+            <p className="mt-2 text-sm font-bold leading-relaxed text-kedja-deep/70 md:text-base">
+              {TRAVEL.lead}
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <div className="grid gap-5 px-5 py-5 md:px-8 md:py-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        {/* Färjan: vilken linje, vilka avgångar */}
+        <div className="space-y-4">
+          <div className="rounded-xl border border-sky-500/40 bg-sky-50/60 px-4 py-3">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.22em] text-sky-800">
+              Rätt färja
+            </p>
+            <p className="mt-1 text-lg font-black leading-tight text-kedja-ink">{ferry.line}</p>
+            <p className="text-sm font-bold text-kedja-ink">{ferry.route}</p>
+            <p className="mt-0.5 text-xs font-semibold text-kedja-deep/70">{ferry.crossing}</p>
+          </div>
+
+          <div>
+            <p className="mb-2 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-sky-800">
+              Dit — avgångar från Lilla Varholmen
+            </p>
+            <ul className="grid gap-1.5">
+              {ferry.out.map((dep) => (
+                <li
+                  key={dep.time}
+                  className={`flex items-baseline gap-3 rounded-md border px-3 py-2 ${DEPARTURE_TONE[dep.tone ?? "plain"]}`}
+                >
+                  <span className="font-mono text-base font-black">{dep.time}</span>
+                  {dep.note && <span className="text-xs font-bold leading-tight">{dep.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="mb-2 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-sky-800">
+              Hem — avgångar från Björkö
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {ferry.back.map((time) => (
+                <span
+                  key={time}
+                  className="inline-flex items-center rounded-full border border-kedja-border bg-kedja-paper px-3 py-1 font-mono text-sm font-black text-kedja-ink"
+                >
+                  {time}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Vägen, steg för steg */}
+        <div className="space-y-4">
+          <div>
+            <p className="mb-2 font-mono text-[10px] font-black uppercase tracking-[0.22em] text-sky-800">
+              Så gör du
+            </p>
+            <ol className="grid gap-2">
+              {TRAVEL.steps.map((step, i) => (
+                <li
+                  key={step.label}
+                  className="flex gap-3 rounded-lg border border-kedja-border bg-kedja-paper px-3 py-2.5"
+                >
+                  <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sky-100 font-mono text-[10px] font-black text-sky-800">
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-black text-kedja-ink">{step.label}</p>
+                    <p className="mt-0.5 text-xs font-medium leading-relaxed text-kedja-deep/70">
+                      {step.text}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <ul className="grid gap-2">
+            {TRAVEL.warnings.map((warning) => (
+              <li
+                key={warning}
+                className="flex gap-2.5 rounded-lg border border-amber-500/60 bg-amber-50 px-3 py-2.5"
+              >
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" strokeWidth={2.4} aria-hidden="true" />
+                <p className="text-xs font-bold leading-relaxed text-kedja-ink">{warning}</p>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-wrap gap-2">
+            <a
+              href={TRAVEL.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 flex-1 items-center justify-between gap-2 rounded-md border border-amber-500/60 bg-amber-500 px-3.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-amber-950 transition hover:bg-amber-400"
+            >
+              Karta till Björkövallen
+              <ExternalLink className="h-3 w-3" strokeWidth={2.4} />
+            </a>
+            <a
+              href={ferry.infoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 flex-1 items-center justify-between gap-2 rounded-md border border-sky-500/60 bg-sky-500 px-3.5 font-mono text-[10px] font-black uppercase tracking-[0.18em] text-sky-950 transition hover:bg-sky-400"
+            >
+              Trafikläget på färjan
+              <ExternalLink className="h-3 w-3" strokeWidth={2.4} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -426,6 +583,12 @@ const MatchKommande = () => (
       <SectionReveal>
         <MatchInfoCard />
       </SectionReveal>
+
+      {TRAVEL && !SEASON_BREAK.active && (
+        <SectionReveal>
+          <ResaCard />
+        </SectionReveal>
+      )}
 
       <SectionReveal>
         <KalladTrupp />

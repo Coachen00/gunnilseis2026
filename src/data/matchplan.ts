@@ -1,9 +1,10 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-08-28 — veckans match är seriematch hemma mot
- * Kareby IS (lördag 29 aug 13:00 · Hjällbovallen 1 Gräs). Bortamatchen mot
- * KF Velebit 22 aug slutade 0–5 — andra raka förlusten. Samling 11:30 på
- * Hjällbovallen.
+ * Senast uppdaterad 2026-09-04 — veckans match är seriematch borta mot
+ * IFK Björkö (lördag 5 sep 14:00 · Björkö 1 Gräs). Hemmamatchen mot Kareby IS
+ * 29 aug slutade 5–1. Björkö nås bara med färja, så vi samlas 12:30 PÅ PLATS
+ * på Björkövallen — ingen gemensam avfärd från Hjällbovallen den här veckan.
+ * Resvägen och färjetiderna ligger i `TRAVEL`.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -32,6 +33,15 @@ export type MatchMeta = {
    * här — annars ärver nästa match den felaktiga regeln utan att någon märker.
    */
   samling?: string;
+  /**
+   * Nödutgång: samlingsplats som överrider klubbregeln (alltid Hjällbovallen,
+   * se `GATHERING_PLACE`).
+   *
+   * Samma disciplin som `samling` — tom i normalfallet. Sätts bara när vi
+   * faktiskt inte kan åka gemensamt från Hjällbovallen, t.ex. en bortaplan
+   * som nås med färja.
+   */
+  samlingsplats?: string;
 };
 
 export type FormationSlot = {
@@ -55,14 +65,18 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Kareby IS",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 29 aug · 13:00",
+  opponent: "IFK Björkö",
+  venue: "Björkö 1 Gräs",
+  home: false,
+  kickoff: "Lör 5 sep · 14:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
-  // Ingen `samling` här: 11:30 härleds ur hemmaregeln (13:00 − 1h30).
+  // Undantaget, inte regeln: Björkövallen ligger på en ö och nås med färja
+  // från Lilla Varholmen. Vi åker alltså inte gemensamt från Hjällbovallen —
+  // var och en tar sig ut och vi möts på plats 1h30 före avspark.
+  samling: "12:30",
+  samlingsplats: "Björkövallen",
 };
 
 /**
@@ -76,11 +90,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "KF Velebit 0–5 (borta, 22 aug, andra raka förlusten)",
+  lastResult: "Kareby IS 5–1 (hemma, 29 aug, Haris hat-trick)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Kareby IS · hemma · lör 29 aug 13:00 (Hjällbovallen 1 Gräs)",
+  nextMatchLabel: "IFK Björkö · borta · lör 5 sep 14:00 (Björkö 1 Gräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -237,19 +251,25 @@ export function kickoffOffset(minutes: number, meta: MatchMeta = MATCH_META): st
  *   - Upp + sista löpningar: avspark - 3
  */
 /**
- * Var vi samlas — ALLTID Hjällbovallen, även när matchen spelas någon annanstans.
+ * Var vi samlas — Hjällbovallen som regel, även när matchen spelas någon
+ * annanstans. `MATCH_META.samlingsplats` är nödutgången för de enstaka
+ * matcher där vi inte kan åka gemensamt härifrån.
  *
  * Egen konstant för att hero-kortet visar "Samling 13:15" bredvid
  * "Matchplats: Lexby 1 Gräs". Utan platsen utskriven under samlingstiden läser
  * spelaren ihop de två och åker direkt till bortaplanen. Platsen måste stå
  * bredvid tiden, inte bara i schemat längre ner.
  */
-export const GATHERING_PLACE = "Hjällbovallen";
+export const HOME_GATHERING_PLACE = "Hjällbovallen";
+
+export const GATHERING_PLACE = MATCH_META.samlingsplats ?? HOME_GATHERING_PLACE;
 
 /** Lång form med destination — används i schemat och i praktisk info. */
 export const GATHERING_NOTE = MATCH_META.home
   ? `${GATHERING_PLACE} — vi spelar hemma`
-  : `${GATHERING_PLACE} — vi åker gemensamt till ${MATCH_META.venue}`;
+  : MATCH_META.samlingsplats
+    ? `${GATHERING_PLACE} — vi möts på plats, egen resa. Matchplats: ${MATCH_META.venue}`
+    : `${GATHERING_PLACE} — vi åker gemensamt till ${MATCH_META.venue}`;
 
 export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string }> = [
   { time: SAMLING_TIME, label: "Samling", note: GATHERING_NOTE },
@@ -271,6 +291,89 @@ export const PRACTICAL_INFO = {
   gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Ombytta och klara. Mental start före uppvärmning.`,
 } as const;
 
+export type TravelInfo = {
+  title: string;
+  /** En mening: hur vi tar oss dit. */
+  lead: string;
+  /** Stegen i den ordning spelaren gör dem. */
+  steps: { label: string; text: string }[];
+  ferry: {
+    line: string;
+    route: string;
+    crossing: string;
+    /**
+     * Avgångar dit — bara fönstret som är relevant för samlingen.
+     *
+     * `tone` styr färgen i listan. Utan den läser man fyra likadana rader och
+     * plockar den sista man hinner läsa — inklusive den som är för sen.
+     */
+    out: { time: string; note?: string; tone?: "recommended" | "last" | "late" }[];
+    /** Avgångar hem efter matchen. */
+    back: string[];
+    infoUrl: string;
+  };
+  /** Det som får folk att missa avspark om de inte läser det. */
+  warnings: string[];
+  mapUrl: string;
+};
+
+/**
+ * Resvägen till veckans match. `null` när matchen inte kräver något utöver
+ * att ta sig till planen — då visas inget resekort på Veckans match.
+ *
+ * Björkö nås bara med färja, och Lilla Varholmen har TVÅ färjelinjer som
+ * lägger till på samma färjeläge: Björköleden (väg 1135, till Björkö) och
+ * Hönöleden (väg 155, till Hönö). Kör man in i fel kö hamnar man på fel ö —
+ * det finns ingen bro mellan Hönö och Björkö. Därför står linjenamnen
+ * utskrivna i stället för bara "ta färjan".
+ *
+ * Tiderna är Björköledens helgtidtabell (lördag, söndag och helgdag),
+ * verifierad 2026-09-04 mot Trafikverket och livetrafik.com: var 30:e minut
+ * mitt på dagen, var 20:e från 15:10. Ändras tidtabellen är det HÄR den ska
+ * rättas — inga kopior i COHERENCE eller i sidkomponenten.
+ */
+export const TRAVEL: TravelInfo | null = {
+  title: "Så tar du dig till Björkö",
+  lead: "Ingen gemensam buss. Var och en tar sig ut till ön — vi möts på Björkövallen 12:30, ombytta och klara.",
+  steps: [
+    {
+      label: "Kör till Lilla Varholmen",
+      text: "Väg 155 västerut över Hisingen, genom Torslanda, ända ut till färjeläget Lilla Varholmen. Det är enda vägen ut — räkna med kö en lördag.",
+    },
+    {
+      label: "Ställ dig i BJÖRKÖ-kön",
+      text: "Två färjelinjer lägger till på samma färjeläge. Björköleden går till Björkö, Hönöleden till Hönö. Följ skyltarna mot Björkö och läs destinationen på färjan innan du kör ombord.",
+    },
+    {
+      label: "Åk över — sex minuter",
+      text: "Björköleden går Lilla Varholmen–Björkö. 900 meter, cirka sex minuter, avgiftsfritt. Du kliver av i Grönevik på Björkö.",
+    },
+    {
+      label: "Grönevik → Björkövallen",
+      text: "Björkövallen ligger på Ekvägen, någon minut från färjeläget. Kartlänken tar dig hela vägen fram.",
+    },
+  ],
+  ferry: {
+    line: "Björköleden (väg 1135)",
+    route: "Lilla Varholmen → Björkö (Grönevik)",
+    crossing: "900 m · ca 6 min · avgiftsfritt",
+    out: [
+      { time: "11:10" },
+      { time: "11:40", note: "Ta den här — då är du på plats med marginal", tone: "recommended" },
+      { time: "12:10", note: "Sista färjan som hinner till samlingen", tone: "last" },
+      { time: "12:40", note: "För sent — du missar samlingen", tone: "late" },
+    ],
+    back: ["15:40", "16:00", "16:20", "16:40", "17:00", "17:20"],
+    infoUrl: "https://www.trafikverket.se/resa-och-trafik/farjetrafik/bjorkoleden/",
+  },
+  warnings: [
+    "Hamnar du i Hönö-kön kommer du till fel ö. Det går ingen bro mellan Hönö och Björkö — du får åka tillbaka till fastlandet och börja om.",
+    "Färjan tar bilarna i kön i tur och ordning. Blir den full väntar du 30 minuter på nästa. Var vid färjeläget senast 11:30.",
+    "Samåk. Färre bilar i kön är färre som riskerar att bli kvar på fastlandet.",
+  ],
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Bj%C3%B6rk%C3%B6vallen%2C%20Ekv%C3%A4gen%2C%20Bohus-Bj%C3%B6rk%C3%B6",
+};
+
 /**
  * Spelare som får kallas utan att finnas i `data/squad.ts` — provspelare och
  * inlånade som tränar med oss men tillhör en annan förening.
@@ -287,9 +390,10 @@ export const PRACTICAL_INFO = {
  * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Kallad trupp till hemmamatchen mot Kareby IS (29 aug).
- * 16 spelare kallade — Ali i mål, men ingen spikad startelva än (starting
- * tom tills XI sätts, samma mönster som Lerum-veckan). Namnen stavas exakt
+/* Kallad trupp till bortamatchen mot IFK Björkö (5 sep).
+ * 16 spelare kallade — Kareby-truppen minus Meysam Hoseni och Aldin
+ * Zeljkovic, plus Arshin Wosoughian och Ibrahim Haber. Ali i mål, men ingen
+ * spikad startelva än (starting tom tills XI sätts). Namnen stavas exakt
  * som i `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS
  * ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
@@ -300,17 +404,17 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
     // Backar
     "Adnan Hadzialic",
     "Daniel Matin",
-    "Meysam Hoseni",
     "Rayan Fedaila",
     "Vedad Dzambegovic",
     // Mittfält
     "Ahmad Aljafari",
+    "Ibrahim Haber",
     "Idris Abdi",
     "Ihab Naser",
     "Mustafa Ayoub",
     "Måns Orwén",
     // Anfall
-    "Aldin Zeljkovic",
+    "Arshin Wosoughian",
     "Haris Avdiu",
     "Kamal Mustafa",
     "Leodon Johansson",
@@ -319,12 +423,12 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
 };
 
 export const FOCUS: string[] = [
-  "Svaret på Velebit. 0–5 var ingen taktisk fråga — det var inställning. Den sätts före avspark, inte när vi ligger under.",
-  "Vinn duellerna och andrabollarna. Velebit sprang på varje boll, möjlig som omöjlig. På Hjällbovallen är det vi som gör det.",
-  "Håll ihop i 90. Tre insläppta på tolv minuter i slutet — koncentrationen ska bära hela vägen, oavsett ställning.",
+  "Kareby var svaret. Nu gör vi det till vana — högt utgångsläge, press med utdelning, hela matchen.",
+  "Björkö behöver poängen mer än vi. Ett lag som spelar för kontraktet börjar hårt. Vi möter första kvarten stående.",
+  "Egen resa ut till ön. Kom i tid, kom ombytt — vi har ingen gemensam buss att skylla på.",
 ];
 
-/* Ingen startelva spikad än mot Kareby — bara Ali given i mål.
+/* Ingen startelva spikad än mot Björkö — bara Ali given i mål.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -336,10 +440,10 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Seriematch hemma mot Kareby IS · Hjällbovallen 1 Gräs · lördag 29 aug 13:00.",
-      "Samling 11:30 på HJÄLLBOVALLEN. Ombytta och klara.",
-      "Vi är tvåa med 34 poäng, Lerum leder på 44 efter sexton omgångar. Kareby är femma på 22.",
-      "Sex matcher kvar. En poäng på tre matcher efter uppehållet — trenden vänder här.",
+      "Seriematch borta mot IFK Björkö · Björkö 1 Gräs · lördag 5 sep 14:00.",
+      "Samling 12:30 på BJÖRKÖVALLEN. Egen resa med färjan — ombytta och klara.",
+      "Vi är tvåa med 37 poäng, Lerum leder på 47 efter sjutton omgångar. Björkö är tia på 17.",
+      "Fem matcher kvar. 5–1 mot Kareby bröt raden — nu bygger vi vidare på den.",
     ],
   },
   {
@@ -349,37 +453,38 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade. Samling 11:30 på Hjällbovallen — ombytta och klara.",
+      "16 spelare kallade. Ombytta och klara när vi möts på Björkövallen.",
       "Ali Carneil står i mål. Resten av startelvan sätts på matchgenomgången.",
+      "Två nya in i truppen: Arshin Wosoughian och Ibrahim Haber.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — KF Velebit 0–5",
-    eyebrow: "Bortamötet",
-    principles: ["Reflektion", "Svar", "Nästa aktion"],
+    title: "Senast spelat — Kareby IS 5–1",
+    eyebrow: "Hemmamötet",
+    principles: ["Svar", "Press med utdelning", "Nästa aktion"],
     bullets: [
-      "Vi förlorade 0–5 borta den 22 aug — andra raka förlusten och den tyngsta insatsen på hela säsongen.",
-      "Yosef Ismail nickade i ribban i den 12:e på inlägg av Kamal Mustafa. Sedan tog Velebit över: 1–0 efter en halvtimme, 2–0 i den 56:e och tre mål mellan minut 74 och 86, varav ett på straff.",
-      "Velebit sprang på varje boll, möjlig som omöjlig. Vi hade inte den inställningen den dagen — andra halvlek förlorade vi 0–4.",
-      "Benjamin Arapovic blev matchens lirare, med Ahmad Aljafari och Idris Abdi närmast.",
-      "Läget: 16 matcher, 10 vinster, 4 oavgjorda, 2 förluster. Tio poäng upp till Lerum, sex matcher kvar.",
+      "Vi vann 5–1 hemma den 29 aug — svaret på 0–5 mot Velebit kom direkt.",
+      "Haris Avdiu gjorde hat-trick: 1–0 redan i andra minuten framspelad av Kamal Mustafa, 2–0 i den 10:e på Mustafa Ayoubs pass, och 4–1 efter ett snappat bakåtpass.",
+      "Kareby reducerade på frispark minuten före paus. Adnan Hadzialic nickade in 3–1 vid första stolpen på offensiv hörna i den 73:e, Aldin Zeljkovic satte 5–1 i den 79:e.",
+      "Nyckeln var det höga utgångsläget: pressen gav utdelning och vi sparade löpkilometer i omställningarna. Andra halvlek vann vi den här gången.",
+      "Idris Abdi blev matchens lirare. Läget: 17 matcher, 11 vinster, 4 oavgjorda, 2 förluster.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Kareby IS",
-    eyebrow: "Division 4A · hemma",
+    title: "Motståndare — IFK Björkö",
+    eyebrow: "Division 4A · borta",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs · lördag 29 aug 13:00.",
-      "Kareby är femma med 22 poäng på 16 matcher (5 vinster, 7 oavgjorda, 4 förluster), 36–28 i målskillnad.",
-      "Vårmötet borta 8 maj slutade 1–1 — de hänger kvar i matcher och är svåra att skaka av sig.",
+      "Bortamatch på Björkövallen · lördag 5 sep 14:00. Ön nås bara med färja — se resvägen.",
+      "Björkö är tia med 17 poäng på 16 matcher och −12 i målskillnad. De spelar för kontraktet.",
+      "Vårmötet hemma 16 maj vann vi 3–1. Men förra säsongens höstmöte på Hjällbovallen vann de — och säkrade kvar sig på det.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Sju oavgjorda av sexton — Kareby lever på att hålla matcher jämna. Vi bryter det genom att vinna andrabollarna och hålla nollan tillräckligt länge.",
+    note: "Ett lag som behöver poängen börjar hårt. Första kvarten avgör om matchen spelas på deras planhalva eller vår.",
   },
   {
     id: "identitet",
@@ -466,9 +571,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "11:30 · Hjällbovallen"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Samling", "12:30 · Björkövallen"],
+      ["Matchstart", "14:00"],
+      ["Bortaplan", "Björkö 1 Gräs"],
     ],
   },
 ];

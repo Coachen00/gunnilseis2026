@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-08-28 (bortamatchen mot KF Velebit 22 aug slutade 0–5, halvtid
- *                    0–1. Andra raka förlusten efter 1–3 hemma mot Lerum. Serien: 16
- *                    matcher, 10 vinster, 4 oavgjorda, 2 förluster — tvåa på 34 poäng, tio
- *                    bakom Lerums IS. Näst på tur: Kareby IS hemma lör 29 aug 13:00,
- *                    Hjällbovallen 1 Gräs).
+ * Senast uppdaterad: 2026-09-04 (hemmamatchen mot Kareby IS 29 aug slutade 5–1 — Haris
+ *                    Avdiu hattrick, Adnan Hadzialic på hörna, Aldin Zeljkovic som inbytt.
+ *                    Serien: 17 matcher, 11 vinster, 4 oavgjorda, 2 förluster — tvåa på 37
+ *                    poäng bakom Lerums IS. Näst på tur: IFK Björkö borta lör 5 sep 14:00,
+ *                    Björkö 1 Gräs — färja från Lilla Varholmen, se `TRAVEL` i matchplan.ts).
  */
 
 export type MatchScorer = {
@@ -251,6 +251,14 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 5,
+    theirScore: 1,
+    scorers: [
+      { name: "Haris Avdiu", goals: 3, note: "hattrick — 1–0 i andra minuten, 2–0 och 4–1" },
+      { name: "Adnan Hadzialic", goals: 1, note: "3–1 i 73:e, nick vid första stolpen på hörna" },
+      { name: "Aldin Zeljkovic", goals: 1, note: "5–1 i 79:e som inbytt" },
+    ],
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901109/kareby-is",
   },
   {
     id: "2026-09-05-ifk-bjorko",
@@ -258,7 +266,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "IFK Björkö",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "",
+    venue: "Björkö 1 Gräs",
   },
   {
     id: "2026-09-12-vardar-makedonija",
