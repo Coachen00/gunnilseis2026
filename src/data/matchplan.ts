@@ -288,7 +288,7 @@ export const PRACTICAL_INFO = {
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
   ] as const,
-  gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Ombytta och klara. Mental start före uppvärmning.`,
+  gatheringNote: `Samling ${SAMLING_TIME} på ${GATHERING_NOTE}. Mental start före uppvärmning.`,
 } as const;
 
 export type TravelInfo = {
@@ -334,7 +334,7 @@ export type TravelInfo = {
  */
 export const TRAVEL: TravelInfo | null = {
   title: "Så tar du dig till Björkö",
-  lead: "Ingen gemensam buss. Var och en tar sig ut till ön — vi möts på Björkövallen 12:30, ombytta och klara.",
+  lead: "Ingen gemensam buss. Var och en tar sig ut till ön — vi möts på Björkövallen 12:30.",
   steps: [
     {
       label: "Kör till Lilla Varholmen",
@@ -425,7 +425,7 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
 export const FOCUS: string[] = [
   "Kareby var svaret. Nu gör vi det till vana — högt utgångsläge, press med utdelning, hela matchen.",
   "Björkö behöver poängen mer än vi. Ett lag som spelar för kontraktet börjar hårt. Vi möter första kvarten stående.",
-  "Egen resa ut till ön. Kom i tid, kom ombytt — vi har ingen gemensam buss att skylla på.",
+  "Egen resa ut till ön. Kom i tid — vi har ingen gemensam buss att skylla på.",
 ];
 
 /* Ingen startelva spikad än mot Björkö — bara Ali given i mål.
@@ -441,7 +441,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Kontext",
     bullets: [
       "Seriematch borta mot IFK Björkö · Björkö 1 Gräs · lördag 5 sep 14:00.",
-      "Samling 12:30 på BJÖRKÖVALLEN. Egen resa med färjan — ombytta och klara.",
+      "Samling 12:30 på BJÖRKÖVALLEN. Egen resa med färjan från Lilla Varholmen.",
       "Vi är tvåa med 37 poäng, Lerum leder på 47 efter sjutton omgångar. Björkö är tia på 17.",
       "Fem matcher kvar. 5–1 mot Kareby bröt raden — nu bygger vi vidare på den.",
     ],
@@ -453,7 +453,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade. Ombytta och klara när vi möts på Björkövallen.",
+      "16 spelare kallade. Vi möts på Björkövallen.",
       "Ali Carneil står i mål. Resten av startelvan sätts på matchgenomgången.",
       "Två nya in i truppen: Arshin Wosoughian och Ibrahim Haber.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
