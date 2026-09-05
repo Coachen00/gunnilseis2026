@@ -2,12 +2,12 @@ import { isSharedLogin, SHARED_LOGIN_EMAIL } from "./sharedLogin";
 
 const SHARED_ACCESS_KEY = "gunnilse_shared_access_v1";
 const SHARED_ACCESS_EVENT = "gunnilse-shared-access-change";
-// Delat laglösenord (SHA-256). Roterat 2026-07-31.
+// Delat laglösenord (SHA-256). Roterat 2026-09-05.
 // Byt genom att köra: node -e "crypto.subtle.digest('SHA-256',new TextEncoder().encode('NYTT')).then(h=>console.log(Buffer.from(h).toString('hex')))"
 // OBS: detta är BARA fallback-vägen (localStorage). Om Supabase-kontot
 // gunnilse@gunnilse.se har ett eget lösenord funkar det oberoende av den här —
 // se Login.tsx: signInWithPassword körs först, hash-checken bara om den failar.
-const SHARED_PASSWORD_SHA256 = "169aebcc178e227ea07eca081e0e83de4d3a1a21e530069c6a0c2b68f8f3af9d";
+const SHARED_PASSWORD_SHA256 = "0256bab6ee5a851e203cef2b3216587134ed565140f69f6f9a67cf6fb06589d0";
 
 type StoredSharedAccess = {
   active: true;
