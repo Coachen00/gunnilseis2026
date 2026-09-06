@@ -92,8 +92,8 @@ export default function GrundenSection() {
                   <span className="font-mono text-[10px] font-black uppercase tracking-[0.14em] text-foreground/55 sm:w-24">
                     {fas.id === "identitet" ? "Tvärgående" : "Död boll"}
                   </span>
-                  <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-foreground sm:w-48">{fas.title}</span>
-                  <span className="text-sm text-foreground/70 group-hover:text-foreground">{fas.remember}</span>
+                  <span className="font-mono text-[11px] font-black uppercase tracking-[0.14em] text-foreground sm:w-48">{fas.label}</span>
+                  <span className="text-sm text-foreground/70 group-hover:text-foreground">{fas.purpose}</span>
                 </a>
               </li>
             ))}

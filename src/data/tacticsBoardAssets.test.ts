@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TACTICS_BOARD_ASSETS, TACTICS_SCENE_ORDER } from "./tacticsBoardAssets";
+import { TACTICS_BOARD_ASSETS, TACTICS_SCENE_ORDER, type TacticsBoardAsset } from "./tacticsBoardAssets";
 
 describe("TACTICS_BOARD_ASSETS", () => {
   it("defines the training pitch scene with stable board bounds", () => {
@@ -18,7 +18,7 @@ describe("TACTICS_BOARD_ASSETS", () => {
 
   it("keeps every scene svg-renderad så inga planlinjer bakas in i bakgrunden", () => {
     for (const scene of TACTICS_SCENE_ORDER) {
-      const asset = TACTICS_BOARD_ASSETS[scene];
+      const asset: TacticsBoardAsset = TACTICS_BOARD_ASSETS[scene];
       expect(asset.kind, scene).toBe("svg");
       expect(asset.src, scene).toBeUndefined();
     }

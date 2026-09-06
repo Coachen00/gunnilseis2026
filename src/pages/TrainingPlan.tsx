@@ -203,7 +203,7 @@ const TrainingPlan = () => {
       const next: Record<string, string> = {};
       for (const [k, v] of Object.entries(p.fields)) if (!k.startsWith(id + ":")) next[k] = v;
       removeTacticsImage(`${p.id}:${id}`);
-      return { fields: next, activities: p.activities.filter((x) => x !== id) };
+      return { id: p.id, fields: next, activities: p.activities.filter((x) => x !== id) };
     });
 
   const clearAll = () => {
@@ -212,7 +212,7 @@ const TrainingPlan = () => {
       window.setTimeout(() => setArmed(false), 2500);
       return;
     }
-    setPlan({ fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] });
+    setPlan((p) => ({ id: p.id, fields: { ...DEFAULT_FIELDS }, activities: [...DEFAULT_ACTIVITIES] }));
     setArmed(false);
   };
 

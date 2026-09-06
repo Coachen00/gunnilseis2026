@@ -8,7 +8,7 @@ const categoryEntries = Object.entries(TACTICS_LIBRARY_CATEGORIES) as [TacticsLi
 const TacticsLibrary = ({ latestImage }: Props) => {
   const [items, setItems] = useState<TacticsLibraryItem[]>([]);
   const [category, setCategory] = useState<TacticsLibraryCategory>("anfall");
-  const [folder, setFolder] = useState(TACTICS_LIBRARY_CATEGORIES.anfall.folders[0]);
+  const [folder, setFolder] = useState<string>(TACTICS_LIBRARY_CATEGORIES.anfall.folders[0]);
   const [title, setTitle] = useState("");
   const [uploadImage, setUploadImage] = useState<string | null>(null);
   const [status, setStatus] = useState("Biblioteket är lokalt på den här enheten.");

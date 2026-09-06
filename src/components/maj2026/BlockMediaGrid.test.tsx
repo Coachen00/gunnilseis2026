@@ -9,9 +9,21 @@ vi.mock("@/integrations/supabase/client", async () => {
   return m.createSupabaseMock();
 });
 
+const principle = (id: string, label: string, oneLiner: string): PrincipleDef => ({
+  id,
+  label,
+  oneLiner,
+  definition: "",
+  matchSignal: "",
+  playerAction: "",
+  teamAction: "",
+  trainingAction: "",
+  matchMetric: "",
+});
+
 const PRINCIPLES: PrincipleDef[] = [
-  { id: "hogt", label: "Högt försvar", oneLiner: "Pressa högt — vinn boll på motståndarens planhalva." },
-  { id: "medel", label: "Medelhögt försvar", oneLiner: "Stäng mitten, tvinga ut spelet." },
+  principle("hogt", "Högt försvar", "Pressa högt — vinn boll på motståndarens planhalva."),
+  principle("medel", "Medelhögt försvar", "Stäng mitten, tvinga ut spelet."),
 ];
 
 describe("BlockMediaGrid", () => {
