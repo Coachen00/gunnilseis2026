@@ -40,3 +40,6 @@ supabase/.branches/
 
 # Lokala matchpresentationer (stora binärer, ej självhostade — sajten länkar claude.ai)
 public/presentationer/
+
+# lokala arkiv/skrap
+tmp/
