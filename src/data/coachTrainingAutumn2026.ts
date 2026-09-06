@@ -98,7 +98,7 @@ const matches: AutumnMatch[] = [
   { date: "2026-09-05", kickoff: "14:00", opponent: "IFK Björkö", homeAway: "Borta", venue: "Björkö 1 Gräs" },
   { date: "2026-09-12", kickoff: "13:00", opponent: "IF Vardar/Makedonija", homeAway: "Hemma", venue: "Hjällbovallen 1 Gräs" },
   { date: "2026-09-18", kickoff: "19:00", opponent: "Hjuviks AIK", homeAway: "Borta", venue: "21:47 Arena 1" },
-  { date: "2026-09-26", kickoff: "13:00", opponent: "Hisingsbacka FC", homeAway: "Hemma", venue: "Hjällbovallen 1 Gräs" },
+  { date: "2026-09-27", kickoff: "13:00", opponent: "Hisingsbacka FC", homeAway: "Hemma", venue: "Hjällbovallen 1 Gräs" },
   { date: "2026-10-04", kickoff: "12:15", opponent: "Floda BoIF", homeAway: "Borta", venue: "Flodala IP 3 KG" },
 ];
 

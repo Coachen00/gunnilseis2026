@@ -390,7 +390,7 @@ export const COHERENCE: CoherenceSection[] = [
       "Seriematch hemma mot IF Vardar/Makedonija · Hjällbovallen 1 Gräs · lördag 12 sep 13:00.",
       "Samling 11:30 på HJÄLLBOVALLEN — vi spelar hemma.",
       "Läget efter arton omgångar: 11 vinster, 4 oavgjorda, 3 förluster, 37 poäng.",
-      "Fyra matcher kvar: Vardar hemma, Hjuvik borta 18 sep, Hisingsbacka hemma 26 sep, Floda borta 4 okt.",
+      "Fyra matcher kvar: Vardar hemma, Hjuvik borta 18 sep, Hisingsbacka hemma sön 27 sep, Floda borta 4 okt.",
     ],
   },
   {
