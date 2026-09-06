@@ -30,7 +30,10 @@ const seriesThrough = record.played[0]
  * Lerums tredje mål (15 aug) saknar också minut — det föll i andra halvlek
  * före vår reducering i 89:e och ligger här i 61–75. Flytta vid besked.
  * Karebys reducering (29 aug) står som "strax före paus" utan exakt minut —
- * 44 och 45 hamnar i samma hink, så den är entydig ändå. */
+ * 44 och 45 hamnar i samma hink, så den är entydig ändå.
+ * Björkö 2–4 (5 sep) saknar referat och målskyttar helt på svenskalag.se —
+ * de sex målen ligger i "Okänd" tills minuterna finns. Flytta dem då och
+ * ta bort hinken. */
 export const goalMinutes = [
   { bucket: "0–15", for: 8, against: 2 },
   { bucket: "16–30", for: 3, against: 1 },
@@ -38,6 +41,7 @@ export const goalMinutes = [
   { bucket: "46–60", for: 5, against: 3 },
   { bucket: "61–75", for: 9, against: 4 },
   { bucket: "76–90+", for: 13, against: 7 },
+  { bucket: "Okänd", for: 2, against: 4 },
 ];
 
 const scorers = [

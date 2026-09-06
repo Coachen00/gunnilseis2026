@@ -84,3 +84,17 @@ export const CALENDAR_TRAININGS: CalendarTraining[] = [
 ];
 
 export const HERO_CALENDAR_TRAININGS = CALENDAR_TRAININGS.slice(0, 3);
+
+/** Veckorytmen hösten 2026 — visas på startsidan. */
+export const TRAINING_SCHEDULE = {
+  days: ["Måndag", "Onsdag", "Torsdag"],
+  time: "18:30",
+  venue: "Hjällbovallen",
+} as const;
+
+/** Träningar som ligger efter `now`, tidigast först. */
+export function remainingTrainings(now = new Date()): CalendarTraining[] {
+  return CALENDAR_TRAININGS.filter((t) => new Date(t.date) >= now).sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  );
+}

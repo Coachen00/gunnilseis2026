@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-09-04 (hemmamatchen mot Kareby IS 29 aug slutade 5–1 — Haris
- *                    Avdiu hattrick, Adnan Hadzialic på hörna, Aldin Zeljkovic som inbytt.
- *                    Serien: 17 matcher, 11 vinster, 4 oavgjorda, 2 förluster — tvåa på 37
- *                    poäng bakom Lerums IS. Näst på tur: IFK Björkö borta lör 5 sep 14:00,
- *                    Björkö 1 Gräs — färja från Lilla Varholmen, se `TRAVEL` i matchplan.ts).
+ * Senast uppdaterad: 2026-09-06 (bortamatchen mot IFK Björkö 5 sep slutade 2–4 — inget referat
+ *                    och inga målskyttar publicerade på svenskalag.se när detta skrevs, fyll på
+ *                    `scorers` när de kommer. Serien: 18 matcher, 11 vinster, 4 oavgjorda,
+ *                    3 förluster, 37 poäng. Näst på tur: IF Vardar/Makedonija hemma lör 12 sep
+ *                    13:00, Hjällbovallen 1 Gräs).
  */
 
 export type MatchScorer = {
@@ -267,6 +267,9 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Björkö 1 Gräs",
+    ourScore: 2,
+    theirScore: 4,
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901110/ifk-bjorko",
   },
   {
     id: "2026-09-12-vardar-makedonija",
@@ -348,6 +351,13 @@ export function nextMatch(matches: SeasonMatch[], now = new Date()): SeasonMatch
     .filter((m) => new Date(m.date) >= now)
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   return future[0] ?? null;
+}
+
+/** Matcher som ligger efter `now`, tidigast först. Sista posten är säsongsavslutningen. */
+export function remainingMatches(matches: SeasonMatch[], now = new Date()): SeasonMatch[] {
+  return matches
+    .filter((m) => new Date(m.date) >= now)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 }
 
 export function lastPlayedMatch(matches: SeasonMatch[], now = new Date()): SeasonMatch | null {

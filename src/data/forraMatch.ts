@@ -263,6 +263,14 @@ export const REFLECTIONS: Record<string, ReflectionContent> = {
     ],
   },
 
+  "2026-09-05-ifk-bjorko": {
+    summary:
+      "Vi förlorade 2–4 borta mot IFK Björkö — tredje förlusten på fem höstmatcher. Inget referat och inga målskyttar publicerade på svenskalag.se än; matchbilden fylls på när de kommer.",
+    truppen: [],
+    ejTillgangliga: [],
+    blocks: STANDARD_BLOCKS,
+    larDomar: [],
+  },
   "2026-08-22-velebit": {
     summary:
       "Vi förlorade 0–5 borta mot KF Velebit (0–1 i halvtid) — andra raka förlusten. Yosef Ismail nickade i ribban i den 12:e på inlägg av Kamal Mustafa, sedan tog hemmalaget över: 1–0 efter en halvtimme, 2–0 i den 56:e och tre mål mellan minut 74 och 86, varav 4–0 på straff. Benjamin Arapovic blev matchens lirare. Andra halvlek förlorade vi 0–4.",

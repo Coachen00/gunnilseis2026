@@ -13,6 +13,7 @@ import { createAppQueryClient } from "./lib/queryClient";
 import { useAuthSession } from "./hooks/useAuthSession";
 import HomeHero from "./components/home/HomeHero";
 import MatchRadar from "./components/home/MatchRadar";
+import SeasonCountdownCard from "@/components/home/SeasonCountdownCard";
 
 // Login är inte lazy — det är första sidan oinloggade ser, ingen vinst i splitting.
 import Login from "./pages/Login";
@@ -90,6 +91,9 @@ const HomeRoute = () => {
           ctaLabel="Logga in"
           ctaTo="/login"
         />
+        <section className="mx-auto max-w-[1200px] px-6 py-10">
+          <SeasonCountdownCard />
+        </section>
         <MatchRadar />
       </main>
     );

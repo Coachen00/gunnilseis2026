@@ -3,6 +3,7 @@ import { ArrowRight, LogIn } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { getForraMatch, type ForraMatch } from "@/data/forraMatch";
 import { MATCH_META } from "@/data/matchplan";
+import SeasonCountdownCard from "@/components/home/SeasonCountdownCard";
 import KedjaNav from "@/components/kedja/KedjaNav";
 import KedjaSection from "@/components/kedja/KedjaSection";
 import KedjaSteps from "@/components/kedja/KedjaSteps";
@@ -104,6 +105,7 @@ const Hem = () => {
       >
         <div className="flex flex-col items-center gap-8">
           {hasResult && forra && <MatchResultCard forra={forra} />}
+          <SeasonCountdownCard />
           {authed ? (
             <Link to="/match/kommande" className="block w-full transition-opacity hover:opacity-90">
               <KedjaClimax

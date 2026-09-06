@@ -38,17 +38,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match IFK Björkö (seriematch borta)", () => {
-    expect(MATCH_META.opponent).toBe("IFK Björkö");
-    expect(MATCH_META.kickoff).toMatch(/14:00/);
-    expect(MATCH_META.venue).toContain("Björkö");
+  it("MATCH_META pekar på veckans match IF Vardar/Makedonija (seriematch hemma)", () => {
+    expect(MATCH_META.opponent).toBe("IF Vardar/Makedonija");
+    expect(MATCH_META.kickoff).toMatch(/13:00/);
+    expect(MATCH_META.venue).toContain("Hjällbovallen");
     expect(MATCH_META.competition).toBe("Division 4A Herr");
-    expect(MATCH_META.home).toBe(false);
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("5–1");
+    expect(SEASON_BREAK.lastResult).toContain("2–4");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,7 +68,7 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Björkö är satt: 16 spelare, ingen spikad XI", () => {
+  it("truppen inför Vardar: 16 spelare som utgångsläge, ingen spikad XI", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
     expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
@@ -131,15 +131,15 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 12:30 för Björkö — override, inte en tyst regeländring", () => {
-    // Klubbregeln (borta 1h45) ger 12:15 på Hjällbovallen och gemensam avfärd.
-    // Björkövallen ligger på en ö som bara nås med färja, så vi möts på plats.
-    // Det är precis vad nödutgången är till för — och regeln ska stå kvar
-    // orörd, annars ärver nästa bortamatch färjeundantaget.
-    expect(MATCH_META.home).toBe(false);
-    expect(MATCH_META.samling).toBe("12:30");
-    expect(SAMLING_TIME).toBe("12:30");
-    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("12:15");
+  it("SAMLING_TIME är 11:30 för Vardar hemma — regeln, ingen override", () => {
+    // Klubbregeln (hemma 1h30) ger 11:30 vid avspark 13:00. Björkö-färjans
+    // override (samling/samlingsplats) ska vara borttagen, annars ärver
+    // hemmamatchen färjeundantaget.
+    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.samling).toBeUndefined();
+    expect(MATCH_META.samlingsplats).toBeUndefined();
+    expect(SAMLING_TIME).toBe("11:30");
+    expect(computeSamlingTime({ ...MATCH_META, home: false })).toBe("11:15");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -158,9 +158,9 @@ describe("matchplan", () => {
   it("samlingsplatsen skiljs tydligt från matchplatsen", () => {
     // Felet som ska fångas: spelaren läser "Samling 13:15" bredvid
     // "Lexby 1 Gräs" och åker direkt till bortaplanen.
-    // Regeln är fortfarande Hjällbovallen — Björkö är undantaget (färja).
+    // Hemmamatch: samlingsplatsen är Hjällbovallen enligt regeln.
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).toBe("Björkövallen");
+    expect(GATHERING_PLACE).toBe("Hjällbovallen");
     expect(GATHERING_PLACE).not.toBe(MATCH_META.venue);
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
@@ -177,9 +177,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("13:20 – 13:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("13:50 – 13:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("14:00"); // avspark
+    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("13:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -289,8 +289,8 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Björkö 5 sep) ska finnas i settet, lowercase.
-    expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
+    // MATCH_META.kickoff (Vardar 12 sep) ska finnas i settet, lowercase.
+    expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
@@ -303,15 +303,15 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("lerums is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
-    // Men INTE Björkö själv — veckans egna motståndare får aldrig flaggas som
-    // stale, trots vårmötet 16 maj.
-    expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(false);
+    // Men INTE Vardar själv — veckans egna motståndare får aldrig flaggas som
+    // stale, trots vårmötet 22 maj.
+    expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar returmötet med Björkö (5 sep), inte vårmötet", () => {
+  it("resolveWeeklyMatch hittar returmötet med Vardar (12 sep), inte vårmötet", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("IFK Björkö");
-    expect(wm?.id).toBe("2026-09-05-ifk-bjorko");
+    expect(wm?.opponent).toBe("IF Vardar/Makedonija");
+    expect(wm?.id).toBe("2026-09-12-vardar-makedonija");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -337,23 +337,23 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Vardar-rad i framtiden blockerar inte veckans match (Björkö)", () => {
+  it("stale Björkö-rad i framtiden blockerar inte veckans match (Vardar 12 sep)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
-          id: "stale-vardar",
+          id: "stale-bjorko",
           date: "2026-06-24T12:00:00+02:00",
-          opponent: "IF Vardar/Makedonija",
+          opponent: "IFK Björkö",
           homeAway: "away",
           competition: "Division 4A Herr",
-          venue: "Generatorsplan",
+          venue: "Björkö 1 Gräs",
         },
       ],
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches.some((match) => match.id === "stale-vardar")).toBe(false);
-    expect(matches[0].opponent).toBe("IFK Björkö");
+    expect(matches.some((match) => match.id === "stale-bjorko")).toBe(false);
+    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -371,7 +371,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("IFK Björkö");
+    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });
