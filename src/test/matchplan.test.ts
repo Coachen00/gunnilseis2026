@@ -68,9 +68,11 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("truppen inför Vardar: 16 spelare som utgångsläge, ingen spikad XI", () => {
+  it("kallelsen till Vardar är inte uttagen — listan står tom", () => {
+    // En kvarglömd lista från förra matchen läses som en kallelse. Tomt
+    // är det ärliga läget tills kallelsen faktiskt går ut.
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );

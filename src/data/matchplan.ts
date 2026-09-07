@@ -338,35 +338,14 @@ export const TRAVEL: TravelInfo | null = null;
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Trupp inför hemmamatchen mot IF Vardar/Makedonija (12 sep).
- * Kallelsen är INTE satt än (2026-09-06) — listan är Björkö-truppen som
- * utgångsläge tills kallelsen går ut på svenskalag.se. Ingen spikad
- * startelva (starting tom tills XI sätts). Namnen stavas exakt som i
- * `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS
- * ovan. */
+ * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
+ * kallelse av spelarna, så förra veckans trupp får aldrig stå kvar som
+ * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
+ * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
+ * i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    // MV
-    "Ali Carneil",
-    // Backar
-    "Adnan Hadzialic",
-    "Daniel Matin",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    // Mittfält
-    "Ahmad Aljafari",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mustafa Ayoub",
-    "Måns Orwén",
-    // Anfall
-    "Arshin Wosoughian",
-    "Haris Avdiu",
-    "Kamal Mustafa",
-    "Leodon Johansson",
-    "Yosef Ismail",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
@@ -398,9 +377,9 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse under veckan", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Kallelse ej uttagen", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen går ut under veckan. Listan utgår från Björkö-truppen tills dess.",
+      "Kallelsen är inte uttagen än — den publiceras på svenskalag.se under veckan.",
       "Startelvan sätts på matchgenomgången.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
