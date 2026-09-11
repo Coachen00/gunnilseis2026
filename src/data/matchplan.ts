@@ -277,7 +277,7 @@ export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
   responsibilities: [
-    ["Kapten", "Adnan \"Ado\" Hadzialic"],
+    ["Kapten", "Idris Abdi"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -338,14 +338,31 @@ export const TRAVEL: TravelInfo | null = null;
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Trupp inför hemmamatchen mot IF Vardar/Makedonija (12 sep).
- * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
- * kallelse av spelarna, så förra veckans trupp får aldrig stå kvar som
- * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
- * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
- * i TRIAL_PLAYERS ovan. */
+ * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
+ * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
+ * formationsplanen. Spikas en XI: flytta 11 namn till `starting` OCH fyll
+ * FORMATION med 11 slots. Namnen stavas exakt som i `data/squad.ts` (fri
+ * text, ingen join), eller finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Daniel Matin",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Vedad Dzambegovic",
+    "Benjamin Arapovic",
+    "Ibrahim Haber",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mustafa Ayoub",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Arshin Wosoughian",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Yosef Ismail",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -377,10 +394,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse ej uttagen", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen är inte uttagen än — den publiceras på svenskalag.se under veckan.",
-      "Startelvan sätts på matchgenomgången.",
+      "16 spelare kallade till hemmamatchen mot Vardar.",
+      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
@@ -490,7 +507,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Adnan \"Ado\" Hadzialic"],
+      ["Kapten", "Idris Abdi"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],

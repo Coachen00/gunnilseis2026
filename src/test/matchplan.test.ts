@@ -68,13 +68,11 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Vardar är inte uttagen — listan står tom", () => {
-    // En kvarglömd lista från förra matchen läses som en kallelse. Tomt
-    // är det ärliga läget tills kallelsen faktiskt går ut.
+  it("kallelsen till Vardar är satt: 16 spelare, ingen spikad XI", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
-      expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
+      expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
   });
 
@@ -107,7 +105,7 @@ describe("matchplan", () => {
     // Inga dubbletter i kallad trupp
     expect(new Set(all).size).toBe(all.length);
     // Kaptenen måste vara kallad — annars är rollkortet fel
-    expect(all).toContain("Adnan Hadzialic");
+    expect(all).toContain("Idris Abdi");
     // Minst en målvakt i truppen
     expect(all.some((n) => SQUAD.find((p) => p.name === n)?.position === "GK")).toBe(true);
   });
