@@ -10,6 +10,7 @@ import KedjaSteps from "@/components/kedja/KedjaSteps";
 import KedjaClimax from "@/components/kedja/KedjaClimax";
 import HomeHero from "@/components/home/HomeHero";
 import MatchRadar from "@/components/home/MatchRadar";
+import KvalSection from "@/components/home/KvalSection";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
@@ -125,6 +126,8 @@ const Hem = () => {
           )}
         </div>
       </KedjaSection>
+
+      {authed && <KvalSection />}
 
       <KedjaSection
         id="spelmodell"
