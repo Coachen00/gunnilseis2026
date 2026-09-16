@@ -64,10 +64,10 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "IF Vardar/Makedonija",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 12 sep · 13:00",
+  opponent: "Hjuviks AIK",
+  venue: "21:47 Arena 1 konstgräs",
+  home: false,
+  kickoff: "Fre 18 sep · 19:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
@@ -84,11 +84,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "IFK Björkö 2–4 (borta, 5 sep)",
+  lastResult: "IF Vardar/Makedonija 4–0 (hemma, 12 sep)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "IF Vardar/Makedonija · hemma · lör 12 sep 13:00 (Hjällbovallen 1 Gräs)",
+  nextMatchLabel: "Hjuviks AIK · borta · fre 18 sep 19:00 (21:47 Arena 1 konstgräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -337,41 +337,24 @@ export const TRAVEL: TravelInfo | null = null;
  * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför hemmamatchen mot IF Vardar/Makedonija (12 sep).
- * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
- * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
- * formationsplanen. Spikas en XI: flytta 11 namn till `starting` OCH fyll
- * FORMATION med 11 slots. Namnen stavas exakt som i `data/squad.ts` (fri
- * text, ingen join), eller finns i TRIAL_PLAYERS ovan. */
+/* Trupp inför bortamatchen mot Hjuviks AIK (fre 18 sep).
+ * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
+ * kallelse av spelarna, så Vardar-truppen får aldrig stå kvar som
+ * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
+ * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
+ * i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Daniel Matin",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    "Benjamin Arapovic",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mustafa Ayoub",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Arshin Wosoughian",
-    "Haris Avdiu",
-    "Kamal Mustafa",
-    "Yosef Ismail",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Fyra insläppta på Björkö. Försvarsspelet startar när de har bollen — samla först, lås ytorna, vinn duellen.",
-  "Hemma på Hjällbovallen sätter vi rytmen från första minuten. Högt utgångsläge, press med utdelning, som mot Kareby.",
-  "Vardar tog en poäng av oss i våras. Fyra matcher kvar — varje trea räknas.",
+  "Nollan mot Vardar är standarden. Borta på konstgräs en fredagskväll: samla först, lås ytorna, vinn duellen.",
+  "Hjuvik är fyra i tabellen och slog oss inte i våras (4–1 hemma). Vi sätter rytmen — inte de.",
+  "Kvalplatsen är säkrad. Nu spelar vi om att bli bästa kvallag: poäng per match avgör vem som får två hemmamatcher i kvalet.",
 ];
 
-/* Ingen startelva spikad än mot Vardar.
+/* Ingen startelva spikad än mot Hjuvik.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -383,10 +366,10 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Seriematch hemma mot IF Vardar/Makedonija · Hjällbovallen 1 Gräs · lördag 12 sep 13:00.",
-      "Samling 11:30 på HJÄLLBOVALLEN — vi spelar hemma.",
-      "Läget efter arton omgångar: 11 vinster, 4 oavgjorda, 3 förluster, 37 poäng.",
-      "Fyra matcher kvar: Vardar hemma, Hjuvik borta 18 sep, Hisingsbacka hemma sön 27 sep, Floda borta 4 okt.",
+      "Seriematch borta mot Hjuviks AIK · 21:47 Arena 1 konstgräs · fredag 18 sep 19:00.",
+      "Samling 17:15 på HJÄLLBOVALLEN — vi åker gemensamt till 21:47 Arena 1 konstgräs.",
+      "Läget efter nitton omgångar: 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng — andraplatsen och kvalplatsen är säkrad.",
+      "Tre matcher kvar: Hjuvik borta, Hisingsbacka hemma sön 27 sep, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
     ],
   },
   {
@@ -394,9 +377,9 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade till hemmamatchen mot Vardar.",
+      "Kallelsen till bortamatchen mot Hjuvik går ut på svenskalag.se under veckan.",
       "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
@@ -404,27 +387,28 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — IFK Björkö 2–4",
-    eyebrow: "Bortamötet",
-    principles: ["Fyra insläppta", "Samla först", "Nästa aktion"],
+    title: "Senast spelat — IF Vardar/Makedonija 4–0",
+    eyebrow: "Hemmamötet",
+    principles: ["Hållen nolla", "Fyra målskyttar", "Kval säkrat"],
     bullets: [
-      "Vi förlorade 2–4 borta på Björkövallen den 5 sep. Tredje förlusten på fem höstmatcher.",
-      "Inget referat och inga målskyttar publicerade än — matchbilden fylls på under veckan på /match/forra.",
-      "Fyra insläppta borta mot ett lag som spelar för kontraktet. Det är försvarsspelet som avgör hösten, inte anfallet.",
-      "Läget: 18 matcher, 11 vinster, 4 oavgjorda, 3 förluster.",
+      "Vi vann 4–0 hemma på Hjällbovallen den 12 sep. Idris Abdi (frispark, 21), Yosef Ismail (56), Haris Avdiu (66), Aldin Zeljkovic (71).",
+      "Nolla bakåt efter fyra insläppta på Björkö — blocket höll ihop i 90 minuter. Musti Ayoub matchens lirare.",
+      "Andraplatsen är säkrad: Velebit på tredje plats kan inte komma ikapp. Kvalplatsen till division 3 är vår.",
+      "Läget: 19 matcher, 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — IF Vardar/Makedonija",
-    eyebrow: "Division 4A · hemma",
+    title: "Motståndare — Hjuviks AIK",
+    eyebrow: "Division 4A · borta",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs · lördag 12 sep 13:00.",
-      "Vårmötet på Generatorsplan 22 maj slutade 1–1.",
+      "Bortamatch på 21:47 Arena 1 konstgräs · fredag 18 sep 19:00.",
+      "Hjuvik ligger fyra: 29 poäng på 19 matcher, 8 vinster, 5 oavgjorda, 6 förluster, målskillnad 33–33.",
+      "Vårmötet på Hjällbovallen 30 maj vann vi 4–1.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Hemma sätter vi rytmen. Första kvarten avgör om matchen spelas på deras planhalva eller vår.",
+    note: "Konstgräs och kvällsmatch: bollen går fortare, så första touchen och avstånden i blocket avgör.",
   },
   {
     id: "identitet",
@@ -511,9 +495,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "11:30 · Hjällbovallen"],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Samling", "17:15 · Hjällbovallen"],
+      ["Matchstart", "19:00"],
+      ["Bortaplan", "21:47 Arena 1 konstgräs"],
     ],
   },
 ];
