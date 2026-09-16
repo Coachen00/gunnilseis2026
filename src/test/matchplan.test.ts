@@ -38,17 +38,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match IF Vardar/Makedonija (seriematch hemma)", () => {
-    expect(MATCH_META.opponent).toBe("IF Vardar/Makedonija");
-    expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toContain("Hjällbovallen");
+  it("MATCH_META pekar på veckans match Hjuviks AIK (seriematch borta)", () => {
+    expect(MATCH_META.opponent).toBe("Hjuviks AIK");
+    expect(MATCH_META.kickoff).toMatch(/19:00/);
+    expect(MATCH_META.venue).toContain("21:47 Arena");
     expect(MATCH_META.competition).toBe("Division 4A Herr");
-    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.home).toBe(false);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("2–4");
+    expect(SEASON_BREAK.lastResult).toContain("4–0");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,9 +68,11 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Vardar är satt: 16 spelare, ingen spikad XI", () => {
+  it("kallelsen till Hjuvik är tom tills den är uttagen", () => {
+    // Vardar-truppen får inte ligga kvar som platshållare — en lista läses
+    // som en kallelse.
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
@@ -131,15 +133,14 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 11:30 för Vardar hemma — regeln, ingen override", () => {
-    // Klubbregeln (hemma 1h30) ger 11:30 vid avspark 13:00. Björkö-färjans
-    // override (samling/samlingsplats) ska vara borttagen, annars ärver
-    // hemmamatchen färjeundantaget.
-    expect(MATCH_META.home).toBe(true);
+  it("SAMLING_TIME är 17:15 för Hjuvik borta — regeln, ingen override", () => {
+    // Klubbregeln (borta 1h45) ger 17:15 vid avspark 19:00. Ingen färja,
+    // ingen override — gemensam avresa från Hjällbovallen.
+    expect(MATCH_META.home).toBe(false);
     expect(MATCH_META.samling).toBeUndefined();
     expect(MATCH_META.samlingsplats).toBeUndefined();
-    expect(SAMLING_TIME).toBe("11:30");
-    expect(computeSamlingTime({ ...MATCH_META, home: false })).toBe("11:15");
+    expect(SAMLING_TIME).toBe("17:15");
+    expect(computeSamlingTime({ ...MATCH_META, home: true })).toBe("17:30");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -177,9 +178,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("13:00"); // avspark
+    expect(times).toContain("18:20 – 18:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("18:50 – 18:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("19:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -289,10 +290,10 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Vardar 12 sep) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Hjuvik 18 sep) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
-    expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(true);
+    expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("ytterby is")).toBe(true);
@@ -303,15 +304,15 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("partille if fk")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("lerums is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
-    // Men INTE Vardar själv — veckans egna motståndare får aldrig flaggas som
-    // stale, trots vårmötet 22 maj.
-    expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(false);
+    // Men INTE Hjuvik själv — veckans egna motståndare får aldrig flaggas som
+    // stale, trots vårmötet 30 maj.
+    expect(PAST_OPPONENT_NAMES.has("hjuviks aik")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar returmötet med Vardar (12 sep), inte vårmötet", () => {
+  it("resolveWeeklyMatch hittar returmötet med Hjuvik (18 sep), inte vårmötet", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("IF Vardar/Makedonija");
-    expect(wm?.id).toBe("2026-09-12-vardar-makedonija");
+    expect(wm?.opponent).toBe("Hjuviks AIK");
+    expect(wm?.id).toBe("2026-09-18-hjuvik");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -337,7 +338,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Björkö-rad i framtiden blockerar inte veckans match (Vardar 12 sep)", () => {
+  it("stale Björkö-rad i framtiden blockerar inte veckans match (Hjuvik 18 sep)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -353,7 +354,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-bjorko")).toBe(false);
-    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+    expect(matches[0].opponent).toBe("Hjuviks AIK");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -371,7 +372,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("IF Vardar/Makedonija");
+    expect(matches[0].opponent).toBe("Hjuviks AIK");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

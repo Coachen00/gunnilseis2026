@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-09-06 (bortamatchen mot IFK Björkö 5 sep slutade 2–4 — inget referat
- *                    och inga målskyttar publicerade på svenskalag.se när detta skrevs, fyll på
- *                    `scorers` när de kommer. Serien: 18 matcher, 11 vinster, 4 oavgjorda,
- *                    3 förluster, 37 poäng. Näst på tur: IF Vardar/Makedonija hemma lör 12 sep
- *                    13:00, Hjällbovallen 1 Gräs).
+ * Senast uppdaterad: 2026-09-16 (hemmamatchen mot IF Vardar/Makedonija 12 sep vanns 4–0 —
+ *                    andraplatsen och kvalplatsen till div 3 säkrad, se `kval.ts`. Serien:
+ *                    19 matcher, 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng. Björkö-
+ *                    matchens målskyttar är fortfarande inte publicerade. Näst på tur:
+ *                    Hjuviks AIK borta fre 18 sep 19:00, 21:47 Arena 1 konstgräs).
  */
 
 export type MatchScorer = {
@@ -278,6 +278,15 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 4,
+    theirScore: 0,
+    scorers: [
+      { name: "Idris Abdi", goals: 1, note: "1–0 på frispark i 21:a, kapten för dagen" },
+      { name: "Yosef Ismail", goals: 1, note: "2–0 i 56:e" },
+      { name: "Haris Avdiu", goals: 1, note: "3–0 i 66:e" },
+      { name: "Aldin Zeljkovic", goals: 1, note: "4–0 i 71:a" },
+    ],
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901111/if-vardar-makedonija",
   },
   {
     id: "2026-09-18-hjuvik",

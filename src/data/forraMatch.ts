@@ -54,6 +54,64 @@ const STANDARD_BLOCKS: ForraMatchSection[] = [
 ];
 
 export const REFLECTIONS: Record<string, ReflectionContent> = {
+  "2026-09-12-vardar-makedonija": {
+    summary:
+      "Vi vann 4–0 hemma mot IF Vardar/Makedonija — andraplatsen och kvalplatsen till division 3 är säkrad.",
+    truppen: [
+      "Ali Carneil",
+      "Daniel Matin",
+      "Rayan Fedaila",
+      "Vedad Dzambegovic",
+      "Benjamin Arapovic",
+      "Ibrahim Haber",
+      "Idris Abdi",
+      "Ihab Naser",
+      "Mustafa Ayoub",
+      "Måns Orwén",
+      "Aldin Zeljkovic",
+      "Arshin Wosoughian",
+      "Haris Avdiu",
+      "Kamal Mustafa",
+      "Leodon Johansson",
+      "Yosef Ismail",
+    ],
+    ejTillgangliga: ["Adnan Hadzialic (avstängd)"],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "Hållen nolla — Ali Carneil behövde knappt ingripa.",
+          "Fyra mål av fyra olika målskyttar: bredd och spets på samma gång.",
+          "Musti Ayoub matchens lirare, Daniel Matin och Idris Abdi närmast.",
+        ],
+      },
+      { badge: "Förbättra", title: "Det här tar vi tag i", bullets: [] },
+      {
+        badge: "Anfall",
+        title: "Anfall — så blev det",
+        bullets: [
+          "1–0 Idris Abdi på frispark strax utanför straffområdet i 21:a minuten.",
+          "2–0 Yosef Ismail (56), 3–0 Haris Avdiu (66), 4–0 Aldin Zeljkovic (71).",
+        ],
+      },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: ["Nolla efter fyra insläppta på Björkö. Blocket höll ihop i 90 minuter."],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      {
+        badge: "Fasta",
+        title: "Fasta situationer",
+        bullets: ["Frisparksmålet öppnade matchen — första fasta-målet på länge."],
+      },
+    ],
+    larDomar: [
+      "Vi studsade tillbaka direkt efter Björkö, precis som vi sa att vi skulle.",
+      "Tre seriematcher kvar. Bästa kvallag räknas på poäng per match — varje trea flyttar oss upp i kvalrankingen.",
+    ],
+  },
   "2026-05-02-velebit": {
     summary:
       "Vi vann 1–0 hemma. Femte raka utan förlust (4 vinster + 1 oavgjord, 11/15 möjliga poäng).",
