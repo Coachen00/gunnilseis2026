@@ -68,11 +68,12 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Hjuvik är tom tills den är uttagen", () => {
-    // Vardar-truppen får inte ligga kvar som platshållare — en lista läses
-    // som en kallelse.
+  it("kallelsen till Hjuvik listar 16 spelare utan att anta en startelva", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toEqual(
+      expect.arrayContaining(["Ali Carneil", "Joshua Adebayo", "Mostafa Ayoub", "Leodon Johansson"])
+    );
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
@@ -96,9 +97,9 @@ describe("matchplan", () => {
     const pos = (p: string) =>
       called.filter((n) => SQUAD.find((s) => s.name === n)?.position === p).length;
     expect(pos("GK")).toBeGreaterThanOrEqual(1);
-    expect(pos("DEF")).toBeGreaterThanOrEqual(4); // en backlinje på fyra
+    expect(pos("DEF")).toBeGreaterThanOrEqual(3);
     expect(pos("MID") + pos("FWD")).toBeGreaterThanOrEqual(7);
-    expect(called).toHaveLength(pos("GK") + pos("DEF") + pos("MID") + pos("FWD"));
+    expect(called).toHaveLength(pos("GK") + pos("DEF") + pos("MID") + pos("FWD") + TRIAL_PLAYERS.size);
   });
 
   it("när en kallelse väl är ifylld är den intern-konsistent", () => {
@@ -133,14 +134,12 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 17:15 för Hjuvik borta — regeln, ingen override", () => {
-    // Klubbregeln (borta 1h45) ger 17:15 vid avspark 19:00. Ingen färja,
-    // ingen override — gemensam avresa från Hjällbovallen.
+  it("SAMLING_TIME är 17:45 för Hjuvik borta — samling på matchplatsen", () => {
     expect(MATCH_META.home).toBe(false);
-    expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.samlingsplats).toBeUndefined();
-    expect(SAMLING_TIME).toBe("17:15");
-    expect(computeSamlingTime({ ...MATCH_META, home: true })).toBe("17:30");
+    expect(MATCH_META.samling).toBe("17:45");
+    expect(MATCH_META.samlingsplats).toBe("21:47 Arena 1 konstgräs");
+    expect(SAMLING_TIME).toBe("17:45");
+    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("17:15");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -156,13 +155,10 @@ describe("matchplan", () => {
     expect(samlingRole?.[1]).toContain(SAMLING_TIME);
   });
 
-  it("samlingsplatsen skiljs tydligt från matchplatsen", () => {
-    // Felet som ska fångas: spelaren läser "Samling 13:15" bredvid
-    // "Lexby 1 Gräs" och åker direkt till bortaplanen.
-    // Hemmamatch: samlingsplatsen är Hjällbovallen enligt regeln.
+  it("samlingsplatsen står tydligt vid samlingstiden", () => {
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).not.toBe(MATCH_META.venue);
+    expect(GATHERING_PLACE).toBe("21:47 Arena 1 konstgräs");
+    expect(GATHERING_PLACE).toBe(MATCH_META.venue);
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
     expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);

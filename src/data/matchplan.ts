@@ -71,6 +71,8 @@ export const MATCH_META: MatchMeta = {
   competition: "Division 4A Herr",
   weather: "",
   absent: [],
+  samling: "17:45",
+  samlingsplats: "21:47 Arena 1 konstgräs",
 };
 
 /**
@@ -330,22 +332,32 @@ export const TRAVEL: TravelInfo | null = null;
  * legitim provspelare, eller behöva stängas av helt. De läggs INTE i squad.ts —
  * den listan speglar Gunnilses egen trupp på svenskalag.se.
  */
-/* Tömd 2026-08-07: Darvan Ayoub (Västkurd, provspel sedan aug 2026) är inte
- * kallad. Listan ska bara innehålla provspelare som faktiskt står i
- * CALLED_SQUAD — testet nedan kräver det, just för att listan inte ska
- * ligga kvar och legitimera stavfel efter att provspelet tagit slut.
- * Kallas han igen: lägg tillbaka namnet här, INTE i squad.ts. */
-export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
+/* Joshua är kallad men finns ännu inte i föreningens publicerade trupp. */
+export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Joshua Adebayo"]);
 
 /* Trupp inför bortamatchen mot Hjuviks AIK (fre 18 sep).
- * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
- * kallelse av spelarna, så Vardar-truppen får aldrig stå kvar som
- * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
- * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
- * i TRIAL_PLAYERS ovan. */
+ * Ingen startelva är satt än, därför ligger samtliga kallade i `bench`.
+ * Matchvyn visar då en neutral, numrerad trupp utan att antyda roller. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Joshua Adebayo",
+    "Rayan Fedaila",
+    "Vedad Dzambegovic",
+    "Ahmad Aljafari",
+    "Arshin Wosoughian",
+    "Ibrahim Haber",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mostafa Ayoub",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Yosef Ismail",
+    "Leodon Johansson",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -367,7 +379,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Kontext",
     bullets: [
       "Seriematch borta mot Hjuviks AIK · 21:47 Arena 1 konstgräs · fredag 18 sep 19:00.",
-      "Samling 17:15 på HJÄLLBOVALLEN — vi åker gemensamt till 21:47 Arena 1 konstgräs.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()} — vi möts på plats, egen resa.`,
       "Läget efter nitton omgångar: 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng — andraplatsen och kvalplatsen är säkrad.",
       "Tre matcher kvar: Hjuvik borta, Hisingsbacka hemma sön 27 sep, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
     ],
@@ -377,9 +389,9 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen till bortamatchen mot Hjuvik går ut på svenskalag.se under veckan.",
+      "16 spelare är kallade till bortamatchen mot Hjuvik.",
       "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
@@ -495,7 +507,7 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", "17:15 · Hjällbovallen"],
+      ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
       ["Matchstart", "19:00"],
       ["Bortaplan", "21:47 Arena 1 konstgräs"],
     ],

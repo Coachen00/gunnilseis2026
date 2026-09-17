@@ -59,7 +59,7 @@ export const SQUAD: Player[] = [
   { name: "Ibrahim Haber", position: "MID" },
   { name: "Idris Abdi", position: "MID" },
   { name: "Ihab Naser", position: "MID" },
-  { name: "Mustafa Ayoub", position: "MID" },
+  { name: "Mostafa Ayoub", position: "MID" },
   { name: "Måns Orwén", position: "MID" },
 
   // Anfallare
