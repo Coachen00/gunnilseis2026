@@ -31,6 +31,20 @@ const KIND_LABEL: Record<KvalMilestone["kind"], string> = {
   kval: "Kval",
 };
 
+const TALORD = ["inga", "en", "två", "tre", "fyra", "fem", "sex", "sju", "åtta"];
+
+function talord(n: number): string {
+  return TALORD[n] ?? String(n);
+}
+
+function versal(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function matcherKvar(n: number): string {
+  return `${talord(n)} ${n === 1 ? "seriematch" : "seriematcher"} kvar`;
+}
+
 function formatVerified(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
@@ -124,7 +138,7 @@ function Tabell() {
         </tbody>
       </table>
       <p className="border-t border-kedja-border px-4 py-3 text-[13px] text-kedja-deep">
-        Ettan går upp direkt, tvåan går till kval. Trean har {KVAL_STATUS.gapToThird} poäng upp till oss med tre matcher kvar.
+        Ettan går upp direkt, tvåan går till kval. Trean har {KVAL_STATUS.gapToThird} poäng upp till oss med {matcherKvar(KVAL_STATUS.remaining)}.
       </p>
     </div>
   );
@@ -257,8 +271,8 @@ const KvalSection = () => {
           <div className="space-y-10">
             <Rubrik
               eyebrow="Vägen dit"
-              title="Sex datum att ha koll på"
-              lead="Tre seriematcher kvar. Sedan avgör förbundet grupp och motstånd, och kvalet spelas på tre helger i oktober."
+              title={`${versal(KVAL_TIMELINE.length === 1 ? "ett" : talord(KVAL_TIMELINE.length))} datum att ha koll på`}
+              lead={`${versal(matcherKvar(KVAL_STATUS.remaining))}. Sedan avgör förbundet grupp och motstånd, och kvalet spelas på tre helger i oktober.`}
             />
             <Tidslinje />
           </div>

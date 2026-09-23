@@ -1,8 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-09-06 — veckans match är seriematch hemma mot
- * IF Vardar/Makedonija (lördag 12 sep 13:00 · Hjällbovallen 1 Gräs).
- * Bortamatchen mot IFK Björkö 5 sep slutade 2–4. Vanlig hemmarutin igen:
+ * Senast uppdaterad 2026-09-23 — veckans match är seriematch hemma mot
+ * Hisingsbacka FC (söndag 27 sep 13:00 · Hjällbovallen 1 Gräs).
+ * Bortamatchen mot Hjuviks AIK 18 sep vanns 2–0. Vanlig hemmarutin igen:
  * samling på Hjällbovallen 1h30 före avspark, inget resekort (`TRAVEL` null).
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
@@ -64,15 +64,13 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Hjuviks AIK",
-  venue: "21:47 Arena 1 konstgräs",
-  home: false,
-  kickoff: "Fre 18 sep · 19:00",
+  opponent: "Hisingsbacka FC",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Sön 27 sep · 13:00",
   competition: "Division 4A Herr",
   weather: "",
-  absent: [],
-  samling: "17:45",
-  samlingsplats: "21:47 Arena 1 konstgräs",
+  absent: ["Mostafa Ayoub — avstängd, tredje gula kortet"],
 };
 
 /**
@@ -86,11 +84,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "IF Vardar/Makedonija 4–0 (hemma, 12 sep)",
+  lastResult: "Hjuviks AIK 2–0 (borta, 18 sep)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Hjuviks AIK · borta · fre 18 sep 19:00 (21:47 Arena 1 konstgräs)",
+  nextMatchLabel: "Hisingsbacka FC · hemma · sön 27 sep 13:00 (Hjällbovallen 1 Gräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -317,7 +315,7 @@ export type TravelInfo = {
  * Resvägen till veckans match. `null` när matchen inte kräver något utöver
  * att ta sig till planen — då visas inget resekort på Veckans match.
  *
- * Hemmamatch på Hjällbovallen 12 sep → null. Björkö-färjan (Björköleden,
+ * Hemmamatch på Hjällbovallen 27 sep → null. Björkö-färjan (Björköleden,
  * helgtidtabell verifierad 2026-09-04) ligger kvar i git @ 91fb746 om ön
  * dyker upp igen nästa säsong.
  */
@@ -335,38 +333,24 @@ export const TRAVEL: TravelInfo | null = null;
 /* Joshua är kallad men finns ännu inte i föreningens publicerade trupp. */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Joshua Adebayo"]);
 
-/* Trupp inför bortamatchen mot Hjuviks AIK (fre 18 sep).
- * Ingen startelva är satt än, därför ligger samtliga kallade i `bench`.
- * Matchvyn visar då en neutral, numrerad trupp utan att antyda roller. */
+/* Trupp inför hemmamatchen mot Hisingsbacka FC (sön 27 sep).
+ * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
+ * kallelse av spelarna, så förra veckans trupp får aldrig stå kvar som
+ * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
+ * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
+ * i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Joshua Adebayo",
-    "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    "Ahmad Aljafari",
-    "Arshin Wosoughian",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mostafa Ayoub",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Haris Avdiu",
-    "Yosef Ismail",
-    "Leodon Johansson",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Nollan mot Vardar är standarden. Borta på konstgräs en fredagskväll: samla först, lås ytorna, vinn duellen.",
-  "Hjuvik är fyra i tabellen och slog oss inte i våras (4–1 hemma). Vi sätter rytmen — inte de.",
+  "Två raka nollor — Vardar 4–0 och Hjuvik 2–0. Det är standarden hemma också.",
+  "Hisingsbacka slåss mot nedflyttning och kommer för att överleva. Vi sätter rytmen från första minuten — inte de.",
   "Kvalplatsen är säkrad. Nu spelar vi om att bli bästa kvallag: poäng per match avgör vem som får två hemmamatcher i kvalet.",
 ];
 
-/* Ingen startelva spikad än mot Hjuvik.
+/* Ingen startelva spikad än mot Hisingsbacka.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -378,10 +362,11 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Seriematch borta mot Hjuviks AIK · 21:47 Arena 1 konstgräs · fredag 18 sep 19:00.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()} — vi möts på plats, egen resa.`,
-      "Läget efter nitton omgångar: 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng — andraplatsen och kvalplatsen är säkrad.",
-      "Tre matcher kvar: Hjuvik borta, Hisingsbacka hemma sön 27 sep, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
+      "Seriematch hemma mot Hisingsbacka FC · Hjällbovallen 1 Gräs · söndag 27 sep 13:00.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
+      "Läget efter tjugo omgångar: 13 vinster, 4 oavgjorda, 3 förluster, 43 poäng — andraplatsen och kvalplatsen är säkrad.",
+      "Två matcher kvar: Hisingsbacka hemma, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
+      "Mostafa Ayoub är avstängd — tredje gula kortet kom mot Hjuvik.",
     ],
   },
   {
@@ -389,38 +374,38 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Kallelse ej uttagen", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare är kallade till bortamatchen mot Hjuvik.",
-      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
+      "Kallelsen är inte uttagen än — den publiceras på svenskalag.se under veckan.",
+      "Startelvan sätts på matchgenomgången.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — IF Vardar/Makedonija 4–0",
-    eyebrow: "Hemmamötet",
-    principles: ["Hållen nolla", "Fyra målskyttar", "Kval säkrat"],
+    title: "Senast spelat — Hjuviks AIK 2–0",
+    eyebrow: "Bortamötet",
+    principles: ["Andra raka nollan", "Tidigt ledningsmål", "Fast situation avgjorde"],
     bullets: [
-      "Vi vann 4–0 hemma på Hjällbovallen den 12 sep. Idris Abdi (frispark, 21), Yosef Ismail (56), Haris Avdiu (66), Aldin Zeljkovic (71).",
-      "Nolla bakåt efter fyra insläppta på Björkö — blocket höll ihop i 90 minuter. Musti Ayoub matchens lirare.",
-      "Andraplatsen är säkrad: Velebit på tredje plats kan inte komma ikapp. Kvalplatsen till division 3 är vår.",
-      "Läget: 19 matcher, 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng.",
+      "Vi vann 2–0 borta på 21:47 Arena den 18 sep. Ihab Naser (2) efter ett mönsteranfall, Mostafa Ayoub (56) nickade in Haris Avdius hörna.",
+      "Andra raka matchen utan insläppt mål. Vi vann båda halvlekarna. Musti Ayoub matchens lirare igen.",
+      "Joshua Adebayo (17) debuterade i A-laget som inhoppare i slutskedet.",
+      "Läget: 20 matcher, 13 vinster, 4 oavgjorda, 3 förluster, 43 poäng.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Hjuviks AIK",
-    eyebrow: "Division 4A · borta",
+    title: "Motståndare — Hisingsbacka FC",
+    eyebrow: "Division 4A · hemma",
     bullets: [
-      "Bortamatch på 21:47 Arena 1 konstgräs · fredag 18 sep 19:00.",
-      "Hjuvik ligger fyra: 29 poäng på 19 matcher, 8 vinster, 5 oavgjorda, 6 förluster, målskillnad 33–33.",
-      "Vårmötet på Hjällbovallen 30 maj vann vi 4–1.",
+      "Hemmamatch på Hjällbovallen 1 Gräs · söndag 27 sep 13:00.",
+      "Hisingsbacka ligger elva: 20 poäng på 20 matcher, 6 vinster, 2 oavgjorda, 12 förluster, målskillnad 37–55.",
+      "Vårmötet på Backavallen 5 jun vann vi 4–0 — Haris Avdiu hattrick.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
     ],
-    note: "Konstgräs och kvällsmatch: bollen går fortare, så första touchen och avstånden i blocket avgör.",
+    note: "De spelar för att hänga kvar och kan slå vem som helst — de slog Ytterby men förlorade hemma mot jumbon Floda. Respektera dem, men ta initiativet.",
   },
   {
     id: "identitet",
@@ -508,8 +493,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
-      ["Matchstart", "19:00"],
-      ["Bortaplan", "21:47 Arena 1 konstgräs"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

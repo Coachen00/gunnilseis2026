@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-09-16 (hemmamatchen mot IF Vardar/Makedonija 12 sep vanns 4–0 —
- *                    andraplatsen och kvalplatsen till div 3 säkrad, se `kval.ts`. Serien:
- *                    19 matcher, 12 vinster, 4 oavgjorda, 3 förluster, 40 poäng. Björkö-
- *                    matchens målskyttar är fortfarande inte publicerade. Näst på tur:
- *                    Hjuviks AIK borta fre 18 sep 19:00, 21:47 Arena 1 konstgräs).
+ * Senast uppdaterad: 2026-09-23 (bortamatchen mot Hjuviks AIK 18 sep vanns 2–0 — Ihab Naser
+ *                    och Mostafa Ayoub. Serien: 20 matcher, 13 vinster, 4 oavgjorda,
+ *                    3 förluster, 43 poäng. Björkö-matchens målskyttar är fortfarande inte
+ *                    publicerade. Näst på tur: Hisingsbacka FC hemma sön 27 sep 13:00,
+ *                    Hjällbovallen 1 Gräs).
  */
 
 export type MatchScorer = {
@@ -294,7 +294,14 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Hjuviks AIK",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "21:47 Arena 1",
+    venue: "21:47 Arena 1 konstgräs",
+    ourScore: 2,
+    theirScore: 0,
+    scorers: [
+      { name: "Ihab Naser", goals: 1, note: "0–1 i andra minuten efter ett mönsteranfall" },
+      { name: "Mostafa Ayoub", goals: 1, note: "0–2 i 56:e, nick på hörna från Haris Avdiu · Man of the Match" },
+    ],
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901112/hjuviks-aik",
   },
   {
     id: "2026-09-27-hisingsbacka",
@@ -303,6 +310,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901113/hisingsbacka-fc",
   },
   {
     id: "2026-10-04-floda",
@@ -310,7 +318,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Floda BoIF",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "",
+    venue: "Flodala IP 3 KG",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901114/floda-boif",
   },
 ];
 

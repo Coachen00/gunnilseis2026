@@ -34,19 +34,20 @@ const seriesThrough = record.played[0]
  * Björkö 2–4 (5 sep) saknar referat och målskyttar helt på svenskalag.se —
  * de sex målen ligger i "Okänd" tills minuterna finns. Flytta dem då och
  * ta bort hinken.
- * Vardar 4–0 (12 sep): 21, 56, 66, 71 enligt klubbens referat. */
+ * Vardar 4–0 (12 sep): 21, 56, 66, 71 enligt klubbens referat.
+ * Hjuvik 2–0 (18 sep): 2 och 56 enligt klubbens referat. */
 export const goalMinutes = [
-  { bucket: "0–15", for: 8, against: 2 },
+  { bucket: "0–15", for: 9, against: 2 },
   { bucket: "16–30", for: 4, against: 1 },
   { bucket: "31–45+", for: 10, against: 6 },
-  { bucket: "46–60", for: 6, against: 3 },
+  { bucket: "46–60", for: 7, against: 3 },
   { bucket: "61–75", for: 11, against: 4 },
   { bucket: "76–90+", for: 13, against: 7 },
   { bucket: "Okänd", for: 2, against: 4 },
 ];
 
 const scorers = [
-  { name: "Haris Avdiu", goals: 20, assists: 1 },
+  { name: "Haris Avdiu", goals: 20, assists: 2 },
   { name: "Idris Abdi", goals: 9, assists: 0 },
   { name: "Leodon Johansson", goals: 8, assists: 1 },
   { name: "Yosef Ismail", goals: 7, assists: 3 },

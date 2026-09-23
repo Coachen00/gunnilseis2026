@@ -41,7 +41,7 @@ describe("kval — tabellen", () => {
   it("kvalplatsen är säkrad: tvåa, trean kan inte komma ikapp", () => {
     expect(KVAL_STATUS.position).toBe(2);
     expect(KVAL_STATUS.secured).toBe(true);
-    expect(KVAL_STATUS.remaining).toBe(3);
+    expect(KVAL_STATUS.remaining).toBe(2);
   });
 
   it("kvalStatus säger INTE säkrad när trean fortfarande kan nå oss", () => {
@@ -74,10 +74,9 @@ describe("kval — formatet", () => {
 });
 
 describe("kval — tidslinje och regler", () => {
-  it("tidslinjen börjar med våra tre kvarvarande seriematcher och slutar med kvalet", () => {
+  it("tidslinjen börjar med våra två kvarvarande seriematcher och slutar med kvalet", () => {
     const matches = KVAL_TIMELINE.filter((m) => m.kind === "match");
     expect(matches.map((m) => m.title)).toEqual([
-      "Hjuviks AIK borta",
       "Hisingsbacka FC hemma",
       "Floda BoIF borta",
     ]);
