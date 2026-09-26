@@ -7,7 +7,7 @@
  *                    och Mostafa Ayoub. Serien: 20 matcher, 13 vinster, 4 oavgjorda,
  *                    3 förluster, 43 poäng. Björkö-matchens målskyttar är fortfarande inte
  *                    publicerade. Näst på tur: Hisingsbacka FC hemma sön 27 sep 13:00,
- *                    Hjällbovallen 1 Gräs).
+ *                    Hjällbovallen 2 Konstgräs — flyttad från gräset, planen är för blöt).
  */
 
 export type MatchScorer = {
@@ -309,7 +309,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Hisingsbacka FC",
     homeAway: "home",
     competition: "Division 4A Herr",
-    venue: "Hjällbovallen 1 Gräs",
+    venue: "Hjällbovallen 2 Konstgräs",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901113/hisingsbacka-fc",
   },
   {

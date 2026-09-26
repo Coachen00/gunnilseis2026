@@ -41,7 +41,7 @@ describe("matchplan", () => {
   it("MATCH_META pekar på veckans match Hisingsbacka FC (seriematch hemma)", () => {
     expect(MATCH_META.opponent).toBe("Hisingsbacka FC");
     expect(MATCH_META.kickoff).toMatch(/13:00/);
-    expect(MATCH_META.venue).toBe("Hjällbovallen 1 Gräs");
+    expect(MATCH_META.venue).toBe("Hjällbovallen 2 Konstgräs");
     expect(MATCH_META.competition).toBe("Division 4A Herr");
     expect(MATCH_META.home).toBe(true);
   });
@@ -68,9 +68,9 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Hisingsbacka är tom tills den tas ut — Hjuvik-truppen står inte kvar", () => {
+  it("kallelsen till Hisingsbacka är satt: 16 spelare, ingen spikad XI", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", "Idris Abdi"]])
     );
@@ -131,13 +131,13 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 11:30 för Hisingsbacka hemma — regeln, ingen override", () => {
-    // Klubbregeln (hemma 1h30) ger 11:30 vid avspark 13:00. Hjuvik-matchens
-    // override (samling/samlingsplats på 21:47 Arena) ska vara borttagen,
-    // annars ärver hemmamatchen bortaundantaget.
+  it("SAMLING_TIME är 11:30 för Hisingsbacka hemma — regeln, ingen tidsoverride", () => {
+    // Klubbregeln (hemma 1h30) ger 11:30 vid avspark 13:00. Samlingsplatsen
+    // är överstyrd till konstgräset (gräset för blött 26 sep) — ta bort den
+    // inför nästa match.
     expect(MATCH_META.home).toBe(true);
     expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.samlingsplats).toBeUndefined();
+    expect(MATCH_META.samlingsplats).toBe("KONSTGRÄSET, Hjällbovallen 2");
     expect(SAMLING_TIME).toBe("11:30");
     expect(computeSamlingTime({ ...MATCH_META, home: false })).toBe("11:15");
   });
@@ -156,9 +156,10 @@ describe("matchplan", () => {
   });
 
   it("samlingsplatsen står tydligt vid samlingstiden", () => {
-    // Hemmamatch: samlingsplatsen är Hjällbovallen enligt regeln.
+    // Hemmamatch: samlingsplatsen är Hjällbovallen enligt regeln — mot
+    // Hisingsbacka på konstgräset, gräsplanen är för blöt.
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).toBe("Hjällbovallen");
+    expect(GATHERING_PLACE).toBe("KONSTGRÄSET, Hjällbovallen 2");
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
     expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);

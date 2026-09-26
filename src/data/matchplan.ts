@@ -1,7 +1,8 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
  * Senast uppdaterad 2026-09-23 — veckans match är seriematch hemma mot
- * Hisingsbacka FC (söndag 27 sep 13:00 · Hjällbovallen 1 Gräs).
+ * Hisingsbacka FC (söndag 27 sep 13:00 · Hjällbovallen 2 Konstgräs —
+ * flyttad från gräset 26 sep, planen är för blöt).
  * Bortamatchen mot Hjuviks AIK 18 sep vanns 2–0. Vanlig hemmarutin igen:
  * samling på Hjällbovallen 1h30 före avspark, inget resekort (`TRAVEL` null).
  *
@@ -65,12 +66,13 @@ export type CoherenceSection = {
 
 export const MATCH_META: MatchMeta = {
   opponent: "Hisingsbacka FC",
-  venue: "Hjällbovallen 1 Gräs",
+  venue: "Hjällbovallen 2 Konstgräs",
   home: true,
   kickoff: "Sön 27 sep · 13:00",
   competition: "Division 4A Herr",
   weather: "",
   absent: ["Mostafa Ayoub — avstängd, tredje gula kortet"],
+  samlingsplats: "KONSTGRÄSET, Hjällbovallen 2",
 };
 
 /**
@@ -88,7 +90,7 @@ export const SEASON_BREAK = {
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Hisingsbacka FC · hemma · sön 27 sep 13:00 (Hjällbovallen 1 Gräs)",
+  nextMatchLabel: "Hisingsbacka FC · hemma · sön 27 sep 13:00 (Hjällbovallen 2 Konstgräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -330,18 +332,33 @@ export const TRAVEL: TravelInfo | null = null;
  * legitim provspelare, eller behöva stängas av helt. De läggs INTE i squad.ts —
  * den listan speglar Gunnilses egen trupp på svenskalag.se.
  */
-/* Joshua är kallad men finns ännu inte i föreningens publicerade trupp. */
-export const TRIAL_PLAYERS: ReadonlySet<string> = new Set(["Joshua Adebayo"]);
+export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Trupp inför hemmamatchen mot Hisingsbacka FC (sön 27 sep).
- * TOM med flit: kallelsen är inte uttagen än. En lista här läses som en
- * kallelse av spelarna, så förra veckans trupp får aldrig stå kvar som
- * platshållare. Fyll på när kallelsen går ut på svenskalag.se — namnen
- * stavas exakt som i `data/squad.ts` (fri text, ingen join), eller finns
- * i TRIAL_PLAYERS ovan. */
+ * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
+ * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
+ * formationsplanen. Namnen stavas exakt som i `data/squad.ts` (fri text,
+ * ingen join), eller finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Daniel Matin",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Vedad Dzambegovic",
+    "Ahmad Aljafari",
+    "Arshin Wosoughian",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Haris Avdiu",
+    "Kamal Mustafa",
+    "Leodon Johansson",
+    "Yosef Ismail",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -362,7 +379,8 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Seriematch hemma mot Hisingsbacka FC · Hjällbovallen 1 Gräs · söndag 27 sep 13:00.",
+      "OBS! Vi spelar på KONSTGRÄSET — Hjällbovallen 2 Konstgräs. Gräsplanen är för blöt. Ta med skor för konstgräs.",
+      "Seriematch hemma mot Hisingsbacka FC · Hjällbovallen 2 Konstgräs · söndag 27 sep 13:00.",
       `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
       "Läget efter tjugo omgångar: 13 vinster, 4 oavgjorda, 3 förluster, 43 poäng — andraplatsen och kvalplatsen är säkrad.",
       "Två matcher kvar: Hisingsbacka hemma, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
@@ -374,10 +392,10 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse ej uttagen", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen är inte uttagen än — den publiceras på svenskalag.se under veckan.",
-      "Startelvan sätts på matchgenomgången.",
+      "16 spelare kallade till hemmamatchen mot Hisingsbacka — på konstgräset, Hjällbovallen 2.",
+      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
     ],
   },
@@ -400,7 +418,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Motståndare — Hisingsbacka FC",
     eyebrow: "Division 4A · hemma",
     bullets: [
-      "Hemmamatch på Hjällbovallen 1 Gräs · söndag 27 sep 13:00.",
+      "Hemmamatch på Hjällbovallen 2 Konstgräs · söndag 27 sep 13:00.",
       "Hisingsbacka ligger elva: 20 poäng på 20 matcher, 6 vinster, 2 oavgjorda, 12 förluster, målskillnad 37–55.",
       "Vårmötet på Backavallen 5 jun vann vi 4–0 — Haris Avdiu hattrick.",
       "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
@@ -494,7 +512,7 @@ export const COHERENCE: CoherenceSection[] = [
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
       ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Hemmaplan", "Hjällbovallen 2 Konstgräs"],
     ],
   },
 ];

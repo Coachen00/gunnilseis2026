@@ -187,7 +187,7 @@ export type KvalMilestone = {
 };
 
 export const KVAL_TIMELINE: KvalMilestone[] = [
-  { date: "Sön 27 sep", title: "Hisingsbacka FC hemma", detail: "Hjällbovallen 1 Gräs, 13:00. Varje poäng höjer vår kvalranking.", kind: "match" },
+  { date: "Sön 27 sep", title: "Hisingsbacka FC hemma", detail: "Hjällbovallen 2 Konstgräs (gräset för blött), 13:00. Varje poäng höjer vår kvalranking.", kind: "match" },
   { date: "Sön 4 okt", title: "Floda BoIF borta", detail: "Flodala IP 3 KG, 12:15. Sista seriematchen — utvisning här = missad första kvalmatch.", kind: "match" },
   { date: "3–4 okt", title: "Division 3 avslutas", detail: "Då vet vi vilka nior vi kan möta.", kind: "forbund" },
   { date: "Vecka 41", title: "Gruppen fastställs", detail: "GFF placerar Göteborgs tvåor i grupp 8 och 9. Hemmalaget bestämmer speldag, lördag eller söndag.", kind: "forbund" },
