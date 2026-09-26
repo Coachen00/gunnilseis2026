@@ -279,7 +279,7 @@ export const MATCH_SCHEDULE: Array<{ time: string; label: string; note?: string 
 /* Praktisk info — visas längst ner på Veckans match. */
 export const PRACTICAL_INFO = {
   responsibilities: [
-    ["Kapten", "Idris Abdi"],
+    ["Kapten", "Adnan \"Ado\" Hadzialic"],
     ["Hörnor", "Bekräftas på genomgång"],
     ["Inläggsfrispark", "Bekräftas på genomgång"],
     ["Målchansfrispark", "Bekräftas på genomgång"],
@@ -506,7 +506,7 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Roller",
     eyebrow: "Ansvar",
     roles: [
-      ["Kapten", "Idris Abdi"],
+      ["Kapten", "Adnan \"Ado\" Hadzialic"],
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],

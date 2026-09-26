@@ -72,7 +72,7 @@ describe("matchplan", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
     expect(CALLED_SQUAD.bench).toHaveLength(16);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
-      expect.arrayContaining([["Kapten", "Idris Abdi"]])
+      expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
   });
 
@@ -105,7 +105,7 @@ describe("matchplan", () => {
     // Inga dubbletter i kallad trupp
     expect(new Set(all).size).toBe(all.length);
     // Kaptenen måste vara kallad — annars är rollkortet fel
-    expect(all).toContain("Idris Abdi");
+    expect(all).toContain("Adnan Hadzialic");
     // Minst en målvakt i truppen
     expect(all.some((n) => SQUAD.find((p) => p.name === n)?.position === "GK")).toBe(true);
   });
