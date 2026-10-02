@@ -6,8 +6,9 @@
  *   2. Resa            — bara när `TRAVEL` är satt (färja, buss, avvikande väg)
  *   3. Kallad trupp    — startelva + avbytare tydligt separerade
  *   4. Tre viktigaste  — max 3 punkter, kort och handlingsstyrt
- *   5. Praktisk info   — schema, ansvar
- *   6. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
+ *   5. Läget           — förutsättningar, säsongen, motståndaren (COHERENCE 01/03/04)
+ *   6. Praktisk info   — schema, ansvar
+ *   7. Spelarvård-länk — "Ta hand om dig själv" bor på egen sida (/spelarvard)
  *
  * Resekortet ligger näst högst upp med flit: kommer man inte fram i tid är
  * resten av sidan meningslös.
@@ -23,6 +24,7 @@ import Formation from "@/components/match/Formation";
 import KedjaHero from "@/components/kedja/KedjaHero";
 import {
   CALLED_SQUAD,
+  COHERENCE,
   FOCUS,
   MATCH_META,
   MATCH_PRESENTATION_URL,
@@ -498,6 +500,46 @@ function TreViktigaste() {
   );
 }
 
+const LAGET_IDS = ["forutsattningar", "forra-match", "motstandare"];
+
+function Laget() {
+  const sections = LAGET_IDS.map((id) => COHERENCE.find((s) => s.id === id)).filter(
+    (s): s is (typeof COHERENCE)[number] => Boolean(s)
+  );
+  return (
+    <article className="rounded-2xl border border-kedja-border bg-white p-5 md:p-6">
+      <header className="mb-5">
+        <p className="font-mono text-[10px] font-black uppercase tracking-[0.24em] text-amber-700">
+          Läget
+        </p>
+        <h2 className="mt-1 text-xl font-black tracking-tight text-kedja-ink md:text-2xl">
+          Inför matchen och kvalet
+        </h2>
+      </header>
+
+      <div className="grid gap-3 lg:grid-cols-3">
+        {sections.map((s) => (
+          <section key={s.id} className="rounded-xl border border-kedja-border bg-kedja-paper p-4">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-kedja-deep/70">
+              {s.eyebrow}
+            </p>
+            <h3 className="mt-1 text-base font-black text-kedja-ink">{s.title}</h3>
+            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-kedja-ink">
+              {s.bullets?.map((b) => (
+                <li key={b} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" aria-hidden="true" />
+                  <span>{b}</span>
+                </li>
+              ))}
+            </ul>
+            {s.note && <p className="mt-3 text-xs font-semibold text-kedja-deep/70">{s.note}</p>}
+          </section>
+        ))}
+      </div>
+    </article>
+  );
+}
+
 function PraktiskInfo() {
   return (
     <article className="rounded-2xl border border-kedja-border bg-white p-5 md:p-6">
@@ -597,6 +639,12 @@ const MatchKommande = () => (
       {!SEASON_BREAK.active && (
         <SectionReveal>
           <TreViktigaste />
+        </SectionReveal>
+      )}
+
+      {!SEASON_BREAK.active && (
+        <SectionReveal>
+          <Laget />
         </SectionReveal>
       )}
 

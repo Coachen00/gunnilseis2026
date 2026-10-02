@@ -1,10 +1,10 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-09-23 — veckans match är seriematch hemma mot
- * Hisingsbacka FC (söndag 27 sep 13:00 · Hjällbovallen 2 Konstgräs —
- * flyttad från gräset 26 sep, planen är för blöt).
- * Bortamatchen mot Hjuviks AIK 18 sep vanns 2–0. Vanlig hemmarutin igen:
- * samling på Hjällbovallen 1h30 före avspark, inget resekort (`TRAVEL` null).
+ * Senast uppdaterad 2026-10-02 — veckans match är sista seriematchen, borta
+ * mot Floda BoIF (söndag 4 okt 12:15 · Flodala IP 1 Gräs).
+ * Hemmamatchen mot Hisingsbacka FC 27 sep förlorades 0–2. Samling på
+ * Hjällbovallen två timmar före avspark (Joels besked) — därför `samling`
+ * satt, inte bortaregelns 1h45.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -65,14 +65,14 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Hisingsbacka FC",
-  venue: "Hjällbovallen 2 Konstgräs",
-  home: true,
-  kickoff: "Sön 27 sep · 13:00",
+  opponent: "Floda BoIF",
+  venue: "Flodala IP 1 Gräs",
+  home: false,
+  kickoff: "Sön 4 okt · 12:15",
   competition: "Division 4A Herr",
   weather: "",
-  absent: ["Mostafa Ayoub — avstängd, tredje gula kortet"],
-  samlingsplats: "KONSTGRÄSET, Hjällbovallen 2",
+  absent: [],
+  samling: "10:15",
 };
 
 /**
@@ -86,11 +86,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "Hjuviks AIK 2–0 (borta, 18 sep)",
+  lastResult: "Hisingsbacka FC 0–2 (hemma, 27 sep)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Hisingsbacka FC · hemma · sön 27 sep 13:00 (Hjällbovallen 2 Konstgräs)",
+  nextMatchLabel: "Floda BoIF · borta · sön 4 okt 12:15 (Flodala IP 1 Gräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -317,7 +317,7 @@ export type TravelInfo = {
  * Resvägen till veckans match. `null` när matchen inte kräver något utöver
  * att ta sig till planen — då visas inget resekort på Veckans match.
  *
- * Hemmamatch på Hjällbovallen 27 sep → null. Björkö-färjan (Björköleden,
+ * Floda 4 okt → null, vi åker gemensamt från Hjällbovallen. Björkö-färjan (Björköleden,
  * helgtidtabell verifierad 2026-09-04) ligger kvar i git @ 91fb746 om ön
  * dyker upp igen nästa säsong.
  */
@@ -334,7 +334,7 @@ export const TRAVEL: TravelInfo | null = null;
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför hemmamatchen mot Hisingsbacka FC (sön 27 sep).
+/* Trupp inför bortamatchen mot Floda BoIF (sön 4 okt).
  * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
  * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
  * formationsplanen. Namnen stavas exakt som i `data/squad.ts` (fri text,
@@ -344,30 +344,30 @@ export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   bench: [
     "Ali Carneil",
     "Adnan Hadzialic",
-    "Daniel Matin",
     "Pascal Jabbour",
     "Rayan Fedaila",
-    "Vedad Dzambegovic",
-    "Ahmad Aljafari",
-    "Arshin Wosoughian",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Ibrahim Haber",
     "Idris Abdi",
     "Ihab Naser",
+    "Mostafa Ayoub",
     "Måns Orwén",
     "Aldin Zeljkovic",
+    "Arshin Wosoughian",
     "Haris Avdiu",
-    "Kamal Mustafa",
     "Leodon Johansson",
     "Yosef Ismail",
   ],
 };
 
 export const FOCUS: string[] = [
-  "Två raka nollor — Vardar 4–0 och Hjuvik 2–0. Det är standarden hemma också.",
-  "Hisingsbacka slåss mot nedflyttning och kommer för att överleva. Vi sätter rytmen från första minuten — inte de.",
-  "Kvalplatsen är säkrad. Nu spelar vi om att bli bästa kvallag: poäng per match avgör vem som får två hemmamatcher i kvalet.",
+  "Hisingsbacka ville det mer. Det får inte hända två matcher i rad.",
+  "Floda spelar för att hänga kvar. Matcha deras vilja först — sen spelar vi vår fotboll.",
+  "Generalrepetition inför kvalet: tre poäng, och inga onödiga kort. Rött kort här = avstängd i första kvalmatchen.",
 ];
 
-/* Ingen startelva spikad än mot Hisingsbacka.
+/* Ingen startelva spikad än mot Floda.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -379,12 +379,13 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "OBS! Vi spelar på KONSTGRÄSET — Hjällbovallen 2 Konstgräs. Gräsplanen är för blöt. Ta med skor för konstgräs.",
-      "Seriematch hemma mot Hisingsbacka FC · Hjällbovallen 2 Konstgräs · söndag 27 sep 13:00.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
-      "Läget efter tjugo omgångar: 13 vinster, 4 oavgjorda, 3 förluster, 43 poäng — andraplatsen och kvalplatsen är säkrad.",
-      "Två matcher kvar: Hisingsbacka hemma, Floda borta sön 4 okt. Kval till division 3 spelas 10–25 okt.",
-      "Mostafa Ayoub är avstängd — tredje gula kortet kom mot Hjuvik.",
+      "Sista seriematchen: borta mot Floda BoIF · Flodala IP 1 Gräs · söndag 4 okt 12:15.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()} — två timmar före avspark. Vi åker gemensamt.`,
+      "Planen: svenskalag.se anger nu gräs (Flodala IP 1), tidigare stod konstgräs. Ta med skor för båda.",
+      "Läget efter 21 omgångar: tvåa på 43 poäng (13 vinster, 4 oavgjorda, 4 förluster). Lerum har vunnit serien, kvalplatsen är vår sedan Vardar-matchen.",
+      "Kvalet 10–25 okt: fyra lag i gruppen, alla möter alla en gång, gruppettan går upp i division 3. Gruppen bestäms vecka 41.",
+      "Bästa kvallag i gruppen får två hemmamatcher — räknat på poäng per seriematch. Vi har 2,05 och kan nå max 2,09. I grupp 8 räcker det inte: Bohusläns tvåa får minst 2,10. I grupp 9 är det öppet tills Västergötland är klart.",
+      "Utvisning mot Floda = avstängd i första kvalmatchen. Gula kort nollställs inför kvalet.",
     ],
   },
   {
@@ -394,36 +395,38 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Spelare",
     principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade till hemmamatchen mot Hisingsbacka — på konstgräset, Hjällbovallen 2.",
+      "16 spelare kallade till bortamatchen mot Floda. Mostafa Ayoub är tillbaka efter avstängningen.",
       "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
-      "Kroppen först: säg till direkt om något känns, så vi sätter rätt trupp.",
+      "Kroppen först: säg till direkt om något känns. Om en vecka börjar kvalet.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Senast spelat — Hjuviks AIK 2–0",
-    eyebrow: "Bortamötet",
-    principles: ["Andra raka nollan", "Tidigt ledningsmål", "Fast situation avgjorde"],
+    title: "Säsongen — och senast Hisingsbacka 0–2",
+    eyebrow: "Facit",
+    principles: ["Våren 33 p på 13", "Hösten 10 p på 8", "Hemma 9–0–2"],
     bullets: [
-      "Vi vann 2–0 borta på 21:47 Arena den 18 sep. Ihab Naser (2) efter ett mönsteranfall, Mostafa Ayoub (56) nickade in Haris Avdius hörna.",
-      "Andra raka matchen utan insläppt mål. Vi vann båda halvlekarna. Musti Ayoub matchens lirare igen.",
-      "Joshua Adebayo (17) debuterade i A-laget som inhoppare i slutskedet.",
-      "Läget: 20 matcher, 13 vinster, 4 oavgjorda, 3 förluster, 43 poäng.",
+      "Våren: 13 seriematcher utan förlust — 10 vinster, 3 oavgjorda, 39–11 i mål.",
+      "Hösten: 8 matcher, 3 vinster, 1 oavgjord, 4 förluster, 17–18 i mål. Tio poäng mot våren 33.",
+      "Hemma 9 vinster och 2 förluster, borta 4 vinster, 4 oavgjorda, 2 förluster. 56 gjorda och 29 insläppta på 21 matcher.",
+      "Hisingsbacka 27 sep: 0–2 hemma på konstgräset. Båda målen kom runt paus (41, 51), av två före detta Gunnilsespelare.",
+      "Vi hade mest boll och skapade de vassaste chanserna i slutet — Haris Avdiu flera bra avslut. De ville det mer. Andra hemmaförlusten i år.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Hisingsbacka FC",
-    eyebrow: "Division 4A · hemma",
+    title: "Motståndare — Floda BoIF",
+    eyebrow: "Division 4A · borta",
     bullets: [
-      "Hemmamatch på Hjällbovallen 2 Konstgräs · söndag 27 sep 13:00.",
-      "Hisingsbacka ligger elva: 20 poäng på 20 matcher, 6 vinster, 2 oavgjorda, 12 förluster, målskillnad 37–55.",
-      "Vårmötet på Backavallen 5 jun vann vi 4–0 — Haris Avdiu hattrick.",
-      "Fyll på /motstandaranalys under veckan när vi sett dem närmare.",
+      "Bortamatch på Flodala IP 1 Gräs · söndag 4 okt 12:15.",
+      "Floda är jumbo: 21 poäng på 21 matcher, 6 vinster, 3 oavgjorda, 12 förluster, målskillnad 39–52.",
+      "Två lag åker ur. Stenkullen (24), Hisingsbacka (23) och Björkö (23) ligger strax ovanför — Floda måste vinna.",
+      "Floda vann sin senaste match 4–2 och har slagit Hisingsbacka borta i höst.",
+      "Vårmötet på Hjällbovallen 13 jun vann vi 5–1 — Haris Avdiu hattrick, Idris Abdi två.",
     ],
-    note: "De spelar för att hänga kvar och kan slå vem som helst — de slog Ytterby men förlorade hemma mot jumbon Floda. Respektera dem, men ta initiativet.",
+    note: "Samma läge som mot Hisingsbacka: ett lag som spelar för sin överlevnad. Den gången ville de mer. Den här gången bestämmer vi rytmen från första minuten.",
   },
   {
     id: "identitet",
@@ -511,8 +514,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 2 Konstgräs"],
+      ["Matchstart", "12:15"],
+      ["Bortaplan", "Flodala IP 1 Gräs"],
     ],
   },
 ];

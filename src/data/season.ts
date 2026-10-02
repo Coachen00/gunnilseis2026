@@ -3,11 +3,11 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-09-23 (bortamatchen mot Hjuviks AIK 18 sep vanns 2–0 — Ihab Naser
- *                    och Mostafa Ayoub. Serien: 20 matcher, 13 vinster, 4 oavgjorda,
- *                    3 förluster, 43 poäng. Björkö-matchens målskyttar är fortfarande inte
- *                    publicerade. Näst på tur: Hisingsbacka FC hemma sön 27 sep 13:00,
- *                    Hjällbovallen 2 Konstgräs — flyttad från gräset, planen är för blöt).
+ * Senast uppdaterad: 2026-10-02 (hemmamatchen mot Hisingsbacka FC 27 sep förlorades 0–2.
+ *                    Serien: 21 matcher, 13 vinster, 4 oavgjorda, 4 förluster, 43 poäng.
+ *                    Björkö-matchens målskyttar är fortfarande inte publicerade. Sista
+ *                    seriematchen: Floda BoIF borta sön 4 okt 12:15 — svenskalag.se anger
+ *                    nu Flodala IP 1 Gräs, inte 3 KG).
  */
 
 export type MatchScorer = {
@@ -310,6 +310,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Division 4A Herr",
     venue: "Hjällbovallen 2 Konstgräs",
+    ourScore: 0,
+    theirScore: 2,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901113/hisingsbacka-fc",
   },
   {
@@ -318,7 +320,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Floda BoIF",
     homeAway: "away",
     competition: "Division 4A Herr",
-    venue: "Flodala IP 3 KG",
+    venue: "Flodala IP 1 Gräs",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901114/floda-boif",
   },
 ];

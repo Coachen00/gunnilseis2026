@@ -1,16 +1,16 @@
 /**
  * Kval till division 3 hösten 2026 — allt vi vet, på ett ställe.
  *
- * Källor (alla lästa 2026-09-23, `KVAL_VERIFIED`):
+ * Källor (alla lästa 2026-10-02, `KVAL_VERIFIED`):
  *   - SvFF "Gruppindelningar och spelordningar för kvalspelet 2026"
  *     (fastställt av Tävlingsnämnden 16 april 2026) — grupper, spelordning,
  *     datum, regeln om bästa kvallag.
- *   - GFF "Kvaltabeller" (uppdaterad 2026-09-21) — avstängningsregler, div 3
+ *   - GFF "Kvaltabeller" (uppdaterad 2026-09-28) — avstängningsregler, div 3
  *     avslutas 3–4 okt. Säger inget om grupp 8/9.
- *   - svenskalag.se, Gunnilse IS herr — tabell och referatet "Bortavinst!"
- *     (Hjuvik 18 sep).
- *   - Tabellerna för grannserierna (SvFF:s FOGIS-tabeller, efter omgången
- *     18–20 sep) — kandidatlagen.
+ *   - svenskalag.se, Gunnilse IS herr — tabell och referatet "Andra
+ *     hemmaförlusten.." (Hisingsbacka 27 sep).
+ *   - Tabellerna för grannserierna (SvFF:s FOGIS-tabeller, efter näst sista
+ *     omgången) — kandidatlagen.
  *
  * Det som är fastställt av förbundet ligger i `KVAL_FORMAT` och `KVAL_GROUPS`.
  * Det som ännu är öppet (vilken grupp vi hamnar i, vilka lag) är märkt
@@ -18,7 +18,7 @@
  * `KVAL_VERIFIED` varje gång siffrorna kontrolleras mot källorna.
  */
 
-export const KVAL_VERIFIED = "2026-09-23";
+export const KVAL_VERIFIED = "2026-10-02";
 
 export type TableRow = {
   pos: number;
@@ -32,20 +32,20 @@ export type TableRow = {
   points: number;
 };
 
-/** Division 4A Herr efter omgång 20 (svenskalag.se, 20 sep). */
+/** Division 4A Herr efter omgång 21 (svenskalag.se, 27 sep). */
 export const DIV4A_TABLE: TableRow[] = [
-  { pos: 1, team: "Lerums IS", played: 20, won: 17, drawn: 3, lost: 0, goalsFor: 60, goalsAgainst: 21, points: 54 },
-  { pos: 2, team: "Gunnilse IS", played: 20, won: 13, drawn: 4, lost: 3, goalsFor: 56, goalsAgainst: 27, points: 43 },
-  { pos: 3, team: "KF Velebit", played: 20, won: 9, drawn: 2, lost: 9, goalsFor: 39, goalsAgainst: 33, points: 29 },
-  { pos: 4, team: "Hjuviks AIK", played: 20, won: 8, drawn: 5, lost: 7, goalsFor: 33, goalsAgainst: 35, points: 29 },
-  { pos: 5, team: "Ytterby IS", played: 20, won: 8, drawn: 3, lost: 9, goalsFor: 44, goalsAgainst: 47, points: 27 },
-  { pos: 6, team: "IF Vardar/Makedonija", played: 20, won: 7, drawn: 4, lost: 9, goalsFor: 36, goalsAgainst: 37, points: 25 },
-  { pos: 7, team: "Partille IF FK", played: 20, won: 7, drawn: 4, lost: 9, goalsFor: 40, goalsAgainst: 48, points: 25 },
-  { pos: 8, team: "Kareby IS", played: 20, won: 5, drawn: 8, lost: 7, goalsFor: 42, goalsAgainst: 40, points: 23 },
-  { pos: 9, team: "IFK Björkö", played: 20, won: 6, drawn: 5, lost: 9, goalsFor: 30, goalsAgainst: 44, points: 23 },
-  { pos: 10, team: "Stenkullen GoIK", played: 20, won: 6, drawn: 3, lost: 11, goalsFor: 27, goalsAgainst: 42, points: 21 },
-  { pos: 11, team: "Hisingsbacka FC", played: 20, won: 6, drawn: 2, lost: 12, goalsFor: 37, goalsAgainst: 55, points: 20 },
-  { pos: 12, team: "Floda BoIF", played: 20, won: 5, drawn: 3, lost: 12, goalsFor: 35, goalsAgainst: 50, points: 18 },
+  { pos: 1, team: "Lerums IS", played: 21, won: 18, drawn: 3, lost: 0, goalsFor: 64, goalsAgainst: 21, points: 57 },
+  { pos: 2, team: "Gunnilse IS", played: 21, won: 13, drawn: 4, lost: 4, goalsFor: 56, goalsAgainst: 29, points: 43 },
+  { pos: 3, team: "KF Velebit", played: 21, won: 9, drawn: 2, lost: 10, goalsFor: 41, goalsAgainst: 36, points: 29 },
+  { pos: 4, team: "Hjuviks AIK", played: 21, won: 8, drawn: 5, lost: 8, goalsFor: 34, goalsAgainst: 40, points: 29 },
+  { pos: 5, team: "Partille IF FK", played: 21, won: 8, drawn: 4, lost: 9, goalsFor: 45, goalsAgainst: 50, points: 28 },
+  { pos: 6, team: "Ytterby IS", played: 21, won: 8, drawn: 3, lost: 10, goalsFor: 46, goalsAgainst: 51, points: 27 },
+  { pos: 7, team: "Kareby IS", played: 21, won: 6, drawn: 8, lost: 7, goalsFor: 45, goalsAgainst: 42, points: 26 },
+  { pos: 8, team: "IF Vardar/Makedonija", played: 21, won: 7, drawn: 4, lost: 10, goalsFor: 38, goalsAgainst: 42, points: 25 },
+  { pos: 9, team: "Stenkullen GoIK", played: 21, won: 7, drawn: 3, lost: 11, goalsFor: 32, goalsAgainst: 43, points: 24 },
+  { pos: 10, team: "Hisingsbacka FC", played: 21, won: 7, drawn: 2, lost: 12, goalsFor: 39, goalsAgainst: 55, points: 23 },
+  { pos: 11, team: "IFK Björkö", played: 21, won: 6, drawn: 5, lost: 10, goalsFor: 30, goalsAgainst: 48, points: 23 },
+  { pos: 12, team: "Floda BoIF", played: 21, won: 6, drawn: 3, lost: 12, goalsFor: 39, goalsAgainst: 52, points: 21 },
 ];
 
 export const OUR_TEAM = "Gunnilse IS";
@@ -143,11 +143,12 @@ export const KVAL_GROUPS: KvalGroup[] = [
     div3Series: "Division 3 Nordvästra Götaland",
     slots: ["Nian i div 3 Nordvästra Götaland", "Bohuslän/Dalsland", "Göteborg", "Västergötland"],
     candidates: [
-      { team: "Assyriska IK", slot: "Nian i div 3 NV Götaland", status: "9:a, 17 p — före Haga på målskillnad, lagen möts 27 sep" },
-      { team: "IF Haga", slot: "Nian i div 3 NV Götaland", status: "10:a, 17 p — Syrianska FK har utgått" },
-      { team: "Ödsmåls IK", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "2:a, 40 p på 19 matcher" },
-      { team: "Skärhamns IK", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "1:a, 41 p på 18 matcher — blir tvåa om de tappar ettan" },
-      { team: "Vallens IF", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "3:a, 36 p på 18 matcher" },
+      { team: "IF Haga", slot: "Nian i div 3 NV Götaland", status: "9:a, 20 p — en omgång kvar" },
+      { team: "Wargöns IK", slot: "Nian i div 3 NV Götaland", status: "8:a, 22 p — blir nia om Haga vinner och Wargön förlorar" },
+      { team: "Assyriska IK", slot: "Nian i div 3 NV Götaland", status: "10:a, 17 p — går om Haga på målskillnad om Assyriska vinner och Haga förlorar" },
+      { team: "Ödsmåls IK", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "1:a, 43 p på 20 matcher, färdigspelade — blir tvåa om Skärhamn vinner sista" },
+      { team: "Skärhamns IK", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "2:a, 42 p på 19 matcher — vinst i sista ger serieseger" },
+      { team: "Vallens IF", slot: "Tvåa div 4 Bohuslän/Dalsland", status: "3:a, 39 p på 19 matcher — tvåa bara om Vallen vinner och Skärhamn förlorar" },
       { team: "Västergötlands kvallag", slot: "Div 4 Västergötland", status: "VFF utser sitt lag efter 4–5 okt" },
     ],
   },
@@ -158,9 +159,8 @@ export const KVAL_GROUPS: KvalGroup[] = [
     div3Series: "Division 3 Mellersta Götaland",
     slots: ["Nian i div 3 Mellersta Götaland", "Göteborg", "Västergötland", "Västergötland"],
     candidates: [
-      { team: "Bergdalens IK", slot: "Nian i div 3 Mellersta Götaland", status: "9:a, 23 p — lika med IK Zenith på åttonde, fyra poäng över tian" },
-      { team: "Öckerö IF", slot: "Nian i div 3 Mellersta Götaland", status: "10:a, 19 p" },
-      { team: "Serbiska KIF Semberija", slot: "Nian i div 3 Mellersta Götaland", status: "11:a, 19 p — Göteborgslag, bakom Öckerö på gjorda mål" },
+      { team: "Bergdalens IK", slot: "Nian i div 3 Mellersta Götaland", status: "9:a, 24 p — lika med IK Zenith, sämre målskillnad (−20 mot −8). En omgång kvar" },
+      { team: "IK Zenith", slot: "Nian i div 3 Mellersta Götaland", status: "8:a, 24 p — blir nia om Bergdalen tar fler poäng i sista omgången" },
       { team: "Västergötlands kvallag ×2", slot: "Div 4 Västergötland", status: "VFF lottar efter 4–5 okt" },
     ],
     precedent: "2025 låg Göteborgs lag i grupp 9: Lerums IS mot Hovås Billdal IF, Trollhättans BoIS och IFK Tidaholm.",
@@ -170,11 +170,10 @@ export const KVAL_GROUPS: KvalGroup[] = [
 /** Göteborgs andra tvåa — vem vi INTE möter men delar situation med. */
 export const GOTEBORG_B_RACE = {
   series: "Division 4B Herr",
-  note: "Göteborg B skickar också sin tvåa. Kållered leder, tre lag slåss om andraplatsen (före GFF–Virgo 23 sep):",
+  note: "Göteborg B skickar också sin tvåa. Kållered har vunnit serien, två lag slåss om andraplatsen i sista omgången:",
   contenders: [
-    { team: "IK Virgo", status: "2:a, 45 p" },
-    { team: "Fässbergs IF", status: "3:a, 43 p" },
-    { team: "Göteborgs FF", status: "4:a, 39 p på 19 matcher" },
+    { team: "IK Virgo", status: "2:a, 48 p" },
+    { team: "Fässbergs IF", status: "3:a, 46 p — måste vinna och att Virgo tappar poäng" },
   ],
 } as const;
 
@@ -187,8 +186,7 @@ export type KvalMilestone = {
 };
 
 export const KVAL_TIMELINE: KvalMilestone[] = [
-  { date: "Sön 27 sep", title: "Hisingsbacka FC hemma", detail: "Hjällbovallen 2 Konstgräs (gräset för blött), 13:00. Varje poäng höjer vår kvalranking.", kind: "match" },
-  { date: "Sön 4 okt", title: "Floda BoIF borta", detail: "Flodala IP 3 KG, 12:15. Sista seriematchen — utvisning här = missad första kvalmatch.", kind: "match" },
+  { date: "Sön 4 okt", title: "Floda BoIF borta", detail: "Flodala IP 1 Gräs, 12:15. Sista seriematchen — utvisning här = missad första kvalmatch.", kind: "match" },
   { date: "3–4 okt", title: "Division 3 avslutas", detail: "Då vet vi vilka nior vi kan möta.", kind: "forbund" },
   { date: "Vecka 41", title: "Gruppen fastställs", detail: "GFF placerar Göteborgs tvåor i grupp 8 och 9. Hemmalaget bestämmer speldag, lördag eller söndag.", kind: "forbund" },
   { date: "10–25 okt", title: "Kvalet spelas", detail: "Tre matcher, en per helg. Gruppettan går upp till division 3.", kind: "kval" },
@@ -209,7 +207,7 @@ export const KVAL_SOURCES = [
     url: "https://www.svenskfotboll.se/4a5e9d/globalassets/svff/dokumentdokumentblock/tavling/gruppindelningar-och-spelordningar-for-kvalspelet-2026.pdf",
   },
   { label: "SvFF — Information om kvalspelet 2026", url: "https://www.svenskfotboll.se/serier-cuper/kvalspel/kval/" },
-  { label: "GFF — Kvaltabeller (15 sep 2026)", url: "https://www.gbgfotboll.se/nyheter/2026/09/kvaltabell/" },
+  { label: "GFF — Kvaltabeller (28 sep 2026)", url: "https://www.gbgfotboll.se/nyheter/2026/09/kvaltabell/" },
   {
     label: "svenskalag.se — Gunnilse IS klara för kvalspel",
     url: "https://www.svenskalag.se/gunnilseis-herr/match/19901111/if-vardar-makedonija",

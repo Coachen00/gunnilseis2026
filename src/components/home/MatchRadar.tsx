@@ -35,12 +35,13 @@ const seriesThrough = record.played[0]
  * de sex målen ligger i "Okänd" tills minuterna finns. Flytta dem då och
  * ta bort hinken.
  * Vardar 4–0 (12 sep): 21, 56, 66, 71 enligt klubbens referat.
- * Hjuvik 2–0 (18 sep): 2 och 56 enligt klubbens referat. */
+ * Hjuvik 2–0 (18 sep): 2 och 56 enligt klubbens referat.
+ * Hisingsbacka 0–2 (27 sep): insläppta 41 och 51 enligt klubbens referat. */
 export const goalMinutes = [
   { bucket: "0–15", for: 9, against: 2 },
   { bucket: "16–30", for: 4, against: 1 },
-  { bucket: "31–45+", for: 10, against: 6 },
-  { bucket: "46–60", for: 7, against: 3 },
+  { bucket: "31–45+", for: 10, against: 7 },
+  { bucket: "46–60", for: 7, against: 4 },
   { bucket: "61–75", for: 11, against: 4 },
   { bucket: "76–90+", for: 13, against: 7 },
   { bucket: "Okänd", for: 2, against: 4 },

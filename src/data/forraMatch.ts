@@ -54,6 +54,51 @@ const STANDARD_BLOCKS: ForraMatchSection[] = [
 ];
 
 export const REFLECTIONS: Record<string, ReflectionContent> = {
+  "2026-09-27-hisingsbacka": {
+    summary:
+      "Vi förlorade 0–2 hemma mot Hisingsbacka FC på konstgräset — andra hemmaförlusten i år.",
+    truppen: [
+      "Ali Carneil",
+      "Adnan Hadzialic",
+      "Daniel Matin",
+      "Pascal Jabbour",
+      "Rayan Fedaila",
+      "Ahmad Aljafari",
+      "Idris Abdi",
+      "Ihab Naser",
+      "Måns Orwén",
+      "Aldin Zeljkovic",
+      "Arshin Wosoughian",
+      "Haris Avdiu",
+      "Kamal Mustafa",
+      "Leodon Johansson",
+      "Yosef Ismail",
+    ],
+    ejTillgangliga: ["Mostafa Ayoub (avstängd)"],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: ["Mest boll under i stort sett hela matchen och de vassaste chanserna i slutskedet."],
+      },
+      { badge: "Förbättra", title: "Det här tar vi tag i", bullets: [] },
+      {
+        badge: "Anfall",
+        title: "Anfall — så blev det",
+        bullets: ["Haris Avdiu hade flera bra avslut i andra halvlek, men deras målvakt höll nollan."],
+      },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: ["0–1 i 41:a och 0–2 i 51:a — två mål inom tio minuter runt paus."],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "Ett lag som spelar för att hänga kvar kommer med mer vilja än vanligt. Den viljan måste vi matcha innan kvaliteten räknas.",
+    ],
+  },
   "2026-09-12-vardar-makedonija": {
     summary:
       "Vi vann 4–0 hemma mot IF Vardar/Makedonija — andraplatsen och kvalplatsen till division 3 är säkrad.",

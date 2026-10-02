@@ -2,7 +2,7 @@ import { cleanup, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import MatchKommande from "./MatchKommande";
 import { renderWithProviders } from "@/test/test-utils";
-import { CALLED_SQUAD, GATHERING_PLACE, MATCH_META, SAMLING_TIME, SEASON_BREAK, TRAVEL } from "@/data/matchplan";
+import { CALLED_SQUAD, COHERENCE, GATHERING_PLACE, MATCH_META, SAMLING_TIME, SEASON_BREAK, TRAVEL } from "@/data/matchplan";
 
 vi.mock("@/integrations/supabase/client", async () => {
   const m = await import("@/test/mocks/supabase");
@@ -39,6 +39,18 @@ describe("MatchKommande — matchdagsläge", () => {
     expect(screen.getAllByText(GATHERING_PLACE).length).toBeGreaterThan(0);
     // Uppehålls-kortet ska vara borta
     expect(screen.queryByText("Sommaruppehåll")).toBeNull();
+  });
+
+  it("visar läget: förutsättningar, säsongen och motståndaren ur COHERENCE", () => {
+    // COHERENCE renderades länge ingenstans — det här kortet är enda stället
+    // där säsongs- och kvaltexten når spelaren.
+    renderWithProviders(<MatchKommande />, { routerProps: { initialEntries: ["/match/kommande"] } });
+    expect(screen.getByText("Inför matchen och kvalet")).toBeInTheDocument();
+    for (const id of ["forutsattningar", "forra-match", "motstandare"]) {
+      const s = COHERENCE.find((c) => c.id === id)!;
+      expect(screen.getByText(s.title)).toBeInTheDocument();
+      expect(screen.getByText(s.bullets![0])).toBeInTheDocument();
+    }
   });
 
   it("visar resekortet med rätt färjelinje, avgångar och varningarna", () => {

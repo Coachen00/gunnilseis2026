@@ -41,12 +41,12 @@ describe("kval — tabellen", () => {
   it("kvalplatsen är säkrad: tvåa, trean kan inte komma ikapp", () => {
     expect(KVAL_STATUS.position).toBe(2);
     expect(KVAL_STATUS.secured).toBe(true);
-    expect(KVAL_STATUS.remaining).toBe(2);
+    expect(KVAL_STATUS.remaining).toBe(1);
   });
 
   it("kvalStatus säger INTE säkrad när trean fortfarande kan nå oss", () => {
     const table = DIV4A_TABLE.map((r) =>
-      r.team === "KF Velebit" ? { ...r, points: 38 } : r
+      r.team === "KF Velebit" ? { ...r, points: 41 } : r
     );
     expect(kvalStatus(table).secured).toBe(false);
   });
@@ -74,12 +74,9 @@ describe("kval — formatet", () => {
 });
 
 describe("kval — tidslinje och regler", () => {
-  it("tidslinjen börjar med våra två kvarvarande seriematcher och slutar med kvalet", () => {
+  it("tidslinjen börjar med vår sista seriematch och slutar med kvalet", () => {
     const matches = KVAL_TIMELINE.filter((m) => m.kind === "match");
-    expect(matches.map((m) => m.title)).toEqual([
-      "Hisingsbacka FC hemma",
-      "Floda BoIF borta",
-    ]);
+    expect(matches.map((m) => m.title)).toEqual(["Floda BoIF borta"]);
     expect(KVAL_TIMELINE.at(-1)?.kind).toBe("kval");
     expect(KVAL_TIMELINE.at(-1)?.date).toBe(KVAL_FORMAT.window.replace(" oktober", " okt"));
   });
