@@ -321,6 +321,14 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Division 4A Herr",
     venue: "Flodala IP 1 Gräs",
+    ourScore: 5,
+    theirScore: 4,
+    scorers: [
+      { name: "Ibrahim Haber", goals: 2, note: "0–1 i 21:a och 0–4 i 50:e · 2 mål + 1 assist" },
+      { name: "Haris Avdiu", goals: 1, note: "0–2 i 24:e — säsongens 22:a mål, vinner skytteligan" },
+      { name: "Rayan Fedaila", goals: 1, note: "0–3 i 44:e" },
+      { name: "Yosef Ismail", goals: 1, note: "4–5 i 83:e på kontring, inbytt" },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901114/floda-boif",
   },
 ];
