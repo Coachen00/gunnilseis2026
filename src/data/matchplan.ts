@@ -1,10 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-10-02 — veckans match är sista seriematchen, borta
- * mot Floda BoIF (söndag 4 okt 12:15 · Flodala IP 1 Gräs).
- * Hemmamatchen mot Hisingsbacka FC 27 sep förlorades 0–2. Samling på
- * Hjällbovallen två timmar före avspark (Joels besked) — därför `samling`
- * satt, inte bortaregelns 1h45.
+ * Senast uppdaterad 2026-10-08 — veckans match är första kvalmatchen, hemma
+ * mot Bergdalens IK (lördag 10 okt 13:00 · Hjällbovallen 1 Gräs). Serien
+ * avslutades med 5–4 borta mot Floda. Samlingen följer hemmaregeln (11:30,
+ * samma som svenskalag.se). Kallelsen är inte satt än.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -65,14 +64,13 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Floda BoIF",
-  venue: "Flodala IP 1 Gräs",
-  home: false,
-  kickoff: "Sön 4 okt · 12:15",
-  competition: "Division 4A Herr",
+  opponent: "Bergdalens IK",
+  venue: "Hjällbovallen 1 Gräs",
+  home: true,
+  kickoff: "Lör 10 okt · 13:00",
+  competition: "Kval till division 3 · Grupp 9",
   weather: "",
   absent: [],
-  samling: "10:15",
 };
 
 /**
@@ -86,11 +84,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "Hisingsbacka FC 0–2 (hemma, 27 sep)",
+  lastResult: "Floda BoIF 5–4 (borta, 4 okt)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Floda BoIF · borta · sön 4 okt 12:15 (Flodala IP 1 Gräs)",
+  nextMatchLabel: "Bergdalens IK · hemma · lör 10 okt 13:00 (Hjällbovallen 1 Gräs)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -317,7 +315,7 @@ export type TravelInfo = {
  * Resvägen till veckans match. `null` när matchen inte kräver något utöver
  * att ta sig till planen — då visas inget resekort på Veckans match.
  *
- * Floda 4 okt → null, vi åker gemensamt från Hjällbovallen. Björkö-färjan (Björköleden,
+ * Bergdalen 10 okt → null, hemmamatch på Hjällbovallen. Björkö-färjan (Björköleden,
  * helgtidtabell verifierad 2026-09-04) ligger kvar i git @ 91fb746 om ön
  * dyker upp igen nästa säsong.
  */
@@ -334,40 +332,22 @@ export const TRAVEL: TravelInfo | null = null;
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför bortamatchen mot Floda BoIF (sön 4 okt).
- * 16 spelare kallade. Ingen startelva spikad än → allt ligger i `bench`, och
- * Veckans match renderar en numrerad "Kallade spelare"-lista i stället för
- * formationsplanen. Namnen stavas exakt som i `data/squad.ts` (fri text,
- * ingen join), eller finns i TRIAL_PLAYERS ovan. */
+/* Trupp inför kvalmatchen mot Bergdalens IK (lör 10 okt).
+ * Kallelsen är inte satt → tomma listor, Veckans match visar "Kallelse kommer".
+ * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join), eller
+ * finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Benjamin Arapovic",
-    "Galvan Ayoub",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mostafa Ayoub",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Arshin Wosoughian",
-    "Haris Avdiu",
-    "Leodon Johansson",
-    "Yosef Ismail",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Hisingsbacka ville det mer. Det får inte hända två matcher i rad.",
-  "Floda spelar för att hänga kvar. Matcha deras vilja först — sen spelar vi vår fotboll.",
-  "Generalrepetition inför kvalet: tre poäng, och inga onödiga kort. Rött kort här = avstängd i första kvalmatchen.",
+  "Vår enda hemmamatch i kvalet. Tre poäng och plus i målskillnad — 3–0 är värt mer än 1–0.",
+  "Tryck över tid, inte kaos. Bergdalen har 1 seger på 11 bortamatcher och går sönder när de får försvara länge.",
+  "Säkra bakom bollen. De gjorde 38 mål i division 3 — ge dem ingen match fram och tillbaka.",
 ];
 
-/* Ingen startelva spikad än mot Floda.
+/* Ingen startelva spikad än mot Bergdalen.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -379,13 +359,13 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Sista seriematchen: borta mot Floda BoIF · Flodala IP 1 Gräs · söndag 4 okt 12:15.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()} — två timmar före avspark. Vi åker gemensamt.`,
-      "Planen: svenskalag.se anger nu gräs (Flodala IP 1), tidigare stod konstgräs. Ta med skor för båda.",
-      "Läget efter 21 omgångar: tvåa på 43 poäng (13 vinster, 4 oavgjorda, 4 förluster). Lerum har vunnit serien, kvalplatsen är vår sedan Vardar-matchen.",
-      "Kvalet 10–25 okt: fyra lag i gruppen, alla möter alla en gång, gruppettan går upp i division 3. Gruppen bestäms vecka 41.",
-      "Bästa kvallag i gruppen får två hemmamatcher — räknat på poäng per seriematch. Vi har 2,05 och kan nå max 2,09. I grupp 8 räcker det inte: Bohusläns tvåa får minst 2,10. I grupp 9 är det öppet tills Västergötland är klart.",
-      "Utvisning mot Floda = avstängd i första kvalmatchen. Gula kort nollställs inför kvalet.",
+      "Första kvalmatchen: hemma mot Bergdalens IK · Hjällbovallen 1 Gräs · lördag 10 okt 13:00.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
+      "Grupp 9: Bergdalen, Skene, Götene och vi. Alla möter alla en gång, bara gruppettan går upp i division 3.",
+      "Det här är vår enda hemmamatch. Sedan väntar Götene borta lör 17 okt 14:00 och Skene borta lör 24 okt 15:00.",
+      "Oavgjort = straffar direkt efter matchen. Straffarna ger ingen extrapoäng, de avgör bara om lagen hamnar på lika poäng.",
+      "Lika poäng avgörs först på målskillnad, sedan gjorda mål. Varje mål räknas.",
+      "Alla gula kort från serien är nollställda. Två gula i två kvalmatcher eller ett rött = avstängd nästa kvalmatch.",
     ],
   },
   {
@@ -393,40 +373,40 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["16 kallade", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "16 spelare kallade till bortamatchen mot Floda. Mostafa Ayoub är tillbaka efter avstängningen.",
-      "Startelvan spikas på genomgången — alla 16 förbereder sig som om de startar.",
-      "Kroppen först: säg till direkt om något känns. Om en vecka börjar kvalet.",
+      "Kallelsen till Bergdalen är inte ute än.",
+      "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
+      "Kroppen först: säg till direkt om något känns. Tre matcher på tre lördagar.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Säsongen — och senast Hisingsbacka 0–2",
+    title: "Säsongen — och senast Floda 5–4",
     eyebrow: "Facit",
-    principles: ["Våren 33 p på 13", "Hösten 10 p på 8", "Hemma 9–0–2"],
+    principles: ["Tvåa i 4A", "46 p på 22", "61–33 i mål"],
     bullets: [
+      "Serien klar: tvåa på 46 poäng — 14 vinster, 4 oavgjorda, 4 förluster, 61–33 i mål.",
       "Våren: 13 seriematcher utan förlust — 10 vinster, 3 oavgjorda, 39–11 i mål.",
-      "Hösten: 8 matcher, 3 vinster, 1 oavgjord, 4 förluster, 17–18 i mål. Tio poäng mot våren 33.",
-      "Hemma 9 vinster och 2 förluster, borta 4 vinster, 4 oavgjorda, 2 förluster. 56 gjorda och 29 insläppta på 21 matcher.",
-      "Hisingsbacka 27 sep: 0–2 hemma på konstgräset. Båda målen kom runt paus (41, 51), av två före detta Gunnilsespelare.",
-      "Vi hade mest boll och skapade de vassaste chanserna i slutet — Haris Avdiu flera bra avslut. De ville det mer. Andra hemmaförlusten i år.",
+      "Floda 4 okt: 5–4 borta på gräs. 0–4 efter 50 minuter, Floda kvitterade, Yosef Ismail avgjorde på kontring i 83:e.",
+      "Ibrahim Haber 2 mål och 1 assist. Haris Avdiu gjorde sitt 22:a mål och vann skytteligan.",
+      "Lärdomen: efter 0–4 tappade vi omställningarna anfall/försvar i tjugo minuter. Den perioden får inte komma i kvalet.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Floda BoIF",
-    eyebrow: "Division 4A · borta",
+    title: "Motståndare — Bergdalens IK",
+    eyebrow: "Kval · hemma",
     bullets: [
-      "Bortamatch på Flodala IP 1 Gräs · söndag 4 okt 12:15.",
-      "Floda är jumbo: 21 poäng på 21 matcher, 6 vinster, 3 oavgjorda, 12 förluster, målskillnad 39–52.",
-      "Två lag åker ur. Stenkullen (24), Hisingsbacka (23) och Björkö (23) ligger strax ovanför — Floda måste vinna.",
-      "Floda vann sin senaste match 4–2 och har slagit Hisingsbacka borta i höst.",
-      "Vårmötet på Hjällbovallen 13 jun vann vi 5–1 — Haris Avdiu hattrick, Idris Abdi två.",
+      "Nia i division 3 Mellersta Götaland: 7 vinster, 3 oavgjorda, 12 förluster, 38–60 i mål, 24 poäng.",
+      "Hemma 6–1–4. Borta 1–2–8 och 39 insläppta — 3,55 per match. Ingen bortaseger sedan 18 april.",
+      "Formen, sex sista: 1–1, 2–0, 1–9, 1–0, 1–1, 1–3. Nollan hemma mot både Näset och Zenith.",
+      "De spelar hemma på konstgräs (Björkängsvallen, Borås). Lördag är det naturgräs.",
+      "Underskatta dem inte: 38 gjorda mål, 6–1 och 5–3 mot Semberija, 4–3 mot Västkurd.",
     ],
-    note: "Samma läge som mot Hisingsbacka: ett lag som spelar för sin överlevnad. Den gången ville de mer. Den här gången bestämmer vi rytmen från första minuten.",
+    note: "Bergdalen går sönder när motståndaren får långa perioder av tryck. Bestäm rytmen, vinn andrabollen — men ge dem aldrig en match fram och tillbaka.",
   },
   {
     id: "identitet",
@@ -514,8 +494,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
-      ["Matchstart", "12:15"],
-      ["Bortaplan", "Flodala IP 1 Gräs"],
+      ["Matchstart", "13:00"],
+      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
     ],
   },
 ];

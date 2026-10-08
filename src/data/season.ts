@@ -331,6 +331,33 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/19901114/floda-boif",
   },
+  {
+    id: "2026-10-10-bergdalen",
+    date: "2026-10-10T13:00:00+02:00",
+    opponent: "Bergdalens IK",
+    homeAway: "home",
+    competition: "Kval till div 3 herrar, Grupp 9",
+    venue: "Hjällbovallen 1 Gräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410664/bergdalens-ik",
+  },
+  {
+    id: "2026-10-17-gotene",
+    date: "2026-10-17T14:00:00+02:00",
+    opponent: "Götene IF",
+    homeAway: "away",
+    competition: "Kval till div 3 herrar, Grupp 9",
+    venue: "Västerby IP A-plan",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if",
+  },
+  {
+    id: "2026-10-24-skene",
+    date: "2026-10-24T15:00:00+02:00",
+    opponent: "Skene IF",
+    homeAway: "away",
+    competition: "Kval till div 3 herrar, Grupp 9",
+    venue: "Kunskapens Hus Konstgräs",
+    sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410666",
+  },
 ];
 
 export type PlayedMatch = SeasonMatch & { ourScore: number; theirScore: number };

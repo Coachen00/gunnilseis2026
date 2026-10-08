@@ -12,11 +12,11 @@ describe("kvar av säsongen (startsidan)", () => {
     expect(t[t.length - 1].id).toBe("training-2026-10-01");
   });
 
-  it("räknar matcher efter idag, sista är Floda borta 4 okt", () => {
+  it("räknar matcher efter idag inklusive kvalet, sista är Skene borta 24 okt", () => {
     const m = remainingMatches(SEASON_MATCHES, now);
-    expect(m).toHaveLength(4);
+    expect(m).toHaveLength(7);
     expect(m[0].id).toBe("2026-09-12-vardar-makedonija");
-    expect(m[m.length - 1].id).toBe("2026-10-04-floda");
+    expect(m[m.length - 1].id).toBe("2026-10-24-skene");
   });
 
   it("veckorytmen är mån/ons/tors 18:30 på Hjällbovallen", () => {

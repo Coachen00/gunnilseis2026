@@ -38,17 +38,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match Floda BoIF (seriematch borta)", () => {
-    expect(MATCH_META.opponent).toBe("Floda BoIF");
-    expect(MATCH_META.kickoff).toMatch(/12:15/);
-    expect(MATCH_META.venue).toBe("Flodala IP 1 Gräs");
-    expect(MATCH_META.competition).toBe("Division 4A Herr");
-    expect(MATCH_META.home).toBe(false);
+  it("MATCH_META pekar på veckans match Bergdalens IK (kval hemma)", () => {
+    expect(MATCH_META.opponent).toBe("Bergdalens IK");
+    expect(MATCH_META.kickoff).toMatch(/10 okt · 13:00/);
+    expect(MATCH_META.venue).toBe("Hjällbovallen 1 Gräs");
+    expect(MATCH_META.competition).toMatch(/Kval/);
+    expect(MATCH_META.home).toBe(true);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("0–2");
+    expect(SEASON_BREAK.lastResult).toContain("5–4");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,9 +68,9 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Floda är satt: 16 spelare, ingen spikad XI", () => {
+  it("kallelsen till Bergdalen är inte satt än — ingen kvarglömd Floda-trupp", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(16);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
@@ -131,15 +131,12 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 10:15 mot Floda — två timmar före avspark, overridad", () => {
-    // Bortaregeln (1h45) ger 10:30 vid avspark 12:15, men Joel kallade till
-    // samling två timmar före. Overriden gäller bara den här matchen — ta
-    // bort `samling` inför nästa match.
-    expect(MATCH_META.home).toBe(false);
-    expect(MATCH_META.samling).toBe("10:15");
+  it("SAMLING_TIME är 11:30 mot Bergdalen — hemmaregeln, ingen override", () => {
+    // Floda-overriden (två timmar före) får inte följa med till nästa match.
+    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.samling).toBeUndefined();
     expect(MATCH_META.samlingsplats).toBeUndefined();
-    expect(SAMLING_TIME).toBe("10:15");
-    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("10:30");
+    expect(SAMLING_TIME).toBe("11:30");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -156,7 +153,7 @@ describe("matchplan", () => {
   });
 
   it("samlingsplatsen står tydligt vid samlingstiden", () => {
-    // Bortamatch: vi samlas på Hjällbovallen enligt regeln och åker gemensamt.
+    // Vi samlas alltid på Hjällbovallen enligt regeln.
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
     expect(GATHERING_PLACE).toBe("Hjällbovallen");
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
@@ -174,9 +171,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("11:35 – 12:05"); // aktivering: avspark -40 → -10
-    expect(times).toContain("12:05 – 12:12"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("12:15"); // avspark
+    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("13:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -286,7 +283,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Floda 4 okt) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Bergdalen 10 okt) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
@@ -300,15 +297,16 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("lerums is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kf velebit")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
-    // Men INTE Floda själv — veckans egna motståndare får aldrig
-    // flaggas som stale, trots vårmötet 13 juni.
-    expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
+    // Veckans egna motståndare och kvalets senare motståndare är inte stale.
+    expect(PAST_OPPONENT_NAMES.has("bergdalens ik")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("skene if")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar returmötet med Floda (4 okt), inte vårmötet", () => {
+  it("resolveWeeklyMatch hittar kvalmatchen mot Bergdalen (10 okt)", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Floda BoIF");
-    expect(wm?.id).toBe("2026-10-04-floda");
+    expect(wm?.opponent).toBe("Bergdalens IK");
+    expect(wm?.id).toBe("2026-10-10-bergdalen");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -334,7 +332,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Björkö-rad i framtiden blockerar inte veckans match (Floda 4 okt)", () => {
+  it("stale Björkö-rad i framtiden blockerar inte veckans match (Bergdalen 10 okt)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -350,7 +348,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-bjorko")).toBe(false);
-    expect(matches[0].opponent).toBe("Floda BoIF");
+    expect(matches[0].opponent).toBe("Bergdalens IK");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -368,7 +366,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Floda BoIF");
+    expect(matches[0].opponent).toBe("Bergdalens IK");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

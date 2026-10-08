@@ -54,6 +54,62 @@ const STANDARD_BLOCKS: ForraMatchSection[] = [
 ];
 
 export const REFLECTIONS: Record<string, ReflectionContent> = {
+  "2026-10-04-floda": {
+    summary:
+      "Vi vann 5–4 borta mot Floda BoIF på gräs i sista seriematchen — 0–4 efter 50 minuter, Floda kvitterade, Yosef Ismail avgjorde i 83:e.",
+    truppen: [
+      "Adnan Hadzialic",
+      "Aldin Zeljkovic",
+      "Ali Carneil",
+      "Arshin Wosoughian",
+      "Benjamin Arapovic",
+      "Galvan Ayoub",
+      "Haris Avdiu",
+      "Ibrahim Haber",
+      "Idris Abdi",
+      "Ihab Naser",
+      "Leodon Johansson",
+      "Mostafa Ayoub",
+      "Måns Orwén",
+      "Pascal Jabbour",
+      "Rayan Fedaila",
+      "Yosef Ismail",
+    ],
+    ejTillgangliga: [],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "0–4 efter 50 minuter: Ibrahim Haber (21, 50), Haris Avdiu (24) och Rayan Fedaila (44).",
+          "Mostafa Ayoub Man of the Match. Galvan Ayoub tillbaka efter skada.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: ["Floda gjorde fyra mål på tjugo minuter efter 0–4 och kvitterade med en kvart kvar."],
+      },
+      {
+        badge: "Anfall",
+        title: "Anfall — så blev det",
+        bullets: ["Haris Avdiu gjorde sitt 22:a mål och vann skytteligan, fem mål före tvåan."],
+      },
+      { badge: "Försvar", title: "Försvar — så blev det", bullets: [] },
+      {
+        badge: "Omställningar",
+        title: "Omställningar",
+        bullets: [
+          "Omställningarna anfall/försvar fungerade inte alls under Flodas period.",
+          "När Floda gick på treback och slog långt kontrade inbytte Yosef Ismail in 4–5 i 83:e.",
+        ],
+      },
+      { badge: "Fasta", title: "Fasta situationer", bullets: [] },
+    ],
+    larDomar: [
+      "En ledning är inte färdig förrän matchen är slut. I kvalet räknas varje insläppt mål i målskillnaden.",
+    ],
+  },
   "2026-09-27-hisingsbacka": {
     summary:
       "Vi förlorade 0–2 hemma mot Hisingsbacka FC på konstgräset — andra hemmaförlusten i år.",
