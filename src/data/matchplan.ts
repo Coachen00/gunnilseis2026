@@ -71,6 +71,7 @@ export const MATCH_META: MatchMeta = {
   competition: "Kval till division 3 · Grupp 9",
   weather: "",
   absent: [],
+  samlingsplats: "Hjällbovallen, naturgräset",
 };
 
 /**

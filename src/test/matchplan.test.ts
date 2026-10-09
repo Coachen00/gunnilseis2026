@@ -132,11 +132,11 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 11:30 mot Bergdalen — hemmaregeln, ingen override", () => {
+  it("SAMLING_TIME är 11:30 mot Bergdalen — hemmaregeln, ingen tids-override", () => {
     // Floda-overriden (två timmar före) får inte följa med till nästa match.
     expect(MATCH_META.home).toBe(true);
     expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.samlingsplats).toBeUndefined();
+    expect(MATCH_META.samlingsplats).toBe("Hjällbovallen, naturgräset");
     expect(SAMLING_TIME).toBe("11:30");
   });
 
@@ -154,9 +154,10 @@ describe("matchplan", () => {
   });
 
   it("samlingsplatsen står tydligt vid samlingstiden", () => {
-    // Vi samlas alltid på Hjällbovallen enligt regeln.
+    // Vi samlas alltid på Hjällbovallen enligt regeln. Mot Bergdalen pekas
+    // naturgräset ut, så ingen går till konstgräset.
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).toBe("Hjällbovallen");
+    expect(GATHERING_PLACE).toBe("Hjällbovallen, naturgräset");
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
     expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);
