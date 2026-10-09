@@ -1,9 +1,9 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-10-08 — veckans match är första kvalmatchen, hemma
+ * Senast uppdaterad 2026-10-09 — veckans match är första kvalmatchen, hemma
  * mot Bergdalens IK (lördag 10 okt 13:00 · Hjällbovallen 1 Gräs). Serien
  * avslutades med 5–4 borta mot Floda. Samlingen följer hemmaregeln (11:30,
- * samma som svenskalag.se). Kallelsen är inte satt än.
+ * samma som svenskalag.se). 18 kallade, ingen spikad XI.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -333,12 +333,31 @@ export const TRAVEL: TravelInfo | null = null;
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Trupp inför kvalmatchen mot Bergdalens IK (lör 10 okt).
- * Kallelsen är inte satt → tomma listor, Veckans match visar "Kallelse kommer".
+ * 18 kallade — kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
  * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join), eller
  * finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Rinor Zenullah",
+    "Ahmad Aljafari",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Hosam Aiesh",
+    "Ibrahim Haber",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mostafa Ayoub",
+    "Måns Orwén",
+    "Aldin Zeljkovic",
+    "Arshin Wosoughian",
+    "Leodon Johansson",
+    "Yosef Ismail",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -373,10 +392,11 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["18 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen till Bergdalen är inte ute än.",
-      "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
+      "18 spelare kallade till kvalmatchen mot Bergdalen.",
+      "Kvalregler: sju på bänken, max fem byten vid tre tillfällen. Den som byts ut kommer inte in igen.",
+      "Startelvan spikas på genomgången — alla 18 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns. Tre matcher på tre lördagar.",
     ],
   },

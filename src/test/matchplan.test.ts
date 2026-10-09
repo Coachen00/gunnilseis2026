@@ -68,9 +68,10 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Bergdalen är inte satt än — ingen kvarglömd Floda-trupp", () => {
+  it("kallelsen till Bergdalen är satt: 18 spelare, ingen spikad XI", () => {
+    // Kval till förbundsserie: högst 11 + 7 ersättare (SvFF TB 4 kap. 5 §)
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(18);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
