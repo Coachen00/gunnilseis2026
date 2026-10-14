@@ -3,11 +3,9 @@
  * `matches`-tabellen istället. Den här listan är defaulten innan första syncen.
  *
  * Källa: https://www.svenskalag.se/gunnilseis-herr/matcher
- * Senast uppdaterad: 2026-10-02 (hemmamatchen mot Hisingsbacka FC 27 sep förlorades 0–2.
- *                    Serien: 21 matcher, 13 vinster, 4 oavgjorda, 4 förluster, 43 poäng.
- *                    Björkö-matchens målskyttar är fortfarande inte publicerade. Sista
- *                    seriematchen: Floda BoIF borta sön 4 okt 12:15 — svenskalag.se anger
- *                    nu Flodala IP 1 Gräs, inte 3 KG).
+ * Senast uppdaterad: 2026-10-14 (första kvalmatchen, Bergdalens IK hemma 10 okt, vanns 3–1.
+ *                    svenskalag.se har flyttat Götene-matchen från Västerby IP A-plan
+ *                    till B-plan. Björkö-matchens målskyttar är fortfarande inte publicerade).
  */
 
 export type MatchScorer = {
@@ -338,6 +336,13 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "home",
     competition: "Kval till div 3 herrar, Grupp 9",
     venue: "Hjällbovallen 1 Gräs",
+    ourScore: 3,
+    theirScore: 1,
+    scorers: [
+      { name: "Aldin Zeljkovic", goals: 1, note: "1–0 i 18:e på djupledspass från Ibrahim Haber" },
+      { name: "Arshin Wosoughian", goals: 1, note: "2–0 i 48:e, nick på frispark från Idris Abdi" },
+      { name: "Ihab Naser", goals: 1, note: "3–0 i 61:a" },
+    ],
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410664/bergdalens-ik",
   },
   {
@@ -346,7 +351,7 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     opponent: "Götene IF",
     homeAway: "away",
     competition: "Kval till div 3 herrar, Grupp 9",
-    venue: "Västerby IP A-plan",
+    venue: "Västerby IP B-plan",
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if",
   },
   {

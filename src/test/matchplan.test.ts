@@ -38,17 +38,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match Bergdalens IK (kval hemma)", () => {
-    expect(MATCH_META.opponent).toBe("Bergdalens IK");
-    expect(MATCH_META.kickoff).toMatch(/10 okt · 13:00/);
-    expect(MATCH_META.venue).toBe("Hjällbovallen 1 Gräs");
+  it("MATCH_META pekar på veckans match Götene IF (kval borta)", () => {
+    expect(MATCH_META.opponent).toBe("Götene IF");
+    expect(MATCH_META.kickoff).toMatch(/17 okt · 14:00/);
+    expect(MATCH_META.venue).toBe("Västerby IP B-plan");
     expect(MATCH_META.competition).toMatch(/Kval/);
-    expect(MATCH_META.home).toBe(true);
+    expect(MATCH_META.home).toBe(false);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("5–4");
+    expect(SEASON_BREAK.lastResult).toContain("3–1");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,10 +68,9 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Bergdalen är satt: 18 spelare, ingen spikad XI", () => {
-    // Kval till förbundsserie: högst 11 + 7 ersättare (SvFF TB 4 kap. 5 §)
+  it("kallelsen till Götene är inte satt än — ingen kvarglömd Bergdalen-trupp", () => {
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(18);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
@@ -132,12 +131,15 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 11:30 mot Bergdalen — hemmaregeln, ingen tids-override", () => {
-    // Floda-overriden (två timmar före) får inte följa med till nästa match.
-    expect(MATCH_META.home).toBe(true);
-    expect(MATCH_META.samling).toBeUndefined();
-    expect(MATCH_META.samlingsplats).toBe("Hjällbovallen, naturgräset");
-    expect(SAMLING_TIME).toBe("11:30");
+  it("SAMLING_TIME är 10:00 mot Götene — bussen, overridad", () => {
+    // Bortaregeln (1h45) ger 12:15 vid avspark 14:00, men bussen går 10:15 med
+    // lunchstopp 11:00 (Joels besked). Overriden gäller bara den här matchen —
+    // ta bort `samling` inför nästa match.
+    expect(MATCH_META.home).toBe(false);
+    expect(MATCH_META.samling).toBe("10:00");
+    expect(MATCH_META.samlingsplats).toBeUndefined();
+    expect(SAMLING_TIME).toBe("10:00");
+    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("12:15");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -154,10 +156,9 @@ describe("matchplan", () => {
   });
 
   it("samlingsplatsen står tydligt vid samlingstiden", () => {
-    // Vi samlas alltid på Hjällbovallen enligt regeln. Mot Bergdalen pekas
-    // naturgräset ut, så ingen går till konstgräset.
+    // Vi samlas alltid på Hjällbovallen enligt regeln och åker gemensamt.
     expect(HOME_GATHERING_PLACE).toBe("Hjällbovallen");
-    expect(GATHERING_PLACE).toBe("Hjällbovallen, naturgräset");
+    expect(GATHERING_PLACE).toBe("Hjällbovallen");
     // Samlingsplatsen ska stå bredvid samlingstiden, i schemat OCH i praktisk info
     expect(MATCH_SCHEDULE[0].note).toContain(GATHERING_PLACE);
     expect(PRACTICAL_INFO.gatheringNote).toContain(GATHERING_PLACE);
@@ -173,9 +174,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("12:20 – 12:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("12:50 – 12:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("13:00"); // avspark
+    expect(times).toContain("13:20 – 13:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("13:50 – 13:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("14:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -285,7 +286,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Bergdalen 10 okt) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Götene 17 okt) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
@@ -301,14 +302,15 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("hisingsbacka fc")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     // Veckans egna motståndare och kvalets senare motståndare är inte stale.
-    expect(PAST_OPPONENT_NAMES.has("bergdalens ik")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("bergdalens ik")).toBe(true);
+    expect(PAST_OPPONENT_NAMES.has("götene if")).toBe(false);
     expect(PAST_OPPONENT_NAMES.has("skene if")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar kvalmatchen mot Bergdalen (10 okt)", () => {
+  it("resolveWeeklyMatch hittar kvalmatchen mot Götene (17 okt)", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Bergdalens IK");
-    expect(wm?.id).toBe("2026-10-10-bergdalen");
+    expect(wm?.opponent).toBe("Götene IF");
+    expect(wm?.id).toBe("2026-10-17-gotene");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -334,7 +336,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Björkö-rad i framtiden blockerar inte veckans match (Bergdalen 10 okt)", () => {
+  it("stale Björkö-rad i framtiden blockerar inte veckans match (Götene 17 okt)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -350,7 +352,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-bjorko")).toBe(false);
-    expect(matches[0].opponent).toBe("Bergdalens IK");
+    expect(matches[0].opponent).toBe("Götene IF");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -368,7 +370,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Bergdalens IK");
+    expect(matches[0].opponent).toBe("Götene IF");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

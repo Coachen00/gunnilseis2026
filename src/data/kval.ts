@@ -1,13 +1,14 @@
 /**
  * Kval till division 3 hösten 2026 — grupp 9, allt vi vet på ett ställe.
  *
- * Källor (alla lästa 2026-10-07, `KVAL_VERIFIED`):
+ * Källor (lästa 2026-10-07; resultaten och Götene-matchen 2026-10-14, `KVAL_VERIFIED`):
  *   - SvFF "Gruppindelningar och spelordningar för kvalspelet 2026" — format,
  *     spelordning, regeln om bästa kvallag.
  *   - SvFF:s tävlingsbestämmelser för kvalspel (distriktsversionen, Dalarna
  *     2026) — straffläggning och skiljekriterier vid lika poäng.
  *   - svenskalag.se, Gunnilse IS herr — kvalmatchernas tid och plan,
- *     referatet från Floda (4–5).
+ *     referatet från Floda (4–5) och från Bergdalen (3–1). Skene–Götene 2–2
+ *     står bara i det referatet, inte avstämt mot förbundet.
  *   - SvFF:s FOGIS-tabeller — sluttabellerna i div 4A och div 3 Mellersta Götaland.
  *   - laget.se, Bergdalens IK — samtliga 22 seriematcher, trupp, hemmaplan.
  *
@@ -15,7 +16,7 @@
  * laget.se och har inte stämts av mot förbundets tabeller.
  */
 
-export const KVAL_VERIFIED = "2026-10-07";
+export const KVAL_VERIFIED = "2026-10-14";
 
 export type TableRow = {
   pos: number;
@@ -159,6 +160,8 @@ export type KvalFixture = {
   venue?: string;
   surface?: "Naturgräs" | "Konstgräs";
   url?: string;
+  /** Slutresultat, hemmalagets mål först. Saknas = inte spelad. */
+  result?: { home: number; away: number };
 };
 
 /** SvFF:s spelordning med lagen insatta. Våra matcher har tid och plan från svenskalag.se. */
@@ -173,16 +176,17 @@ export const KVAL_FIXTURES: KvalFixture[] = [
     venue: "Hjällbovallen 1",
     surface: "Naturgräs",
     url: "https://www.svenskalag.se/gunnilseis-herr/match/21410664/bergdalens-ik",
+    result: { home: 3, away: 1 },
   },
-  { round: 1, home: "Skene IF", away: "Götene IF" },
+  { round: 1, home: "Skene IF", away: "Götene IF", result: { home: 2, away: 2 } },
   {
     round: 2,
     home: "Götene IF",
     away: OUR_TEAM,
     date: "Lör 17 okt",
     kickoff: "14:00",
-    gather: "12:30",
-    venue: "Västerby IP A-plan",
+    gather: "10:00",
+    venue: "Västerby IP B-plan",
     url: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if",
   },
   { round: 2, home: "Bergdalens IK", away: "Skene IF" },
@@ -201,6 +205,47 @@ export const KVAL_FIXTURES: KvalFixture[] = [
 ];
 
 export const OUR_FIXTURES = KVAL_FIXTURES.filter((f) => f.home === OUR_TEAM || f.away === OUR_TEAM);
+
+/** Vår nästa ospelade kvalmatch — `undefined` när kvalet är färdigspelat. */
+export const NEXT_FIXTURE = OUR_FIXTURES.find((f) => !f.result);
+
+export const KVAL_ROUNDS_PLAYED = KVAL_FIXTURES.reduce((max, f) => (f.result ? Math.max(max, f.round) : max), 0);
+
+/**
+ * Grupptabellen, härledd ur resultaten i `KVAL_FIXTURES` så den inte kan glida
+ * isär från matcherna. Sorteras på poäng, målskillnad och gjorda mål — inbördes
+ * möte och de senare skiljekriterierna (`KVAL_TIEBREAK`) räknas inte, lika lag
+ * behåller spelordningens ordning.
+ */
+export function kvalTable(fixtures: KvalFixture[] = KVAL_FIXTURES): TableRow[] {
+  const teams = [...new Set(fixtures.flatMap((f) => [f.home, f.away]))];
+  const rows = teams.map((team) => {
+    const row = { pos: 0, team, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+    for (const f of fixtures) {
+      if (!f.result || (f.home !== team && f.away !== team)) continue;
+      const gf = f.home === team ? f.result.home : f.result.away;
+      const ga = f.home === team ? f.result.away : f.result.home;
+      row.played += 1;
+      row.goalsFor += gf;
+      row.goalsAgainst += ga;
+      if (gf > ga) row.won += 1;
+      else if (gf < ga) row.lost += 1;
+      else row.drawn += 1;
+    }
+    row.points = row.won * 3 + row.drawn;
+    return row;
+  });
+  return rows
+    .sort(
+      (a, b) =>
+        b.points - a.points ||
+        b.goalsFor - b.goalsAgainst - (a.goalsFor - a.goalsAgainst) ||
+        b.goalsFor - a.goalsFor
+    )
+    .map((r, i) => ({ ...r, pos: i + 1 }));
+}
+
+export const KVAL_TABLE = kvalTable();
 
 /** Ordningen när lag hamnar på samma poäng. */
 export const KVAL_TIEBREAK = [
@@ -374,6 +419,7 @@ export const KVAL_SOURCES = [
     url: "https://www.svenskfotboll.se/48db21/globalassets/distrikt/dalarna/dokument/tavling/tb/2026/2026-tb-2026-dalarna.pdf",
   },
   { label: "svenskalag.se — Gunnilse–Bergdalen", url: "https://www.svenskalag.se/gunnilseis-herr/match/21410664/bergdalens-ik" },
+  { label: "svenskalag.se — Götene–Gunnilse", url: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if" },
   { label: "laget.se — Bergdalens IK matcher 2026", url: "https://www.laget.se/BergdalensIKHerr/Division/Games/573606" },
   { label: "laget.se — Bergdalens IK spelarstatistik", url: "https://www.laget.se/BergdalensIKHerr/Division/Scoreboard/573606" },
 ] as const;

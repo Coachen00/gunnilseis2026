@@ -7,13 +7,16 @@ import {
   BERGDALEN_MATCHES,
   DIV4A_TABLE,
   KVAL_FIXTURES,
+  KVAL_ROUNDS_PLAYED,
   KVAL_RULES,
   KVAL_SOURCES,
   KVAL_STATUS,
+  KVAL_TABLE,
   KVAL_TEAMS,
   KVAL_TIEBREAK,
   KVAL_VERIFIED,
   kvalStatus,
+  NEXT_FIXTURE,
   OUR_FIXTURES,
   OUR_TEAM,
   pointsPerMatch,
@@ -91,6 +94,41 @@ describe("kval — grupp 9", () => {
       expect(f.venue).toBeTruthy();
     });
     expect(OUR_FIXTURES.filter((f) => f.home === OUR_TEAM)).toHaveLength(1);
+  });
+});
+
+describe("kval — resultat och grupptabell", () => {
+  it("omgång 1 är spelad: 3–1 mot Bergdalen och 2–2 mellan Skene och Götene", () => {
+    expect(KVAL_ROUNDS_PLAYED).toBe(1);
+    expect(KVAL_FIXTURES.filter((f) => f.result).every((f) => f.round === 1)).toBe(true);
+    expect(OUR_FIXTURES[0].result).toEqual({ home: 3, away: 1 });
+  });
+
+  it("vårt kvalresultat stämmer med season.ts", () => {
+    // Två källor för samma match — de får inte glida isär.
+    for (const f of OUR_FIXTURES.filter((x) => x.result)) {
+      const opponent = f.home === OUR_TEAM ? f.away : f.home;
+      const m = SEASON_MATCHES.find((s) => s.opponent === opponent && s.competition.startsWith("Kval"))!;
+      const ours = f.home === OUR_TEAM ? f.result!.home : f.result!.away;
+      const theirs = f.home === OUR_TEAM ? f.result!.away : f.result!.home;
+      expect([m.ourScore, m.theirScore]).toEqual([ours, theirs]);
+    }
+  });
+
+  it("tabellen efter omgång 1: vi först på 3 p, Bergdalen sist", () => {
+    expect(KVAL_TABLE.map((r) => [r.team, r.points])).toEqual([
+      [OUR_TEAM, 3],
+      ["Skene IF", 1],
+      ["Götene IF", 1],
+      ["Bergdalens IK", 0],
+    ]);
+    const us = KVAL_TABLE[0];
+    expect([us.goalsFor, us.goalsAgainst]).toEqual([3, 1]);
+  });
+
+  it("nästa match är Götene borta", () => {
+    expect(NEXT_FIXTURE?.home).toBe("Götene IF");
+    expect(NEXT_FIXTURE?.gather).toBe("10:00");
   });
 });
 

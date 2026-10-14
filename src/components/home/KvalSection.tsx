@@ -13,12 +13,15 @@ import {
   KVAL_FIXTURES,
   KVAL_GROUP,
   KVAL_PENALTIES,
+  KVAL_ROUNDS_PLAYED,
   KVAL_RULES,
   KVAL_SOURCES,
   KVAL_STATUS,
+  KVAL_TABLE,
   KVAL_TEAMS,
   KVAL_TIEBREAK,
   KVAL_VERIFIED,
+  NEXT_FIXTURE,
   OUR_FIXTURES,
   OUR_TEAM,
   PERFORMANCE_CHAIN,
@@ -35,6 +38,11 @@ import {
 const PHOTO_HERO = "/home-gallery/20260727_003.webp";
 const PHOTO_BREAK = "/home-gallery/20260727_002.webp";
 const PHOTO_GRASS = "/home-gallery/20260625_185002.webp";
+
+/* Bergdalen-scoutingen (motståndaren, planen, matchplanen, truppen) skrevs
+ * inför omgång 1 och visas bara så länge den matchen är nästa. Efteråt är
+ * den historik i git, inte "inför lördag". */
+const BERGDALEN_IS_NEXT = NEXT_FIXTURE?.home === "Bergdalens IK" || NEXT_FIXTURE?.away === "Bergdalens IK";
 
 function decimal(n: number, digits = 2): string {
   return n.toFixed(digits).replace(".", ",");
@@ -89,7 +97,8 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 function KvalHero() {
-  const first = OUR_FIXTURES[0];
+  const next = NEXT_FIXTURE;
+  const leader = KVAL_TABLE[0];
   return (
     <div className="relative overflow-hidden bg-kedja-ink">
       <img src={PHOTO_HERO} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover opacity-30" loading="lazy" decoding="async" />
@@ -106,19 +115,21 @@ function KvalHero() {
           <span className="text-kedja-lime">En plats i division 3.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-[620px] text-[19px] leading-[1.55] text-kedja-mint">
-          Fyra lag, alla möter alla en gång. Bara gruppettan går upp. Första matchen är vår enda hemmamatch.
+          Fyra lag, alla möter alla en gång. Bara gruppettan går upp.
+          {KVAL_ROUNDS_PLAYED > 0 &&
+            ` Efter omgång ${KVAL_ROUNDS_PLAYED} ${leader.team === OUR_TEAM ? "leder vi gruppen" : `leder ${leader.team}`}.`}
         </p>
-        {first && (
+        {next && (
           <div className="mx-auto mt-8 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-full bg-kedja-lime px-6 py-3 text-[15px] font-black text-kedja-ink">
             <span>
-              {first.date} · {first.kickoff}
+              {next.date} · {next.kickoff}
             </span>
             <span aria-hidden="true" className="hidden sm:inline">·</span>
             <span>
-              {first.home} – {first.away}
+              {next.home} – {next.away}
             </span>
             <span aria-hidden="true" className="hidden sm:inline">·</span>
-            <span>{first.venue}</span>
+            <span>{next.venue}</span>
           </div>
         )}
         <div className="mx-auto mt-10 grid max-w-[900px] grid-cols-2 divide-kedja-mint/15 rounded-2xl border border-kedja-mint/15 bg-kedja-ink/60 sm:grid-cols-4 sm:divide-x">
@@ -166,8 +177,74 @@ function FixtureCard({ f, index }: { f: KvalFixture; index: number }) {
         </span>
         {f.gather && <span className="rounded-full border-[1.5px] border-kedja-border bg-white/70 px-3 py-1">Samling {f.gather}</span>}
       </div>
-      {home && <p className="mt-4 text-[14px] font-bold text-kedja-ink">Vår enda hemmamatch i kvalet.</p>}
+      {f.result ? (
+        <FixtureResult f={f} />
+      ) : (
+        home && <p className="mt-4 text-[14px] font-bold text-kedja-ink">Vår enda hemmamatch i kvalet.</p>
+      )}
     </li>
+  );
+}
+
+function FixtureResult({ f }: { f: KvalFixture }) {
+  if (!f.result) return null;
+  const home = f.home === OUR_TEAM;
+  const ours = home ? f.result.home : f.result.away;
+  const theirs = home ? f.result.away : f.result.home;
+  const o = outcome({ gf: ours, ga: theirs });
+  return (
+    <p className="mt-4 flex items-center gap-3 text-[14px] font-bold text-kedja-ink">
+      <span className="text-[28px] font-black tabular-nums tracking-[-0.02em]">
+        {ours}–{theirs}
+      </span>
+      <span className={cn("rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.18em]", OUTCOME_STYLE[o])}>
+        {OUTCOME_WORD[o]}
+      </span>
+    </p>
+  );
+}
+
+function GruppTabell() {
+  return (
+    <figure className="overflow-hidden rounded-2xl border-[1.5px] border-kedja-border bg-white text-left">
+      <figcaption className="p-6 sm:px-8">
+        <Eyebrow>{KVAL_GROUP.name} efter omgång {KVAL_ROUNDS_PLAYED}</Eyebrow>
+      </figcaption>
+      <table className="w-full border-t border-kedja-border text-left text-[14px] text-kedja-ink">
+        <caption className="sr-only">
+          {KVAL_GROUP.name}, tabell efter omgång {KVAL_ROUNDS_PLAYED}
+        </caption>
+        <thead>
+          <tr className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-kedja-green">
+            <th className="px-4 py-3 font-extrabold sm:px-8">#</th>
+            <th className="px-2 py-3 font-extrabold">Lag</th>
+            <th className="px-2 py-3 text-right font-extrabold">S</th>
+            <th className="hidden px-2 py-3 text-right font-extrabold sm:table-cell">V–O–F</th>
+            <th className="px-2 py-3 text-right font-extrabold">Mål</th>
+            <th className="px-4 py-3 text-right font-extrabold sm:px-8">P</th>
+          </tr>
+        </thead>
+        <tbody>
+          {KVAL_TABLE.map((r) => {
+            const us = r.team === OUR_TEAM;
+            return (
+              <tr key={r.team} className={cn("border-t border-kedja-border", us && "bg-kedja-lime font-black")}>
+                <td className="px-4 py-2.5 tabular-nums sm:px-8">{r.pos}</td>
+                <td className="px-2 py-2.5">{r.team}</td>
+                <td className="px-2 py-2.5 text-right tabular-nums">{r.played}</td>
+                <td className="hidden px-2 py-2.5 text-right tabular-nums sm:table-cell">
+                  {r.won}–{r.drawn}–{r.lost}
+                </td>
+                <td className="px-2 py-2.5 text-right tabular-nums">
+                  {r.goalsFor}–{r.goalsAgainst}
+                </td>
+                <td className="px-4 py-2.5 text-right font-black tabular-nums sm:px-8">{r.points}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </figure>
   );
 }
 
@@ -185,9 +262,11 @@ function Vagen() {
         {others.map((f, i) => (
           <span key={`${f.home}-${f.away}`}>
             {i > 0 && " · "}omgång {f.round} {f.home}–{f.away}
+            {f.result && ` ${f.result.home}–${f.result.away}`}
           </span>
         ))}
       </p>
+      {KVAL_ROUNDS_PLAYED > 0 && <GruppTabell />}
     </div>
   );
 }
@@ -615,7 +694,7 @@ const KvalSection = () => {
             <Rubrik
               eyebrow="Vägen"
               title="Hemma först, sedan två bortamatcher"
-              lead="Tre lördagar i oktober. Bergdalen hemma på gräs är vårt bästa läge i hela kvalet."
+              lead="Tre lördagar i oktober. Hemmamatchen mot Bergdalen vann vi 3–1 — nu väntar två bortamatcher."
             />
             <Vagen />
           </div>
@@ -640,42 +719,57 @@ const KvalSection = () => {
         </div>
       </div>
 
-      <PhotoBreak
-        src={PHOTO_BREAK}
-        alt="Gunnilse herr samlas vid målen med bollar uppradade före träning"
-        line="Lördag: Bergdalens IK"
-        sub={`Division 3-lag. Men ${BERGDALEN_AWAY.won} seger på ${BERGDALEN_AWAY.played} bortamatcher.`}
-      />
+      {BERGDALEN_IS_NEXT ? (
+        <PhotoBreak
+          src={PHOTO_BREAK}
+          alt="Gunnilse herr samlas vid målen med bollar uppradade före träning"
+          line="Lördag: Bergdalens IK"
+          sub={`Division 3-lag. Men ${BERGDALEN_AWAY.won} seger på ${BERGDALEN_AWAY.played} bortamatcher.`}
+        />
+      ) : (
+        NEXT_FIXTURE && (
+          <PhotoBreak
+            src={PHOTO_BREAK}
+            alt="Gunnilse herr samlas vid målen med bollar uppradade före träning"
+            line={`${NEXT_FIXTURE.date}: ${NEXT_FIXTURE.home === OUR_TEAM ? NEXT_FIXTURE.away : NEXT_FIXTURE.home} borta`}
+            sub="Vinner vi där räcker oavgjort mot Skene i sista omgången."
+          />
+        )
+      )}
 
       <div className="bg-kedja-paper">
         <div className="mx-auto max-w-[1200px] space-y-24 px-6 py-20">
-          <div className="space-y-10">
-            <Rubrik
-              eyebrow="Motståndaren"
-              title="Ett lag hemma, ett annat borta"
-              lead={`Bergdalen slutade nia i division 3 Mellersta Götaland. Hemma tog de ${BERGDALEN_HOME.points} poäng — borta bara ${BERGDALEN_AWAY.points}.`}
-            />
-            <HemmaBorta />
-            <AwayStrip />
-            <Respekt />
-          </div>
+          {BERGDALEN_IS_NEXT && (
+            <>
+              <div className="space-y-10">
+                <Rubrik
+                  eyebrow="Motståndaren"
+                  title="Ett lag hemma, ett annat borta"
+                  lead={`Bergdalen slutade nia i division 3 Mellersta Götaland. Hemma tog de ${BERGDALEN_HOME.points} poäng — borta bara ${BERGDALEN_AWAY.points}.`}
+                />
+                <HemmaBorta />
+                <AwayStrip />
+                <Respekt />
+              </div>
 
-          <div className="space-y-10">
-            <Rubrik eyebrow="Planen" title="Gräs mot ett konstgräslag" lead="Ett konkret övertag om vi gör det till vår sorts match." />
-            <Underlag />
-          </div>
+              <div className="space-y-10">
+                <Rubrik eyebrow="Planen" title="Gräs mot ett konstgräslag" lead="Ett konkret övertag om vi gör det till vår sorts match." />
+                <Underlag />
+              </div>
 
-          <div className="space-y-10">
-            <Rubrik
-              eyebrow="Matchplanen"
-              title="Fem saker vi bygger lördagen på"
-              lead="Mål: tre poäng och plus i målskillnad — så vi åker till Götene med kvalet i egna händer."
-            />
-            <Matchplan />
-          </div>
+              <div className="space-y-10">
+                <Rubrik
+                  eyebrow="Matchplanen"
+                  title="Fem saker vi bygger lördagen på"
+                  lead="Mål: tre poäng och plus i målskillnad — så vi åker till Götene med kvalet i egna händer."
+                />
+                <Matchplan />
+              </div>
+            </>
+          )}
 
           <div className="space-y-4">
-            <Trupp />
+            {BERGDALEN_IS_NEXT && <Trupp />}
             <Sluttabell />
           </div>
 

@@ -54,6 +54,68 @@ const STANDARD_BLOCKS: ForraMatchSection[] = [
 ];
 
 export const REFLECTIONS: Record<string, ReflectionContent> = {
+  "2026-10-10-bergdalen": {
+    summary:
+      "Vi vann 3–1 hemma mot Bergdalens IK på naturgräs i första kvalmatchen — 3–0 efter 61 minuter, Bergdalen reducerade i 88:e.",
+    truppen: [
+      "Adnan Hadzialic",
+      "Ahmad Aljafari",
+      "Aldin Zeljkovic",
+      "Ali Carneil",
+      "Arshin Wosoughian",
+      "Benjamin Arapovic",
+      "Galvan Ayoub",
+      "Hosam Aiesh",
+      "Ibrahim Haber",
+      "Idris Abdi",
+      "Ihab Naser",
+      "Leodon Johansson",
+      "Mostafa Ayoub",
+      "Måns Orwén",
+      "Pascal Jabbour",
+      "Rayan Fedaila",
+      "Rinor Zenullah",
+      "Yosef Ismail",
+    ],
+    ejTillgangliga: [],
+    blocks: [
+      {
+        badge: "Bra",
+        title: "Det här fungerade",
+        bullets: [
+          "Aldin Zeljkovic 1–0 i 18:e, Arshin Wosoughian 2–0 i 48:e, Ihab Naser 3–0 i 61:a.",
+          "Idris Abdi matchens lirare enligt klubbens referat. Rinor Zenullah och Hosam Aiesh tillbaka i truppen.",
+        ],
+      },
+      {
+        badge: "Förbättra",
+        title: "Det här tar vi tag i",
+        bullets: ["Bergdalen gick ner på treback och slog långt de sista minuterna — reducering i 88:e."],
+      },
+      {
+        badge: "Anfall",
+        title: "Anfall — så blev det",
+        bullets: [
+          "Ibrahim Haber öppnade centralt för Aldin Zeljkovics djupledslöpning till 1–0.",
+          "Deras målvakt var Bergdalens bästa spelare och tog flera lägen, bland annat Ihab Nasers avslut strax före 3–0.",
+        ],
+      },
+      {
+        badge: "Försvar",
+        title: "Försvar — så blev det",
+        bullets: ["Försvarsspelet satt ihop och var grunden till anfallsspelet."],
+      },
+      { badge: "Omställningar", title: "Omställningar", bullets: [] },
+      {
+        badge: "Fasta",
+        title: "Fasta situationer",
+        bullets: ["Arshin Wosoughian nickade in Idris Abdis frispark till 2–0."],
+      },
+    ],
+    larDomar: [
+      "3–0 blev 3–1 i 88:e. I kvalet kan målskillnaden avgöra — matchen är slut vid slutsignalen, inte innan.",
+    ],
+  },
   "2026-10-04-floda": {
     summary:
       "Vi vann 5–4 borta mot Floda BoIF på gräs i sista seriematchen — 0–4 efter 50 minuter, Floda kvitterade, Yosef Ismail avgjorde i 83:e.",

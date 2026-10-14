@@ -1,9 +1,11 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-10-09 — veckans match är första kvalmatchen, hemma
- * mot Bergdalens IK (lördag 10 okt 13:00 · Hjällbovallen 1 Gräs). Serien
- * avslutades med 5–4 borta mot Floda. Samlingen följer hemmaregeln (11:30,
- * samma som svenskalag.se). 18 kallade, ingen spikad XI.
+ * Senast uppdaterad 2026-10-14 — veckans match är andra kvalmatchen, borta
+ * mot Götene IF (lördag 17 okt 14:00 · Västerby IP B-plan). Bergdalen slogs
+ * 3–1 hemma. Vi åker buss från Hjällbovallen: samling 10:00, avgång 10:15,
+ * lunchstopp 11:00 (Joels besked) — därför `samling` satt, inte bortaregelns
+ * 1h45. svenskalag.se anger samling 09:00 med frukost; Joels tider gäller.
+ * Kallelsen är inte satt.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -64,14 +66,14 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Bergdalens IK",
-  venue: "Hjällbovallen 1 Gräs",
-  home: true,
-  kickoff: "Lör 10 okt · 13:00",
+  opponent: "Götene IF",
+  venue: "Västerby IP B-plan",
+  home: false,
+  kickoff: "Lör 17 okt · 14:00",
   competition: "Kval till division 3 · Grupp 9",
   weather: "",
   absent: [],
-  samlingsplats: "Hjällbovallen, naturgräset",
+  samling: "10:00",
 };
 
 /**
@@ -85,11 +87,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "Floda BoIF 5–4 (borta, 4 okt)",
+  lastResult: "Bergdalens IK 3–1 (hemma, 10 okt)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Bergdalens IK · hemma · lör 10 okt 13:00 (Hjällbovallen 1 Gräs)",
+  nextMatchLabel: "Götene IF · borta · lör 17 okt 14:00 (Västerby IP B-plan)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -316,7 +318,8 @@ export type TravelInfo = {
  * Resvägen till veckans match. `null` när matchen inte kräver något utöver
  * att ta sig till planen — då visas inget resekort på Veckans match.
  *
- * Bergdalen 10 okt → null, hemmamatch på Hjällbovallen. Björkö-färjan (Björköleden,
+ * Götene 17 okt → null, bussen går från Hjällbovallen och tiderna står i
+ * Förutsättningar (COHERENCE 01). Kortet är byggt för färja. Björkö-färjan (Björköleden,
  * helgtidtabell verifierad 2026-09-04) ligger kvar i git @ 91fb746 om ön
  * dyker upp igen nästa säsong.
  */
@@ -333,41 +336,23 @@ export const TRAVEL: TravelInfo | null = null;
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför kvalmatchen mot Bergdalens IK (lör 10 okt).
- * 18 kallade — kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
+/* Trupp inför kvalmatchen mot Götene IF (lör 17 okt).
+ * Kallelsen är inte satt → tomma listor, Veckans match visar "Kallelse kommer".
+ * Kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
  * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join), eller
  * finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Rinor Zenullah",
-    "Ahmad Aljafari",
-    "Benjamin Arapovic",
-    "Galvan Ayoub",
-    "Hosam Aiesh",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mostafa Ayoub",
-    "Måns Orwén",
-    "Aldin Zeljkovic",
-    "Arshin Wosoughian",
-    "Leodon Johansson",
-    "Yosef Ismail",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Vår enda hemmamatch i kvalet. Tre poäng och plus i målskillnad — 3–0 är värt mer än 1–0.",
-  "Tryck över tid, inte kaos. Bergdalen har 1 seger på 11 bortamatcher och går sönder när de får försvara länge.",
-  "Säkra bakom bollen. De gjorde 38 mål i division 3 — ge dem ingen match fram och tillbaka.",
+  "Vinst i Götene och sedan räcker oavgjort mot Skene. Vi spelar för tre poäng, inte för en.",
+  "Samma grund som mot Bergdalen: försvaret sitter ihop, då kommer målen.",
+  "Inga onödiga kort. Två gula i två kvalmatcher eller ett rött = avstängd mot Skene.",
 ];
 
-/* Ingen startelva spikad än mot Bergdalen.
+/* Ingen startelva spikad än mot Götene.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -379,13 +364,14 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Första kvalmatchen: hemma mot Bergdalens IK · Hjällbovallen 1 Gräs · lördag 10 okt 13:00.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
-      "Grupp 9: Bergdalen, Skene, Götene och vi. Alla möter alla en gång, bara gruppettan går upp i division 3.",
-      "Det här är vår enda hemmamatch. Sedan väntar Götene borta lör 17 okt 14:00 och Skene borta lör 24 okt 15:00.",
+      "Andra kvalmatchen: borta mot Götene IF · Västerby IP B-plan · lördag 17 okt 14:00.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}. Bussen går 10:15.`,
+      "Lunchstopp på vägen klockan 11:00.",
+      "Hemresan: alla får en fralla i bussen, och vi stannar vid en affär eller restaurang för den som vill handla.",
+      "Läget efter omgång 1: Gunnilse 3 p (3–1), Skene 1 p, Götene 1 p (2–2 mot varandra), Bergdalen 0 p.",
+      "Vinner vi i Götene räcker oavgjort mot Skene sista omgången — då kan ingen nå oss.",
       "Oavgjort = straffar direkt efter matchen. Straffarna ger ingen extrapoäng, de avgör bara om lagen hamnar på lika poäng.",
-      "Lika poäng avgörs först på målskillnad, sedan gjorda mål. Varje mål räknas.",
-      "Alla gula kort från serien är nollställda. Två gula i två kvalmatcher eller ett rött = avstängd nästa kvalmatch.",
+      "Två gula i två kvalmatcher eller ett rött = avstängd nästa kvalmatch.",
     ],
   },
   {
@@ -393,41 +379,39 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["18 kallade", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "18 spelare kallade till kvalmatchen mot Bergdalen.",
+      "Kallelsen till Götene är inte ute än.",
       "Kvalregler: sju på bänken, max fem byten vid tre tillfällen. Den som byts ut kommer inte in igen.",
-      "Startelvan spikas på genomgången — alla 18 förbereder sig som om de startar.",
-      "Kroppen först: säg till direkt om något känns. Tre matcher på tre lördagar.",
+      "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
+      "Kroppen först: säg till direkt om något känns. Två lördagar kvar.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Säsongen — och senast Floda 5–4",
+    title: "Kvalet — och senast Bergdalen 3–1",
     eyebrow: "Facit",
-    principles: ["Tvåa i 4A", "46 p på 22", "61–33 i mål"],
+    principles: ["Etta i grupp 9", "3 p på 1", "3–1 i mål"],
     bullets: [
-      "Serien klar: tvåa på 46 poäng — 14 vinster, 4 oavgjorda, 4 förluster, 61–33 i mål.",
-      "Våren: 13 seriematcher utan förlust — 10 vinster, 3 oavgjorda, 39–11 i mål.",
-      "Floda 4 okt: 5–4 borta på gräs. 0–4 efter 50 minuter, Floda kvitterade, Yosef Ismail avgjorde på kontring i 83:e.",
-      "Ibrahim Haber 2 mål och 1 assist. Haris Avdiu gjorde sitt 22:a mål och vann skytteligan.",
-      "Lärdomen: efter 0–4 tappade vi omställningarna anfall/försvar i tjugo minuter. Den perioden får inte komma i kvalet.",
+      "Bergdalen 10 okt: 3–1 hemma på naturgräs, 1–0 i paus.",
+      "Aldin Zeljkovic 1–0 i 18:e på djupledspass från Ibrahim Haber. Arshin Wosoughian nickade in 2–0 i 48:e på frispark från Idris Abdi. Ihab Naser 3–0 i 61:a.",
+      "Bergdalen gick ner på treback och slog långt — reducering i 88:e.",
+      "Försvaret satt ihop och var grunden till anfallsspelet. Rinor Zenullah och Hosam Aiesh tillbaka i truppen.",
+      "Serien: tvåa i 4A på 46 poäng, 61–33 i mål. Haris Avdiu vann skytteligan med 22 mål.",
     ],
   },
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Bergdalens IK",
-    eyebrow: "Kval · hemma",
+    title: "Motståndare — Götene IF",
+    eyebrow: "Kval · borta",
     bullets: [
-      "Nia i division 3 Mellersta Götaland: 7 vinster, 3 oavgjorda, 12 förluster, 38–60 i mål, 24 poäng.",
-      "Hemma 6–1–4. Borta 1–2–8 och 39 insläppta — 3,55 per match. Ingen bortaseger sedan 18 april.",
-      "Formen, sex sista: 1–1, 2–0, 1–9, 1–0, 1–1, 1–3. Nollan hemma mot både Näset och Zenith.",
-      "De spelar hemma på konstgräs (Björkängsvallen, Borås). Lördag är det naturgräs.",
-      "Underskatta dem inte: 38 gjorda mål, 6–1 och 5–3 mot Semberija, 4–3 mot Västkurd.",
+      "Tvåa i division 4 Östra (Västergötland): 12 vinster, 6 oavgjorda, 4 förluster, 42 poäng på 22 matcher.",
+      "2–2 mot Skene i första kvalomgången — 1 poäng, samma som Skene.",
+      "Hemmaplan Västerby IP. Matchen spelas på B-planen enligt svenskalag.se.",
     ],
-    note: "Bergdalen går sönder när motståndaren får långa perioder av tryck. Bestäm rytmen, vinn andrabollen — men ge dem aldrig en match fram och tillbaka.",
+    note: "Götenes seriefacit kommer från lagets egen sida på laget.se och är inte avstämt mot förbundets tabell.",
   },
   {
     id: "identitet",
@@ -515,8 +499,9 @@ export const COHERENCE: CoherenceSection[] = [
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
-      ["Matchstart", "13:00"],
-      ["Hemmaplan", "Hjällbovallen 1 Gräs"],
+      ["Buss", "Avgång 10:15 · lunch 11:00"],
+      ["Matchstart", "14:00"],
+      ["Bortaplan", "Västerby IP B-plan"],
     ],
   },
 ];
