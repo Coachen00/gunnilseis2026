@@ -1,11 +1,11 @@
 /* Data för Veckans match: motståndare, fokus, formation och matchplan.
  *
- * Senast uppdaterad 2026-10-14 — veckans match är andra kvalmatchen, borta
+ * Senast uppdaterad 2026-10-16 — veckans match är andra kvalmatchen, borta
  * mot Götene IF (lördag 17 okt 14:00 · Västerby IP B-plan). Bergdalen slogs
  * 3–1 hemma. Vi åker buss från Hjällbovallen: samling 10:00, avgång 10:15,
  * lunchstopp 11:00 (Joels besked) — därför `samling` satt, inte bortaregelns
  * 1h45. svenskalag.se anger samling 09:00 med frukost; Joels tider gäller.
- * Kallelsen är inte satt.
+ * 18 kallade, ingen spikad XI.
  *
  * Härledda värden från MATCH_META (uppdateras automatiskt vid match-byte):
  *   - `computeSamlingTime` — hemma 1h30, borta 1h45 före avspark
@@ -337,13 +337,31 @@ export const TRAVEL: TravelInfo | null = null;
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
 /* Trupp inför kvalmatchen mot Götene IF (lör 17 okt).
- * Kallelsen är inte satt → tomma listor, Veckans match visar "Kallelse kommer".
- * Kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
+ * 18 kallade — kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
  * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join), eller
  * finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Rinor Zenullah",
+    "Ahmad Soheyl Matin",
+    "Ahmad Aljafari",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Hosam Aiesh",
+    "Ibrahim Haber",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mostafa Ayoub",
+    "Aldin Zeljkovic",
+    "Arshin Wosoughian",
+    "Leodon Johansson",
+    "Kamal Mustafa",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -379,11 +397,11 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Kallelse kommer", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["18 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Kallelsen till Götene är inte ute än.",
+      "18 spelare kallade till kvalmatchen mot Götene.",
       "Kvalregler: sju på bänken, max fem byten vid tre tillfällen. Den som byts ut kommer inte in igen.",
-      "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
+      "Startelvan spikas på genomgången — alla 18 förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns. Två lördagar kvar.",
     ],
   },
