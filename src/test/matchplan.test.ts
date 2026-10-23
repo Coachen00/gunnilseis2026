@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   CALLED_SQUAD,
+  DEPARTURE,
   MATCH_META,
   MATCH_PRESENTATION_URL,
   MATCH_SCHEDULE,
@@ -133,14 +134,15 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 13:30 mot Skene — kallelsen, overridad", () => {
-    // Bortaregeln (1h45) ger 13:15 vid avspark 15:00, men kallelsen och
-    // svenskalag.se säger 13.30. Overriden gäller bara den här matchen —
-    // ta bort `samling` inför nästa match.
+  it("SAMLING_TIME är 12:00 mot Skene — lunch och avfärd 12:45, overridad", () => {
+    // Bortaregeln (1h45) ger 13:15 vid avspark 15:00, men laget äter lunch
+    // på Hjällbovallen 12:00 och åker 12:45 (Joels besked). Overriden gäller
+    // bara den här matchen — ta bort `samling` och DEPARTURE inför nästa match.
     expect(MATCH_META.home).toBe(false);
-    expect(MATCH_META.samling).toBe("13:30");
+    expect(MATCH_META.samling).toBe("12:00");
     expect(MATCH_META.samlingsplats).toBeUndefined();
-    expect(SAMLING_TIME).toBe("13:30");
+    expect(SAMLING_TIME).toBe("12:00");
+    expect(DEPARTURE).toEqual({ lunch: "12:00", leaves: "12:45" });
     expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("13:15");
   });
 

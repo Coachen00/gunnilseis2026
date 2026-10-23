@@ -10,7 +10,9 @@
  *     referatet från Floda (4–5) och från Bergdalen (3–1). Skene–Götene 2–2
  *     står bara i det referatet, inte avstämt mot förbundet.
  *   - Klubbens kallelse till Skene-matchen (Kval-Skene-2026-10-24.pdf) —
- *     Götene–Gunnilse 1–1, samling 13.30 och grupptabellen efter omgång 2.
+ *     Götene–Gunnilse 1–1 och grupptabellen efter omgång 2. Kallelsens
+ *     samling 13.30 ersattes av Joels besked 23 okt: lunch 12.00 och
+ *     avfärd 12.45 från Hjällbovallen.
  *     Bergdalen–Skene står bara som poäng i den tabellen (Bergdalen 3 p, Skene
  *     1 p), inte som resultat — därför `winner` utan mål.
  *   - SvFF:s FOGIS-tabeller — sluttabellerna i div 4A och div 3 Mellersta Götaland.
@@ -207,7 +209,7 @@ export const KVAL_FIXTURES: KvalFixture[] = [
     away: OUR_TEAM,
     date: "Lör 24 okt",
     kickoff: "15:00",
-    gather: "13:30",
+    gather: "12:00",
     venue: "Kunskapens Hus",
     surface: "Konstgräs",
     url: "https://www.svenskalag.se/gunnilseis-herr/match/21410666",

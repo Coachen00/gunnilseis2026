@@ -148,9 +148,9 @@ describe("kval — resultat och grupptabell", () => {
     expect(winClinchesGroup(efterOmgang1)).toBe(false);
   });
 
-  it("nästa match är Skene borta, samling 13:30 som i matchplan", () => {
+  it("nästa match är Skene borta, samling 12:00 som i matchplan", () => {
     expect(NEXT_FIXTURE?.home).toBe("Skene IF");
-    expect(NEXT_FIXTURE?.gather).toBe("13:30");
+    expect(NEXT_FIXTURE?.gather).toBe("12:00");
     expect(NEXT_FIXTURE?.gather).toBe(SAMLING_TIME);
     expect(MATCH_META.opponent).toBe(NEXT_FIXTURE?.home);
   });

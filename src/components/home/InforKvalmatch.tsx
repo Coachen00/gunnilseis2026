@@ -3,6 +3,7 @@ import { ArrowRight, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   CALLED_SQUAD,
+  DEPARTURE,
   FOCUS,
   GATHERING_PLACE,
   MATCH_META,
@@ -92,7 +93,11 @@ const InforKvalmatch = () => {
         <div className="mx-auto mt-10 grid max-w-[900px] gap-3 sm:grid-cols-3">
           <Fakta label="Avspark" value={MATCH_META.kickoff} sub={MATCH_META.home ? "Hemma" : "Borta"} />
           <Fakta label="Plats" value={MATCH_META.venue} sub={FIXTURE.surface ?? "Underlag ej angivet"} />
-          <Fakta label="Samling" value={SAMLING_TIME} sub={GATHERING_PLACE} />
+          <Fakta
+            label="Samling"
+            value={SAMLING_TIME}
+            sub={DEPARTURE ? `${GATHERING_PLACE} · lunch · avfärd ${DEPARTURE.leaves}` : GATHERING_PLACE}
+          />
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-2">

@@ -73,7 +73,7 @@ export const MATCH_META: MatchMeta = {
   competition: "Kval till division 3 · Grupp 9",
   weather: "",
   absent: [],
-  samling: "13:30",
+  samling: "12:00",
 };
 
 /**
@@ -325,6 +325,13 @@ export type TravelInfo = {
 export const TRAVEL: TravelInfo | null = null;
 
 /**
+ * Gemensam resa från samlingsplatsen — lunch och avfärd. `null` när vi inte
+ * åker tillsammans. Skene 24 okt: lunch på Hjällbovallen vid samlingen,
+ * avfärd 12:45 (Joels besked 23 okt).
+ */
+export const DEPARTURE: { lunch: string; leaves: string } | null = { lunch: SAMLING_TIME, leaves: "12:45" };
+
+/**
  * Spelare som får kallas utan att finnas i `data/squad.ts` — provspelare och
  * inlånade som tränar med oss men tillhör en annan förening.
  *
@@ -363,7 +370,7 @@ export const COHERENCE: CoherenceSection[] = [
     eyebrow: "Kontext",
     bullets: [
       "Tredje och sista kvalmatchen: borta mot Skene IF · Kunskapens Hus, konstgräs · lördag 24 okt 15:00.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()} — vi äter lunch där. Avfärd ${DEPARTURE?.leaves}.`,
       "Läget efter omgång 2: Gunnilse 4 p, Bergdalen 3 p, Götene 2 p, Skene 1 p.",
       "Vinst = division 3. Då kan ingen nå oss.",
       "Oavgjort eller förlust: då avgör även Bergdalen–Götene.",
@@ -497,7 +504,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Hörnor", "Bekräftas på genomgång"],
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
-      ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
+      ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE} · lunch`],
+      ["Avfärd", `${DEPARTURE?.leaves} från ${GATHERING_PLACE}`],
       ["Matchstart", "15:00"],
       ["Bortaplan", "Kunskapens Hus, konstgräs"],
     ],
