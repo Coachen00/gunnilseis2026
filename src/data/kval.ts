@@ -1,7 +1,7 @@
 /**
  * Kval till division 3 hösten 2026 — grupp 9, allt vi vet på ett ställe.
  *
- * Källor (lästa 2026-10-07; resultaten och Götene-matchen 2026-10-14, `KVAL_VERIFIED`):
+ * Källor (lästa 2026-10-07; resultaten och Götene-matchen 2026-10-14, omgång 2 2026-10-23, `KVAL_VERIFIED`):
  *   - SvFF "Gruppindelningar och spelordningar för kvalspelet 2026" — format,
  *     spelordning, regeln om bästa kvallag.
  *   - SvFF:s tävlingsbestämmelser för kvalspel (distriktsversionen, Dalarna
@@ -9,6 +9,10 @@
  *   - svenskalag.se, Gunnilse IS herr — kvalmatchernas tid och plan,
  *     referatet från Floda (4–5) och från Bergdalen (3–1). Skene–Götene 2–2
  *     står bara i det referatet, inte avstämt mot förbundet.
+ *   - Klubbens kallelse till Skene-matchen (Kval-Skene-2026-10-24.pdf) —
+ *     Götene–Gunnilse 1–1, samling 13.30 och grupptabellen efter omgång 2.
+ *     Bergdalen–Skene står bara som poäng i den tabellen (Bergdalen 3 p, Skene
+ *     1 p), inte som resultat — därför `winner` utan mål.
  *   - SvFF:s FOGIS-tabeller — sluttabellerna i div 4A och div 3 Mellersta Götaland.
  *   - laget.se, Bergdalens IK — samtliga 22 seriematcher, trupp, hemmaplan.
  *
@@ -16,7 +20,7 @@
  * laget.se och har inte stämts av mot förbundets tabeller.
  */
 
-export const KVAL_VERIFIED = "2026-10-14";
+export const KVAL_VERIFIED = "2026-10-23";
 
 export type TableRow = {
   pos: number;
@@ -162,7 +166,13 @@ export type KvalFixture = {
   url?: string;
   /** Slutresultat, hemmalagets mål först. Saknas = inte spelad. */
   result?: { home: number; away: number };
+  /** Spelad, vinnaren känd men inte målen. Räknas i poäng, inte i mål. */
+  winner?: "home" | "away";
 };
+
+export function isPlayed(f: KvalFixture): boolean {
+  return Boolean(f.result || f.winner);
+}
 
 /** SvFF:s spelordning med lagen insatta. Våra matcher har tid och plan från svenskalag.se. */
 export const KVAL_FIXTURES: KvalFixture[] = [
@@ -188,8 +198,9 @@ export const KVAL_FIXTURES: KvalFixture[] = [
     gather: "10:00",
     venue: "Västerby IP B-plan",
     url: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if",
+    result: { home: 1, away: 1 },
   },
-  { round: 2, home: "Bergdalens IK", away: "Skene IF" },
+  { round: 2, home: "Bergdalens IK", away: "Skene IF", winner: "home" },
   {
     round: 3,
     home: "Skene IF",
@@ -207,22 +218,31 @@ export const KVAL_FIXTURES: KvalFixture[] = [
 export const OUR_FIXTURES = KVAL_FIXTURES.filter((f) => f.home === OUR_TEAM || f.away === OUR_TEAM);
 
 /** Vår nästa ospelade kvalmatch — `undefined` när kvalet är färdigspelat. */
-export const NEXT_FIXTURE = OUR_FIXTURES.find((f) => !f.result);
+export const NEXT_FIXTURE = OUR_FIXTURES.find((f) => !isPlayed(f));
 
-export const KVAL_ROUNDS_PLAYED = KVAL_FIXTURES.reduce((max, f) => (f.result ? Math.max(max, f.round) : max), 0);
+export const KVAL_ROUNDS_PLAYED = KVAL_FIXTURES.reduce((max, f) => (isPlayed(f) ? Math.max(max, f.round) : max), 0);
 
 /**
  * Grupptabellen, härledd ur resultaten i `KVAL_FIXTURES` så den inte kan glida
  * isär från matcherna. Sorteras på poäng, målskillnad och gjorda mål — inbördes
  * möte och de senare skiljekriterierna (`KVAL_TIEBREAK`) räknas inte, lika lag
- * behåller spelordningens ordning.
+ * behåller spelordningens ordning. Ett lag med en match utan kända mål får
+ * `goalsKnown: false` — målen i raden är då bara de kända.
  */
-export function kvalTable(fixtures: KvalFixture[] = KVAL_FIXTURES): TableRow[] {
+export function kvalTable(fixtures: KvalFixture[] = KVAL_FIXTURES): (TableRow & { goalsKnown: boolean })[] {
   const teams = [...new Set(fixtures.flatMap((f) => [f.home, f.away]))];
   const rows = teams.map((team) => {
-    const row = { pos: 0, team, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0 };
+    const row = { pos: 0, team, played: 0, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0, points: 0, goalsKnown: true };
     for (const f of fixtures) {
-      if (!f.result || (f.home !== team && f.away !== team)) continue;
+      if (f.home !== team && f.away !== team) continue;
+      if (!f.result && f.winner) {
+        row.played += 1;
+        row.goalsKnown = false;
+        if ((f.winner === "home") === (f.home === team)) row.won += 1;
+        else row.lost += 1;
+        continue;
+      }
+      if (!f.result) continue;
       const gf = f.home === team ? f.result.home : f.result.away;
       const ga = f.home === team ? f.result.away : f.result.home;
       row.played += 1;
@@ -246,6 +266,27 @@ export function kvalTable(fixtures: KvalFixture[] = KVAL_FIXTURES): TableRow[] {
 }
 
 export const KVAL_TABLE = kvalTable();
+
+/**
+ * Avgör en vinst i vår nästa match gruppen? Ja när våra poäng plus tre går
+ * över vad varje annat lag kan nå med full pott i sina kvarvarande matcher.
+ */
+export function winClinchesGroup(fixtures: KvalFixture[] = KVAL_FIXTURES): boolean {
+  const table = kvalTable(fixtures);
+  const us = table.find((r) => r.team === OUR_TEAM);
+  if (!us || !fixtures.some((f) => !isPlayed(f) && (f.home === OUR_TEAM || f.away === OUR_TEAM))) return false;
+  return table
+    .filter((r) => r.team !== OUR_TEAM)
+    .every((r) => {
+      const left = fixtures.filter((f) => !isPlayed(f) && (f.home === r.team || f.away === r.team)).length;
+      return r.points + left * 3 < us.points + 3;
+    });
+}
+
+export const WIN_CLINCHES = winClinchesGroup();
+
+/** Gruppens andra ospelade matcher — de som också avgör om vi inte vinner. */
+export const OTHER_REMAINING = KVAL_FIXTURES.filter((f) => !isPlayed(f) && f.home !== OUR_TEAM && f.away !== OUR_TEAM);
 
 /** Ordningen när lag hamnar på samma poäng. */
 export const KVAL_TIEBREAK = [
@@ -420,6 +461,7 @@ export const KVAL_SOURCES = [
   },
   { label: "svenskalag.se — Gunnilse–Bergdalen", url: "https://www.svenskalag.se/gunnilseis-herr/match/21410664/bergdalens-ik" },
   { label: "svenskalag.se — Götene–Gunnilse", url: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if" },
+  { label: "svenskalag.se — Skene–Gunnilse", url: "https://www.svenskalag.se/gunnilseis-herr/match/21410666" },
   { label: "laget.se — Bergdalens IK matcher 2026", url: "https://www.laget.se/BergdalensIKHerr/Division/Games/573606" },
   { label: "laget.se — Bergdalens IK spelarstatistik", url: "https://www.laget.se/BergdalensIKHerr/Division/Scoreboard/573606" },
 ] as const;

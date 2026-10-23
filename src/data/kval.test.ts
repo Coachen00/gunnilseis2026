@@ -6,6 +6,7 @@ import {
   BERGDALEN_HOME,
   BERGDALEN_MATCHES,
   DIV4A_TABLE,
+  isPlayed,
   KVAL_FIXTURES,
   KVAL_ROUNDS_PLAYED,
   KVAL_RULES,
@@ -21,8 +22,12 @@ import {
   OUR_TEAM,
   pointsPerMatch,
   splitRecord,
+  winClinchesGroup,
+  WIN_CLINCHES,
+  OTHER_REMAINING,
 } from "./kval";
 import { SEASON_MATCHES, seasonRecord } from "./season";
+import { MATCH_META, SAMLING_TIME } from "./matchplan";
 
 describe("kval — tabellen", () => {
   it("har 12 lag i placeringsordning med giltiga poäng", () => {
@@ -98,10 +103,11 @@ describe("kval — grupp 9", () => {
 });
 
 describe("kval — resultat och grupptabell", () => {
-  it("omgång 1 är spelad: 3–1 mot Bergdalen och 2–2 mellan Skene och Götene", () => {
-    expect(KVAL_ROUNDS_PLAYED).toBe(1);
-    expect(KVAL_FIXTURES.filter((f) => f.result).every((f) => f.round === 1)).toBe(true);
+  it("två omgångar är spelade: 3–1 mot Bergdalen, 1–1 i Götene", () => {
+    expect(KVAL_ROUNDS_PLAYED).toBe(2);
+    expect(KVAL_FIXTURES.filter(isPlayed).every((f) => f.round <= 2)).toBe(true);
     expect(OUR_FIXTURES[0].result).toEqual({ home: 3, away: 1 });
+    expect(OUR_FIXTURES[1].result).toEqual({ home: 1, away: 1 });
   });
 
   it("vårt kvalresultat stämmer med season.ts", () => {
@@ -115,20 +121,38 @@ describe("kval — resultat och grupptabell", () => {
     }
   });
 
-  it("tabellen efter omgång 1: vi först på 3 p, Bergdalen sist", () => {
+  it("tabellen efter omgång 2 stämmer med kallelsen: 4, 3, 2, 1 poäng", () => {
     expect(KVAL_TABLE.map((r) => [r.team, r.points])).toEqual([
-      [OUR_TEAM, 3],
+      [OUR_TEAM, 4],
+      ["Bergdalens IK", 3],
+      ["Götene IF", 2],
       ["Skene IF", 1],
-      ["Götene IF", 1],
-      ["Bergdalens IK", 0],
     ]);
     const us = KVAL_TABLE[0];
-    expect([us.goalsFor, us.goalsAgainst]).toEqual([3, 1]);
+    expect([us.goalsFor, us.goalsAgainst, us.goalsKnown]).toEqual([4, 2, true]);
   });
 
-  it("nästa match är Götene borta", () => {
-    expect(NEXT_FIXTURE?.home).toBe("Götene IF");
-    expect(NEXT_FIXTURE?.gather).toBe("10:00");
+  it("en match utan kända mål ger poäng men markerar målen som okända", () => {
+    const bergdalen = KVAL_TABLE.find((r) => r.team === "Bergdalens IK")!;
+    const skene = KVAL_TABLE.find((r) => r.team === "Skene IF")!;
+    expect([bergdalen.won, bergdalen.lost, bergdalen.goalsKnown]).toEqual([1, 1, false]);
+    expect([skene.drawn, skene.lost, skene.goalsKnown]).toEqual([1, 1, false]);
+    expect(KVAL_TABLE.find((r) => r.team === "Götene IF")!.goalsKnown).toBe(true);
+  });
+
+  it("vinst mot Skene avgör gruppen — kallelsens 'Vinst = division 3'", () => {
+    expect(WIN_CLINCHES).toBe(true);
+    expect(OTHER_REMAINING.map((f) => `${f.home}–${f.away}`)).toEqual(["Bergdalens IK–Götene IF"]);
+    // Före omgång 2 räckte inte en vinst: Skene och Götene kunde fortfarande nå oss.
+    const efterOmgang1 = KVAL_FIXTURES.map((f) => (f.round === 2 ? { ...f, result: undefined, winner: undefined } : f));
+    expect(winClinchesGroup(efterOmgang1)).toBe(false);
+  });
+
+  it("nästa match är Skene borta, samling 13:30 som i matchplan", () => {
+    expect(NEXT_FIXTURE?.home).toBe("Skene IF");
+    expect(NEXT_FIXTURE?.gather).toBe("13:30");
+    expect(NEXT_FIXTURE?.gather).toBe(SAMLING_TIME);
+    expect(MATCH_META.opponent).toBe(NEXT_FIXTURE?.home);
   });
 });
 

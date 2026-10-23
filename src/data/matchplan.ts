@@ -66,14 +66,14 @@ export type CoherenceSection = {
 };
 
 export const MATCH_META: MatchMeta = {
-  opponent: "Götene IF",
-  venue: "Västerby IP B-plan",
+  opponent: "Skene IF",
+  venue: "Kunskapens Hus",
   home: false,
-  kickoff: "Lör 17 okt · 14:00",
+  kickoff: "Lör 24 okt · 15:00",
   competition: "Kval till division 3 · Grupp 9",
   weather: "",
   absent: [],
-  samling: "10:00",
+  samling: "13:30",
 };
 
 /**
@@ -87,11 +87,11 @@ export const MATCH_META: MatchMeta = {
 export const SEASON_BREAK = {
   active: false,
   /** Sista spelade matchen. */
-  lastResult: "Bergdalens IK 3–1 (hemma, 10 okt)",
+  lastResult: "Götene IF 1–1 (borta, 17 okt)",
   /** När laget drog igång igen efter sommaruppehållet. */
   trainingResumes: "Måndag 28 juli",
   /** Veckans match (= MATCH_META). */
-  nextMatchLabel: "Götene IF · borta · lör 17 okt 14:00 (Västerby IP B-plan)",
+  nextMatchLabel: "Skene IF · borta · lör 24 okt 15:00 (Kunskapens Hus)",
 } as const;
 
 export const MATCH_PRESENTATION_URL =
@@ -318,8 +318,7 @@ export type TravelInfo = {
  * Resvägen till veckans match. `null` när matchen inte kräver något utöver
  * att ta sig till planen — då visas inget resekort på Veckans match.
  *
- * Götene 17 okt → null, bussen går från Hjällbovallen och tiderna står i
- * Förutsättningar (COHERENCE 01). Kortet är byggt för färja. Björkö-färjan (Björköleden,
+ * Skene 24 okt → null, inget utöver samlingen är känt om resan. Kortet är byggt för färja. Björkö-färjan (Björköleden,
  * helgtidtabell verifierad 2026-09-04) ligger kvar i git @ 91fb746 om ön
  * dyker upp igen nästa säsong.
  */
@@ -336,41 +335,22 @@ export const TRAVEL: TravelInfo | null = null;
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför kvalmatchen mot Götene IF (lör 17 okt).
- * 18 kallade — kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
- * Namnen stavas exakt som i `data/squad.ts` (fri text, ingen join), eller
- * finns i TRIAL_PLAYERS ovan. */
+/* Trupp inför kvalmatchen mot Skene IF (lör 24 okt) — publiceras senare.
+ * Tom lista = sidan visar "Kallelse kommer". Kvalet följer SvFF:s TB 4 kap.
+ * 5 §: högst sju ersättare. Namnen stavas exakt som i `data/squad.ts` (fri
+ * text, ingen join), eller finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [
-    "Ali Carneil",
-    "Adnan Hadzialic",
-    "Pascal Jabbour",
-    "Rayan Fedaila",
-    "Rinor Zenullah",
-    "Ahmad Soheyl Matin",
-    "Ahmad Aljafari",
-    "Benjamin Arapovic",
-    "Galvan Ayoub",
-    "Hosam Aiesh",
-    "Ibrahim Haber",
-    "Idris Abdi",
-    "Ihab Naser",
-    "Mostafa Ayoub",
-    "Aldin Zeljkovic",
-    "Arshin Wosoughian",
-    "Leodon Johansson",
-    "Kamal Mustafa",
-  ],
+  bench: [],
 };
 
 export const FOCUS: string[] = [
-  "Vinst i Götene och sedan räcker oavgjort mot Skene. Vi spelar för tre poäng, inte för en.",
-  "Samma grund som mot Bergdalen: försvaret sitter ihop, då kommer målen.",
-  "Inga onödiga kort. Två gula i två kvalmatcher eller ett rött = avstängd mot Skene.",
+  "Vinst = division 3. Vi spelar för tre poäng, inte för en.",
+  "Samma grund som i kvalet: försvaret sitter ihop, då kommer målen.",
+  "Oavgjort = straffar direkt efter slutsignalen. Fem namn och ordning klara före avspark.",
 ];
 
-/* Ingen startelva spikad än mot Götene.
+/* Ingen startelva spikad än mot Skene.
  * Fyll i 11 slots när XI:n sätts. FORMATION.length måste matcha
  * CALLED_SQUAD.starting.length. */
 export const FORMATION: FormationSlot[] = [];
@@ -382,12 +362,11 @@ export const COHERENCE: CoherenceSection[] = [
     title: "Förutsättningar",
     eyebrow: "Kontext",
     bullets: [
-      "Andra kvalmatchen: borta mot Götene IF · Västerby IP B-plan · lördag 17 okt 14:00.",
-      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}. Bussen går 10:15.`,
-      "Lunchstopp på vägen klockan 11:00.",
-      "Hemresan: alla får en fralla i bussen, och vi stannar vid en affär eller restaurang för den som vill handla.",
-      "Läget efter omgång 1: Gunnilse 3 p (3–1), Skene 1 p, Götene 1 p (2–2 mot varandra), Bergdalen 0 p.",
-      "Vinner vi i Götene räcker oavgjort mot Skene sista omgången — då kan ingen nå oss.",
+      "Tredje och sista kvalmatchen: borta mot Skene IF · Kunskapens Hus, konstgräs · lördag 24 okt 15:00.",
+      `Samling ${SAMLING_TIME} på ${GATHERING_PLACE.toUpperCase()}.`,
+      "Läget efter omgång 2: Gunnilse 4 p, Bergdalen 3 p, Götene 2 p, Skene 1 p.",
+      "Vinst = division 3. Då kan ingen nå oss.",
+      "Oavgjort eller förlust: då avgör även Bergdalen–Götene.",
       "Oavgjort = straffar direkt efter matchen. Straffarna ger ingen extrapoäng, de avgör bara om lagen hamnar på lika poäng.",
       "Två gula i två kvalmatcher eller ett rött = avstängd nästa kvalmatch.",
     ],
@@ -397,21 +376,22 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["18 kallade", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["Truppen publiceras senare", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "18 spelare kallade till kvalmatchen mot Götene.",
+      "Truppen till kvalmatchen mot Skene publiceras senare.",
       "Kvalregler: sju på bänken, max fem byten vid tre tillfällen. Den som byts ut kommer inte in igen.",
-      "Startelvan spikas på genomgången — alla 18 förbereder sig som om de startar.",
-      "Kroppen först: säg till direkt om något känns. Två lördagar kvar.",
+      "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
+      "Kroppen först: säg till direkt om något känns. En lördag kvar.",
     ],
   },
   {
     id: "forra-match",
     num: "03",
-    title: "Kvalet — och senast Bergdalen 3–1",
+    title: "Kvalet — och senast Götene 1–1",
     eyebrow: "Facit",
-    principles: ["Etta i grupp 9", "3 p på 1", "3–1 i mål"],
+    principles: ["Etta i grupp 9", "4 p på 2", "4–2 i mål"],
     bullets: [
+      "Götene 17 okt: 1–1 borta.",
       "Bergdalen 10 okt: 3–1 hemma på naturgräs, 1–0 i paus.",
       "Aldin Zeljkovic 1–0 i 18:e på djupledspass från Ibrahim Haber. Arshin Wosoughian nickade in 2–0 i 48:e på frispark från Idris Abdi. Ihab Naser 3–0 i 61:a.",
       "Bergdalen gick ner på treback och slog långt — reducering i 88:e.",
@@ -422,14 +402,15 @@ export const COHERENCE: CoherenceSection[] = [
   {
     id: "motstandare",
     num: "04",
-    title: "Motståndare — Götene IF",
+    title: "Motståndare — Skene IF",
     eyebrow: "Kval · borta",
     bullets: [
-      "Tvåa i division 4 Östra (Västergötland): 12 vinster, 6 oavgjorda, 4 förluster, 42 poäng på 22 matcher.",
-      "2–2 mot Skene i första kvalomgången — 1 poäng, samma som Skene.",
-      "Hemmaplan Västerby IP. Matchen spelas på B-planen enligt svenskalag.se.",
+      "Tvåa i division 4 Södra: 17 vinster, 2 oavgjorda, 3 förluster, 53 poäng på 22 matcher. Bästa kvallag.",
+      "Vann sista seriematchen 5–2 och har en spelare med 25 seriemål.",
+      "Kvalet: 2–2 mot Götene, förlust mot Bergdalen. 1 poäng på två matcher.",
+      "Hemmaplan Kunskapens Hus, konstgräs.",
     ],
-    note: "Götenes seriefacit kommer från lagets egen sida på laget.se och är inte avstämt mot förbundets tabell.",
+    note: "Skenes seriefacit kommer från lagets egen sida på laget.se och är inte avstämt mot förbundets tabell. Resultatet Bergdalen–Skene har vi inte.",
   },
   {
     id: "identitet",
@@ -517,9 +498,8 @@ export const COHERENCE: CoherenceSection[] = [
       ["Inläggsfrispark", "Bekräftas på genomgång"],
       ["Målchansfrispark", "Bekräftas på genomgång"],
       ["Samling", `${SAMLING_TIME} · ${GATHERING_PLACE}`],
-      ["Buss", "Avgång 10:15 · lunch 11:00"],
-      ["Matchstart", "14:00"],
-      ["Bortaplan", "Västerby IP B-plan"],
+      ["Matchstart", "15:00"],
+      ["Bortaplan", "Kunskapens Hus, konstgräs"],
     ],
   },
 ];

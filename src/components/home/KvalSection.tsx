@@ -24,7 +24,9 @@ import {
   NEXT_FIXTURE,
   OUR_FIXTURES,
   OUR_TEAM,
+  OTHER_REMAINING,
   PERFORMANCE_CHAIN,
+  WIN_CLINCHES,
   outcome,
   pointsPerMatch,
   type KvalFixture,
@@ -236,7 +238,13 @@ function GruppTabell() {
                   {r.won}–{r.drawn}–{r.lost}
                 </td>
                 <td className="px-2 py-2.5 text-right tabular-nums">
-                  {r.goalsFor}–{r.goalsAgainst}
+                  {r.goalsKnown ? (
+                    `${r.goalsFor}–${r.goalsAgainst}`
+                  ) : (
+                    <span title="En match utan kända mål">
+                      ?<span className="sr-only">, mål okända</span>
+                    </span>
+                  )}
                 </td>
                 <td className="px-4 py-2.5 text-right font-black tabular-nums sm:px-8">{r.points}</td>
               </tr>
@@ -244,6 +252,11 @@ function GruppTabell() {
           })}
         </tbody>
       </table>
+      {KVAL_TABLE.some((r) => !r.goalsKnown) && (
+        <p className="border-t border-kedja-border px-4 py-3 text-[13px] text-kedja-deep sm:px-8">
+          ? = en match där bara vinnaren är känd, inte målen.
+        </p>
+      )}
     </figure>
   );
 }
@@ -263,6 +276,7 @@ function Vagen() {
           <span key={`${f.home}-${f.away}`}>
             {i > 0 && " · "}omgång {f.round} {f.home}–{f.away}
             {f.result && ` ${f.result.home}–${f.result.away}`}
+            {!f.result && f.winner && ` vinst ${f.winner === "home" ? f.home : f.away} (mål okända)`}
           </span>
         ))}
       </p>
@@ -694,7 +708,7 @@ const KvalSection = () => {
             <Rubrik
               eyebrow="Vägen"
               title="Hemma först, sedan två bortamatcher"
-              lead="Tre lördagar i oktober. Hemmamatchen mot Bergdalen vann vi 3–1 — nu väntar två bortamatcher."
+              lead="Tre lördagar i oktober. Bergdalen 3–1 hemma, Götene 1–1 borta — kvar är Skene borta."
             />
             <Vagen />
           </div>
@@ -732,7 +746,11 @@ const KvalSection = () => {
             src={PHOTO_BREAK}
             alt="Gunnilse herr samlas vid målen med bollar uppradade före träning"
             line={`${NEXT_FIXTURE.date}: ${NEXT_FIXTURE.home === OUR_TEAM ? NEXT_FIXTURE.away : NEXT_FIXTURE.home} borta`}
-            sub="Vinner vi där räcker oavgjort mot Skene i sista omgången."
+            sub={
+              WIN_CLINCHES
+                ? "Vinst = division 3."
+                : `Gruppen avgörs också i ${OTHER_REMAINING.map((f) => `${f.home}–${f.away}`).join(" och ")}.`
+            }
           />
         )
       )}

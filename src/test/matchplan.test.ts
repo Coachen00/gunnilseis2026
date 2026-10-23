@@ -38,17 +38,17 @@ import { ensureWeeklyMatch } from "@/hooks/useSeasonMatches";
  */
 
 describe("matchplan", () => {
-  it("MATCH_META pekar på veckans match Götene IF (kval borta)", () => {
-    expect(MATCH_META.opponent).toBe("Götene IF");
-    expect(MATCH_META.kickoff).toMatch(/17 okt · 14:00/);
-    expect(MATCH_META.venue).toBe("Västerby IP B-plan");
+  it("MATCH_META pekar på veckans match Skene IF (kval borta)", () => {
+    expect(MATCH_META.opponent).toBe("Skene IF");
+    expect(MATCH_META.kickoff).toMatch(/24 okt · 15:00/);
+    expect(MATCH_META.venue).toBe("Kunskapens Hus");
     expect(MATCH_META.competition).toMatch(/Kval/);
     expect(MATCH_META.home).toBe(false);
   });
 
   it("SEASON_BREAK är avstängt när serien rullar", () => {
     expect(SEASON_BREAK.active).toBe(false);
-    expect(SEASON_BREAK.lastResult).toContain("3–1");
+    expect(SEASON_BREAK.lastResult).toContain("1–1");
     expect(SEASON_BREAK.trainingResumes).toMatch(/28 juli/);
   });
 
@@ -68,10 +68,11 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("kallelsen till Götene är satt: 18 spelare, ingen spikad XI", () => {
-    // Kval till förbundsserie: högst 11 + 7 ersättare (SvFF TB 4 kap. 5 §)
+  it("truppen till Skene publiceras senare: ingen kallelse, ingen spikad XI", () => {
+    // Tom lista = "Kallelse kommer" på sidan. Kval till förbundsserie: högst
+    // 11 + 7 ersättare (SvFF TB 4 kap. 5 §) när den väl fylls i.
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(18);
+    expect(CALLED_SQUAD.bench).toHaveLength(0);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );
@@ -132,15 +133,15 @@ describe("matchplan", () => {
     }
   });
 
-  it("SAMLING_TIME är 10:00 mot Götene — bussen, overridad", () => {
-    // Bortaregeln (1h45) ger 12:15 vid avspark 14:00, men bussen går 10:15 med
-    // lunchstopp 11:00 (Joels besked). Overriden gäller bara den här matchen —
+  it("SAMLING_TIME är 13:30 mot Skene — kallelsen, overridad", () => {
+    // Bortaregeln (1h45) ger 13:15 vid avspark 15:00, men kallelsen och
+    // svenskalag.se säger 13.30. Overriden gäller bara den här matchen —
     // ta bort `samling` inför nästa match.
     expect(MATCH_META.home).toBe(false);
-    expect(MATCH_META.samling).toBe("10:00");
+    expect(MATCH_META.samling).toBe("13:30");
     expect(MATCH_META.samlingsplats).toBeUndefined();
-    expect(SAMLING_TIME).toBe("10:00");
-    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("12:15");
+    expect(SAMLING_TIME).toBe("13:30");
+    expect(computeSamlingTime({ ...MATCH_META, samling: undefined })).toBe("13:15");
   });
 
   it("samlingstiden står bara på ETT ställe — inga hardkodade kopior", () => {
@@ -175,9 +176,9 @@ describe("matchplan", () => {
   it("MATCH_SCHEDULE härleds ur avspark, inte hardkodade tider", () => {
     const times = MATCH_SCHEDULE.map((s) => s.time);
     expect(times[0]).toBe(SAMLING_TIME);
-    expect(times).toContain("13:20 – 13:50"); // aktivering: avspark -40 → -10
-    expect(times).toContain("13:50 – 13:57"); // ner + sista instruktion
-    expect(times[times.length - 1]).toBe("14:00"); // avspark
+    expect(times).toContain("14:20 – 14:50"); // aktivering: avspark -40 → -10
+    expect(times).toContain("14:50 – 14:57"); // ner + sista instruktion
+    expect(times[times.length - 1]).toBe("15:00"); // avspark
     // Byt avspark → schemat följer med
     const kvall: MatchMeta = {
       opponent: "X", venue: "Y", home: true, kickoff: "Fre 18 sep · 19:00",
@@ -287,7 +288,7 @@ describe("matchplan", () => {
 
   it("PAST_OPPONENT_NAMES innehåller alla motståndare med matchdatum före veckans match", () => {
     // Inga manuella listor — alla matcher i SEASON_MATCHES med datum före
-    // MATCH_META.kickoff (Götene 17 okt) ska finnas i settet, lowercase.
+    // MATCH_META.kickoff (Skene 24 okt) ska finnas i settet, lowercase.
     expect(PAST_OPPONENT_NAMES.has("ifk björkö")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("kareby is")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("if vardar/makedonija")).toBe(true);
@@ -304,14 +305,14 @@ describe("matchplan", () => {
     expect(PAST_OPPONENT_NAMES.has("floda boif")).toBe(true);
     // Veckans egna motståndare och kvalets senare motståndare är inte stale.
     expect(PAST_OPPONENT_NAMES.has("bergdalens ik")).toBe(true);
-    expect(PAST_OPPONENT_NAMES.has("götene if")).toBe(false);
+    expect(PAST_OPPONENT_NAMES.has("götene if")).toBe(true);
     expect(PAST_OPPONENT_NAMES.has("skene if")).toBe(false);
   });
 
-  it("resolveWeeklyMatch hittar kvalmatchen mot Götene (17 okt)", () => {
+  it("resolveWeeklyMatch hittar kvalmatchen mot Skene (24 okt)", () => {
     const wm = resolveWeeklyMatch();
-    expect(wm?.opponent).toBe("Götene IF");
-    expect(wm?.id).toBe("2026-10-17-gotene");
+    expect(wm?.opponent).toBe("Skene IF");
+    expect(wm?.id).toBe("2026-10-24-skene");
   });
 
   it("COHERENCE har förväntade sektioner i ordning", () => {
@@ -337,7 +338,7 @@ describe("matchplan", () => {
     expect(anfall?.bullets?.length).toBe(ATTACKING_PRINCIPLES.length);
   });
 
-  it("stale Björkö-rad i framtiden blockerar inte veckans match (Götene 17 okt)", () => {
+  it("stale Björkö-rad i framtiden blockerar inte veckans match (Skene 24 okt)", () => {
     const matches = ensureWeeklyMatch(
       [
         {
@@ -353,7 +354,7 @@ describe("matchplan", () => {
     );
 
     expect(matches.some((match) => match.id === "stale-bjorko")).toBe(false);
-    expect(matches[0].opponent).toBe("Götene IF");
+    expect(matches[0].opponent).toBe("Skene IF");
   });
 
   it("en stale Ytterby-rad efter att matchen spelats blockerar inte veckans match", () => {
@@ -371,7 +372,7 @@ describe("matchplan", () => {
       new Date("2026-06-20T12:00:00+02:00")
     );
 
-    expect(matches[0].opponent).toBe("Götene IF");
+    expect(matches[0].opponent).toBe("Skene IF");
     expect(matches.some((match) => match.id === "stale-ytterby-jun")).toBe(false);
   });
 });

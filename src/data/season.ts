@@ -352,6 +352,8 @@ export const SEASON_MATCHES: SeasonMatch[] = [
     homeAway: "away",
     competition: "Kval till div 3 herrar, Grupp 9",
     venue: "Västerby IP B-plan",
+    ourScore: 1,
+    theirScore: 1,
     sourceUrl: "https://www.svenskalag.se/gunnilseis-herr/match/21410665/gotene-if",
   },
   {
