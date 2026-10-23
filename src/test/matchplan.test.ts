@@ -69,11 +69,10 @@ describe("matchplan", () => {
     expect(FORMATION.length).toBe(CALLED_SQUAD.starting.length);
   });
 
-  it("truppen till Skene publiceras senare: ingen kallelse, ingen spikad XI", () => {
-    // Tom lista = "Kallelse kommer" på sidan. Kval till förbundsserie: högst
-    // 11 + 7 ersättare (SvFF TB 4 kap. 5 §) när den väl fylls i.
+  it("kallelsen till Skene är satt: 18 spelare, ingen spikad XI", () => {
+    // Kval till förbundsserie: högst 11 + 7 ersättare (SvFF TB 4 kap. 5 §)
     expect(CALLED_SQUAD.starting).toHaveLength(0);
-    expect(CALLED_SQUAD.bench).toHaveLength(0);
+    expect(CALLED_SQUAD.bench).toHaveLength(18);
     expect(PRACTICAL_INFO.responsibilities).toEqual(
       expect.arrayContaining([["Kapten", 'Adnan "Ado" Hadzialic']])
     );

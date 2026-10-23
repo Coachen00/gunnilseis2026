@@ -162,7 +162,7 @@ const InforKvalmatch = () => {
           </div>
 
           <div className="flex flex-col rounded-2xl border-2 border-dashed border-kedja-lime/60 bg-white/5 p-6 text-left sm:p-8">
-            <Eyebrow tone="lime">Truppen</Eyebrow>
+            <Eyebrow tone="lime">{called.length > 0 ? `Truppen · ${called.length} kallade` : "Truppen"}</Eyebrow>
             {called.length === 0 ? (
               <div className="flex flex-1 flex-col items-start justify-center gap-3 py-4">
                 <Users className="h-8 w-8 text-kedja-lime" strokeWidth={2} aria-hidden="true" />

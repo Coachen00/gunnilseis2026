@@ -342,13 +342,33 @@ export const DEPARTURE: { lunch: string; leaves: string } | null = { lunch: SAML
  */
 export const TRIAL_PLAYERS: ReadonlySet<string> = new Set([]);
 
-/* Trupp inför kvalmatchen mot Skene IF (lör 24 okt) — publiceras senare.
- * Tom lista = sidan visar "Kallelse kommer". Kvalet följer SvFF:s TB 4 kap.
- * 5 §: högst sju ersättare. Namnen stavas exakt som i `data/squad.ts` (fri
- * text, ingen join), eller finns i TRIAL_PLAYERS ovan. */
+/* Trupp inför kvalmatchen mot Skene IF (lör 24 okt).
+ * 18 kallade — kvalet följer SvFF:s TB 4 kap. 5 §: högst sju ersättare.
+ * Mot Götene: ut Ahmad Aljafari, Rinor Zenullah och Ahmad Soheyl Matin; in
+ * Måns Orwén, Sabarr Janneh och Yosef Ismail. Namnen stavas exakt som i
+ * `data/squad.ts` (fri text, ingen join), eller finns i TRIAL_PLAYERS ovan. */
 export const CALLED_SQUAD: { starting: string[]; bench: string[] } = {
   starting: [],
-  bench: [],
+  bench: [
+    "Ali Carneil",
+    "Adnan Hadzialic",
+    "Pascal Jabbour",
+    "Rayan Fedaila",
+    "Yosef Ismail",
+    "Benjamin Arapovic",
+    "Galvan Ayoub",
+    "Hosam Aiesh",
+    "Ibrahim Haber",
+    "Idris Abdi",
+    "Ihab Naser",
+    "Mostafa Ayoub",
+    "Aldin Zeljkovic",
+    "Arshin Wosoughian",
+    "Leodon Johansson",
+    "Kamal Mustafa",
+    "Måns Orwén",
+    "Sabarr Janneh",
+  ],
 };
 
 export const FOCUS: string[] = [
@@ -383,9 +403,9 @@ export const COHERENCE: CoherenceSection[] = [
     num: "02",
     title: "Kallad trupp",
     eyebrow: "Spelare",
-    principles: ["Truppen publiceras senare", "XI sätts på genomgång", "Kroppen först"],
+    principles: ["18 kallade", "XI sätts på genomgång", "Kroppen först"],
     bullets: [
-      "Truppen till kvalmatchen mot Skene publiceras senare.",
+      "18 spelare kallade till kvalmatchen mot Skene.",
       "Kvalregler: sju på bänken, max fem byten vid tre tillfällen. Den som byts ut kommer inte in igen.",
       "Startelvan spikas på genomgången — alla förbereder sig som om de startar.",
       "Kroppen först: säg till direkt om något känns. En lördag kvar.",

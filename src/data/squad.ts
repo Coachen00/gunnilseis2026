@@ -45,6 +45,9 @@ export const SQUAD: Player[] = [
   { name: "Pascal Jabbour", position: "DEF" },
   { name: "Rayan Fedaila", position: "DEF" },
   { name: "Rinor Zenullah", position: "DEF" },
+  // Registrerad för Gunnilse IS men inte upplagd på svenskalag.se, så syncen
+  // skriver inte in honom. Position och registrering: Joels besked 2026-10-23.
+  { name: "Sabarr Janneh", position: "DEF" },
   { name: "Vedad Dzambegovic", position: "DEF" },
 
   // Mittfältare
