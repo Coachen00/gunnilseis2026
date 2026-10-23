@@ -11,6 +11,8 @@ import KedjaClimax from "@/components/kedja/KedjaClimax";
 import HomeHero from "@/components/home/HomeHero";
 import MatchRadar from "@/components/home/MatchRadar";
 import KvalSection from "@/components/home/KvalSection";
+import InforKvalmatch from "@/components/home/InforKvalmatch";
+import Spelprinciper2026 from "@/components/home/Spelprinciper2026";
 
 const WORLDS = [
   { num: "01", title: "Match", sub: "Kommande & resultat", href: "/match/kommande" },
@@ -84,6 +86,13 @@ const Hem = () => {
         ctaLabel="Veckans match"
         ctaTo="/match/kommande"
       />
+
+      {authed && (
+        <>
+          <InforKvalmatch />
+          <Spelprinciper2026 />
+        </>
+      )}
 
       <section className="bg-kedja-mint">
         <div className="mx-auto max-w-[1200px] px-6 py-14">
